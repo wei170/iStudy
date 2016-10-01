@@ -2,8 +2,9 @@ var bcrypt = require('bcrypt');
 var cryptjs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var _ = require('underscore');
-module.exports = function(sequelize, DataTypes) {
-    var user = sequelize.define('user', {
+
+module.exports = function(connection, DataTypes) {
+    var User = connection.define('user', {
         email: {
             type: DataTypes.STRING,
             allowNull: false, //not optional
@@ -11,7 +12,6 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
-
             }
         },
         salt: {
@@ -32,14 +32,13 @@ module.exports = function(sequelize, DataTypes) {
             },
             //validate reg expression
             set: function(value) {
-                var salt = bcrypt.genSaltSync(10);
+                var saltRounds = 10;
+                var salt = bcrypt.genSaltSync(saltRounds);
                 var hashedPassword = bcrypt.hashSync(value, salt);
                 this.setDataValue('password', value);
                 this.setDataValue('salt', salt);
                 this.setDataValue('password_hash', hashedPassword);
             }
-
-
         }
 
     }, {
@@ -47,6 +46,7 @@ module.exports = function(sequelize, DataTypes) {
             beforeValidate: function(user, options) {
                 if (typeof user.email === 'string') {
                     //normalize data before we validate it
+                    // izzy: why normalize?
                     user.email = user.email.toLowerCase();
                 }
 
@@ -136,5 +136,5 @@ module.exports = function(sequelize, DataTypes) {
         }
 
     });
-    return user;
+    return User;
 };

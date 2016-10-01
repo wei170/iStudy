@@ -5,45 +5,49 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 
 var bodyParser = require('body-parser');
-var PORT = process.env.PORT || 6000;
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
-var app = express();
-//newley installed
 var _ = require('underscore');
 var bcrypt = require('bcrypt');
-var db = require('./db.js');
+var db = require('./db');
+var setupController = require('./routes/setupController');
+
+//~(˘▾˘~)
+var cool = require('cool-ascii-faces');
+
+
+var app = express();
 //var middleware = require('./middleware.js')(db);
 
-app.set('port', PORT);
-//sync sqlize
-// db.sequelize.sync({
-//     force: true
-// });
+
 // view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.engine("html", require("ejs").__express);
+app.set('view engine', 'html');
 // app.set('views', path.join(__dirname, 'views'));
 // app.engine("html", require("ejs").__express); // or   app.engine("html",require("ejs").renderFile);
 // //app.set("view engine","ejs");
 // app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
-app.engine("html", require("ejs").__express);
 //app.set('view engine', 'ejs');
-app.set('view engine', 'html');
+
+
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//set route
+//set up routes
+var routes = require('./routes/index');
+var users = require('./routes/users');
 app.use('/', routes);
 app.use('/users', users);
+
+
+//seed database
+setupController(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,10 +78,6 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
-
-db.sequelize.sync({force:true}).then(function() {
-
 });
 
 module.exports = app;
