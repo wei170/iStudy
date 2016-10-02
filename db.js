@@ -4,20 +4,20 @@ var bcrypt = require('bcrypt');
 
 var env = process.env.NODE_ENV || 'development';
 var db = {};
-var connection;
+var sequelize;
 
 
 if (env == 'production') {
     // for heroku
     console.log('here');
-    connection = new Sequelize(process.env.DATABASE_URL, {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
         //'dialect': 'postgres'
         dialect: 'mysql'
     });
 } else {
     // for local
     var config = require('./config/cnf').database;
-    connection = new Sequelize(
+    sequelize = new Sequelize(
         config.database,
         config.uname,
         config.pwd,
@@ -25,9 +25,9 @@ if (env == 'production') {
     );
 }
 
-db.user = connection.import(__dirname + '/models/User');
-
-db.connection = connection;
+db.user = sequelize.import(__dirname + '/models/User');
+db.sequelize = sequelize;
+//db.Sequelize = Sequelize;
 module.exports = db;
 
 

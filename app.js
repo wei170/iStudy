@@ -80,4 +80,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
+db.sequelize.sync({force:true});
 module.exports = app;
