@@ -1,4 +1,5 @@
 var express = require('express');
+var db = require('../db');
 var router = express.Router();
 
 /* GET home page. */
@@ -17,6 +18,5 @@ router.get('/forgotpassword', function(req, res, next) {
 router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'signin' });
 });
-
 
 module.exports = router;
