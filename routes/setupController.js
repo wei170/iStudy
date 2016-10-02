@@ -5,12 +5,15 @@ var cool = require('cool-ascii-faces');
 module.exports = function (app) {
     app.get('/api/seeds', function (req, res) {
         //seed database
-        db.connection.sync({force:true}).then(function () {
-            return db.user.bulkCreate(seedUsers);
-        }).catch(function (err) {
-            console.log(err);
+        db.user.bulkCreate(seedUsers).then(function() {
+            var emoji = cool();
+            res.render('seed', { emoji: emoji });
         });
-        var emoji = cool();
-        res.render('seed', { emoji: emoji });
+
+        // db.sequelize.sync().then(function () {
+        //     return db.user.bulkCreate(seedUsers);
+        // }).catch(function (err) {
+        //     console.log(err);
+        // });
     });
 };
