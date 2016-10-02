@@ -3,6 +3,7 @@ var db = require('../db');
 var cool = require('cool-ascii-faces');
 var app = require('../app');
 var seedUsers = require('../models/seedUser');
+var  admins = require('../models/admin');
 
 var router = express.Router();
 
@@ -13,7 +14,14 @@ router.get('/users', function (req, res) {
     });
 });
 
-router.get('/seeds', function (req, res) {
+router.post('/admin', function (req, res) {
+   db.user.bulkCreate(admins).then(function () {
+       var emoji = cool();
+       res.render('admin', { emoji: emoji });
+   });
+});
+
+router.post('/seeds', function (req, res) {
     //seed database
     db.user.bulkCreate(seedUsers).then(function() {
         var emoji = cool();

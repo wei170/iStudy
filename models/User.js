@@ -3,22 +3,27 @@ var bcrypt = require('bcrypt');
 var cryptjs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var _ = require('underscore');
+
 module.exports = function(sequelize, DataTypes) {
     var user =  sequelize.define('user', {
-        userName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
+        uid: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
         },
         email: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(30),
             allowNull: false, //not optional
             unique: true, //avoid duplicate
             validate: {
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
-
             }
+        },
+        user_name: {
+            type: DataTypes.STRING(30),
+            allowNull: false,
+            unique: true
         },
         salt: {
             //append random words to password
@@ -46,10 +51,15 @@ module.exports = function(sequelize, DataTypes) {
             }
 
 
+        },
+        accessRight: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         }
 
     }, {
-        freezeTableName : true,
+        tableName: 'user',
+        underscored: true,
         hooks: {
             beforeValidate: function(user, options) {
                 if (typeof user.email === 'string') {

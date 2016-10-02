@@ -9,7 +9,6 @@ var bodyParser = require('body-parser');
 var _ = require('underscore');
 var bcrypt = require('bcrypt');
 var db = require('./db');
-var setupController = require('./routes/setupController');
 
 //~(˘▾˘~)
 var cool = require('cool-ascii-faces');
