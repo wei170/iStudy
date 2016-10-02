@@ -6,6 +6,7 @@ var bcrypt = require('bcrypt');
 var env = process.env.NODE_ENV || 'development';
 var db = {};
 var sequelize;
+var debug = 1;
 
 
 if (env == 'production') {
@@ -27,10 +28,18 @@ if (env == 'production') {
 }
 
 db.user = sequelize.import(__dirname + '/models/User');
-//db.profile = sequelize.import(__dirname + '/models/Profile');
+db.profile = sequelize.import(__dirname + '/models/Profile');
 db.sequelize = sequelize;
+
 // init all the tables
-db.sequelize.sync({force: true}).then();
+if (debug){
+    db.sequelize.sync({force: true}).then();
+}
+else {
+    db.sequelize.sync().then();
+}
+
+
 module.exports = db;
 
 
