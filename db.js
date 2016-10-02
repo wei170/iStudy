@@ -1,3 +1,4 @@
+'use strict';
 var Sequelize = require('sequelize');
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
@@ -26,7 +27,10 @@ if (env == 'production') {
 }
 
 db.user = sequelize.import(__dirname + '/models/User');
+//db.profile = sequelize.import(__dirname + '/models/Profile');
 db.sequelize = sequelize;
+// init all the tables
+db.sequelize.sync().then();
 module.exports = db;
 
 

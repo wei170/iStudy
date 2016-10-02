@@ -9,11 +9,5 @@ module.exports = function (app) {
             var emoji = cool();
             res.render('seed', { emoji: emoji });
         });
-
-        // db.sequelize.sync().then(function () {
-        //     return db.user.bulkCreate(seedUsers);
-        // }).catch(function (err) {
-        //     console.log(err);
-        // });
     });
 };

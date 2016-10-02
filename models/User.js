@@ -1,9 +1,10 @@
+'use strict';
 var bcrypt = require('bcrypt');
 var cryptjs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var _ = require('underscore');
 module.exports = function(sequelize, DataTypes) {
-    var user = sequelize.define('user', {
+    var user =  sequelize.define('user', {
         userName: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -48,6 +49,7 @@ module.exports = function(sequelize, DataTypes) {
         }
 
     }, {
+        freezeTableName : true,
         hooks: {
             beforeValidate: function(user, options) {
                 if (typeof user.email === 'string') {
@@ -139,7 +141,6 @@ module.exports = function(sequelize, DataTypes) {
 
 
         }
-
     });
     return user;
 };

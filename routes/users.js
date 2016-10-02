@@ -1,7 +1,9 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
 var db = require(__dirname + '/../db.js');
 var _ = require('underscore');
+
 /* GET users listing. */
 router.post('/', function(req, res, next) {
     console.log('-=-=------');
