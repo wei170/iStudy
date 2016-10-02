@@ -1,6 +1,11 @@
 'use strict';
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
+        pid: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         classes:{
             type: DataTypes.TEXT
         },
@@ -44,7 +49,6 @@ module.exports = function(sequelize, DataTypes){
             contributions: function(value){
                 this.setDataValue('contributions', JSON.stringify(value));
             }
-
         },
         getterMethods: {
             classes: function () {

@@ -29,6 +29,9 @@ if (env == 'production') {
 
 db.user = sequelize.import(__dirname + '/models/User');
 db.profile = sequelize.import(__dirname + '/models/Profile');
+
+// define relationships
+db.profile.belongsTo(db.user);
 db.sequelize = sequelize;
 
 // init all the tables
