@@ -46,6 +46,10 @@ module.exports = function(sequelize, DataTypes) {
             }
 
 
+        },
+        accessRight: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         }
 
     }, {

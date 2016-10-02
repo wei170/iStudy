@@ -58,10 +58,5 @@ module.exports = [
         "email": "Walton@purdue.edu",
         "userName": "Natalie",
         "password": "x7z0d13ui8uxr"
-    },
-    {
-        email: 'maoxia@purdue.edu',
-        userName: 'maoxia',
-        password: '122342342343512dfsc'
     }
 ];

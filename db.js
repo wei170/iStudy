@@ -30,7 +30,7 @@ db.user = sequelize.import(__dirname + '/models/User');
 //db.profile = sequelize.import(__dirname + '/models/Profile');
 db.sequelize = sequelize;
 // init all the tables
-db.sequelize.sync().then();
+db.sequelize.sync({force: true}).then();
 module.exports = db;
 
 
