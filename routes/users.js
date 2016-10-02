@@ -17,4 +17,26 @@ router.post('/', function(req, res, next) {
     // res.status(200).send();
 });
 
+
+router.post('/login', function(req, res) {
+    var body = _.pick(req.body, 'email', 'password');
+
+    db.user.authenticate(body).then(function(user) {
+        var token = user.generateToken('authentication');
+        console.log('token= '+token);
+        if (token) {
+            res.header('Auth', token).json(user.toPublicJSON());
+        } else {
+            res.status(401).send();
+        }
+
+    }, function() {
+        res.status(401).send();
+
+    });
+
+
+
+});
+
 module.exports = router;

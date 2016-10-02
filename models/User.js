@@ -2,14 +2,14 @@ var bcrypt = require('bcrypt');
 var cryptjs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var _ = require('underscore');
-
-module.exports = function(connection, DataTypes) {
-    var User = connection.define('user', {
+module.exports = function(sequelize, DataTypes) {
+    var user = sequelize.define('user', {
         userName: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
+
         email: {
             type: DataTypes.STRING,
             allowNull: false, //not optional
@@ -17,6 +17,7 @@ module.exports = function(connection, DataTypes) {
             validate: {
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
+
             }
         },
         salt: {
@@ -37,13 +38,14 @@ module.exports = function(connection, DataTypes) {
             },
             //validate reg expression
             set: function(value) {
-                var saltRounds = 10;
-                var salt = bcrypt.genSaltSync(saltRounds);
+                var salt = bcrypt.genSaltSync(10);
                 var hashedPassword = bcrypt.hashSync(value, salt);
                 this.setDataValue('password', value);
                 this.setDataValue('salt', salt);
                 this.setDataValue('password_hash', hashedPassword);
             }
+
+
         }
 
     }, {
@@ -51,7 +53,6 @@ module.exports = function(connection, DataTypes) {
             beforeValidate: function(user, options) {
                 if (typeof user.email === 'string') {
                     //normalize data before we validate it
-                    // izzy: why normalize?
                     user.email = user.email.toLowerCase();
                 }
 
@@ -115,7 +116,7 @@ module.exports = function(connection, DataTypes) {
         instanceMethods: {
             toPublicJSON: function() {
                 var json = this.toJSON();
-                return _.pick(json, 'id', 'userName','email', 'createAt', 'updateAt');
+                return _.pick(json, 'id', 'email', 'createAt', 'updateAt');
             },
             //type of token to generate
             generateToken: function(type) {
@@ -141,5 +142,5 @@ module.exports = function(connection, DataTypes) {
         }
 
     });
-    return User;
+    return user;
 };

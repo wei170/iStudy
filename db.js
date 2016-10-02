@@ -27,7 +27,6 @@ if (env == 'production') {
 
 db.user = sequelize.import(__dirname + '/models/User');
 db.sequelize = sequelize;
-//db.Sequelize = Sequelize;
 module.exports = db;
 
 
