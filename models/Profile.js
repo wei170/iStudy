@@ -5,6 +5,8 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.UUID,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
+            // model: "user",
+            // key: "uid"
         },
         classes:{
             type: DataTypes.TEXT
@@ -32,7 +34,9 @@ module.exports = function(sequelize, DataTypes){
             type: DataTypes.TEXT
         }
     }, {
-        freezeTableName : true,
+        tableName: 'profile',
+        underscored: true,
+        timestamps: false,
         setterMethods: {
             classes: function(value) {
                 this.setDataValue('classes', JSON.stringify(value));

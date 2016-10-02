@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV4
         },
         email: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(30),
             allowNull: false, //not optional
             unique: true, //avoid duplicate
             validate: {
@@ -20,8 +20,8 @@ module.exports = function(sequelize, DataTypes) {
                 isEmail: true
             }
         },
-        userName: {
-            type: DataTypes.STRING,
+        user_name: {
+            type: DataTypes.STRING(30),
             allowNull: false,
             unique: true
         },
@@ -58,7 +58,8 @@ module.exports = function(sequelize, DataTypes) {
         }
 
     }, {
-        freezeTableName : true,
+        tableName: 'user',
+        underscored: true,
         hooks: {
             beforeValidate: function(user, options) {
                 if (typeof user.email === 'string') {
