@@ -17,7 +17,6 @@ router.post('/', function(req, res, next) {
     // res.status(200).send();
 });
 
-
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
 
@@ -34,9 +33,6 @@ router.post('/login', function(req, res) {
         res.status(401).send();
 
     });
-
-
-
 });
 
 module.exports = router;
