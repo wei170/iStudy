@@ -6,6 +6,7 @@ var seedUsers = require('../models/seedUser');
 var  admins = require('../models/admin');
 
 var router = express.Router();
+var id;
 
 /* Run Api Scripts*/
 router.get('/users', function (req, res) {
@@ -15,18 +16,30 @@ router.get('/users', function (req, res) {
 });
 
 router.post('/admin', function (req, res) {
-   db.user.bulkCreate(admins).then(function () {
-       var emoji = cool();
-       res.render('admin', { emoji: emoji });
-   });
+    admins.forEach(function (admin) {
+       db.user.create(admin);
+    });
+    //console.log(profile);
+    var emoji = cool();
+    res.render('admin', { emoji: emoji });
 });
 
 router.post('/seeds', function (req, res) {
     //seed database
-    db.user.bulkCreate(seedUsers).then(function() {
-        var emoji = cool();
-        res.render('seed', { emoji: emoji });
+    seedUsers.forEach(function (user) {
+        insertNewUser(user)
     });
+    var emoji = cool();
+    res.render('seed', { emoji: emoji });
 });
+
+
+function insertNewUser(user){
+    db.user.create(user).then(function (user) {
+        id = user.id;
+        // init profile for new user
+        db.profile.create({user_id: id});
+    })
+}
 
 module.exports = router;

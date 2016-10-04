@@ -3,14 +3,10 @@ var bcrypt = require('bcrypt');
 var cryptjs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var _ = require('underscore');
+var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
     var user =  sequelize.define('user', {
-        uid: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
-        },
         email: {
             type: DataTypes.STRING(30),
             allowNull: false, //not optional
@@ -50,7 +46,6 @@ module.exports = function(sequelize, DataTypes) {
                 this.setDataValue('password_hash', hashedPassword);
             }
 
-
         },
         accessRight: {
             type: DataTypes.INTEGER,
@@ -60,16 +55,10 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'user',
         underscored: true,
-        hooks: {
-            beforeValidate: function(user, options) {
-                if (typeof user.email === 'string') {
-                    //normalize data before we validate it
-                    user.email = user.email.toLowerCase();
-                }
-
-            }
-        },
         classMethods: {
+            associate: function(db){
+                user.hasOne(db.profile);
+            },
             authenticate: function(body) {
 
                 return new Promise(function(resolve, reject) {
@@ -97,7 +86,6 @@ module.exports = function(sequelize, DataTypes) {
                 });
             },
             findByToken: function(token) {
-
                 return new Promise(function(resolve, reject) {
                     //decode code
                     //decode data
@@ -150,6 +138,19 @@ module.exports = function(sequelize, DataTypes) {
             }
 
 
+        },
+        hooks: {
+            beforeValidate: function(user, options) {
+                if (typeof user.email === 'string') {
+                    //normalize data before we validate it
+                    user.email = user.email.toLowerCase();
+                }
+            },
+            afterCreate: function (user, options) {
+                console.log("user created");
+                //console.log(db);
+                db.profile.create({user_id: id});
+            }
         }
     });
     return user;

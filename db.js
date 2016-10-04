@@ -19,21 +19,19 @@ if (env == 'production') {
 } else {
     // for local
     var config = require('./config/cnf').database;
+    console.log(config.database);
     sequelize = new Sequelize(config.database, config.uname, config.pwd, config.options);
 }
 
 // config tables
-db.user = sequelize.import(__dirname + '/models/User');
 db.profile = sequelize.import(__dirname + '/models/Profile');
+db.user = sequelize.import(__dirname + '/models/User');
 
-// config relationships
-db.user.hasOne(db.profile, {
-    // foreignKey: 'pid',
-    as: 'user_profile'
-});
-db.profile.belongsTo(db.user);
+
+// config relationships => configed when define the table
+
+
 db.sequelize = sequelize;
-
 
 // init all the tables
 if (debug){

@@ -1,27 +1,28 @@
 'use strict';
+var db = require('../db');
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
-        pid: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
-            // model: "user",
-            // key: "uid"
-        },
-        classes:{
-            type: DataTypes.TEXT
-        },
         major: {
             type: DataTypes.STRING,
             defaultValue: 'Unknown'
         },
         language: {
-            type: DataTypes.TEXT
+            type: DataTypes.STRING,
+            defaultValue: '[]'
         },
         birthday: {
             type: DataTypes.DATEONLY
         },
         hobby: {
+            type: DataTypes.STRING,
+            defaultValue: '[]'
+        },
+        visibility: {
+        type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
+        },
+        classes:{
             type: DataTypes.TEXT
         },
         posts: {
@@ -37,6 +38,11 @@ module.exports = function(sequelize, DataTypes){
         tableName: 'profile',
         underscored: true,
         timestamps: false,
+        classMethods:{
+            associate: function(db){
+                profile.belongsTo(db.user);
+            }
+        },
         setterMethods: {
             classes: function(value) {
                 this.setDataValue('classes', JSON.stringify(value));
