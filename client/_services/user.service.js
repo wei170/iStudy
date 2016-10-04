@@ -22,7 +22,7 @@ var UserService = (function () {
         var headers = new http_1.Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });
         var options = new http_1.RequestOptions({ headers: headers });
         // get users from api
-        return this.http.get('/', options)
+        return this.http.get('/users', options)
             .map(function (response) { return response.json(); });
     };
     UserService = __decorate([

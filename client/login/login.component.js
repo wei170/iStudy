@@ -29,7 +29,7 @@ var LoginComponent = (function () {
         this.authenticationService.login(this.model.username, this.model.email, this.model.password)
             .subscribe(function (result) {
             if (result === true) {
-                _this.router.navigate(['/']);
+                _this.router.navigate(['/dashboard']);
             }
             else {
                 _this.error = 'Username or password is incorrect';
@@ -40,7 +40,7 @@ var LoginComponent = (function () {
     LoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'login.component.html',
+            templateUrl: '/client/login/login.component.html',
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
     ], LoginComponent);

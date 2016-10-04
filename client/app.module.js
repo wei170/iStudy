@@ -13,6 +13,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
+var app_routing_1 = require('./app.routing');
 var index_1 = require('./_guards/index');
 var index_2 = require('./_services/index');
 var index_3 = require('./login/index');
@@ -25,6 +26,7 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
+                app_routing_1.routing
             ],
             declarations: [
                 app_component_1.AppComponent,

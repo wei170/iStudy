@@ -17,10 +17,11 @@ var AuthGuard = (function () {
     AuthGuard.prototype.canActivate = function () {
         if (localStorage.getItem('currentUser')) {
             // logged in so return true
+            this.router.navigate(['/dashboard']);
             return true;
         }
         // not logged in so redirect to login page
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
         return false;
     };
     AuthGuard = __decorate([
