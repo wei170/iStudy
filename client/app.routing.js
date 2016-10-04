@@ -4,6 +4,7 @@ var index_1 = require('./login/index');
 var index_2 = require('./_guards/index');
 var appRoutes = [
     { path: '', component: index_1.LoginComponent, canActivate: [index_2.AuthGuard] },
+    { path: 'login', component: index_1.LoginComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
