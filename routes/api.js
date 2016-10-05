@@ -10,11 +10,37 @@ var router = express.Router();
 var id;
 
 /* Run Api Scripts*/
+
+
+// __  ____/__  ____/__  __/
+// _  / __ __  __/  __  /
+// / /_/ / _  /___  _  /
+// \____/  /_____/  /_/
 router.get('/users', function (req, res) {
     db.user.findAll({ where: {id: {gt: 0}}}).then(function (user) {
         res.json(user);
     });
 });
+
+/**
+ * Get user's profile by user_id
+ */
+router.get('/user-profile/:id', function(req, res){
+    db.profile.findOne({where: {user_id: req.params.id}}).then(function(profile){
+      if (profile){
+          res.json(profile);
+      }else {
+          res.send('The profile does not exist!');
+      }
+   });
+});
+
+
+// _______________________  /_
+// ___  __ \  __ \_  ___/  __/
+// __  /_/ / /_/ /(__  )/ /_
+// _  .___/\____//____/ \__/
+// /_/
 
 /**
  * Insert Admins to db
@@ -34,7 +60,7 @@ router.post('/seeds', function (req, res) {
  * Update a user's profile
  */
 router.post('/update-profile/:id', function (req, res) {
-   db.profile.findById(req.params.id).then(function (profile) {
+   db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
        if (profile){
            profile.updateAttributes(sampleProfile).then(function () {
                res.json(profile);
@@ -45,6 +71,13 @@ router.post('/update-profile/:id', function (req, res) {
        }
    });
 });
+
+//TODO: parse attributes with multiple values in Profile
+
+// ___  __/___  ________________  /___(_)____________
+// __  /_ _  / / /_  __ \  ___/  __/_  /_  __ \_  __ \
+// _  __/ / /_/ /_  / / / /__ / /_ _  / / /_/ /  / / /
+// /_/    \__,_/ /_/ /_/\___/ \__/ /_/  \____//_/ /_/
 
 /**
  * Function used to insert data to db
