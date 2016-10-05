@@ -4,6 +4,7 @@ var cool = require('cool-ascii-faces');
 var app = require('../app');
 var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
+var sampleProfile = require('../models/seedProfile').p1;
 
 var router = express.Router();
 var id;
@@ -27,6 +28,22 @@ router.post('/admins', function (req, res) {
  */
 router.post('/seeds', function (req, res) {
     insertData(insertNewUser, seedUsers, showPage, res, 'seed');
+});
+
+/**
+ * Update a user's profile
+ */
+router.post('/update-profile/:id', function (req, res) {
+   db.profile.findById(req.params.id).then(function (profile) {
+       if (profile){
+           profile.updateAttributes(sampleProfile).then(function () {
+               res.json(profile);
+           });
+       }
+       else {
+           res.send('The profile does not exist!');
+       }
+   });
 });
 
 /**

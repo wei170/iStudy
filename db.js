@@ -6,7 +6,10 @@ var bcrypt = require('bcrypt');
 var env = process.env.NODE_ENV || 'development';
 var db = {};
 var sequelize;
-var debug = 1;
+
+// when not setup db config, like creating or define new table, set debug to be 0
+//var debug = 1;
+var debug = 0;
 
 
 if (env == 'production') {
