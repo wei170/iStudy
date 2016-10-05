@@ -55,10 +55,11 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'user',
         underscored: true,
-        classMethods: {
-            associate: function(db){
-                user.hasOne(db.profile);
-            },
+        classMethods:
+        {
+            // associate: function(db){
+            //     user.hasOne(db.profile);
+            // },
             authenticate: function(body) {
 
                 return new Promise(function(resolve, reject) {
@@ -148,8 +149,7 @@ module.exports = function(sequelize, DataTypes) {
             },
             afterCreate: function (user, options) {
                 console.log("user created");
-                //console.log(db);
-                db.profile.create({user_id: id});
+                //db.profile.create({user_id: user.id});
             }
         }
     });

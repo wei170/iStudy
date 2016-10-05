@@ -11,7 +11,6 @@ var debug = 1;
 
 if (env == 'production') {
     // for heroku
-    console.log('here');
     sequelize = new Sequelize(process.env.DATABASE_URL, {
         //'dialect': 'postgres'
         dialect: 'mysql'
@@ -19,7 +18,6 @@ if (env == 'production') {
 } else {
     // for local
     var config = require('./config/cnf').database;
-    console.log(config.database);
     sequelize = new Sequelize(config.database, config.uname, config.pwd, config.options);
 }
 
@@ -28,7 +26,9 @@ db.profile = sequelize.import(__dirname + '/models/Profile');
 db.user = sequelize.import(__dirname + '/models/User');
 
 
-// config relationships => configed when define the table
+// config relationships
+db.user.hasOne(db.profile);
+db.profile.belongsTo(db.user);
 
 
 db.sequelize = sequelize;

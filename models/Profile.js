@@ -1,5 +1,7 @@
 'use strict';
 var db = require('../db');
+var user = require('./User');
+
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
         major: {
@@ -39,9 +41,9 @@ module.exports = function(sequelize, DataTypes){
         underscored: true,
         timestamps: false,
         classMethods:{
-            associate: function(db){
-                profile.belongsTo(db.user);
-            }
+            // associate: function(){
+            //     profile.belongsTo(user);
+            // }
         },
         setterMethods: {
             classes: function(value) {
