@@ -1,50 +1,13 @@
 <div class="form">
 
     <ul class="tab-group">
-        <li class="tab active"><a href="#signup">Sign Up</a></li>
-        <li class="tab"><a href="#login">Log In</a></li>
+        <!-- <li class="tab active"><a pageScroll href="#login">Log In</a></li>
+        <li class="tab"><a pageScroll href="#signup">Sign Up</a></li> -->
+        <li class="tab active"><a pagehref="#">Log In</a></li>
+        <li class="tab"><a href="/register">Sign Up</a></li>
     </ul>
 
     <div class="tab-content">
-        <div id="signup">
-            <h1>Sign Up</h1>
-
-            <form action="/" method="post">
-
-                <div class="field-wrap">
-                    <label>
-                        Enter Username<span class="req">*</span>
-                    </label>
-                    <input type="text"required id="signupUsername" autocomplete="off"/>
-                </div>
-
-                <div class="field-wrap">
-                    <label>
-                        Enter Email<span class="req">*</span>
-                    </label>
-                    <input type="email"required id="signupEmail" autocomplete="off"/>
-                </div>
-
-                <div class="field-wrap">
-                    <label>
-                        Enter Password<span class="req">*</span>
-                    </label>
-                    <input type="password"required id="signupPassword" autocomplete="off"/>
-                </div>
-
-                <div class="field-wrap">
-                    <label>
-                        Confirm Password<span class="req">*</span>
-                    </label>
-                    <input type="password"required id="signupPassword2" autocomplete="off"/>
-                </div>
-
-                <button type="submit" class="button button-block"/>Get Started</button>
-
-            </form>
-
-        </div>
-
         <div id="login">
             <h1>Log In</h1>
 
@@ -65,10 +28,37 @@
 
                 <p class="forgot"><a href="/forgotpassword">Forgot Password?</a></p>
 
-                <button class="button button-block"/>Log In</button>
+                <button class="button button-block">Log In</button>
 
             </form>
 
+        </div>
+
+        <div id="signup">
+            <h1>Sign Up</h1>
+            <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+                <div class="field-wrap" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                    <label for="username">
+                        Username<span class="req">*</span>
+                    </label>
+                    <input type="text" id="signupUsername" autocomplete="off" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" required />
+                </div>
+                <div class="field-wrap" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                    <label for="password">
+                        Password<span class="req">*</span>
+                    </label>
+                    <input type="password" id="signupPassword" autocomplete="off" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                </div>
+                <div class="field-wrap">
+                    <label>
+                        Confirm Password<span class="req">*</span>
+                    </label>
+                    <input type="password"required id="signupPassword2" autocomplete="off"/>
+                </div>
+
+                <button type="submit" class="button button-block">Get Started</button>
+
+            </form>
         </div>
 
     </div><!-- tab-content -->

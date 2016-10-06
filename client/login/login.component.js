@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../_services/index');
+var ng2_page_scroll_1 = require('ng2-page-scroll');
 var LoginComponent = (function () {
-    function LoginComponent(router, authenticationService) {
+    function LoginComponent(router, authenticationService, pageScroll) {
         this.router = router;
         this.authenticationService = authenticationService;
+        this.pageScroll = pageScroll;
         this.model = {};
         this.loading = false;
         this.error = '';
@@ -41,9 +43,9 @@ var LoginComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'login.component.html',
-            styleUrls: ['newstyle.css', 'normalize.css']
+            styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, ng2_page_scroll_1.Ng2PageScrollModule])
     ], LoginComponent);
     return LoginComponent;
 }());

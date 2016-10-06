@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../_services/index';
+import { Ng2PageScrollModule } from 'ng2-page-scroll';
 
 @Component({
     moduleId: module.id,
     templateUrl: 'login.component.html',
-    styleUrls: ['newstyle.css', 'normalize.css']
+    styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private pageScroll: Ng2PageScrollModule
     ) { }
 
     ngOnInit() {

@@ -12,15 +12,14 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
-// used to create fake backend
-var fake_backend_1 = require('./_helpers/fake-backend');
-var testing_1 = require('@angular/http/testing');
-var http_2 = require('@angular/http');
+var ng2_page_scroll_1 = require('ng2-page-scroll');
 var app_component_1 = require('./app.component');
 var app_routing_1 = require('./app.routing');
-var index_1 = require('./_guards/index');
-var index_2 = require('./_services/index');
-var index_3 = require('./login/index');
+var index_1 = require('./_directives/index');
+var index_2 = require('./_guards/index');
+var index_3 = require('./_services/index');
+var index_4 = require('./login/index');
+var index_5 = require('./register/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -30,20 +29,20 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                app_routing_1.routing
+                app_routing_1.routing,
+                ng2_page_scroll_1.Ng2PageScrollModule
             ],
             declarations: [
                 app_component_1.AppComponent,
-                index_3.LoginComponent,
+                index_1.AlertComponent,
+                index_4.LoginComponent,
+                index_5.RegisterComponent
             ],
             providers: [
-                index_1.AuthGuard,
-                index_2.AuthenticationService,
-                index_2.UserService,
-                // providers used to create fake backend
-                fake_backend_1.fakeBackendProvider,
-                testing_1.MockBackend,
-                http_2.BaseRequestOptions
+                index_2.AuthGuard,
+                index_3.AlertService,
+                index_3.AuthenticationService,
+                index_3.UserService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

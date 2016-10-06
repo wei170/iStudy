@@ -2,39 +2,36 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
-// used to create fake backend
-import { fakeBackendProvider } from './_helpers/fake-backend';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { BaseRequestOptions } from '@angular/http';
+import { Ng2PageScrollModule } from 'ng2-page-scroll';
 
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
+import { AlertComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AuthenticationService, UserService } from './_services/index';
+import { AlertService, AuthenticationService, UserService } from './_services/index';
 import { LoginComponent } from './login/index';
+import { RegisterComponent } from './register/index';
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing
+        routing,
+        Ng2PageScrollModule
     ],
     declarations: [
         AppComponent,
+        AlertComponent,
         LoginComponent,
+        RegisterComponent
     ],
     providers: [
         AuthGuard,
+        AlertService,
         AuthenticationService,
-        UserService,
-
-        // providers used to create fake backend
-        fakeBackendProvider,
-        MockBackend,
-        BaseRequestOptions
+        UserService
     ],
     bootstrap: [AppComponent]
 })
