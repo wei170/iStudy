@@ -42,9 +42,4 @@ jspm_packages
 config/
 database/*.sqlite
 *.swp
-<<<<<<< HEAD
 .DS_Store
-# Created by .ignore support plugin (hsz.mobi)
-=======
-.DS_Store
->>>>>>> b2d675bb0b215ea9c49b8e3a76e3d1ff13f16c93
