@@ -15,19 +15,19 @@ var UserService = (function () {
         this.http = http;
     }
     UserService.prototype.getAll = function () {
-        return this.http.get('/api/users', this.jwt()).map(function (response) { return response.json(); });
+        return this.http.get('/users', this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.getById = function (id) {
-        return this.http.get('/api/users/' + id, this.jwt()).map(function (response) { return response.json(); });
+        return this.http.get('/users/' + id, this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.create = function (user) {
-        return this.http.post('/api/users', user, this.jwt()).map(function (response) { return response.json(); });
+        return this.http.post('/users/', user, this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.update = function (user) {
-        return this.http.put('/api/users/' + user.id, user, this.jwt()).map(function (response) { return response.json(); });
+        return this.http.put('/users/' + user.id, user, this.jwt()).map(function (response) { return response.json(); });
     };
     UserService.prototype.delete = function (id) {
-        return this.http.delete('/api/users/' + id, this.jwt()).map(function (response) { return response.json(); });
+        return this.http.delete('/users/' + id, this.jwt()).map(function (response) { return response.json(); });
     };
     // private helper methods
     UserService.prototype.jwt = function () {

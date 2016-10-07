@@ -12,6 +12,7 @@ router.post('/', function(req, res, next) {
 
     db.user.create(body).then(function(user) {
         res.json(user.toPublicJSON());
+        console.log('Successfully added a new user');
     }, function(e) {
         res.status(400).json(e);
     });
