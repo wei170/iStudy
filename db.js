@@ -20,7 +20,7 @@ if (env == 'production') {
     });
 } else {
     // for local
-    var config = require('./config/cnf').database;
+    var config = require('../config/cnf').database;
     sequelize = new Sequelize(config.database, config.uname, config.pwd, config.options);
 }
 
