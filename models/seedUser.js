@@ -1,62 +1,62 @@
 module.exports = [
     {
         "email": "Dale@purdue.edu",
-        "user_name": "Berg",
+        "userName": "Berg",
         "password": "sijgh1i2dfgvi"
     },
     {
         "email": "Strong@purdue.edu",
-        "user_name": "Naomi",
+        "userName": "Naomi",
         "password": "cksoikgh3q5mi"
     },
     {
         "email": "George@purdue.edu",
-        "user_name": "Jasmine",
+        "userName": "Jasmine",
         "password": "os1bv5yst6gvi"
     },
     {
         "email": "Albert@purdue.edu",
-        "user_name": "Marilyn",
+        "userName": "Marilyn",
         "password": "uuzpf24rnewmi"
     },
     {
         "email": "Jane@purdue.edu",
-        "user_name": "Swanson",
+        "userName": "Swanson",
         "password": "1z87la2nsif6r"
     },
     {
         "email": "Bender@purdue.edu",
-        "user_name": "Vasquez",
+        "userName": "Vasquez",
         "password": "21lejt4v7k3xr"
     },
     {
         "email": "Craig@purdue.edu",
-        "user_name": "Rosario",
+        "userName": "Rosario",
         "password": "hqgc65qvbzkt9"
     },
     {
         "email": "Rutledge@purdue.edu",
-        "user_name": "Mckee",
+        "userName": "Mckee",
         "password": "j5yqezda0dx6r"
     },
     {
         "email": "Holman@purdue.edu",
-        "user_name": "Burch",
+        "userName": "Burch",
         "password": "ohbemcm6j38fr"
     },
     {
         "email": "Vonda@purdue.edu",
-        "user_name": "Ellis",
+        "userName": "Ellis",
         "password": "aec7j5ocx47vi"
     },
     {
         "email": "Imelda@purdue.edu",
-        "user_name": "Patricia",
+        "userName": "Patricia",
         "password": "t1menz4k21emi"
     },
     {
         "email": "Walton@purdue.edu",
-        "user_name": "Natalie",
+        "userName": "Natalie",
         "password": "x7z0d13ui8uxr"
     }
 ];
