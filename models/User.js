@@ -7,6 +7,11 @@ var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
     var user =  sequelize.define('user', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         email: {
             type: DataTypes.STRING(30),
             allowNull: false, //not optional
@@ -57,8 +62,8 @@ module.exports = function(sequelize, DataTypes) {
         underscored: true,
         classMethods:
         {
-            // associate: function(db){
-            //     user.hasOne(db.profile);
+            // associate: function(models){
+            //     user.hasOne(models.profile);
             // },
             authenticate: function(body) {
 

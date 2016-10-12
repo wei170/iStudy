@@ -4,6 +4,9 @@ var cool = require('cool-ascii-faces');
 var app = require('../app');
 var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
+var seedProfs = require('../models/seedProfessor');
+var seedCourses = require('../models/seedCourse');
+
 var sampleProfile = require('../models/seedProfile').p1;
 
 var router = express.Router();
@@ -50,11 +53,27 @@ router.post('/admins', function (req, res) {
 });
 
 /**
- * Seed database
+ * Seed users
  */
 router.post('/seeds', function (req, res) {
     insertData(insertNewUser, seedUsers, showPage, res, 'seed');
 });
+
+/**
+ * Seed professors
+ */
+router.post('/profs', function (req, res) {
+	insertData(insertNewProf, seedProfs, showPage, res, 'seed');
+});
+
+
+/**
+ * Seed course
+ */
+router.post('/courses', function (req, res) {
+	insertData(insertNewCourse, seedCourses, showPage, res, 'seed');
+});
+
 
 /**
  * Update a user's profile
@@ -71,6 +90,8 @@ router.post('/update-profile/:id', function (req, res) {
        }
    });
 });
+
+
 
 //TODO: parse attributes with multiple values in Profile
 
@@ -116,8 +137,24 @@ var insertNewUser = function (user){
     db.user.create(user).then(function (user) {
         id = user.id;
         // init profile for new user
-        db.profile.create({user_id: id});
+        db.profile.create({user_id: id, username: 'maoxia'});
     })
+};
+
+/**
+ * Function used to insert a new prof to db
+ * @param prof: prof to be inserted
+ */
+var insertNewProf = function(prof){
+	db.professor.create(prof).then(function () {
+		// console.log('inserted prof successfully');
+	});
+};
+
+var insertNewCourse = function(course){
+	db.course.create(course).then(function(){
+		// console.log('inserted course successfully');
+	})
 };
 
 module.exports = router;
