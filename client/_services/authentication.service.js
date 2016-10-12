@@ -18,9 +18,9 @@ var AuthenticationService = (function () {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
     }
-    AuthenticationService.prototype.login = function (username, email, password) {
+    AuthenticationService.prototype.login = function (username, password) {
         var _this = this;
-        return this.http.post('/users/login', JSON.stringify({ username: username, email: email, password: password }))
+        return this.http.post('/users/login', JSON.stringify({ username: username, password: password }))
             .map(function (response) {
             // login successful if there's a jwt token in the response
             var token = response.json() && response.json().token;

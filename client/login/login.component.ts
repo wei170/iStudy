@@ -7,7 +7,7 @@ import { Ng2PageScrollModule } from 'ng2-page-scroll';
 @Component({
     moduleId: module.id,
     templateUrl: 'login.component.html',
-    styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
+    // styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.email, this.model.password)
+        this.authenticationService.login(this.model.username, this.model.password)
         .subscribe(result => {
             if (result === true) {
                 this.router.navigate(['/dashboard']);

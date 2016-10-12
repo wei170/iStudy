@@ -28,7 +28,7 @@ var LoginComponent = (function () {
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.email, this.model.password)
+        this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(function (result) {
             if (result === true) {
                 _this.router.navigate(['/dashboard']);
@@ -43,7 +43,6 @@ var LoginComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'login.component.html',
-            styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, ng2_page_scroll_1.Ng2PageScrollModule])
     ], LoginComponent);
