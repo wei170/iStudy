@@ -46,51 +46,36 @@ router.get('/user-profile/:id', function(req, res){
 // /_/
 
 /**
- * Insert Admins to db
- */
-router.post('/admins', function (req, res) {
-    insertData(insertNewUser, admins, showPage, res, 'admin');
-});
-
-/**
- * Seed users
+ * Seed init data as users, admins, courses, profs
  */
 router.post('/seeds', function (req, res) {
-    insertData(insertNewUser, seedUsers, showPage, res, 'seed');
+	var init = function(callback, res, page){
+		insertData(insertNewUser, admins);
+		insertData(insertNewUser, seedUsers);
+		insertData(insertNewProf, seedProfs);
+		insertData(insertNewCourse, seedCourses);
+		// after inserting all the seeds data, exe this callback function
+		callback(res, page);
+	};
+
+	init(showPage, res, 'seed');
 });
-
-/**
- * Seed professors
- */
-router.post('/profs', function (req, res) {
-	insertData(insertNewProf, seedProfs, showPage, res, 'seed');
-});
-
-
-/**
- * Seed course
- */
-router.post('/courses', function (req, res) {
-	insertData(insertNewCourse, seedCourses, showPage, res, 'seed');
-});
-
 
 /**
  * Update a user's profile
  */
 router.post('/update-profile/:id', function (req, res) {
-   db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
-       if (profile){
-           profile.updateAttributes(sampleProfile).then(function () {
-               res.json(profile);
-           });
-       }
-       else {
-           res.send('The profile does not exist!');
-       }
-   });
+	db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
+		if (profile){
+			profile.updateAttributes(sampleProfile).then(function () {
+				res.json(profile);
+			});
+		}
+		else {
+			res.send('The profile does not exist!');
+		}
+	});
 });
-
 
 
 //TODO: parse attributes with multiple values in Profile
@@ -104,18 +89,13 @@ router.post('/update-profile/:id', function (req, res) {
  * Function used to insert data to db
  * @param insertFunction: insert function
  * @param data: chunk of data to be inserted
- * @param callback: callback function
- * @param res: response
- * @param page: html source page name
  */
-var insertData = function(insertFunction, data, callback, res, page){
-    if (typeof insertFunction === "function" && typeof callback === "function"){
+var insertData = function(insertFunction, data){
+    if (typeof insertFunction === "function"){
         // insert data
         data.forEach(function (d) {
             insertFunction(d);
         });
-        // show page
-        callback(res, page);
     }
 };
 
@@ -147,13 +127,15 @@ var insertNewUser = function (user){
  */
 var insertNewProf = function(prof){
 	db.professor.create(prof).then(function () {
-		// console.log('inserted prof successfully');
 	});
 };
 
+/**
+ * Function used to insert new course to db
+ * @param course: course to be inserted
+ */
 var insertNewCourse = function(course){
 	db.course.create(course).then(function(){
-		// console.log('inserted course successfully');
 	})
 };
 
