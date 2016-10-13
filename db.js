@@ -36,7 +36,8 @@ db.course = sequelize.import(__dirname + '/models/Course');
 db.user.hasOne(db.profile); // Will add user_id to profile model
 db.profile.belongsTo(db.user, {foreignKey: 'user_id'});
 
-db.course.hasMany(db.professor);
+db.course.belongsToMany(db.professor, {through: 'course_professor'});
+db.professor.belongsToMany(db.course, {through: 'course_professor'});
 
 console.log('User associations: ', Object.keys(db.user.associations));
 console.log('Profile associations: ', Object.keys(db.profile.associations));

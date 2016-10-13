@@ -7,12 +7,12 @@ module.exports = function(sequelize, DataTypes){
 			primaryKey: true,
 			autoIncrement: true
 		},
-		professor_id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			model: 'professor',
-			key: 'id'
-		},
+		// professor_id: {
+		// 	type: DataTypes.INTEGER,
+		// 	primaryKey: true,
+		// 	model: 'professor',
+		// 	key: 'id'
+		// },
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false

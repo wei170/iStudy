@@ -153,7 +153,7 @@ module.exports = function(sequelize, DataTypes) {
                 }
             },
             afterCreate: function (user, options) {
-                console.log("user created");
+                //console.log("user created");
                 //db.profile.create({user_id: user.id});
             }
         }

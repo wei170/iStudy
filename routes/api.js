@@ -14,7 +14,6 @@ var id;
 
 /* Run Api Scripts*/
 
-
 // __  ____/__  ____/__  __/
 // _  / __ __  __/  __  /
 // / /_/ / _  /___  _  /
@@ -49,17 +48,27 @@ router.get('/user-profile/:id', function(req, res){
  * Seed init data as users, admins, courses, profs
  */
 router.post('/seeds', function (req, res) {
-	var init = function(callback, res, page){
+	new Promise(function(resolve, reject) {
 		insertData(insertNewUser, admins);
 		insertData(insertNewUser, seedUsers);
 		insertData(insertNewProf, seedProfs);
 		insertData(insertNewCourse, seedCourses);
-		// after inserting all the seeds data, exe this callback function
-		callback(res, page);
-	};
-
-	init(showPage, res, 'seed');
+	}).then(function (result) {
+		console.log('Got data! Promise fulfilled.');
+		showPage(res, 'seed');
+	}, function(error){
+		console.log('Promise rejected.');
+	});
 });
+
+
+/**
+ * Test
+ */
+router.post('/test', function (req, res) {
+	linkCourseAndProf();
+});
+
 
 /**
  * Update a user's profile
@@ -136,7 +145,28 @@ var insertNewProf = function(prof){
  */
 var insertNewCourse = function(course){
 	db.course.create(course).then(function(){
-	})
+	});
+};
+
+/**
+ * Function used to link course with professors
+ */
+var linkCourseAndProf = function () {
+	// cs381
+	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
+		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
+			course.addProfessor(prof).then();
+		});
+		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
+			course.addProfessor(prof).then();
+		});
+	});
+	// cs307
+	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+			course.addProfessor(prof).then();
+		});
+	});
 };
 
 module.exports = router;
