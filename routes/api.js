@@ -7,10 +7,10 @@ var seedUsers = require('../models/seedUser');
 var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
 
+
 var sampleProfile = require('../models/seedProfile').p1;
 
 var router = express.Router();
-var id;
 
 /* Run Api Scripts*/
 
@@ -48,17 +48,15 @@ router.get('/user-profile/:id', function(req, res){
  * Seed init data as users, admins, courses, profs
  */
 router.post('/seeds', function (req, res) {
-	new Promise(function(resolve, reject) {
+	var init = function(callback, res, page){
 		insertData(insertNewUser, admins);
 		insertData(insertNewUser, seedUsers);
 		insertData(insertNewProf, seedProfs);
 		insertData(insertNewCourse, seedCourses);
-	}).then(function (result) {
-		console.log('Got data! Promise fulfilled.');
-		showPage(res, 'seed');
-	}, function(error){
-		console.log('Promise rejected.');
-	});
+		// after inserting all the seeds data, exe this callback function
+		callback(res, page);
+	};
+	init(showPage, res, 'seed');
 });
 
 
@@ -66,7 +64,9 @@ router.post('/seeds', function (req, res) {
  * Test
  */
 router.post('/test', function (req, res) {
-	linkCourseAndProf();
+	linkCourseAndProf().then(function(){
+		showPage(res, 'seed');
+	});
 });
 
 
@@ -123,11 +123,13 @@ var showPage = function(res, page){
  * @param user: user to be inserted
  */
 var insertNewUser = function (user){
-    db.user.create(user).then(function (user) {
-        id = user.id;
-        // init profile for new user
-        db.profile.create({user_id: id, username: 'maoxia'});
-    })
+	db.user.create(user).then(function (user) {
+		id = user.id;
+		// init profile for new user
+		db.profile.create({user_id: id});
+	}, function (err){
+
+	});
 };
 
 /**
@@ -135,8 +137,7 @@ var insertNewUser = function (user){
  * @param prof: prof to be inserted
  */
 var insertNewProf = function(prof){
-	db.professor.create(prof).then(function () {
-	});
+	db.professor.create(prof).then(function(){});
 };
 
 /**
@@ -144,8 +145,7 @@ var insertNewProf = function(prof){
  * @param course: course to be inserted
  */
 var insertNewCourse = function(course){
-	db.course.create(course).then(function(){
-	});
+	db.course.create(course).then(function(){});
 };
 
 /**
@@ -153,18 +153,20 @@ var insertNewCourse = function(course){
  */
 var linkCourseAndProf = function () {
 	// cs381
-	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
-		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
-			course.addProfessor(prof).then();
+	return new Promise(function(fullfill, reject){
+		db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
+			db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
+			db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
 		});
-		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
-			course.addProfessor(prof).then();
-		});
-	});
-	// cs307
-	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-			course.addProfessor(prof).then();
+		// cs307
+		db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+			db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
 		});
 	});
 };
