@@ -15,8 +15,8 @@ module.exports = function(sequelize, DataTypes) {
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
             }
-        },
-        user_name: {
+        }
+        userName: {
             type: DataTypes.STRING(30),
             allowNull: false,
             unique: true
