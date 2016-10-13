@@ -4,16 +4,7 @@ var user = require('./User');
 var _ = require('underscore');
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
-    	id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true
-		},
-		user_id:{
-			type: DataTypes.INTEGER,
-			model: 'user',
-			key: 'id'
-		},
+    	
         major: {
             type: DataTypes.STRING,
             defaultValue: 'Unknown'

@@ -12,24 +12,15 @@ router.post('/', function(req, res, next) {
 
     db.user.create(body).then(function(user) {
 
-        // maoxia's:
-        //create a profile for this new User
-        db.profile.create({user_id: user.id}).then(function(profile){
-            res.json({user: user, user_profile: profile});
-        }, function(e){
+        db.profile.create({
+            user_id: user.id
+        }).then(function(profile) {
+            res.json(user.toPublicJSON());
+        }, function(e) {
             res.status(400).json(e);
-        });
 
-        // Following one creates an empty profile of unknown user_id
-        //create a profile for this new User
-        // db.profile.create().then(function(profile) {
-        //
-        //     res.json(user.toPublicJSON());
-        // }, function(e) {
-        //     res.status(400).json(e);
-		//
-		//
-        // });
+
+        });
 
 
     }, function(e) {
