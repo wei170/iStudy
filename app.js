@@ -27,7 +27,7 @@ app.set('view engine', 'html');
 
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
-var users = require('./routes/users');
+
 
 var PORT = process.env.PORT || 6000;
 
@@ -65,10 +65,11 @@ app.use(express.static(path.join(__dirname, './')));
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var profile = require('./routes/profile');
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
-
+app.use('/profile', profile);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
