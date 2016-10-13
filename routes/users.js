@@ -5,13 +5,24 @@ var router = express.Router();
 var db = require(__dirname + '/../db.js');
 var _ = require('underscore');
 
-/* GET users listing. */
+//sign up a new user
 router.post('/', function(req, res, next) {
     console.log('-=-=------');
-    var body = _.pick(req.body, 'userName','email', 'password');
+    var body = _.pick(req.body, 'userName', 'email', 'password');
 
     db.user.create(body).then(function(user) {
-        res.json(user.toPublicJSON());
+
+        //create a profile for this new User
+        db.profile.create().then(function(profile) {
+
+            res.json(user.toPublicJSON());
+        }, function(e) {
+            res.status(400).json(e);
+
+
+        });
+
+
     }, function(e) {
         res.status(400).json(e);
     });
@@ -25,7 +36,7 @@ router.post('/login', function(req, res) {
 
     db.user.authenticate(body).then(function(user) {
         var token = user.generateToken('authentication');
-        console.log('token= '+token);
+        console.log('token= ' + token);
         if (token) {
             res.header('Auth', token).json(user.toPublicJSON());
         } else {

@@ -1,7 +1,7 @@
 'use strict';
 var db = require('../db');
 var user = require('./User');
-
+var _ = require('underscore');
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
     	id: {
@@ -55,6 +55,16 @@ module.exports = function(sequelize, DataTypes){
             //     profile.belongsTo(models.user);
             // }
         },
+
+        instanceMethods: {
+            toPublicJSON: function() {
+                var json = this.toJSON();
+                return _.pick(json, 'major', 'language', 'birthday', 'hobby');
+            }
+
+
+        },
+
         setterMethods: {
             classes: function(value) {
                 this.setDataValue('classes', JSON.stringify(value));
