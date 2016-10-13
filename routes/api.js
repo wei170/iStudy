@@ -64,9 +64,11 @@ router.post('/seeds', function (req, res) {
  * Test
  */
 router.post('/test', function (req, res) {
-	linkCourseAndProf().then(function(){
-		showPage(res, 'seed');
-	});
+	var linkCP = function (callback, res, page) {
+		linkCourseAndProf();
+		callback(res, page);
+	};
+	linkCP(showPage, res, 'seed');
 });
 
 
@@ -153,20 +155,18 @@ var insertNewCourse = function(course){
  */
 var linkCourseAndProf = function () {
 	// cs381
-	return new Promise(function(fullfill, reject){
-		db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
-			db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
-				course.addProfessor(prof);
-			});
-			db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
-				course.addProfessor(prof);
-			});
+	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
+		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
+			course.addProfessor(prof);
 		});
-		// cs307
-		db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-			db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-				course.addProfessor(prof);
-			});
+		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
+			course.addProfessor(prof);
+		});
+	});
+	// cs307
+	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+			course.addProfessor(prof);
 		});
 	});
 };

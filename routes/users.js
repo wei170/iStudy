@@ -21,9 +21,9 @@ router.post('/', function(req, res, next) {
         });
 
         // Following one creates an empty profile of unknown user_id
-        //create a profile for this new User
+        // create a profile for this new User
         // db.profile.create().then(function(profile) {
-        //
+		//
         //     res.json(user.toPublicJSON());
         // }, function(e) {
         //     res.status(400).json(e);
