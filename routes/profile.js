@@ -18,7 +18,7 @@ router.get('/', middleware.requireAuthentication, function(req, res) {
 
 //update profile
 router.put('/', middleware.requireAuthentication, function(req, res) {
-    var body = _.pick(req.body, 'major', 'language', 'birthday', 'hobby');
+    var body = _.pick(req.body, 'major', 'language', 'birthday', 'hobby', 'visibility');
     var attributes = {};
 
     if (body.hasOwnProperty('major')) {
@@ -35,6 +35,10 @@ router.put('/', middleware.requireAuthentication, function(req, res) {
 
     if (body.hasOwnProperty('hobby')) {
         attributes.hobby = body.hobby;
+    }
+
+    if (body.hasOwnProperty('visibility')) {
+        attributes.visibility = body.visibility;
     }
 
     db.profile.findById(req.user.get('id')).then(function(profile) {

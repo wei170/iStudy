@@ -15,7 +15,7 @@ router.get('/', function(req, res){
 
 
 //GET relevant professors based on name of a course
-router.get('/find_course/:course_name', function(req, res){
+router.get('/:course_name', function(req, res){
 	console.log(req.params.course_name);
 	db.course.findOne({where: {"name": req.params.course_name}}).then(function(course){
 		if (course){
