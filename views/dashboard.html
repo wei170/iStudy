@@ -168,10 +168,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Visibility: </label>
-                                                <span id="helpBlock" class="help-block">Yes</span>
+                                                <span id="visibility" class="help-block">Yes</span>
                                             </div>
 
                                             <div class="form-group">
+                                                <button type="button " formaction="/edit">edit</button>
                                                 <button type="button " id="update" onclick="getData(event)">update</button>
                                             </div>
                                         </form>
@@ -204,7 +205,7 @@
                     url: "/profile/",
                     type: "get",
                     success: function(data) {
-                        alert("success");
+                        //alert("success");
                         //    location.href='/dashboard';
                         var result = JSON.stringify(data);
                         console.log(data);
@@ -215,6 +216,13 @@
                         //if (result.hasOwnProperty('major')) {
                         document.getElementById("major").innerHTML = data.major;
                         document.getElementById("hobby").innerHTML = data.hobby;
+                        if (data.visibility) {
+                            document.getElementById("visibility").innerHTML = "Yes";
+                        } else {
+                            document.getElementById("visibility").innerHTML = "No";
+                        }
+
+
                         //    document.getElementById("hobby").innerHTML = result.major;
                         //}
                         //document.getElementById("language").innerHTML = result;
@@ -271,5 +279,5 @@
 
     </div>
 </body>
-</html>
 
+</html>
