@@ -1,25 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../_services/index';
-import { Ng2PageScrollModule } from 'ng2-page-scroll';
+import { AlertService, AuthenticationService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'login.component.html',
-    styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
+    templateUrl: 'login.component.html'
 })
 
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
-    error = '';
 
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
-        private pageScroll: Ng2PageScrollModule
-    ) { }
+        private alertService: AlertService) { }
 
     ngOnInit() {
         // reset login status
@@ -28,14 +24,16 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.email, this.model.password)
-        .subscribe(result => {
-            if (result === true) {
-                this.router.navigate(['/dashboard']);
-            } else {
-                this.error = 'Username or password is incorrect';
-                this.loading = false;
-            }
-        });
+        console.log("Enter in the login.component");
+        this.authenticationService.login(this.model.email, this.model.password)
+            .subscribe(
+                data => {
+                    console.log("check");
+                    this.router.navigate(['/dashboard']);
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 }

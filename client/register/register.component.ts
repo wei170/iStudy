@@ -6,7 +6,7 @@ import { AlertService, UserService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'register.component.html',
-    styleUrls: ['../login/newstyle.css', '../login/normalize.css', '../login/style.css']
+    // styleUrls: ['../login/newstyle.css', '../login/normalize.css', '../login/style.css']
 })
 
 export class RegisterComponent {

@@ -62,15 +62,14 @@ router.post('/reset', function(req, res, next) {
 
 
 router.post('/checkcode', function(req, res) {
-    var email = req.body.email;
-    var code = req.body.verificationcode;
+	var body = _.pick(req.body, 'email', 'verificationcode');
     db.user.findOne({
         where: {
-            email: email
+            email: body.email
         },
         attributes: ['verificationcode']
     }).then(function(user) {
-        if (code === user.getDataValue('verificationcode')) {
+        if (body.verificationcode === user.getDataValue('verificationcode')) {
             res.status(200).send();
 
         } else {
@@ -128,6 +127,7 @@ router.put('/newpassword', function(req, res) {
 
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
+    //console.log(JSON.stringify(body));
 
     db.user.authenticate(body).then(function(user) {
         var token = user.generateToken('authentication');
