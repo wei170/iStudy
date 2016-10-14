@@ -2,6 +2,8 @@
 <html xmlns="http://www.xiaoshihuaaishaowei.com">
 
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free Bootstrap Admin Template : iStudy</title>
@@ -36,7 +38,7 @@
                         <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                         <li>
+                        <li>
                             <a href="#">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i> New Message
@@ -64,11 +66,11 @@
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
-              
-                    <!-- /.dropdown-tasks -->
+
+                <!-- /.dropdown-tasks -->
                 <!-- /.dropdown -->
-                
-                    <!-- /.dropdown-alerts -->
+
+                <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
@@ -95,7 +97,7 @@
                     <li>
                         <a class="active-menu" href="index.html"><i class="fa fa-dashboard"></i> My Profile</a>
                     </li>
-                    
+
                     <li>
                         <a class="active-menu" href="meet.html"><i class="fa fa-dashboard"></i> Set up Meeting Time</a>
                     </li>
@@ -109,18 +111,18 @@
                     </li>
 
                     <!-- <li> -->
-                        <!-- <a href="#"><i class="fa fa-sitemap"></i> Features <span class="fa arrow"></span></a> -->
-                        <!-- <ul class="nav nav-second-level"> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Set up Meeting Time</a> -->
-                            <!-- </li> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Class Registration Suggestion</a> -->
-                            <!-- </li> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Find My Classmates</a> -->
-                            <!-- </li> -->
-                        <!-- </ul> -->
+                    <!-- <a href="#"><i class="fa fa-sitemap"></i> Features <span class="fa arrow"></span></a> -->
+                    <!-- <ul class="nav nav-second-level"> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Set up Meeting Time</a> -->
+                    <!-- </li> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Class Registration Suggestion</a> -->
+                    <!-- </li> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Find My Classmates</a> -->
+                    <!-- </li> -->
+                    <!-- </ul> -->
                     <!-- </li> -->
                 </ul>
 
@@ -141,79 +143,121 @@
                 </div>
                 <!-- /. ROW  -->
                 <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Xiaohua Shi‘s Profile
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <form role="form">
-                                        <div class="form-group">
-                                            <label>User Name: </label>   
-                                            <span id="helpBlock" class="help-block">shi249</span>
-                                        <div class="form-group">
-                                            <label>Email: </label>     
-                                            <span id="helpBlock" class="help-block">shi249@purdue.edu</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Language: </label>
-                                            <input class="form-control" placeholder="Enter text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Major: </label>
-                                            <input class="form-control" placeholder="Enter text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Hobby: </label>
-                                            <input class="form-control" placeholder="Enter text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Visibility: </label>
-                                            <select class="form-control">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                mengw‘s Profile
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>User Name: </label>
+                                                <span id="helpBlock" class="help-block">mengw</span>
+                                                <div class="form-group">
+                                                    <label>Email: </label>
+                                                    <span id="helpBlock" id="email" class="help-block">mengw@purdue.edu</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Language: </label>
+                                                    <input class="form-control" id="language" placeholder="Enter text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Major: </label>
+                                                    <input class="form-control" id="major" placeholder="Enter text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Hobby: </label>
+                                                    <input class="form-control" id="hobby" placeholder="Enter text">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Visibility: </label>
+                                                    <select class="form-control">
                                                 <option>Yes</option>
                                                 <option>No</option>
                                             </select>
-                                        </div>
+                                                </div>
 
-                                        <div class = "form-group"> 
-                                            <button formaction="index.html">Done</button>
+                                                <div class="form-group">
+                                                    <button type="button" id="done">Done</button>
+                                                </div>
+                                        </form>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+
+                        <!-- /. ROW  -->
+
+
+
+                        <!-- /. ROW  -->
+                        <footer>
+                            <p>All right reserved. Template by: iStudy Team</a>
+                            </p>
+                        </footer>
                     </div>
+                    <!-- /. PAGE INNER  -->
                 </div>
-               
-
-
-               
-                <!-- /. ROW  -->
-
-                
-                   
-                <!-- /. ROW  -->
-				<footer><p>All right reserved. Template by: iStudy Team</a></p></footer>
+                <!-- /. PAGE WRAPPER  -->
             </div>
-            <!-- /. PAGE INNER  -->
-        </div>
-        <!-- /. PAGE WRAPPER  -->
-    </div>
-    <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-    <!-- Morris Chart Js -->
-    <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
-    <script src="assets/js/morris/morris.js"></script>
-    <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
+            <script type="text/javascript">
+                $(function() {
+
+                    $("#done").click(function() {
+
+                        var hobby = $("#hobby").val();
+                        var language = $("#language").val();
+                        var major = $("#major").val();
+                        console.log(hobby+"~~~~~~");
+                        var data = {
+                            "hobby": hobby,
+                            "language": language,
+                            "major": major,
+                        };
+                        console.log(data);
+                        $.ajax({
+                            //console.log(data);
+                            url: '/profile/',
+                            type: 'put',
+                            data: data,
+                            success: function(data, status) {
+                                if (status == 'success') {
+                                    //location.href = 'home';
+                                    location.href = 'dashboard';
+                                    console.log(data);
+                                }
+                            },
+                            error: function(data, status) {
+                                if (status == 'error') {
+                                    console.log('ffaileee');
+                                    //	location.href = 'login';
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+            <!-- /. WRAPPER  -->
+            <!-- JS Scripts-->
+            <!-- jQuery Js -->
+            <script src="assets/js/jquery-1.10.2.js"></script>
+            <!-- Bootstrap Js -->
+            <script src="assets/js/bootstrap.min.js"></script>
+            <!-- Metis Menu Js -->
+            <script src="assets/js/jquery.metisMenu.js"></script>
+            <!-- Morris Chart Js -->
+            <script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+            <script src="assets/js/morris/morris.js"></script>
+            <!-- Custom Js -->
+            <script src="assets/js/custom-scripts.js"></script>
+
+
 
 
 </body>

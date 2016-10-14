@@ -6,29 +6,54 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     console.log('heree');
-  res.render('index', { title: 'iStudy' });
+    res.render('index', {
+        title: 'iStudy'
+    });
 });
 router.get('/signup', function(req, res, next) {
-  res.render('signup', { title: 'signup' });
+    res.render('signup', {
+        title: 'signup'
+    });
 });
 
 router.get('/forgotpassword', function(req, res, next) {
-  res.render('ForgotPassword', { title: 'forgotpassword' });
+    res.render('ForgotPassword', {
+        title: 'forgotpassword'
+    });
 });
 router.get('/dashboard', function(req, res, next) {
-  res.render('dashboard', { title: 'dashboard' });
+    res.render('dashboard', {
+        title: 'dashboard'
+    });
+});
+router.get('/edit', function(req, res, next) {
+    res.render('edit', {
+        title: 'edit'
+    });
+});
+
+router.get('/selectProfessor', function(req, res, next) {
+    res.render('selectProfessor', {
+        title: 'selectProfessor'
+    });
 });
 
 router.get('/signin', function(req, res, next) {
-  res.render('signin', { title: 'signin' });
+    res.render('signin', {
+        title: 'signin'
+    });
 });
 
 router.get('/resetpassword', function(req, res, next) {
-  res.render('resetpassword', { title: 'resetpassword' });
+    res.render('resetpassword', {
+        title: 'resetpassword'
+    });
 });
 
 router.get('/newpassword', function(req, res, next) {
-  res.render('newpassword', { title: 'newpassword' });
+    res.render('newpassword', {
+        title: 'newpassword'
+    });
 });
 
 

@@ -1,7 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.xiaoshihuaaishaowei.com">
 
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free Bootstrap Admin Template : iStudy</title>
@@ -36,7 +38,7 @@
                         <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                         <li>
+                        <li>
                             <a href="#">
                                 <div>
                                     <i class="fa fa-comment fa-fw"></i> New Message
@@ -65,10 +67,10 @@
                 </li>
                 <!-- /.dropdown -->
 
-                    <!-- /.dropdown-tasks -->
+                <!-- /.dropdown-tasks -->
                 <!-- /.dropdown -->
 
-                    <!-- /.dropdown-alerts -->
+                <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
@@ -109,18 +111,18 @@
                     </li>
 
                     <!-- <li> -->
-                        <!-- <a href="#"><i class="fa fa-sitemap"></i> Features <span class="fa arrow"></span></a> -->
-                        <!-- <ul class="nav nav-second-level"> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Set up Meeting Time</a> -->
-                            <!-- </li> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Class Registration Suggestion</a> -->
-                            <!-- </li> -->
-                            <!-- <li> -->
-                                <!-- <a href="#">Find My Classmates</a> -->
-                            <!-- </li> -->
-                        <!-- </ul> -->
+                    <!-- <a href="#"><i class="fa fa-sitemap"></i> Features <span class="fa arrow"></span></a> -->
+                    <!-- <ul class="nav nav-second-level"> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Set up Meeting Time</a> -->
+                    <!-- </li> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Class Registration Suggestion</a> -->
+                    <!-- </li> -->
+                    <!-- <li> -->
+                    <!-- <a href="#">Find My Classmates</a> -->
+                    <!-- </li> -->
+                    <!-- </ul> -->
                     <!-- </li> -->
                 </ul>
 
@@ -141,77 +143,138 @@
                 </div>
                 <!-- /. ROW  -->
                 <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Xiaohua Shi‘s Profile
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <form role="form">
-                                        <div class="form-group">
-                                            <label>User Name: </label>
-                                            <span id="helpBlock" class="help-block">shi249</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Email: </label>
-                                            <span id="helpBlock" class="help-block">shi249@purdue.edu</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Language: </label>
-                                            <span id="helpBlock" class="help-block">Chines</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Major: </label>
-                                            <span id="helpBlock" class="help-block">CS</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Hobby: </label>
-                                            <span id="helpBlock" class="help-block">Playing with cat</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Visibility: </label>
-                                            <span id="helpBlock" class="help-block">Yes</span>
-                                        </div>
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                mengw‘s Profile
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>User Name: </label>
+                                                <span id="helpBlock" class="help-block">mengw</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email: </label>
+                                                <span id="helpBlock" class="help-block">mengw@purdue.edu</span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Language: </label>
+                                                <span id="language" class="help-block"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Major: </label>
+                                                <span id="major" class="help-block"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Hobby: </label>
+                                                <span id="hobby" class="help-block"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Visibility: </label>
+                                                <span id="helpBlock" class="help-block">Yes</span>
+                                            </div>
 
-                                        <div class = "form-group">
-                                            <button formaction="edit.html">Edit</button>
-                                        </div>
-                                    </form>
+                                            <div class="form-group">
+                                                <button type="button " id="update" onclick="getData(event)">update</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
+
+
+                    <!-- /. ROW  -->
+
+
+
+                    <!-- /. ROW  -->
+                    <footer>
+                        <p>All right reserved. Template by: iStudy Team</a>
+                        </p>
+                    </footer>
                 </div>
-
-
-
-
-                <!-- /. ROW  -->
-
-
-
-                <!-- /. ROW  -->
-				<footer><p>All right reserved. Template by: iStudy Team</a></p></footer>
+                <!-- /. PAGE INNER  -->
             </div>
-            <!-- /. PAGE INNER  -->
+            <!-- /. PAGE WRAPPER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-    </div>
-    <!-- /. WRAPPER  -->
-    <!-- JS Scripts-->
-    <!-- jQuery Js -->
-    <script src="/assets/js/jquery-1.10.2.js"></script>
-    <!-- Bootstrap Js -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="/assets/js/jquery.metisMenu.js"></script>
-    <!-- Morris Chart Js -->
-    <script src="/assets/js/morris/raphael-2.1.0.min.js"></script>
-    <script src="/assets/js/morris/morris.js"></script>
-    <!-- Custom Js -->
-    <script src="/assets/js/custom-scripts.js"></script>
+        <script type="text/javascript">
+            function getData(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "/profile/",
+                    type: "get",
+                    success: function(data) {
+                        alert("success");
+                        //    location.href='/dashboard';
+                        var result = JSON.stringify(data);
+                        console.log(data);
+                        //if (result.hasOwnProperty('language')) {
+                        document.getElementById("language").innerHTML = data.language;
+                        //    }
+                        console.log(data.major);
+                        //if (result.hasOwnProperty('major')) {
+                        document.getElementById("major").innerHTML = data.major;
+                        document.getElementById("hobby").innerHTML = data.hobby;
+                        //    document.getElementById("hobby").innerHTML = result.major;
+                        //}
+                        //document.getElementById("language").innerHTML = result;
+                        return false;
+                    }
+                });
+            }
+            /**
+                        $(function() {
+                            $("#update").one(function() {
+
+                                $.ajax({
+                                    //console.log(data);
+                                    url: '/profile/',
+                                    type: 'get',
+                                    //data: data,
+                                    success: function(data, status) {
+                                        if (status == 'success') {
+
+                                            //location.href = 'home';
+                                            //location.href = 'dashboard';
+                                            //    console.log(data);
+                                            e.preventDefault();
+                                            console.log(JSON.stringify(data));
+                                            document.getElementById("language").innerHTML = JSON.stringify(data);
+                                        }
+                                    },
+                                    error: function(data, status) {
+                                        if (status == 'error') {
+                                            //	location.href = 'login';
+                                        }
+                                    }
+                                });
+                            });
+
+
+
+                        });
+                        **/
+        </script>
+        <!-- /. WRAPPER  -->
+        <!-- JS Scripts-->
+        <!-- jQuery Js -->
+        <script src="/assets/js/jquery-1.10.2.js"></script>
+        <!-- Bootstrap Js -->
+        <script src="/assets/js/bootstrap.min.js"></script>
+        <!-- Metis Menu Js -->
+        <script src="/assets/js/jquery.metisMenu.js"></script>
+        <!-- Morris Chart Js -->
+        <script src="/assets/js/morris/raphael-2.1.0.min.js"></script>
+        <script src="/assets/js/morris/morris.js"></script>
+        <!-- Custom Js -->
+        <script src="/assets/js/custom-scripts.js"></script>
 
 
 </body>
