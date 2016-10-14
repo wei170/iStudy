@@ -60,10 +60,6 @@ router.post('/reset', function(req, res, next) {
     });
 });
 
-// router.post('/checkcode', function(req, res) {
-//     //todo
-//
-// }
 router.put('/newpassword', function(req, res) {
     var body = _.pick(req.body, 'email', 'newpassword');
     body.password = body.newpassword;
@@ -85,7 +81,6 @@ router.put('/newpassword', function(req, res) {
             attributes.password = body.password;
 
         }
-
         db.user.findAll({
             where: where
         }).then(function(users) {
