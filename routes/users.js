@@ -5,6 +5,7 @@ var router = express.Router();
 var db = require(__dirname + '/../db.js');
 var _ = require('underscore');
 var randomstring = require("randomstring");
+var sendemail = require(__dirname + '/../helpers/mailer_helper.js').sendEmail;
 //sign up a new user
 router.post('/', function(req, res, next) {
     console.log('-=-=------');
@@ -26,7 +27,7 @@ router.post('/', function(req, res, next) {
     // res.status(200).send();
 });
 
-router.delete('/reset', function(req, res, next) {
+router.post('/reset', function(req, res, next) {
     console.log('-=-=------');
     var query = req.query;
     var where = {};
@@ -40,12 +41,15 @@ router.delete('/reset', function(req, res, next) {
     db.user.findAll({
         where: where
     }).then(function(users) {
-        var newPassword = randomstring.generate(8);
+        var verificationcode = randomstring.generate(8);
+        sendemail({
+            'subject': 'iStudy Reset Your Password',
+            'text': 'Hi, your verification code is ' + verificationcode
+        }, query.email);
         users[0].update({
-            'password': newPassword
+            'verificationcode': verificationcode
         }).then(function(user) {
-            res.json(newPassword);
-
+            res.json(verificationcode);
         }, function(e) {
             res.status(400).json(e);
         });
@@ -56,7 +60,14 @@ router.delete('/reset', function(req, res, next) {
     });
 });
 
+router.post('/checkcode', function(req, res) {
+    //todo 
 
+}
+router.put('/newpassword', function(req, res) {
+
+
+}
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
 

@@ -9,7 +9,7 @@ var sequelize;
 
 // when not setup db config, like creating or define new table, set debug to be 0
 //var debug = 1;
-var debug = 0;
+var debug = 1;
 
 
 if (env == 'production') {
