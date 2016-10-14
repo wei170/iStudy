@@ -43,7 +43,11 @@ app.use('/api', api);
 app.use('/profile', profile);
 app.use('/course', course);
 app.use('/', routes);
-
+app.use('/ForgotPassword', routes);
+app.use('/newpassword', routes);
+app.use('/signup', routes);
+app.use('/signin', routes);
+app.use('/resetpassword', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

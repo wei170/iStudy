@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>Sign_Up</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-<div class="container">
-	<h2> Sign Up</h2>
-	<form>
-		<!--<div class="form-group">
+	<div class="container">
+		<h2> Sign Up</h2>
+		<form>
+			<!--<div class="form-group">
 		<label for="text">First Name:</label>
 		<input type="text" class="form-control" id="firstName" placeholder="Enter First Name">
 		</div>
 	-->
 
-		<div class="form-group">
-		<label for="text">User Name:</label>
-		<input type="text" class="form-control" id="username" placeholder="Enter username ">
-		</div>
+			<div class="form-group">
+				<label for="text">User Name:</label>
+				<input type="text" class="form-control" id="username" placeholder="Enter username ">
+			</div>
 
-		<div class="form-group">
-		<label for="email">Email:</label>
-		<input type="email" class="form-control" id="email" placeholder="Enter Email">
-		</div>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" class="form-control" id="email" placeholder="Enter Email">
+			</div>
 
-		<div class="form-group">
-		<label for="password">Password:</label>
-		<input type="password" class="form-control" id="password" placeholder="Enter Password">
-		</div>
-<!--
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control" id="password" placeholder="Enter Password">
+			</div>
+			<!--
 		<div class="form-group">
 		<label for="password">Confirm Password:</label>
 		<input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
@@ -44,46 +45,51 @@
 			<input type="checkbox" name="checkbox">Remember Me</label>
 		</div>
 -->
-		<button type="submit" class="btn btn-default" id = "register">Sign Up</button>
-	</form>
-</div>
+			<button type="submit" class="btn btn-default" id="register">Sign Up</button>
+		</form>
+	</div>
 
-<script type="text/javascript">
-	$(function(){
+	<script type="text/javascript">
+		$(function() {
 
-		$("#register").click(function(){
-			var username = $("#username").val();
-			var email = $("#email").val();
-			var password = $("#password").val();
-			/**if(password !== confirmPassword){
-				$("#password").css("border","1px solid red");
-				$("#confirmPassword").css("border","1px solid red");
-			}else if(password === password1){
-				*/
-			var data = {"userName":username,"email":email,"password":password};
-			//console.log(data.toJSON());
-			$.ajax({
-				url: '/users/',
-				type: 'post',
-				data: data,
-            	//contentType: "application/json; charset=utf-8",
-				success: function(data,status){
-					if(status == 'success'){
-						//location.href = 'home';
-						location.href="/forgotpassword";
-					}
-					console.log('here');
-				},
-				error: function(data,err){
+			$("#register").click(function() {
+				var username = $("#username").val();
+				var email = $("#email").val();
+				var password = $("#password").val();
+				/**if(password !== confirmPassword){
+					$("#password").css("border","1px solid red");
+					$("#confirmPassword").css("border","1px solid red");
+				}else if(password === password1){
+					*/
+				var data = {
+					"userName": username,
+					"email": email,
+					"password": password
+				};
+				//console.log(data.toJSON());
+				$.ajax({
+					url: '/users/',
+					type: 'post',
+					data: data,
+					//contentType: "application/json; charset=utf-8",
+					success: function(data, status) {
+					//	if (status == 'success') {
+							//location.href = 'home';
+							location.href = '/signin';
+					//	}
+						console.log('here');
+					},
+					error: function(data, err) {
 						//location.href = 'register';
 						console.log('errorr');
 						console.log(err);
-				}
+					}
+				});
+				//}
 			});
-		//}
 		});
-	});
-</script>
+	</script>
 
 </body>
+
 </html>
