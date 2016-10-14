@@ -2,7 +2,7 @@
 module.exports = [
     {
         email: 'maoxia@purdue.edu',
-        user_name: 'maoxia',
+        userName: 'maoxia',
         password: 'abcdefghij1',
         accessRight: 1
     }

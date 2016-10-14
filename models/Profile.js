@@ -1,9 +1,19 @@
 'use strict';
 var db = require('../db');
 var user = require('./User');
-
+var _ = require('underscore');
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
+    	id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true
+		},
+		user_id:{
+			type: DataTypes.INTEGER,
+			model: 'user',
+			key: 'id'
+		},
         major: {
             type: DataTypes.STRING,
             defaultValue: 'Unknown'
@@ -41,10 +51,20 @@ module.exports = function(sequelize, DataTypes){
         underscored: true,
         timestamps: false,
         classMethods:{
-            // associate: function(){
-            //     profile.belongsTo(user);
+            // associate: function(models){
+            //     profile.belongsTo(models.user);
             // }
         },
+
+        instanceMethods: {
+            toPublicJSON: function() {
+                var json = this.toJSON();
+                return _.pick(json, 'major', 'language', 'birthday', 'hobby', 'visibility');
+            }
+
+
+        },
+
         setterMethods: {
             classes: function(value) {
                 this.setDataValue('classes', JSON.stringify(value));
