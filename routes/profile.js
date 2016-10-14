@@ -16,14 +16,6 @@ router.get('/', middleware.requireAuthentication, function(req, res) {
     });
 });
 
-router.get('/', middleware.requireAuthentication, function(req, res) {
-
-    db.profile.findById(req.user.get('id')).then(function(profile) {
-        res.json(profile.toPublicJSON());
-    }, function(e) {
-        res.status(400).json(e);
-    });
-});
 
 
 //update profile
