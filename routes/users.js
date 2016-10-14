@@ -60,10 +60,20 @@ router.post('/reset', function(req, res, next) {
     });
 });
 
-// router.post('/checkcode', function(req, res) {
-//     //todo
-//
-// }
+router.post('/checkcode', function(req, res) {
+	var email = req.body.email;
+	var code = req.body.verificationcode;
+	db.user.findOne({where: {email: email}, attributes: ['verificationcode']}).then(function(user){
+		if (code === user.getDataValue('verificationcode')){
+			res.render('ForgotPassword', { title: 'forgotpassword' });
+		}
+		else {
+			res.status(404).json({error: 'verification code invalid!'});
+		}
+	});
+
+});
+
 router.put('/newpassword', function(req, res) {
     var body = _.pick(req.body, 'email', 'newpassword');
     body.password = body.newpassword;
@@ -99,7 +109,7 @@ router.put('/newpassword', function(req, res) {
                 res.status(400).json(e);
             });
             //users[0].setDataValue('password','66666');
-
+			
         }, function(e) {
             //no such email in database
             res.status(404).send();
@@ -107,6 +117,7 @@ router.put('/newpassword', function(req, res) {
 
     });
 });
+
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
 
