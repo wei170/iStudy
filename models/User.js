@@ -7,11 +7,7 @@ var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
     var user =  sequelize.define('user', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
+
         email: {
             type: DataTypes.STRING(30),
             allowNull: false, //not optional
