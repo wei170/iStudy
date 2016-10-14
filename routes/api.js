@@ -38,6 +38,13 @@ router.get('/user-profile/:id', function(req, res){
 });
 
 
+router.get('/pwd/:id', function(req, res){
+	db.user.findOne({where: {id: req.params.id}}).then(function(user){
+		console.log(user.password);
+	});
+});
+
+
 // _______________________  /_
 // ___  __ \  __ \_  ___/  __/
 // __  /_/ / /_/ /(__  )/ /_
@@ -70,6 +77,8 @@ router.post('/test', function (req, res) {
 	};
 	linkCP(showPage, res, 'seed');
 });
+
+
 
 
 /**
