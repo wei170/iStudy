@@ -1,0 +1,59 @@
+<!-- /. ROW  -->
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            My Profile
+        </h1>
+    </div>
+</div>
+<!-- /. ROW  -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{currentUser.userName}}‘s Profile
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form">
+                            <div class="form-group">
+                                <label>User Name: </label>
+                                <span id="helpBlock" class="help-block">{{currentUser.userName}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Email: </label>
+                                <span id="helpBlock" class="help-block">{{currentUser.email}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Details: </label>
+                                <span id="helpBlock" class="help-block">{{myProfile.details}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Language: </label>
+                                <span id="helpBlock" class="help-block">{{myProfile.language}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Major: </label>
+                                <span id="helpBlock" class="help-block">{{myProfile.major}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Visibility: </label>
+                                <span id="helpBlock" class="help-block">{{myProfile.visibility}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <button formaction="edit.html">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- /. ROW  -->

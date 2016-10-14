@@ -2,17 +2,19 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { Ng2PageScrollModule } from 'ng2-page-scroll';
 
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
 import { AlertComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { AlertService, AuthenticationService, UserService } from './_services/index';
+import { ProfileService, AlertService, AuthenticationService, UserService } from './_services/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { DashboardComponent } from './dashboard/index';
+
+import { MyProfileComponent } from './myprofile/index';
+import { ClassRegistrationComponent } from './class_registration/index';
 
 @NgModule({
     imports: [
@@ -26,13 +28,17 @@ import { DashboardComponent } from './dashboard/index';
         AlertComponent,
         LoginComponent,
         RegisterComponent,
-        DashboardComponent
+        DashboardComponent,
+
+        MyProfileComponent,
+        ClassRegistrationComponent
     ],
     providers: [
         AuthGuard,
         AlertService,
         AuthenticationService,
-        UserService
+        UserService,
+        ProfileService
     ],
     bootstrap: [AppComponent]
 })

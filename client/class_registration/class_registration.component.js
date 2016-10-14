@@ -9,27 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var index_1 = require('../_services/index');
-var DashboardComponent = (function () {
-    function DashboardComponent(userService) {
-        this.userService = userService;
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+var ClassRegistrationComponent = (function () {
+    function ClassRegistrationComponent() {
     }
-    DashboardComponent.prototype.ngOnInit = function () {
-        //called after the constructor and called  after the first ngOnChanges()
-    };
-    DashboardComponent = __decorate([
+    ClassRegistrationComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'dashboard.component.html',
-            styleUrls: [
-                '/feature\ content/assets/js/morris/morris-0.4.3.min.css',
-                '/feature\ content/assets/css/custom-styles.css'
-            ]
+            templateUrl: 'class_registration.component.html'
         }), 
-        __metadata('design:paramtypes', [index_1.UserService])
-    ], DashboardComponent);
-    return DashboardComponent;
+        __metadata('design:paramtypes', [])
+    ], ClassRegistrationComponent);
+    return ClassRegistrationComponent;
 }());
-exports.DashboardComponent = DashboardComponent;
-//# sourceMappingURL=dashboard.component.js.map
+exports.ClassRegistrationComponent = ClassRegistrationComponent;
+//# sourceMappingURL=class_registration.component.js.map

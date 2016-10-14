@@ -38,11 +38,11 @@ var api = require('./routes/api');
 var profile = require('./routes/profile');
 var course = require('./routes/course');
 
-app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
 app.use('/profile', profile);
 app.use('/course', course);
+app.use('/', routes);
 
 
 // catch 404 and forward to error handler

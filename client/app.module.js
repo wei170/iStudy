@@ -20,6 +20,8 @@ var index_3 = require('./_services/index');
 var index_4 = require('./login/index');
 var index_5 = require('./register/index');
 var index_6 = require('./dashboard/index');
+var index_7 = require('./myprofile/index');
+var index_8 = require('./class_registration/index');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -36,13 +38,16 @@ var AppModule = (function () {
                 index_1.AlertComponent,
                 index_4.LoginComponent,
                 index_5.RegisterComponent,
-                index_6.DashboardComponent
+                index_6.DashboardComponent,
+                index_7.MyProfileComponent,
+                index_8.ClassRegistrationComponent
             ],
             providers: [
                 index_2.AuthGuard,
                 index_3.AlertService,
                 index_3.AuthenticationService,
-                index_3.UserService
+                index_3.UserService,
+                index_3.ProfileService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

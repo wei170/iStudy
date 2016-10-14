@@ -25,13 +25,16 @@ var AuthenticationService = (function () {
             // console.log(response.headers.get('Auth'));
             if (user) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
+                console.log(response.headers.get('Auth'));
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('token', response.headers.get('Auth'));
             }
         });
     };
     AuthenticationService.prototype.logout = function () {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
     };
     AuthenticationService = __decorate([
         core_1.Injectable(), 

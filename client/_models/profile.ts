@@ -12,4 +12,5 @@ export class Profile {
     contributions: Resource[];
     major: string;
     language: string;
+    visibility: boolean;
 }

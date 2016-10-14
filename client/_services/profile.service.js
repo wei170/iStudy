@@ -9,27 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var AuthGuard = (function () {
-    function AuthGuard(router) {
-        this.router = router;
-        localStorage.removeItem('currentUser');
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/map');
+var ProfileService = (function () {
+    function ProfileService(http) {
+        this.http = http;
     }
-    AuthGuard.prototype.canActivate = function () {
-        if (localStorage.getItem('currentUser')) {
-            // logged in so return true
-            this.router.navigate(['/dashboard']);
-            return true;
-        }
-        // not logged in so redirect to login page
-        this.router.navigate(['/login']);
-        return false;
+    ProfileService.prototype.getProfile = function () {
+        console.log("check");
+        var profileUrl = 'profile/';
+        return this.http.get(profileUrl)
+            .map(this.extractData);
     };
-    AuthGuard = __decorate([
+    ProfileService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body.data || {};
+    };
+    ProfileService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [router_1.Router])
-    ], AuthGuard);
-    return AuthGuard;
+        __metadata('design:paramtypes', [http_1.Http])
+    ], ProfileService);
+    return ProfileService;
 }());
-exports.AuthGuard = AuthGuard;
-//# sourceMappingURL=auth.guard.js.map
+exports.ProfileService = ProfileService;
+//# sourceMappingURL=profile.service.js.map

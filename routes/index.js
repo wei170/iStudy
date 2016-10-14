@@ -26,6 +26,16 @@ router.get('/dashboard', function(req, res, next) {
   res.render('index', { title: 'iStudy' });
 });
 
+router.get('/dashboard/myprofile', function(req, res, next) {
+    console.log('heree');
+  res.render('index', { title: 'iStudy' });
+});
+
+router.get('/dashboard/class_registration', function(req, res, next) {
+    console.log('heree');
+  res.render('index', { title: 'iStudy' });
+});
+
 router.get('/forgotpassword', function(req, res, next) {
   res.render('ForgotPassword', { title: 'forgotpassword' });
 });

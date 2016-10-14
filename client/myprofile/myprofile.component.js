@@ -10,26 +10,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var index_1 = require('../_services/index');
-var DashboardComponent = (function () {
-    function DashboardComponent(userService) {
+var dashboard_component_1 = require('../dashboard/dashboard.component');
+var MyProfileComponent = (function () {
+    function MyProfileComponent(dashboardComponent, userService, profileService) {
+        this.dashboardComponent = dashboardComponent;
         this.userService = userService;
+        this.profileService = profileService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.myProfile = profileService.getProfile();
     }
-    DashboardComponent.prototype.ngOnInit = function () {
-        //called after the constructor and called  after the first ngOnChanges()
-    };
-    DashboardComponent = __decorate([
+    MyProfileComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'dashboard.component.html',
-            styleUrls: [
-                '/feature\ content/assets/js/morris/morris-0.4.3.min.css',
-                '/feature\ content/assets/css/custom-styles.css'
-            ]
+            templateUrl: 'myprofile.component.html'
         }), 
-        __metadata('design:paramtypes', [index_1.UserService])
-    ], DashboardComponent);
-    return DashboardComponent;
+        __metadata('design:paramtypes', [dashboard_component_1.DashboardComponent, index_1.UserService, index_1.ProfileService])
+    ], MyProfileComponent);
+    return MyProfileComponent;
 }());
-exports.DashboardComponent = DashboardComponent;
-//# sourceMappingURL=dashboard.component.js.map
+exports.MyProfileComponent = MyProfileComponent;
+//# sourceMappingURL=myprofile.component.js.map
