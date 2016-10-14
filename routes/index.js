@@ -15,6 +15,9 @@ router.get('/signup', function(req, res, next) {
 router.get('/forgotpassword', function(req, res, next) {
   res.render('ForgotPassword', { title: 'forgotpassword' });
 });
+router.get('/dashboard', function(req, res, next) {
+  res.render('dashboard', { title: 'dashboard' });
+});
 
 router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'signin' });
