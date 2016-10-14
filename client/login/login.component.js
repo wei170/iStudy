@@ -12,12 +12,12 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var index_1 = require('../_services/index');
 var LoginComponent = (function () {
-    function LoginComponent(router, authenticationService) {
+    function LoginComponent(router, authenticationService, alertService) {
         this.router = router;
         this.authenticationService = authenticationService;
+        this.alertService = alertService;
         this.model = {};
         this.loading = false;
-        this.error = '';
     }
     LoginComponent.prototype.ngOnInit = function () {
         // reset login status
@@ -25,25 +25,23 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
-        // console.log("called the login func in component.ts");
         this.loading = true;
+        console.log("Enter in the login.component");
         this.authenticationService.login(this.model.email, this.model.password)
-            .subscribe(result, function (boolean) {
-            if (result === true) {
-                _this.router.navigate(['/dashboard']);
-            }
-            else {
-                _this.error = 'Username or password is incorrect';
-                _this.loading = false;
-            }
+            .subscribe(function (data) {
+            console.log("check");
+            _this.router.navigate(['/dashboard']);
+        }, function (error) {
+            _this.alertService.error(error);
+            _this.loading = false;
         });
     };
     LoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'login.component.html',
+            templateUrl: 'login.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService])
+        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, index_1.AlertService])
     ], LoginComponent);
     return LoginComponent;
 }());

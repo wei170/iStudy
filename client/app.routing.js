@@ -8,7 +8,7 @@ var appRoutes = [
     { path: '', component: index_4.DashboardComponent, canActivate: [index_1.AuthGuard] },
     { path: 'login', component: index_2.LoginComponent },
     { path: 'register', component: index_3.RegisterComponent },
-    { path: 'dashboard', component: index_4.DashboardComponent, canActivate: [index_1.AuthGuard] },
+    { path: 'dashboard', component: index_4.DashboardComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

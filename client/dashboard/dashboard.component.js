@@ -15,6 +15,9 @@ var DashboardComponent = (function () {
         this.userService = userService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
+    DashboardComponent.prototype.ngOnInit = function () {
+        //called after the constructor and called  after the first ngOnChanges()
+    };
     DashboardComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

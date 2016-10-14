@@ -15,4 +15,8 @@ export class DashboardComponent implements OnInit {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
+    ngOnInit(){
+        //called after the constructor and called  after the first ngOnChanges()
+    }
+
 }

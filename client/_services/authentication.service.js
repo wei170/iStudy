@@ -16,10 +16,11 @@ var AuthenticationService = (function () {
         this.http = http;
     }
     AuthenticationService.prototype.login = function (email, password) {
-        return this.http.post('/users/login', { "email": email, "password": password })
+        var url = 'users/login';
+        var body = { "email": email, "password": password };
+        return this.http.post(url, body)
             .map(function (response) {
             // login successful if there's a jwt token in the response
-            console.log(response);
             var user = response.json();
             // console.log(response.headers.get('Auth'));
             if (user) {
