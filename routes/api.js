@@ -175,12 +175,12 @@ var linkCourseAndProf = function () {
 			course.addProfessor(prof);
 		});
 	});
-	// cs307
-	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-			course.addProfessor(prof);
-		});
-	});
+	// // cs307
+	// db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+	// 	db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+	// 		course.addProfessor(prof);
+	// 	});
+	// });
 };
 
 module.exports = router;

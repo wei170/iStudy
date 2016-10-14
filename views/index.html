@@ -97,7 +97,7 @@
                     </label>
                   </div>
                   <!-- /signin = Signin.html -->
-                  <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="register0">log in </button>
+                  <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="login">log in </button>
                  <!-- <a href="/signin" class="btn btn-primary">Sign in</a>-->
                   <div>
                     <!-- /forgotpassword = ForgotPassword.html -->
@@ -148,7 +148,7 @@
     <script type="text/javascript">
     	$(function(){
 
-    		$("#register0").click(function(){
+    		$("#login").click(function(){
     			var email = $("#email").val();
     			var password = $("#password").val();
     			var data = {"email":email,"password":password};
@@ -162,7 +162,7 @@
     					if(status == 'success'){
                             
     						//location.href = 'home';
-                        	location.href = 'newpassword';
+                        	location.href = 'dashboard';
                             console.log(data);
     					}
     				},
