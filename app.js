@@ -48,7 +48,9 @@ app.use('/newpassword', routes);
 app.use('/signup', routes);
 app.use('/signin', routes);
 app.use('/resetpassword', routes);
-
+app.use('/dashboard', routes);
+app.use('/edit', routes);
+app.use('/selectProfessor', routes);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

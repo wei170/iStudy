@@ -7,9 +7,9 @@ var _ = require('underscore');
 
 
 // GET profile
-router.get('/', middleware.requireAuthentication, function(req, res) {
+router.get('/', function(req, res) {
 
-    db.profile.findById(req.user.get('id')).then(function(profile) {
+    db.profile.findById(1).then(function(profile) {
         res.json(profile.toPublicJSON());
     }, function(e) {
         res.status(400).json(e);
@@ -19,10 +19,10 @@ router.get('/', middleware.requireAuthentication, function(req, res) {
 
 
 //update profile
-router.put('/', middleware.requireAuthentication, function(req, res) {
+router.put('/', function(req, res) {
     var body = _.pick(req.body, 'major', 'language', 'birthday', 'hobby', 'visibility');
     var attributes = {};
-
+    console.log('update profile !!!!!');
     if (body.hasOwnProperty('major')) {
         attributes.major = body.major;
     }
@@ -43,7 +43,11 @@ router.put('/', middleware.requireAuthentication, function(req, res) {
         attributes.visibility = body.visibility;
     }
 
-    db.profile.findOne({where: {user_id: req.user.get('id')}}).then(function(profile) {
+    db.profile.findOne({
+        where: {
+            user_id: 1
+        }
+    }).then(function(profile) {
 
         if (profile) {
             profile.update(attributes).then(function(profile) {
