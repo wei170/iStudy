@@ -43,7 +43,7 @@ router.put('/', middleware.requireAuthentication, function(req, res) {
         attributes.visibility = body.visibility;
     }
 
-    db.profile.findById(req.user.get('id')).then(function(profile) {
+    db.profile.findOne({where: {user_id: req.user.get('id')}}).then(function(profile) {
 
         if (profile) {
             profile.update(attributes).then(function(profile) {
