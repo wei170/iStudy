@@ -5,7 +5,6 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 var bcrypt = require('bcrypt');
@@ -14,41 +13,12 @@ var db = require('./db');
 //~(˘▾˘~)
 var cool = require('cool-ascii-faces');
 
-
 var app = express();
-//var middleware = require('./middleware.js')(db);
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine("html", require("ejs").__express);
-app.set('view engine', 'html');
-
-
-var bodyParser = require('body-parser');
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
-var PORT = process.env.PORT || 6000;
-
-var app = express();
-//newley installed
-var _ = require('underscore');
-var bcrypt = require('bcrypt');
-var db = require('./db.js');
-//var middleware = require('./middleware.js')(db);
-
-
-// view engine setup
-// app.engine("html", require("ejs").__express); // or   app.engine("html",require("ejs").renderFile);
-// //app.set("view engine","ejs");
-// app.set('view engine', 'html');
-//app.set('view engine', 'ejs');
-
-
-app.set('views', path.join(__dirname, 'views'));
-app.engine("html", require("ejs").__express);
-//app.set('view engine', 'ejs');
 app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
@@ -65,9 +35,15 @@ app.use(express.static(path.join(__dirname, './')));
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var profile = require('./routes/profile');
+var course = require('./routes/course');
+
+app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
-app.use('/', routes);
+app.use('/profile', profile);
+app.use('/course', course);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
