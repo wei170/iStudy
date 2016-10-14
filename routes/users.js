@@ -60,14 +60,53 @@ router.post('/reset', function(req, res, next) {
     });
 });
 
-router.post('/checkcode', function(req, res) {
-    //todo 
-
-}
+// router.post('/checkcode', function(req, res) {
+//     //todo
+//
+// }
 router.put('/newpassword', function(req, res) {
+    var body = _.pick(req.body, 'email', 'newpassword');
+    body.password = body.newpassword;
 
+    var where = {};
+    var attributes = {};
+    db.user.authenticate(body).then(function(user) {
+        //duplicate  passwordlog
+        console.log('log in ');
+        res.status(401).send();
+    }, function() {
+        console.log('fails ');
+        if (body.hasOwnProperty('email')) {
+            where.email = {
+                $like: '%' + body.email + '%'
+            };
+        }
+        if (body.hasOwnProperty('password')) {
+            attributes.password = body.password;
 
-}
+        }
+
+        db.user.findAll({
+            where: where
+        }).then(function(users) {
+            users[0].update(
+                attributes
+            ).then(function(user) {
+                //new password set
+                console.log('@@@@' + attributes.password);
+                res.json(user.toPublicJSON());
+            }, function(e) {
+                res.status(400).json(e);
+            });
+            //users[0].setDataValue('password','66666');
+
+        }, function(e) {
+            //no such email in database
+            res.status(404).send();
+        });
+
+    });
+});
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
 

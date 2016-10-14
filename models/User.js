@@ -6,7 +6,7 @@ var _ = require('underscore');
 var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
-    var user =  sequelize.define('user', {
+    var user = sequelize.define('user', {
 
         verificationcode: {
             type: DataTypes.STRING(8),
@@ -63,8 +63,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'user',
         underscored: true,
-        classMethods:
-        {
+        classMethods: {
             // associate: function(models){
             //     user.hasOne(models.profile);
             // },
@@ -155,7 +154,7 @@ module.exports = function(sequelize, DataTypes) {
                     user.email = user.email.toLowerCase();
                 }
             },
-            afterCreate: function (user, options) {
+            afterCreate: function(user, options) {
                 //console.log("user created");
                 //db.profile.create({user_id: user.id});
             }
