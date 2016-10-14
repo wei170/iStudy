@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,11 +85,11 @@
                 <form class="form-inline">
                   <div class="form-group">
                     <label class="sr-only" for="exampleInputEmail3">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" placeholder="Enter email">
                   </div>
                   <div class="form-group">
                     <label class="sr-only" for="exampleInputPassword3">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                    <input type="password" class="form-control" id="password" placeholder="Password">
                   </div>
                   <div class="form-check">
                     <label class="form-check-label">
@@ -97,7 +97,8 @@
                     </label>
                   </div>
                   <!-- /signin = Signin.html -->
-                  <a href="/signin" class="btn btn-primary">Sign in</a>
+                  <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="register0">log in </button>
+                 <!-- <a href="/signin" class="btn btn-primary">Sign in</a>-->
                   <div>
                     <!-- /forgotpassword = ForgotPassword.html -->
                       <a href="/forgotpassword">
@@ -123,76 +124,6 @@
 
 
 
-        <!-- Title -->
-        <!--<div class="row">
-            <div class="col-lg-12">
-                <h3>Our Features</h3>
-            </div>
-        </div>-->
-        <!-- /.row -->
-
-        <!-- Page Features -->
-        <!--<div class="row text-center">
-
-            <div class="col-md-3 col-sm-4 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Schedule Meeting</h3>
-                        <p>Group meeting</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Schedule</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Classmates</h3>
-                        <p>Are you looking for a classmate?</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Search</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Class</h3>
-                        <p>Class recommendation</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Try</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Whatever</h3>
-                        <p>.....</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>-->
-        <!-- /.row -->
-
-
-
-        <!-- Footer -->
         <footer>
             <div class="row">
                 <div class="col-lg-12">
@@ -214,7 +145,36 @@
     <!-- Bootstrap Core JavaScript
     <script src="js/bootstrap.min.js"></script>-->
 
+    <script type="text/javascript">
+    	$(function(){
 
+    		$("#register0").click(function(){
+    			var email = $("#email").val();
+    			var password = $("#password").val();
+    			var data = {"email":email,"password":password};
+                console.log(data);
+    			$.ajax({
+                    //console.log(data);
+    				url:'/users/login',
+    				type:'post',
+    				data: data,
+    				success: function(data,status){
+    					if(status == 'success'){
+                            
+    						//location.href = 'home';
+                        	location.href = 'newpassword';
+                            console.log(data);
+    					}
+    				},
+    				error: function(data,status){
+    					if(status == 'error'){
+    					//	location.href = 'login';
+    					}
+    				}
+    			});
+    		});
+    	});
+    	</script>
 </body>
 
 </html>

@@ -20,6 +20,13 @@ router.get('/signin', function(req, res, next) {
   res.render('signin', { title: 'signin' });
 });
 
+router.get('/resetpassword', function(req, res, next) {
+  res.render('resetpassword', { title: 'resetpassword' });
+});
+
+router.get('/newpassword', function(req, res, next) {
+  res.render('newpassword', { title: 'newpassword' });
+});
 
 
 module.exports = router;
