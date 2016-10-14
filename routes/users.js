@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
         db.profile.create({
             user_id: user.id
         }).then(function(profile) {
-            res.json(user.toPublicJSON());
+            res.status(200).json(user.toPublicJSON());
         }, function(e) {
             res.status(400).json(e);
         });
