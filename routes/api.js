@@ -31,11 +31,14 @@ router.get('/user-profile/:id', function(req, res){
     db.profile.findOne({where: {user_id: req.params.id}}).then(function(profile){
       if (profile){
           res.json(profile);
+		  console.log(profile.getDataValue('hobby'));
+		  console.log(db.profile.getterMethods.hobby);
       }else {
           res.send('The profile does not exist!');
       }
    });
 });
+
 
 
 router.get('/pwd/:id', function(req, res){
@@ -87,7 +90,7 @@ router.post('/test', function (req, res) {
 router.post('/update-profile/:id', function (req, res) {
 	db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
 		if (profile){
-			profile.updateAttributes(sampleProfile).then(function () {
+			profile.updateAttributes(sampleProfile).then(function (profile) {
 				res.json(profile);
 			});
 		}

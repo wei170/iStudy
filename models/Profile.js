@@ -71,7 +71,10 @@ module.exports = function(sequelize, DataTypes){
             },
             contributions: function(value){
                 this.setDataValue('contributions', JSON.stringify(value));
-            }
+            },
+			hobby: function (value) {
+				this.setDataValue('hobby', JSON.stringify(value));
+			}
         },
         getterMethods: {
             classes: function () {
@@ -103,7 +106,13 @@ module.exports = function(sequelize, DataTypes){
                 if (value){
                     return JSON.parse(value);
                 }
-            }
+            },
+			hobby: function () {
+				var value = this.getDataValue('hobby');
+				if (value){
+					return JSON.parse(value);
+				}
+			}
         }
     });
     return profile;

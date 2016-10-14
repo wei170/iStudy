@@ -62,15 +62,14 @@ router.post('/reset', function(req, res, next) {
 
 
 router.post('/checkcode', function(req, res) {
-    var email = req.body.email;
-    var code = req.body.verificationcode;
+	var body = _.pick(req.body, 'email', 'verificationcode');
     db.user.findOne({
         where: {
-            email: email
+            email: body.email
         },
         attributes: ['verificationcode']
     }).then(function(user) {
-        if (code === user.getDataValue('verificationcode')) {
+        if (body.verificationcode === user.getDataValue('verificationcode')) {
             res.status(200).send();
 
         } else {
