@@ -127,6 +127,7 @@ router.put('/newpassword', function(req, res) {
 
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
+    //console.log(JSON.stringify(body));
 
     db.user.authenticate(body).then(function(user) {
         var token = user.generateToken('authentication');

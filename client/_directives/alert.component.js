@@ -24,10 +24,9 @@ var AlertComponent = (function () {
             selector: 'alert',
             templateUrl: 'alert.component.html'
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [index_1.AlertService])
     ], AlertComponent);
     return AlertComponent;
-    var _a;
 }());
 exports.AlertComponent = AlertComponent;
 //# sourceMappingURL=alert.component.js.map
