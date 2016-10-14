@@ -7,16 +7,19 @@ var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
     var user =  sequelize.define('user', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+
+        verificationcode: {
+            type: DataTypes.STRING(8),
+            allowNull: true,
+            defaultValue: 0,
+            unique: false
         },
         email: {
             type: DataTypes.STRING(30),
             allowNull: false, //not optional
             unique: true, //avoid duplicate
             validate: {
+
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
             }

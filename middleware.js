@@ -8,7 +8,6 @@ module.exports = function(db) {
             }, function() {
                 res.status(401).send();
             });
-
         }
     };
 

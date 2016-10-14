@@ -12,20 +12,21 @@ import { AuthGuard } from './_guards/index';
 import { AlertService, AuthenticationService, UserService } from './_services/index';
 import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
+import { DashboardComponent } from './dashboard/index';
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing,
-        Ng2PageScrollModule
+        routing
     ],
     declarations: [
         AppComponent,
         AlertComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        DashboardComponent
     ],
     providers: [
         AuthGuard,
