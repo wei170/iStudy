@@ -61,13 +61,24 @@ router.post('/reset', function(req, res, next) {
 });
 
 router.post('/checkcode', function(req, res) {
-    //todo 
+	var email = req.body.email;
+	var code = req.body.verificationcode;
+	db.user.findOne({where: {email: email}, attributes: ['verificationcode']}).then(function(user){
+		if (code === user.getDataValue('verificationcode')){
+			res.render('ForgotPassword', { title: 'forgotpassword' });
+		}
+		else {
+			res.status(404).json({error: 'verification code invalid!'});
+		}
+	});
 
-}
+});
+
 router.put('/newpassword', function(req, res) {
 
 
-}
+});
+
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
 
