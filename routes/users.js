@@ -111,7 +111,7 @@ router.put('/newpassword', function(req, res) {
             ).then(function(user) {
                 //new password set
                 console.log('@@@@' + attributes.password);
-                res.status(200).json(e);
+                res.status(200).send();
                 //res.json(user.toPublicJSON());
             }, function(e) {
                 res.status(400).json(e);

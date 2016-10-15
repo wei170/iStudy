@@ -9,7 +9,11 @@ var _ = require('underscore');
 // GET profile
 router.get('/', function(req, res) {
 
-    db.profile.findById(1).then(function(profile) {
+    db.profile.findOne({
+        where: {
+            user_id: 1
+        }
+    }).then(function(profile) {
         res.json(profile.toPublicJSON());
     }, function(e) {
         res.status(400).json(e);

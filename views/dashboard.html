@@ -29,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">iStudy</a>
+                <a class="navbar-brand" href="/">iStudy</a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -167,6 +167,10 @@
                                                 <span id="hobby" class="help-block"></span>
                                             </div>
                                             <div class="form-group">
+                                                <label>Birthday: </label>
+                                                <span id="birthday" class="help-block"></span>
+                                            </div>
+                                            <div class="form-group">
                                                 <label>Visibility: </label>
                                                 <span id="visibility" class="help-block">Yes</span>
                                             </div>
@@ -214,6 +218,7 @@
                         //    }
                         console.log(data.major);
                         //if (result.hasOwnProperty('major')) {
+                        document.getElementById("birthday").innerHTML = data.birthday.substring(0,10);
                         document.getElementById("major").innerHTML = data.major;
                         document.getElementById("hobby").innerHTML = data.hobby;
                         if (data.visibility) {

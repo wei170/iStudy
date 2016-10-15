@@ -29,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">iStudy</a>
+                <a class="navbar-brand" href="/">iStudy</a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -95,19 +95,19 @@
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a class="active-menu" href="index.html"><i class="fa fa-dashboard"></i> My Profile</a>
+                        <a class="active-menu" href="/dashboard"><i class="fa fa-dashboard"></i> My Profile</a>
                     </li>
 
                     <li>
-                        <a class="active-menu" href="meet.html"><i class="fa fa-dashboard"></i> Set up Meeting Time</a>
+                        <a class="active-menu" href="/meet"><i class="fa fa-dashboard"></i> Set up Meeting Time</a>
                     </li>
 
                     <li>
-                        <a class="active-menu" href="registration.html"><i class="fa fa-dashboard"></i> Class Registration Suggestion</a>
+                        <a class="active-menu" href="/registration"><i class="fa fa-dashboard"></i> Class Registration Suggestion</a>
                     </li>
 
                     <li>
-                        <a class="active-menu" href="classmates.html"><i class="fa fa-dashboard"></i> Find My Classmates</a>
+                        <a class="active-menu" href="/classmates"><i class="fa fa-dashboard"></i> Find My Classmates</a>
                     </li>
 
                     <!-- <li> -->
@@ -172,6 +172,10 @@
                                                     <input class="form-control" id="hobby" placeholder="Enter text">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>Birthday: </label>
+                                                    <input class="form-control" id="birthday" placeholder="Enter birthday yyyy-mm-dd">
+                                                </div>
+                                                <div class="form-group">
                                                     <label>Visibility: </label>
                                                     <select class="form-control" id="visibility">
                                                 <option>Yes</option>
@@ -215,6 +219,7 @@
                         var language = $("#language").val();
                         var major = $("#major").val();
                         var vv = $("#visibility").val();
+                        var birthday = $("#birthday").val();
                         var visibility;
                         console.log(vv);
                         //    alert(vv);
@@ -228,7 +233,8 @@
                             "hobby": hobby,
                             "language": language,
                             "major": major,
-                            "visibility": visibility
+                            "visibility": visibility,
+                            "birthday": birthday
                         };
                         console.log(data);
                         $.ajax({
@@ -239,6 +245,7 @@
                             success: function(data, status) {
                                 if (status == 'success') {
                                     //location.href = 'home';
+                                    alert('Your profile info has been updated');
                                     location.href = 'dashboard';
                                     console.log(data);
                                 }
