@@ -11,6 +11,6 @@ export class Profile {
     friends: User[];
     contributions: Resource[];
     major: string;
-    language: string;
-    visibility: boolean;
+    language: Object[];
+    visibility: boolean
 }

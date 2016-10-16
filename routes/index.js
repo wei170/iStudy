@@ -37,7 +37,7 @@ router.get('/dashboard/class_registration', function(req, res, next) {
 });
 
 router.get('/forgotpassword', function(req, res, next) {
-  res.render('ForgotPassword', { title: 'forgotpassword' });
+  res.render('index', { title: 'iStudy' });
 });
 
 module.exports = router;

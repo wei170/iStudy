@@ -26,10 +26,8 @@ var LoginComponent = (function () {
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
-        console.log("Enter in the login.component");
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(function (data) {
-            console.log("check");
             _this.router.navigate(['/dashboard']);
         }, function (error) {
             _this.alertService.error(error);

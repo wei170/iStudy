@@ -24,11 +24,9 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
-        console.log("Enter in the login.component");
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(
                 data => {
-                    console.log("check");
                     this.router.navigate(['/dashboard']);
                 },
                 error => {

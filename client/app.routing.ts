@@ -1,21 +1,23 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './_guards/index';
-import { LoginComponent } from './login/index';
+import { LoginComponent, ForgotPasswordComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { DashboardComponent } from './dashboard/index';
-import { MyProfileComponent} from './myprofile/myprofile.component';
-import { ClassRegistrationComponent } from './class_registration/class_registration.component';
+import { MyProfileComponent, EditProfileComponent } from './myprofile/index';
+import { SearchCourseComponent } from './class_registration/search_course.component';
 
 const appRoutes: Routes = [
     { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'forgotpassword', component: ForgotPasswordComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'dashboard', component: DashboardComponent,
         children:[
             { path: '', component: MyProfileComponent},
-            { path: 'myprofile', component: MyProfileComponent},
-            { path: 'class_registration', component: ClassRegistrationComponent}
+            { path: 'myprofile', component: MyProfileComponent },
+            { path: 'edit_profile', component: EditProfileComponent },
+            { path: 'class_registration', component: SearchCourseComponent }
         ]},
 
     // otherwise redirect to home

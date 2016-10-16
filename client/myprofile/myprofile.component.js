@@ -16,9 +16,20 @@ var MyProfileComponent = (function () {
         this.dashboardComponent = dashboardComponent;
         this.userService = userService;
         this.profileService = profileService;
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.myProfile = profileService.getProfile();
+        this.currentUser = {};
+        this.myProfile = {};
+        this.currentUser = this.dashboardComponent.currentUser;
     }
+    MyProfileComponent.prototype.ngOnInit = function () {
+        this.getProfile();
+    };
+    MyProfileComponent.prototype.getProfile = function () {
+        var _this = this;
+        this.profileService.getProfile()
+            .subscribe(function (data) {
+            _this.myProfile = data;
+        });
+    };
     MyProfileComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

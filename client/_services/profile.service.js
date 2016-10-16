@@ -16,13 +16,29 @@ var ProfileService = (function () {
         this.http = http;
     }
     ProfileService.prototype.getProfile = function () {
-        console.log("check");
-        var profileUrl = 'profile/';
-        return this.http.get(profileUrl)
-            .map(this.extractData);
+        var _this = this;
+        var profileUrl = '/profile';
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.get(profileUrl, {
+            headers: headers
+        })
+            .map(function (res) { return _this.extractData(res); });
+    };
+    ProfileService.prototype.editProfile = function (model) {
+        var _this = this;
+        var url = '/profile';
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        var body = { "language": model.language, "major": model.major, "hobby": model.hobby, "visibility": model.visibility };
+        return this.http.put(url, body, {
+            headers: headers
+        })
+            .map(function (res) { return _this.extractData(res); });
     };
     ProfileService.prototype.extractData = function (res) {
         var body = res.json();
+        localStorage.setItem('profile', JSON.stringify(body));
         return body.data || {};
     };
     ProfileService = __decorate([

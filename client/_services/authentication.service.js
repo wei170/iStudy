@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
 var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
@@ -25,7 +24,6 @@ var AuthenticationService = (function () {
             // console.log(response.headers.get('Auth'));
             if (user) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                console.log(response.headers.get('Auth'));
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 localStorage.setItem('token', response.headers.get('Auth'));
             }

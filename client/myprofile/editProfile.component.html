@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="page-header">
+            My Profile
+        </h1>
+    </div>
+</div>
+<!-- /. ROW  -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form" (ngSubmit)="f.form.valid && editProfile()" #f="ngForm" novalidate>
+                            <label>User Name: </label>
+                            <span id="helpBlock" class="help-block">{{currentUser.userName}}</span>
+                            <div class="form-group">
+                                <label>Email: </label>
+                                <span id="helpBlock" class="help-block">{{currentUser.email}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Language: </label>
+                                <input class="form-control" placeholder="{{profile.language}}" [(ngModel)]="model.language" name="language">
+                            </div>
+                            <div class="form-group">
+                                <label>Major: </label>
+                                <input class="form-control" placeholder="{{profile.major}}" [(ngModel)]="model.major" name="major">
+                            </div>
+                            <div class="form-group">
+                                <label>Hobby: </label>
+                                <input class="form-control" placeholder="{{profile.hobby}}" [(ngModel)]="model.hobby" name="major">
+                            </div>
+                            <div class="form-group">
+                                <label>Visibility: </label>
+                                <select class="form-control" [(ngModel)]="model.visibility" name="visibility">
+                                    <option *ngFor="let vis of visibilities" [value]="vis.value">
+                                        {{vis.display}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class = "form-group">
+                                <button [disabled]="loading" class="btn btn-primary">Done</button>
+                                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

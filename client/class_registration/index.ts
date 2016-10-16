@@ -1,1 +1,1 @@
-export * from './class_registration.component';
+export * from './search_course.component';

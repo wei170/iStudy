@@ -4,4 +4,5 @@ function __export(m) {
 }
 __export(require('./user'));
 __export(require('./profile'));
+__export(require('./class'));
 //# sourceMappingURL=index.js.map

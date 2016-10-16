@@ -38,16 +38,20 @@ var AppModule = (function () {
                 index_1.AlertComponent,
                 index_4.LoginComponent,
                 index_5.RegisterComponent,
+                index_4.ForgotPasswordComponent,
                 index_6.DashboardComponent,
                 index_7.MyProfileComponent,
-                index_8.ClassRegistrationComponent
+                index_7.EditProfileComponent,
+                index_8.SearchCourseComponent,
             ],
             providers: [
                 index_2.AuthGuard,
                 index_3.AlertService,
                 index_3.AuthenticationService,
                 index_3.UserService,
-                index_3.ProfileService
+                index_3.ProfileService,
+                index_3.CourseService,
+                index_3.PasswordService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

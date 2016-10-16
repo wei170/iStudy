@@ -27,10 +27,6 @@
                                 <span id="helpBlock" class="help-block">{{currentUser.email}}</span>
                             </div>
                             <div class="form-group">
-                                <label>Details: </label>
-                                <span id="helpBlock" class="help-block">{{myProfile.details}}</span>
-                            </div>
-                            <div class="form-group">
                                 <label>Language: </label>
                                 <span id="helpBlock" class="help-block">{{myProfile.language}}</span>
                             </div>
@@ -44,7 +40,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button formaction="edit.html">Edit</button>
+                                <button [routerLink]="['/dashboard/edit_profile']" class="btn btn-primary">Edit</button>
                             </div>
                         </form>
                     </div>
@@ -52,6 +48,7 @@
             </div>
         </div>
     </div>
+</div>
 
 
 

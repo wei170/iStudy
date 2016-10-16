@@ -8,13 +8,13 @@ import { routing }        from './app.routing';
 
 import { AlertComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { ProfileService, AlertService, AuthenticationService, UserService } from './_services/index';
-import { LoginComponent } from './login/index';
+import { ProfileService, AlertService, AuthenticationService, UserService, CourseService, PasswordService } from './_services/index';
+import { LoginComponent, ForgotPasswordComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { DashboardComponent } from './dashboard/index';
 
-import { MyProfileComponent } from './myprofile/index';
-import { ClassRegistrationComponent } from './class_registration/index';
+import { MyProfileComponent, EditProfileComponent} from './myprofile/index';
+import { SearchCourseComponent } from './class_registration/index';
 
 @NgModule({
     imports: [
@@ -28,17 +28,21 @@ import { ClassRegistrationComponent } from './class_registration/index';
         AlertComponent,
         LoginComponent,
         RegisterComponent,
+        ForgotPasswordComponent,
         DashboardComponent,
 
         MyProfileComponent,
-        ClassRegistrationComponent
+        EditProfileComponent,
+        SearchCourseComponent,
     ],
     providers: [
         AuthGuard,
         AlertService,
         AuthenticationService,
         UserService,
-        ProfileService
+        ProfileService,
+        CourseService,
+        PasswordService
     ],
     bootstrap: [AppComponent]
 })

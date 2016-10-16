@@ -10,6 +10,7 @@ var _ = require('underscore');
 router.get('/', middleware.requireAuthentication, function(req, res) {
 
     db.profile.findById(req.user.get('id')).then(function(profile) {
+        console.log('get profile check');
         res.json(profile.toPublicJSON());
     }, function(e) {
         res.status(400).json(e);

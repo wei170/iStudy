@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
     constructor(private http: Http) { }
 
-    login(email, password) {
+    login(email: string, password: string) {
         var url = 'users/login';
         var body = {"email": email, "password": password};
         return this.http.post(url, body)
@@ -17,7 +15,6 @@ export class AuthenticationService {
                 // console.log(response.headers.get('Auth'));
                 if (user) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    console.log(response.headers.get('Auth'));
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     localStorage.setItem('token', response.headers.get('Auth'));
                 }
