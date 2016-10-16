@@ -63,4 +63,8 @@ export class SearchCourseComponent implements OnInit{
             )
         }
     }
+
+    private back() {
+        this.step = 0;
+    }
 }

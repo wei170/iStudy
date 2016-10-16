@@ -32,7 +32,7 @@
             </div>
             <div class = "form-group">
                 <button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
-                <a *ngIf="step === 2" [routerLink]="['/dashboard/class_registration']">Back</a>
+                <a *ngIf="step === 2" (click)="back()">Back</a>
             </div>
         </form>
     </div>

@@ -55,6 +55,9 @@ var SearchCourseComponent = (function () {
             });
         }
     };
+    SearchCourseComponent.prototype.back = function () {
+        this.step = 0;
+    };
     SearchCourseComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
