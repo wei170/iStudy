@@ -13,6 +13,8 @@ import { CourseService } from '../_services/index';
 export class SearchCourseComponent implements OnInit{
     private loading: boolean
     private model: any = {};
+    private step = 0;
+
     constructor(
         private router: Router,
         private alertService: AlertService,
@@ -21,7 +23,7 @@ export class SearchCourseComponent implements OnInit{
 
     ngOnInit() {}
 
-    private courseNames = [
+    private majors = [
         { value: "CS", display: "CS" },
         { value: "MGMT", display: "MGMT"},
         { value: "OBHR", display: "OBHR"},
@@ -29,17 +31,36 @@ export class SearchCourseComponent implements OnInit{
         { value: "PHYS", display: "PHYS"}
     ];
 
+    private courses = [];
+    private course: any = {};
+
     private searchCourse() {
-        this.courseService.searchCourse(this.model)
-        .subscribe(
-            data => {
-                // successfully search the course
-                this.router.navigate(['/class_registration']);
-            },
-            error => {
-                this.alertService.error(error);
-                this.loading = false;
-            }
-        )
+        if (this.step === 0) {
+            this.courseService.searchMajor(this.model.major)
+            .subscribe(
+                data => {
+                    // successfully search the course
+                    this.step = 1;
+                    console.log(JSON.stringify(data));
+                    for (var i = 0; i < data.length; i++) {
+                        this.courses.push(data[i]);
+                    }
+                },
+                error => {
+                    this.alertService.error(error);
+                }
+            )
+        } else if (this.step === 1) {
+            this.courseService.searchCourse(this.model.courseName)
+            .subscribe (
+                data => {
+                    this.step = 2;
+                    this.course = data;
+                },
+                error => {
+                    this.alertService.error(error);
+                }
+            )
+        }
     }
 }

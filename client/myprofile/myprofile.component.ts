@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService, ProfileService } from '../_services/index';
+import { UserService, ProfileService, AlertService } from '../_services/index';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
 
@@ -14,24 +14,26 @@ export class MyProfileComponent implements OnInit{
     myProfile: any = {};
 
     constructor(
-        private dashboardComponent: DashboardComponent,
+        private alertService: AlertService,
         private userService: UserService,
-        private profileService: ProfileService
+        private profileService: ProfileService,
+        private dashboardComponent: DashboardComponent
     ) {
         this.currentUser = this.dashboardComponent.currentUser;
-    }
-
-    ngOnInit() {
-        this.getProfile();
-    }
-
-    getProfile() {
         this.profileService.getProfile()
         .subscribe(
             data => {
-                this.myProfile = data;
+                this.myProfile = JSON.parse(localStorage.getItem('profile'));
+                // todo: need to update this local storage method later
+                // console.log(JSON.stringify(data));
+                // console.log(JSON.parse(localStorage.getItem('profile')));
+            },
+            error => {
+                this.alertService.error(error);
             }
         );
     }
+
+    ngOnInit() {}
 
 }

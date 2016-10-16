@@ -15,19 +15,24 @@ var CourseService = (function () {
     function CourseService(http) {
         this.http = http;
     }
-    CourseService.prototype.searchCourse = function (course) {
-        var _this = this;
+    CourseService.prototype.searchMajor = function (major) {
+        // todo: need to change later
         var url = '/course';
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.get(url, {
             headers: headers
         })
-            .map(function (res) { return _this.extractData(res); });
+            .map(function (res) { return res.json(); });
     };
-    CourseService.prototype.extractData = function (res) {
-        var body = res.json();
-        return body.data || {};
+    CourseService.prototype.searchCourse = function (courseName) {
+        var url = '/course/' + courseName;
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.get(url, {
+            headers: headers
+        })
+            .map(function (res) { return res.json(); });
     };
     CourseService = __decorate([
         core_1.Injectable(), 

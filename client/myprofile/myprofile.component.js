@@ -12,30 +12,32 @@ var core_1 = require('@angular/core');
 var index_1 = require('../_services/index');
 var dashboard_component_1 = require('../dashboard/dashboard.component');
 var MyProfileComponent = (function () {
-    function MyProfileComponent(dashboardComponent, userService, profileService) {
-        this.dashboardComponent = dashboardComponent;
+    function MyProfileComponent(alertService, userService, profileService, dashboardComponent) {
+        var _this = this;
+        this.alertService = alertService;
         this.userService = userService;
         this.profileService = profileService;
+        this.dashboardComponent = dashboardComponent;
         this.currentUser = {};
         this.myProfile = {};
         this.currentUser = this.dashboardComponent.currentUser;
-    }
-    MyProfileComponent.prototype.ngOnInit = function () {
-        this.getProfile();
-    };
-    MyProfileComponent.prototype.getProfile = function () {
-        var _this = this;
         this.profileService.getProfile()
             .subscribe(function (data) {
-            _this.myProfile = data;
+            _this.myProfile = JSON.parse(localStorage.getItem('profile'));
+            // todo: need to update this local storage method later
+            // console.log(JSON.stringify(data));
+            // console.log(JSON.parse(localStorage.getItem('profile')));
+        }, function (error) {
+            _this.alertService.error(error);
         });
-    };
+    }
+    MyProfileComponent.prototype.ngOnInit = function () { };
     MyProfileComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'myprofile.component.html'
         }), 
-        __metadata('design:paramtypes', [dashboard_component_1.DashboardComponent, index_1.UserService, index_1.ProfileService])
+        __metadata('design:paramtypes', [index_1.AlertService, index_1.UserService, index_1.ProfileService, dashboard_component_1.DashboardComponent])
     ], MyProfileComponent);
     return MyProfileComponent;
 }());

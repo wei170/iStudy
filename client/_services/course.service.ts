@@ -8,18 +8,25 @@ import { Class } from '../_models/index';
 export class CourseService {
     constructor(private http: Http) { }
 
-    searchCourse(course: any) {
+    searchMajor(major: string) {
+        // todo: need to change later
         var url = '/course';
         var headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.get(url, {
             headers: headers
         })
-        .map((res: Response) => this.extractData(res));
+        .map((res: Response) => res.json());
     }
 
-    private extractData(res: Response) {
-        let body = res.json();
-        return body.data || { };
+    searchCourse(courseName: string) {
+        var url = '/course/' + courseName;
+        var headers = new Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.get(url, {
+            headers: headers
+        })
+        .map((res: Response) => res.json());
     }
+
 }

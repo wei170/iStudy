@@ -24,7 +24,6 @@ var EditProfileComponent = (function () {
         this.currentUser = {};
         this.profile = {};
         this.model = {};
-        this.loading = false;
         this.visibilities = [
             { value: true, display: "Public" },
             { value: false, display: "Private" }
@@ -38,11 +37,10 @@ var EditProfileComponent = (function () {
         this.profileService.editProfile(this.model)
             .subscribe(function (data) {
             // successfully edit the profile
-            _this.alertService.success('Successfully edit the profile', true);
+            _this.alertService.success('Successfully edit the profile');
             _this.router.navigate(['/dashboard/myprofile']);
         }, function (error) {
             _this.alertService.error(error);
-            _this.loading = false;
         });
     };
     EditProfileComponent = __decorate([

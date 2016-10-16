@@ -18,25 +18,42 @@ var SearchCourseComponent = (function () {
         this.alertService = alertService;
         this.courseService = courseService;
         this.model = {};
-        this.courseNames = [
+        this.step = 0;
+        this.majors = [
             { value: "CS", display: "CS" },
             { value: "MGMT", display: "MGMT" },
             { value: "OBHR", display: "OBHR" },
             { value: "MATH", display: "MATH" },
             { value: "PHYS", display: "PHYS" }
         ];
+        this.courses = [];
+        this.course = {};
     }
     SearchCourseComponent.prototype.ngOnInit = function () { };
     SearchCourseComponent.prototype.searchCourse = function () {
         var _this = this;
-        this.courseService.searchCourse(this.model)
-            .subscribe(function (data) {
-            // successfully search the course
-            _this.router.navigate(['/class_registration']);
-        }, function (error) {
-            _this.alertService.error(error);
-            _this.loading = false;
-        });
+        if (this.step === 0) {
+            this.courseService.searchMajor(this.model.major)
+                .subscribe(function (data) {
+                // successfully search the course
+                _this.step = 1;
+                console.log(JSON.stringify(data));
+                for (var i = 0; i < data.length; i++) {
+                    _this.courses.push(data[i]);
+                }
+            }, function (error) {
+                _this.alertService.error(error);
+            });
+        }
+        else if (this.step === 1) {
+            this.courseService.searchCourse(this.model.courseName)
+                .subscribe(function (data) {
+                _this.step = 2;
+                _this.course = data;
+            }, function (error) {
+                _this.alertService.error(error);
+            });
+        }
     };
     SearchCourseComponent = __decorate([
         core_1.Component({

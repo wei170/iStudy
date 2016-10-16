@@ -16,7 +16,6 @@ export class EditProfileComponent implements OnInit{
     currentUser: any = {};
     profile: any = {};
     model: any = {};
-    loading = false;
 
     constructor(
         private router: Router,
@@ -37,12 +36,11 @@ export class EditProfileComponent implements OnInit{
             .subscribe (
                 data => {
                     // successfully edit the profile
-                    this.alertService.success('Successfully edit the profile', true);
+                    this.alertService.success('Successfully edit the profile');
                     this.router.navigate(['/dashboard/myprofile']);
                 },
                 error => {
                     this.alertService.error(error);
-                    this.loading = false;
                 }
             );
     }
