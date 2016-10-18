@@ -1,3 +1,4 @@
+/// <reference path="../../typings/metismenu/metismenu.d.ts" />
 /// <reference path="../../typings/jquery/jquery.d.ts" />
 
 import { Component, OnInit, ElementRef } from '@angular/core';
@@ -9,8 +10,7 @@ import { UserService } from '../_services/index';
     moduleId: module.id,
     templateUrl: 'dashboard.component.html',
     styleUrls: [
-        '/feature\ content/assets/js/morris/morris-0.4.3.min.css',
-        '/feature\ content/assets/css/custom-styles.css'
+        './custom-styles.css'
     ]
 })
 
@@ -30,12 +30,7 @@ export class DashboardComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        this.loadScript("/feature content/assets/js/jquery-1.10.2.js");
-        this.loadScript("/feature content/assets/js/bootstrap.min.js");
-        this.loadScript("/feature content/assets/js/jquery.metisMenu.js");
-        this.loadScript("/feature content/assets/js/morris/raphael-2.1.0.min.js");
-        this.loadScript("/feature content/assets/js/morris/morris.js");
-        this.loadScript("/feature content/assets/js/custom-scripts.js");
+        this.loadScript("/client/dashboard/custom-scripts.js");
     }
 
     loadScript(url: string) {

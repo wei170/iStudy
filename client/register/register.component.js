@@ -26,7 +26,7 @@ var RegisterComponent = (function () {
             .subscribe(function (data) {
             // set success message and pass true paramater to persist the message after redirecting to the login page
             _this.alertService.success('Registration successful', true);
-            _this.router.navigate(['/dashboard']);
+            _this.router.navigate(['/login']);
         }, function (error) {
             _this.alertService.error(error);
             _this.loading = false;
