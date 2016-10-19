@@ -73,7 +73,7 @@ router.post('/seeds', function (req, res) {
 /**
  * Test
  */
-router.post('/test', function (req, res) {
+router.post('/link_prof_course', function (req, res) {
 	var linkCP = function (callback, res, page) {
 		linkCourseAndProf();
 		callback(res, page);

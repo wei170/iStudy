@@ -8,7 +8,7 @@ var randomstring = require("randomstring");
 var sendemail = require(__dirname + '/../helpers/mailer_helper.js').sendEmail;
 //sign up a new user
 router.post('/', function(req, res, next) {
-    console.log('-=-=------');
+    console.log('user tries to sign up');
     var body = _.pick(req.body, 'userName', 'email', 'password');
 
     db.user.create(body).then(function(user) {
@@ -17,18 +17,17 @@ router.post('/', function(req, res, next) {
         }).then(function(profile) {
             res.json(user.toPublicJSON());
         }, function(e) {
-            res.status(400).json(e);
+            console.log("fail to create user profile");
+            res.status(400).json({err: "fail to create user profile"});
         });
     }, function(e) {
-        res.status(400).json(e);
+        console.log("fail to create account");
+        res.status(400).json({err: "fail to create account"});
     });
-
-    // console.log('heere');
-    // res.status(200).send();
 });
 
 router.post('/reset', function(req, res, next) {
-    console.log('-=-=------');
+    console.log('user tries to reset password');
     var query = req.query;
     var where = {};
 
@@ -73,9 +72,7 @@ router.post('/checkcode', function(req, res) {
             res.status(200).send();
 
         } else {
-            res.status(401).json({
-                error: 'verification code invalid!'
-            });
+            res.status(401).json({error: 'verification code invalid!'});
         }
     });
 
