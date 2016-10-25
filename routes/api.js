@@ -6,6 +6,7 @@ var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
 var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
+var Promise = require('bluebird');
 
 
 var sampleProfile = require('../models/seedProfile').p1;
@@ -58,15 +59,8 @@ router.get('/pwd/:id', function(req, res){
  * Seed init data as users, admins, courses, profs
  */
 router.post('/seeds', function (req, res) {
-	var init = function(callback, res, page){
-		insertData(insertNewUser, admins);
-		insertData(insertNewUser, seedUsers);
-		insertData(insertNewProf, seedProfs);
-		insertData(insertNewCourse, seedCourses);
-		// after inserting all the seeds data, exe this callback function
-		callback(res, page);
-	};
-	init(showPage, res, 'seed');
+	initDB()
+		.then(showPage(res, 'seed'));
 });
 
 
@@ -74,11 +68,8 @@ router.post('/seeds', function (req, res) {
  * Test
  */
 router.post('/link_prof_course', function (req, res) {
-	var linkCP = function (callback, res, page) {
-		linkCourseAndProf();
-		callback(res, page);
-	};
-	linkCP(showPage, res, 'seed');
+	linkCourseAndProf()
+		.then(showPage(res, 'seed'));
 });
 
 
@@ -108,6 +99,17 @@ router.post('/update-profile/:id', function (req, res) {
 // _  __/ / /_/ /_  / / / /__ / /_ _  / / /_/ /  / / /
 // /_/    \__,_/ /_/ /_/\___/ \__/ /_/  \____//_/ /_/
 
+
+var initDB = function(){
+	return new Promise(function(resolve, reject){
+		insertData(insertNewUser, admins)
+			.then(insertData(insertNewProf, seedProfs))
+			.then(insertData(insertNewUser, seedUsers))
+			.then(insertData(insertNewCourse, seedCourses));
+		resolve();
+	});
+}
+
 /**
  * Function used to insert data to db
  * @param insertFunction: insert function
@@ -115,10 +117,14 @@ router.post('/update-profile/:id', function (req, res) {
  */
 var insertData = function(insertFunction, data){
     if (typeof insertFunction === "function"){
-        // insert data
-        data.forEach(function (d) {
-            insertFunction(d);
-        });
+		console.log('++++++++++++++++++++++++++++++++++++++++\n');
+		return new Promise(function (resolve, reject) {
+			// insert data
+			data.forEach(function (d) {
+				insertFunction(d);
+			});
+			resolve();
+		});
     }
 };
 
@@ -129,7 +135,7 @@ var insertData = function(insertFunction, data){
  */
 var showPage = function(res, page){
     var emoji = cool();
-    res.render(page, { emoji: emoji });
+    res.status(200).render(page, { emoji: emoji });
 };
 
 /**
@@ -141,8 +147,6 @@ var insertNewUser = function (user){
 		id = user.id;
 		// init profile for new user
 		db.profile.create({user_id: id});
-	}, function (err){
-
 	});
 };
 
@@ -167,18 +171,20 @@ var insertNewCourse = function(course){
  */
 var linkCourseAndProf = function () {
 	// cs381
-	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
-		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
-			course.addProfessor(prof);
+	return new Promise(function(resolve, reject){
+		db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
+			db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
+			db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
 		});
-		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
-			course.addProfessor(prof);
-		});
-	});
-	// cs307
-	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-			course.addProfessor(prof);
+		// cs307
+		db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+			db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+				course.addProfessor(prof);
+			});
 		});
 	});
 };
