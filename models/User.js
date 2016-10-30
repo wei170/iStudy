@@ -6,12 +6,20 @@ var _ = require('underscore');
 var db = require('../db');
 
 module.exports = function(sequelize, DataTypes) {
-    var user =  sequelize.define('user', {
+    var user = sequelize.define('user', {
+
+        verificationcode: {
+            type: DataTypes.STRING(8),
+            allowNull: true,
+            defaultValue: 0,
+            unique: false
+        },
         email: {
             type: DataTypes.STRING(30),
             allowNull: false, //not optional
             unique: true, //avoid duplicate
             validate: {
+
                 //  notEmpty: true,//can't be empty string
                 isEmail: true
             }
@@ -55,10 +63,9 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'user',
         underscored: true,
-        classMethods:
-        {
-            // associate: function(db){
-            //     user.hasOne(db.profile);
+        classMethods: {
+            // associate: function(models){
+            //     user.hasOne(models.profile);
             // },
             authenticate: function(body) {
 
@@ -116,7 +123,7 @@ module.exports = function(sequelize, DataTypes) {
         instanceMethods: {
             toPublicJSON: function() {
                 var json = this.toJSON();
-                return _.pick(json, 'id', 'email', 'createAt', 'updateAt');
+                return _.pick(json, 'id', 'userName', 'email', 'createAt', 'updateAt');
             },
             //type of token to generate
             generateToken: function(type) {
@@ -147,8 +154,8 @@ module.exports = function(sequelize, DataTypes) {
                     user.email = user.email.toLowerCase();
                 }
             },
-            afterCreate: function (user, options) {
-                console.log("user created");
+            afterCreate: function(user, options) {
+                //console.log("user created");
                 //db.profile.create({user_id: user.id});
             }
         }

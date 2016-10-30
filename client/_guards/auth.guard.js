@@ -13,6 +13,7 @@ var router_1 = require('@angular/router');
 var AuthGuard = (function () {
     function AuthGuard(router) {
         this.router = router;
+        localStorage.removeItem('currentUser');
     }
     AuthGuard.prototype.canActivate = function () {
         if (localStorage.getItem('currentUser')) {

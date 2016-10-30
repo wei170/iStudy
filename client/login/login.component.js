@@ -8,18 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var index_1 = require('../_services/index');
-var ng2_page_scroll_1 = require('ng2-page-scroll');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var index_1 = require("../_services/index");
 var LoginComponent = (function () {
-    function LoginComponent(router, authenticationService, pageScroll) {
+    function LoginComponent(router, authenticationService, alertService) {
         this.router = router;
         this.authenticationService = authenticationService;
-        this.pageScroll = pageScroll;
+        this.alertService = alertService;
         this.model = {};
         this.loading = false;
-        this.error = '';
     }
     LoginComponent.prototype.ngOnInit = function () {
         // reset login status
@@ -28,26 +26,25 @@ var LoginComponent = (function () {
     LoginComponent.prototype.login = function () {
         var _this = this;
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.email, this.model.password)
-            .subscribe(function (result) {
-            if (result === true) {
-                _this.router.navigate(['/dashboard']);
-            }
-            else {
-                _this.error = 'Username or password is incorrect';
-                _this.loading = false;
-            }
+        this.authenticationService.login(this.model.email, this.model.password)
+            .subscribe(function (data) {
+            _this.router.navigate(['/dashboard']);
+        }, function (error) {
+            _this.alertService.error(error);
+            _this.loading = false;
         });
     };
-    LoginComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'login.component.html',
-            styleUrls: ['newstyle.css', 'normalize.css', 'style.css']
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.AuthenticationService, ng2_page_scroll_1.Ng2PageScrollModule])
-    ], LoginComponent);
     return LoginComponent;
 }());
+LoginComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: 'login.component.html',
+        encapsulation: core_1.ViewEncapsulation.None,
+    }),
+    __metadata("design:paramtypes", [router_1.Router,
+        index_1.AuthenticationService,
+        index_1.AlertService])
+], LoginComponent);
 exports.LoginComponent = LoginComponent;
 //# sourceMappingURL=login.component.js.map

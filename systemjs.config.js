@@ -41,7 +41,6 @@
             'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
             'ts':                         'npm:plugin-typescript@4.0.10/lib/plugin.js',
             'typescript':                 'npm:typescript@2.0.2/lib/typescript.js',
-            'ng2-page-scroll':            'npm:ng2-page-scroll'
         },
         // packages tells the system loader how to load when no filename and/or no extension
         packages: {
@@ -56,10 +55,6 @@
                 main: './index.js',
                 defaultextension: 'js'
             },
-            'ng2-page-scroll': {
-                main: 'ng2-page-scroll.js',
-                defaultExtension: 'js'
-            }
         }
     });
 })(this);

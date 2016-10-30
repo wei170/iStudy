@@ -6,7 +6,7 @@ import { AlertService, UserService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'register.component.html',
-    styleUrls: ['../login/newstyle.css', '../login/normalize.css', '../login/style.css']
+    // styleUrls: ['../login/newstyle.css', '../login/normalize.css', '../login/style.css']
 })
 
 export class RegisterComponent {
@@ -25,8 +25,7 @@ export class RegisterComponent {
                 data => {
                     // set success message and pass true paramater to persist the message after redirecting to the login page
                     this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/dashboard']);
-                    // @todo: need to change later
+                    this.router.navigate(['/login']);
                 },
                 error => {
                     this.alertService.error(error);

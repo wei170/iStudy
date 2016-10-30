@@ -26,8 +26,7 @@ var RegisterComponent = (function () {
             .subscribe(function (data) {
             // set success message and pass true paramater to persist the message after redirecting to the login page
             _this.alertService.success('Registration successful', true);
-            _this.router.navigate(['/dashboard']);
-            // @todo: need to change later
+            _this.router.navigate(['/login']);
         }, function (error) {
             _this.alertService.error(error);
             _this.loading = false;
@@ -37,7 +36,6 @@ var RegisterComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'register.component.html',
-            styleUrls: ['../login/newstyle.css', '../login/normalize.css', '../login/style.css']
         }), 
         __metadata('design:paramtypes', [router_1.Router, index_1.UserService, index_1.AlertService])
     ], RegisterComponent);

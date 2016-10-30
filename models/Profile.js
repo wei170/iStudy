@@ -1,9 +1,10 @@
 'use strict';
 var db = require('../db');
 var user = require('./User');
-
+var _ = require('underscore');
 module.exports = function(sequelize, DataTypes){
     var profile =  sequelize.define('profile', {
+    	
         major: {
             type: DataTypes.STRING,
             defaultValue: 'Unknown'
@@ -41,10 +42,20 @@ module.exports = function(sequelize, DataTypes){
         underscored: true,
         timestamps: false,
         classMethods:{
-            // associate: function(){
-            //     profile.belongsTo(user);
+            // associate: function(models){
+            //     profile.belongsTo(models.user);
             // }
         },
+
+        instanceMethods: {
+            toPublicJSON: function() {
+                var json = this.toJSON();
+                return _.pick(json, 'major', 'language', 'birthday', 'hobby', 'visibility');
+            }
+
+
+        },
+
         setterMethods: {
             classes: function(value) {
                 this.setDataValue('classes', JSON.stringify(value));
@@ -60,7 +71,10 @@ module.exports = function(sequelize, DataTypes){
             },
             contributions: function(value){
                 this.setDataValue('contributions', JSON.stringify(value));
-            }
+            },
+			hobby: function (value) {
+				this.setDataValue('hobby', JSON.stringify(value));
+			}
         },
         getterMethods: {
             classes: function () {
@@ -92,7 +106,13 @@ module.exports = function(sequelize, DataTypes){
                 if (value){
                     return JSON.parse(value);
                 }
-            }
+            },
+			hobby: function () {
+				var value = this.getDataValue('hobby');
+				if (value){
+					return JSON.parse(value);
+				}
+			}
         }
     });
     return profile;

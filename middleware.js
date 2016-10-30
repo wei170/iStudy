@@ -4,11 +4,12 @@ module.exports = function(db) {
             var token = req.get('Auth');
             db.user.findByToken(token).then(function(user) {
                 req.user = user;
+                console.log('Auth ok');
                 next();
             }, function() {
+                console.log('Auth fail');
                 res.status(401).send();
             });
-
         }
     };
 

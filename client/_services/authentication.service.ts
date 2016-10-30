@@ -1,42 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
-    public token: string;
+    constructor(private http: Http) { }
 
-    constructor(private http: Http) {
-        // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
+    login(email: string, password: string) {
+        var url = 'users/login';
+        var body = {"email": email, "password": password};
+        return this.http.post(url, body)
+            .map((response: Response) => {
+                // login successful if there's a jwt token in the response
+                let user = response.json();
+                // console.log(response.headers.get('Auth'));
+                if (user) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('token', response.headers.get('Auth'));
+                }
+            });
     }
 
-    login(username, email, password): Observable<boolean> {
-        return this.http.post('/api/authenticate', JSON.stringify({ username: username, email: email, password: password }))
-        .map((response: Response) => {
-            // login successful if there's a jwt token in the response
-            let token = response.json() && response.json().token;
-            if (token) {
-                // set token property
-                this.token = token;
-
-                // store username and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
-                // return true to indicate successful login
-                return true;
-            } else {
-                // return false to indicate failed login
-                return false;
-            }
-        });
-    }
-
-    logout(): void {
-        // clear token remove user from local storage to log user out
-        this.token = null;
+    logout() {
+        // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
     }
 }

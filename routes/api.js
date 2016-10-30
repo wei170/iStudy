@@ -4,13 +4,15 @@ var cool = require('cool-ascii-faces');
 var app = require('../app');
 var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
+var seedProfs = require('../models/seedProfessor');
+var seedCourses = require('../models/seedCourse');
+
+
 var sampleProfile = require('../models/seedProfile').p1;
 
 var router = express.Router();
-var id;
 
 /* Run Api Scripts*/
-
 
 // __  ____/__  ____/__  __/
 // _  / __ __  __/  __  /
@@ -29,10 +31,20 @@ router.get('/user-profile/:id', function(req, res){
     db.profile.findOne({where: {user_id: req.params.id}}).then(function(profile){
       if (profile){
           res.json(profile);
+		  console.log(profile.getDataValue('hobby'));
+		  console.log(db.profile.getterMethods.hobby);
       }else {
           res.send('The profile does not exist!');
       }
    });
+});
+
+
+
+router.get('/pwd/:id', function(req, res){
+	db.user.findOne({where: {id: req.params.id}}).then(function(user){
+		console.log(user.password);
+	});
 });
 
 
@@ -43,34 +55,51 @@ router.get('/user-profile/:id', function(req, res){
 // /_/
 
 /**
- * Insert Admins to db
- */
-router.post('/admins', function (req, res) {
-    insertData(insertNewUser, admins, showPage, res, 'admin');
-});
-
-/**
- * Seed database
+ * Seed init data as users, admins, courses, profs
  */
 router.post('/seeds', function (req, res) {
-    insertData(insertNewUser, seedUsers, showPage, res, 'seed');
+	var init = function(callback, res, page){
+		insertData(insertNewUser, admins);
+		insertData(insertNewUser, seedUsers);
+		insertData(insertNewProf, seedProfs);
+		insertData(insertNewCourse, seedCourses);
+		// after inserting all the seeds data, exe this callback function
+		callback(res, page);
+	};
+	init(showPage, res, 'seed');
 });
+
+
+/**
+ * Test
+ */
+router.post('/link_prof_course', function (req, res) {
+	var linkCP = function (callback, res, page) {
+		linkCourseAndProf();
+		callback(res, page);
+	};
+	linkCP(showPage, res, 'seed');
+});
+
+
+
 
 /**
  * Update a user's profile
  */
 router.post('/update-profile/:id', function (req, res) {
-   db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
-       if (profile){
-           profile.updateAttributes(sampleProfile).then(function () {
-               res.json(profile);
-           });
-       }
-       else {
-           res.send('The profile does not exist!');
-       }
-   });
+	db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
+		if (profile){
+			profile.updateAttributes(sampleProfile).then(function (profile) {
+				res.json(profile);
+			});
+		}
+		else {
+			res.send('The profile does not exist!');
+		}
+	});
 });
+
 
 //TODO: parse attributes with multiple values in Profile
 
@@ -83,18 +112,13 @@ router.post('/update-profile/:id', function (req, res) {
  * Function used to insert data to db
  * @param insertFunction: insert function
  * @param data: chunk of data to be inserted
- * @param callback: callback function
- * @param res: response
- * @param page: html source page name
  */
-var insertData = function(insertFunction, data, callback, res, page){
-    if (typeof insertFunction === "function" && typeof callback === "function"){
+var insertData = function(insertFunction, data){
+    if (typeof insertFunction === "function"){
         // insert data
         data.forEach(function (d) {
             insertFunction(d);
         });
-        // show page
-        callback(res, page);
     }
 };
 
@@ -113,11 +137,50 @@ var showPage = function(res, page){
  * @param user: user to be inserted
  */
 var insertNewUser = function (user){
-    db.user.create(user).then(function (user) {
-        id = user.id;
-        // init profile for new user
-        db.profile.create({user_id: id});
-    })
+	db.user.create(user).then(function (user) {
+		id = user.id;
+		// init profile for new user
+		db.profile.create({user_id: id});
+	}, function (err){
+
+	});
+};
+
+/**
+ * Function used to insert a new prof to db
+ * @param prof: prof to be inserted
+ */
+var insertNewProf = function(prof){
+	db.professor.create(prof).then(function(){});
+};
+
+/**
+ * Function used to insert new course to db
+ * @param course: course to be inserted
+ */
+var insertNewCourse = function(course){
+	db.course.create(course).then(function(){});
+};
+
+/**
+ * Function used to link course with professors
+ */
+var linkCourseAndProf = function () {
+	// cs381
+	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
+		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
+			course.addProfessor(prof);
+		});
+		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
+			course.addProfessor(prof);
+		});
+	});
+	// cs307
+	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
+		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
+			course.addProfessor(prof);
+		});
+	});
 };
 
 module.exports = router;
