@@ -53,6 +53,7 @@
     "concurrently": "^3.0.0",
     "metismenu": "^2.5.2",
     "node-sass": "~3.10.1",
+    "rmp-api": "^1.2.5",
     "typescript": "^2.0.3",
     "typings": "^1.4.0"
   },

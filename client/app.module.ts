@@ -42,7 +42,7 @@ import { SearchCourseComponent } from './class_registration/index';
         UserService,
         ProfileService,
         CourseService,
-        PasswordService
+        PasswordService,
     ],
     bootstrap: [AppComponent]
 })
