@@ -9,37 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var RMP = require("rmp-api");
+var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var RMPService = (function () {
-    function RMPService(rmp) {
-        this.rmp = rmp;
+    function RMPService(http) {
+        this.http = http;
     }
     RMPService.prototype.getProfessorInfo = function (name) {
-        var callback = function (professor) {
-            if (professor === null) {
-                console.log("No professor found.");
-                return;
-            }
-            console.log("Name: " + professor.fname + " " + professor.lname);
-            console.log("University: " + professor.university);
-            console.log("Quality: " + professor.quality);
-            console.log("Easiness: " + professor.easiness);
-            console.log("Helpfulness: " + professor.help);
-            console.log("Average Grade: " + professor.grade);
-            console.log("Chili: " + professor.chili);
-            console.log("URL: " + professor.url);
-            console.log("First comment: " + professor.comments[0]);
+        var rmp_url = 'https://api.morph.io/chrisguags/ratemyprofessors/data.json';
+        var params = {
+            // Keep this key secret!
+            key: 'xABz9pgTrRX6JVP6fGfI',
+            query: "select * from 'data' where College = 'Purdue' and Name = '" + name + "'"
         };
-        this.rmp.get(name, callback);
-        return callback;
+        return this.http.get(rmp_url + '?' + $.param(params)).map(function (response) { return response.json(); });
     };
     return RMPService;
 }());
 RMPService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof RMP !== "undefined" && RMP) === "function" && _a || Object])
+    __metadata("design:paramtypes", [http_1.Http])
 ], RMPService);
 exports.RMPService = RMPService;
-var _a;
 //# sourceMappingURL=rmp.service.js.map

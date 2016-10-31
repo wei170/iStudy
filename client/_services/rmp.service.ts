@@ -1,28 +1,18 @@
 import { Injectable } from '@angular/core';
-import * as RMP from 'rmp-api';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class RMPService {
-    constructor( private rmp: RMP ) {}
+    constructor( private http: Http) {}
 
     getProfessorInfo(name: string) {
-        var callback = function(professor: any) {
-            if (professor === null) {
-                console.log("No professor found.");
-                return;
-            }
-            console.log("Name: " + professor.fname + " " + professor.lname);
-            console.log("University: "+ professor.university);
-            console.log("Quality: " + professor.quality);
-            console.log("Easiness: " + professor.easiness);
-            console.log("Helpfulness: " + professor.help);
-            console.log("Average Grade: " + professor.grade);
-            console.log("Chili: " + professor.chili);
-            console.log("URL: " + professor.url);
-            console.log("First comment: " + professor.comments[0]);
+        var rmp_url = 'https://api.morph.io/chrisguags/ratemyprofessors/data.json';
+        var params = {
+            // Keep this key secret!
+            key: 'xABz9pgTrRX6JVP6fGfI',
+            query: "select * from 'data' where College = 'Purdue' and Name = '" + name + "'"
         };
-        this.rmp.get(name, callback);
-        return callback;
+        return this.http.get(rmp_url + '?' + $.param(params)).map((response: Response) => response.json());
     }
 }
