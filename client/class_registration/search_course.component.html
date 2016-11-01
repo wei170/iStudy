@@ -25,20 +25,10 @@
                     </option>
                 </select>
             </div>
-            <div *ngIf="step === 2">
-                <h3>Sections:</h3>
-                <ul>
-                    <li *ngFor="let section of sections">
-                        <!-- Need to update all instructors, professors and TAs, in the future-->
-                        {{section.Meetings[0].Instructors[0].Name}}
-                        <!-- <a (click)=''> -->
-                        {{section.Meetings[0].Instructors[0].Email}}
-                    </li>
-                </ul>
-            </div>
+            <courseDetails *ngIf="step === 2" [sections]="sections"></courseDetails>
             <div class = "form-group">
                 <button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
-                <a *ngIf="step === 2" (click)="back()">Back</a>
+                <a *ngIf="step <= 2 && step > 0" (click)="back()">Back</a>
             </div>
         </form>
     </div>

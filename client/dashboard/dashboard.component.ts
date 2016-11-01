@@ -1,5 +1,4 @@
 /// <reference path="../../typings/metismenu/metismenu.d.ts" />
-/// <reference path="../../typings/jquery/jquery.d.ts" />
 
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +9,7 @@ import { UserService } from '../_services/index';
     moduleId: module.id,
     templateUrl: 'dashboard.component.html',
     styleUrls: [
-        './custom-styles.css'
+        'custom-styles.css'
     ]
 })
 

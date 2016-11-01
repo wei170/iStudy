@@ -6,6 +6,9 @@ import { AlertService, AuthenticationService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'login.component.html',
+    styleUrls: [
+        './login.component.css'
+    ],
     encapsulation: ViewEncapsulation.None,
 })
 

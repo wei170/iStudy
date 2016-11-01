@@ -44,9 +44,14 @@ var SearchCourseComponent = (function () {
         else if (this.step === 1) {
             this.courseService.getCoursesDetails(this.model.courseId).subscribe(function (data) {
                 _this.step = 2;
-                for (var i = 0; i < data.value[0].Sections.length; i++) {
-                    _this.sections.push(data.value[0].Sections[i]);
+                for (var i = 0; i < data.value.length; i++) {
+                    for (var j = 0; j < data.value[i].Sections.length; j++) {
+                        if (data.value[i].Sections[j].Type === "Lecture") {
+                            _this.sections.push(data.value[i].Sections[j]);
+                        }
+                    }
                 }
+                console.log(_this.sections);
             }, function (error) {
                 _this.alertService.error(error);
             });
@@ -58,7 +63,10 @@ var SearchCourseComponent = (function () {
     // }
     SearchCourseComponent.prototype.back = function () {
         this.step--;
-        this.courses = [];
+        if (this.step === 0)
+            this.courses = [];
+        else if (this.step === 1)
+            this.sections = [];
     };
     return SearchCourseComponent;
 }());

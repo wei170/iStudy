@@ -52,9 +52,14 @@ export class SearchCourseComponent implements OnInit{
             this.courseService.getCoursesDetails(this.model.courseId).subscribe (
                 data => {
                     this.step = 2;
-                    for (var i = 0; i < data.value[0].Sections.length; i++) {
-                        this.sections.push(data.value[0].Sections[i]);
+                    for (var i = 0; i < data.value.length; i++) {
+                        for (var j = 0; j < data.value[i].Sections.length; j++) {
+                            if (data.value[i].Sections[j].Type === "Lecture") {
+                                this.sections.push(data.value[i].Sections[j]);
+                            }
+                        }
                     }
+                    console.log(this.sections);
                 },
                 error => {
                     this.alertService.error(error);
@@ -70,6 +75,8 @@ export class SearchCourseComponent implements OnInit{
 
     private back() {
         this.step--;
-        this.courses = [];
+        if (this.step === 0) this.courses = [];
+        else if (this.step === 1) this.sections = [];
+
     }
 }

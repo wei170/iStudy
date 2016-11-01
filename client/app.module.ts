@@ -14,7 +14,7 @@ import { RegisterComponent } from './register/index';
 import { DashboardComponent } from './dashboard/index';
 
 import { MyProfileComponent, EditProfileComponent} from './myprofile/index';
-import { SearchCourseComponent } from './class_registration/index';
+import { SearchCourseComponent, CourseDetailsComponent } from './class_registration/index';
 
 @NgModule({
     imports: [
@@ -34,6 +34,7 @@ import { SearchCourseComponent } from './class_registration/index';
         MyProfileComponent,
         EditProfileComponent,
         SearchCourseComponent,
+        CourseDetailsComponent
     ],
     providers: [
         AuthGuard,
@@ -42,7 +43,7 @@ import { SearchCourseComponent } from './class_registration/index';
         UserService,
         ProfileService,
         CourseService,
-        PasswordService,
+        PasswordService
     ],
     bootstrap: [AppComponent]
 })

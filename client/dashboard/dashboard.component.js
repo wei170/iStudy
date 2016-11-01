@@ -1,5 +1,4 @@
 /// <reference path="../../typings/metismenu/metismenu.d.ts" />
-/// <reference path="../../typings/jquery/jquery.d.ts" />
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -38,7 +37,7 @@ DashboardComponent = __decorate([
         moduleId: module.id,
         templateUrl: 'dashboard.component.html',
         styleUrls: [
-            './custom-styles.css'
+            'custom-styles.css'
         ]
     }),
     __metadata("design:paramtypes", [index_1.UserService,

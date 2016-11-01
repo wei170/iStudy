@@ -1,0 +1,47 @@
+<div id="page-wrapper">
+    <div id="page-inner">
+
+        <div class="row">
+            <div class="col-md-4 col-sm-6" *ngFor="let section of sections; let i = index">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Section {{i+1}}
+                    </div>
+                    <div class="panel-body">
+                        <p>Type: {{section.Type}}</p>
+                        <p>Time: {{section.Meetings[0].DaysOfWeek}}</p>
+                        <p>Professor: {{section.Meetings[0].Instructors[0].Name}} </p>
+                        <p>Email: {{section.Meetings[0].Instructors[0].Email}}</p>
+                        <button class = "submit"> Join this class</button>
+                    </div>
+
+                    <div class="panel-footer">
+                        Panel Footer
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Course Description
+            </div>
+            <div class="panel-body">
+                <label>hahahahahh</label>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Add Your Comments
+            </div>
+            <div class="panel-body">
+                <input type="text" class="textbox" size="50%" height="100">
+                <br>
+                <button class = "submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -45,6 +45,7 @@ AppModule = __decorate([
             index_7.MyProfileComponent,
             index_7.EditProfileComponent,
             index_8.SearchCourseComponent,
+            index_8.CourseDetailsComponent
         ],
         providers: [
             index_2.AuthGuard,
@@ -53,7 +54,7 @@ AppModule = __decorate([
             index_3.UserService,
             index_3.ProfileService,
             index_3.CourseService,
-            index_3.PasswordService,
+            index_3.PasswordService
         ],
         bootstrap: [app_component_1.AppComponent]
     }),

@@ -8,8 +8,7 @@ import { MyProfileComponent } from './index';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'editProfile.component.html',
-    providers: [MyProfileComponent]
+    templateUrl: 'editProfile.component.html'
 })
 
 export class EditProfileComponent implements OnInit{

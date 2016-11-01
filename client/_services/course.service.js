@@ -36,7 +36,8 @@ var CourseService = (function () {
         var midUrl = '%20and%20Term/TermId%20eq%20';
         var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
         var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
-        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+        return this.http.get(detailedUrl)
+            .map(function (res) { return res.json(); });
     };
     return CourseService;
 }());
