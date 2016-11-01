@@ -51,8 +51,8 @@ db.course.belongsToMany(db.professor, {through: db.course_professor});
 db.professor.belongsToMany(db.course, {through: db.course_professor});
 
 // one student can join different courses, one course can have different students
-db.profile.belongsToMany(db.course_professor, {as: 'Course', through: 'course_student'});
-db.course_professor.belongsToMany(db.profile, {as: 'Student', through: 'course_student'});
+db.user.belongsToMany(db.course_professor, {as: 'courses', through: 'course_student'});
+db.course_professor.belongsToMany(db.user, {as: 'students', through: 'course_student'});
 
 
 // test config relationship

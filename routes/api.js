@@ -98,21 +98,25 @@ router.post('/update-profile/:id', function (req, res) {
  **************************************************/
 router.post('/join/', function (req, res) {
 	var c_id = 1;
-	var p_id = 1;
-	db.profile.findOne({where: {id: p_id}}).then(function (profile) {
-		if (profile){
+	var u_id = 1;
+	db.user.findOne({where: {id: u_id}}).then(function (user) {
+		if (user){
 			db.course_professor.findOne({where: {id: c_id}}).then(function (course) {
 				if (course){
 					// if a profile exists, the user or the student exists
-					course.addStudent(profile);
+					course.addStudent(user).then(function () {
+						res.send({res: "joined class successfully"});
+					});
 				}
 				else {
 					console.log('Course Not Found :(');
+					res.send({err: "Course Not Found"});
 				}
 			});
 		}
 		else {
-			console.log('Profile Not Found :(');
+			console.log('User Not Found :(');
+			res.send({err: "User Not Found"});
 		}
 	});
 });

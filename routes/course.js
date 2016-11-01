@@ -37,4 +37,48 @@ router.post('/', middleware.requireAuthentication, function(req, res){
 	});
 });
 
+/**************************************************
+ * 			Get All Classmates
+ **************************************************/
+router.post('/students', middleware.requireAuthentication, function (req, res) {
+	var body = _.pick(req.body, 'course', 'professor');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			//TODO: two prof with same name might cause problem
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (c_u) {
+							if (c_u){
+								// find course by a specific professor
+								c_u.getStudents().then(function (students) {
+									if (students){
+										res.json(students);
+									}
+									else {
+										console.log('No students joined this course.');
+										res.send({err: "No stduents joined this course"});
+									}
+								});
+							}
+							else {
+								console.log('No such course exits!');
+								res.send({err: "No such course :("});
+							}
+						});
+				}
+				else {
+					console.log('Professor Not Found');
+					res.send({err: "Professor Not Found :("});
+				}
+			});
+		}
+		else {
+			console.log('Course Not Found');
+			res.send({err: "Course Not Found :("});
+		}
+	});
+});
+
+
 module.exports = router;
