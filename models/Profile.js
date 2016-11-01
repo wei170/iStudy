@@ -25,9 +25,6 @@ module.exports = function(sequelize, DataTypes){
             allowNull: false,
             defaultValue: true
         },
-        classes:{
-            type: DataTypes.TEXT
-        },
         posts: {
             type: DataTypes.TEXT
         },
@@ -57,9 +54,6 @@ module.exports = function(sequelize, DataTypes){
         },
 
         setterMethods: {
-            classes: function(value) {
-                this.setDataValue('classes', JSON.stringify(value));
-            },
             language: function(value){
                 this.setDataValue('language', JSON.stringify(value));
             },
@@ -77,12 +71,6 @@ module.exports = function(sequelize, DataTypes){
 			}
         },
         getterMethods: {
-            classes: function () {
-                var value = this.getDataValue('classes');
-                if (value){
-                    return JSON.parse(value);
-                }
-            },
             language: function () {
                 var value = this.getDataValue('language');
                 if (value){

@@ -21,6 +21,7 @@ router.post('/', function(req, res, next) {
             res.status(400).json({err: "fail to create user profile"});
         });
     }, function(e) {
+		//TODO: need to tell if it's invalid userName or email
         console.log("fail to create account");
         res.status(400).json({err: "fail to create account"});
     });

@@ -6,6 +6,7 @@ var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
 var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
+var seedCourseProssor = require('../models/seedCourseProfessor');
 var Promise = require('bluebird');
 
 
@@ -13,21 +14,23 @@ var sampleProfile = require('../models/seedProfile').p1;
 
 var router = express.Router();
 
-/* Run Api Scripts*/
-
 // __  ____/__  ____/__  __/
 // _  / __ __  __/  __  /
 // / /_/ / _  /___  _  /
 // \____/  /_____/  /_/
+
+/**************************************************
+ *				Get All Users
+ **************************************************/
 router.get('/users', function (req, res) {
     db.user.findAll({ where: {id: {gt: 0}}}).then(function (user) {
         res.json(user);
     });
 });
 
-/**
- * Get user's profile by user_id
- */
+/**************************************************
+ *			Get user's profile by user_id
+ **************************************************/
 router.get('/user-profile/:id', function(req, res){
     db.profile.findOne({where: {user_id: req.params.id}}).then(function(profile){
       if (profile){
@@ -40,8 +43,9 @@ router.get('/user-profile/:id', function(req, res){
    });
 });
 
-
-
+/**************************************************
+ *			Get user's pwd by user_id
+ **************************************************/
 router.get('/pwd/:id', function(req, res){
 	db.user.findOne({where: {id: req.params.id}}).then(function(user){
 		console.log(user.password);
@@ -55,29 +59,27 @@ router.get('/pwd/:id', function(req, res){
 // _  .___/\____//____/ \__/
 // /_/
 
-/**
+/**************************************************
  * Seed init data as users, admins, courses, profs
- */
+ **************************************************/
 router.post('/seeds', function (req, res) {
 	initDB()
 		.then(showPage(res, 'seed'));
 });
 
 
-/**
- * Test
- */
+/**************************************************
+ * 			Link Professor with Course
+ **************************************************/
 router.post('/link_prof_course', function (req, res) {
 	linkCourseAndProf()
 		.then(showPage(res, 'seed'));
 });
 
 
-
-
-/**
- * Update a user's profile
- */
+/**************************************************
+ * 				Update a user's profile
+ **************************************************/
 router.post('/update-profile/:id', function (req, res) {
 	db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
 		if (profile){
@@ -91,6 +93,30 @@ router.post('/update-profile/:id', function (req, res) {
 	});
 });
 
+/**************************************************
+ * 				User Join a Class
+ **************************************************/
+router.post('/join/', function (req, res) {
+	var c_id = 1;
+	var p_id = 1;
+	db.profile.findOne({where: {id: p_id}}).then(function (profile) {
+		if (profile){
+			db.course_professor.findOne({where: {id: c_id}}).then(function (course) {
+				if (course){
+					// if a profile exists, the user or the student exists
+					course.addStudent(profile);
+				}
+				else {
+					console.log('Course Not Found :(');
+				}
+			});
+		}
+		else {
+			console.log('Profile Not Found :(');
+		}
+	});
+});
+
 
 //TODO: parse attributes with multiple values in Profile
 
@@ -99,7 +125,9 @@ router.post('/update-profile/:id', function (req, res) {
 // _  __/ / /_/ /_  / / / /__ / /_ _  / / /_/ /  / / /
 // /_/    \__,_/ /_/ /_/\___/ \__/ /_/  \____//_/ /_/
 
-
+/**
+ * Seed data into database, return a promise
+ */
 var initDB = function(){
 	return new Promise(function(resolve, reject){
 		insertData(insertNewUser, admins)
@@ -108,16 +136,16 @@ var initDB = function(){
 			.then(insertData(insertNewCourse, seedCourses));
 		resolve();
 	});
-}
+};
 
 /**
  * Function used to insert data to db
  * @param insertFunction: insert function
  * @param data: chunk of data to be inserted
+ * @return a promise
  */
 var insertData = function(insertFunction, data){
     if (typeof insertFunction === "function"){
-		console.log('++++++++++++++++++++++++++++++++++++++++\n');
 		return new Promise(function (resolve, reject) {
 			// insert data
 			data.forEach(function (d) {
@@ -125,7 +153,9 @@ var insertData = function(insertFunction, data){
 			});
 			resolve();
 		});
-    }
+    }else {
+		console.log('The first param passed in is not function');
+	}
 };
 
 /**
@@ -168,22 +198,27 @@ var insertNewCourse = function(course){
 
 /**
  * Function used to link course with professors
+ * Return a promise
  */
 var linkCourseAndProf = function () {
-	// cs381
 	return new Promise(function(resolve, reject){
-		db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
-			db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
-				course.addProfessor(prof);
-			});
-			db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
-				course.addProfessor(prof);
-			});
-		});
-		// cs307
-		db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-			db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-				course.addProfessor(prof);
+		seedCourseProssor.map(function (linking) {
+			var course = linking.course;
+			var professor = linking.professor;
+			db.course.findOne({where: {name: course}}).then(function (course) {
+				if (course){
+					db.professor.findOne({where: {name: professor}}).then(function (prof) {
+						if (prof){
+							course.addProfessor(prof);
+						}
+						else {
+							console.log('Professor Not Found :(');
+						}
+					});
+				}
+				else {
+					console.log('Course Not Found :(');
+				}
 			});
 		});
 	});
