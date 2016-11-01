@@ -13,7 +13,7 @@ export class UserService {
         return this.http.get('/users/' + id).map((response: Response) => response.json());
     }
 
-    create(user) {
+    create(user: any) {
         return this.http.post('/users/', user).map((response: Response) => response.json());
     }
 

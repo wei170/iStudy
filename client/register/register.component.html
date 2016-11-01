@@ -43,8 +43,9 @@
                         <!--<div class="col-md-6">
                             <div class="form-group">
                                 <label for="passwordr">Repeat Password</label>
-                                <input type="password" class="form-control" required="" name="passwordr" value="">
+                                <input type="password" class="form-control" name="passwordr" [(ngModel)]="model.passwordr" #passwordr="ngModel" required />
                                 <span class="help-block">Type the password again. Passwords must match.</span>
+                                <div *ngIf="f.submitted && !passwordr.valid" class="help-block">Password is not matching</div>
                             </div>
                         </div>-->
                     </div>
