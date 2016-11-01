@@ -30,15 +30,15 @@ db.user = sequelize.import(__dirname + '/models/User');
 db.professor = sequelize.import(__dirname + '/models/Professor');
 db.course = sequelize.import(__dirname + '/models/Course');
 
+
 // config relationships
-
-// relationship between profile and user
-db.user.hasOne(db.profile); // Will add user_id to profile model
-db.profile.belongsTo(db.user, {foreignKey: 'user_id'});
-
+db.user.hasOne(db.profile);
+db.profile.belongsTo(db.user);
 db.course.belongsToMany(db.professor, {through: 'course_professor'});
 db.professor.belongsToMany(db.course, {through: 'course_professor'});
 
+
+// test config relationship
 console.log('User associations: ', Object.keys(db.user.associations));
 console.log('Profile associations: ', Object.keys(db.profile.associations));
 console.log('Course associations: ', Object.keys(db.course.associations));
@@ -48,11 +48,11 @@ db.sequelize = sequelize;
 
 // init all the tables
 if (debug){
-	db.sequelize
-		.query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
-		.then(function(results) {
-			db.sequelize.sync({force: true});
-		});
+    db.sequelize
+        .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
+        .then(function(results) {
+            db.sequelize.sync({force: true});
+        });
     // db.sequelize.sync({force: true}).then();
 }
 else {

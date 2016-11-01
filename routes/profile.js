@@ -12,7 +12,7 @@ router.get('/', middleware.requireAuthentication, function(req, res) {
     db.profile.findOne({where: {user_id: req.user.get('id')}}).then(function(profile) {
         res.json(profile.toPublicJSON());
     }, function(e) {
-        res.status(400).json(e);
+        res.status(400).json({err: "fail to get profile"});
     });
 });
 
@@ -49,13 +49,15 @@ router.put('/', middleware.requireAuthentication, function(req, res) {
             profile.update(attributes).then(function(profile) {
                 res.json(profile.toPublicJSON());
             }, function(e) {
+                console.log("fail to update profile");
                 res.status(400).json(e);
             });
         } else {
-            res.status(404).send();
+            console.log("profile does not exist!");
+            res.status(404).send({err: "profile does not exist"});
         }
     }, function() {
-        res.status(500).send();
+        res.status(500).send({err: "Something broke!"});
     });
 
 });
