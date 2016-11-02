@@ -9,6 +9,9 @@ var _ = require('underscore');
  *  GET all course names along with their descriptions
  ******************************************************/
 router.get('/', middleware.requireAuthentication,  function(req, res){
+	/**
+	 * JSON Format: NULL
+	 */
 	db.course.findAll({attributes: ['name', 'description']}).then(function (course) {
 		res.json(course);
 	}, function(e){
@@ -21,6 +24,12 @@ router.get('/', middleware.requireAuthentication,  function(req, res){
  * 			Get Relevant Professors
  **************************************************/
 router.post('/', middleware.requireAuthentication, function(req, res){
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course_name": "..."
+	 * }
+	 */
 	var body = _.pick(req.body, 'course_name');
 	db.course.findOne({where: {"name": body.course_name}}).then(function(course){
 		if (course){
@@ -41,10 +50,18 @@ router.post('/', middleware.requireAuthentication, function(req, res){
  * 			Get All Classmates
  **************************************************/
 router.post('/students', middleware.requireAuthentication, function (req, res) {
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "course name"
+	 * 	"professor": "professor name"
+	 * }
+	 */
 	var body = _.pick(req.body, 'course', 'professor');
 	db.course.findOne({where: {name: body.course}}).then(function (course) {
 		if (course){
 			//TODO: two prof with same name might cause problem
+			// *Note: course name set to be unique
 			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
 				if (professor){
 					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
