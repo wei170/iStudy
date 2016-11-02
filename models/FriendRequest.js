@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			status: {
 				type: DataTypes.INTEGER,
-				defaultValue: -1 // unchecked request
+				defaultValue: 0 // unchecked request
 			}
 		}, {
 			tableName: 'friend_request',

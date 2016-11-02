@@ -47,7 +47,63 @@ router.post('/', middleware.requireAuthentication, function(req, res){
 });
 
 /**************************************************
- * 			Get All Classmates
+ * 				Join A Class
+ **************************************************/
+router.post('/join', middleware.requireAuthentication, function (req, res) {
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "...",
+	 * 	"userName": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'course', 'professor', 'userName');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			//TODO: two prof with same name might cause problem
+			// *Note: course name set to be unique
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (c_u) {
+							if (c_u){
+								// first find the actual course the student wants to join
+								db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+									if (user){
+										// add user as a student to the course
+										user.addCourse(c_u);
+										console.log('user ', body.userName, ' has joined the class ', body.course, ' by ', body.professor);
+										res.status(200).send({res: "Join the class successfully"});
+									}
+									else {
+										console.log('No such user exits!');
+										res.send({err: "No such user :("});
+									}
+								});
+							}else{
+								console.log('No such course exits!');
+								res.send({err: "No such course :("});
+							}
+						});
+				}
+				else {
+					console.log('Professor Not Found');
+					res.send({err: "Professor Not Found :("});
+				}
+			});
+		}
+		else{
+			console.log('Course Not Found');
+			res.send({err: "Course Not Found :("});
+		}
+	});
+});
+
+
+
+/**************************************************
+ * 			Get All Students
  **************************************************/
 router.post('/students', middleware.requireAuthentication, function (req, res) {
 	/**

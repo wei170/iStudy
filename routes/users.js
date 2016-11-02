@@ -6,7 +6,9 @@ var db = require(__dirname + '/../db.js');
 var _ = require('underscore');
 var randomstring = require("randomstring");
 var sendemail = require(__dirname + '/../helpers/mailer_helper.js').sendEmail;
+
 //sign up a new user
+//TODO: add JSON format for each request
 router.post('/', function(req, res, next) {
     console.log('user tries to sign up');
     var body = _.pick(req.body, 'userName', 'email', 'password');
@@ -21,7 +23,7 @@ router.post('/', function(req, res, next) {
             res.status(400).json({err: "fail to create user profile"});
         });
     }, function(e) {
-		//TODO: need to tell if it's invalid userName or email
+		//TODO: need to tell if it's invalid userName or email by frontend send request check if userName exists
         console.log("fail to create account");
         res.status(400).json({err: "fail to create account"});
     });
