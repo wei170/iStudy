@@ -7,6 +7,7 @@
                 </div>
                 <div class="panel-body">
                     <form name="form" class="form-horizontal" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+
                         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
                             <label for="email" class="col-sm-3 control-label">
                                 Email
@@ -18,6 +19,7 @@
                                 email is required
                             </div>
                         </div>
+
                         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
                             <label for="password" class="col-sm-3 control-label">
                                 Password
@@ -29,6 +31,7 @@
                                 Password is required
                             </div>
                         </div>
+
                         <div class="form-group last">
                             <div class="col-sm-offset-3 col-sm-9">
                                 <button [disabled]="loading" class="btn btn-success btn-sm">
@@ -40,6 +43,7 @@
                                 </button>
                             </div>
                         </div>
+                        
                     </form>
                 </div>
                 <div class="panel-footer">

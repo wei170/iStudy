@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertService, PasswordService } from '../_services/index';
@@ -6,7 +6,9 @@ import { AlertService, PasswordService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'forgot_password.component.html'
+    templateUrl: 'forgot_password.component.html',
+    styleUrls: ['login.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ForgotPasswordComponent implements OnInit {

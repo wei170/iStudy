@@ -12,18 +12,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../_services/index");
 var DashboardComponent = (function () {
-    function DashboardComponent(userService, elementRef) {
+    function DashboardComponent(userService, elementRef, authService) {
         this.userService = userService;
         this.elementRef = elementRef;
+        this.authService = authService;
         this.currentUser = {};
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
-    DashboardComponent.prototype.ngOnInit = function () {
-        //called after the constructor and called  after the first ngOnChanges()
-    };
+    DashboardComponent.prototype.ngOnInit = function () { };
     DashboardComponent.prototype.ngAfterViewInit = function () {
         this.loadScript("/client/dashboard/custom-scripts.js");
     };
+    DashboardComponent.prototype.logout = function () { this.authService.logout(); };
     DashboardComponent.prototype.loadScript = function (url) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -41,7 +41,8 @@ DashboardComponent = __decorate([
         ]
     }),
     __metadata("design:paramtypes", [index_1.UserService,
-        core_1.ElementRef])
+        core_1.ElementRef,
+        index_1.AuthenticationService])
 ], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dashboard.component.js.map

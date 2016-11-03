@@ -15,25 +15,21 @@ export class MyProfileComponent implements OnInit{
 
     constructor(
         private alertService: AlertService,
-        private userService: UserService,
-        private profileService: ProfileService,
-        private dashboardComponent: DashboardComponent
+        private profileService: ProfileService
     ) {
-        this.currentUser = this.dashboardComponent.currentUser;
+    }
+
+    ngOnInit() {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.profileService.getProfile()
         .subscribe(
             data => {
-                this.myProfile = JSON.parse(localStorage.getItem('profile'));
-                // todo: need to update this local storage method later
-                // console.log(JSON.stringify(data));
-                // console.log(JSON.parse(localStorage.getItem('profile')));
+                this.myProfile = data;
             },
             error => {
                 this.alertService.error(error);
             }
         );
     }
-
-    ngOnInit() {}
 
 }

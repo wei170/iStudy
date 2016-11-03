@@ -38,7 +38,7 @@ RegisterComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         templateUrl: 'register.component.html',
-        styleUrls: ['../login/login.component.css']
+        styleUrls: ['./login.component.css']
     }),
     __metadata("design:paramtypes", [router_1.Router,
         index_1.UserService,

@@ -8,38 +8,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var index_1 = require('../_services/index');
-var dashboard_component_1 = require('../dashboard/dashboard.component');
+var core_1 = require("@angular/core");
+var index_1 = require("../_services/index");
 var MyProfileComponent = (function () {
-    function MyProfileComponent(alertService, userService, profileService, dashboardComponent) {
-        var _this = this;
+    function MyProfileComponent(alertService, profileService) {
         this.alertService = alertService;
-        this.userService = userService;
         this.profileService = profileService;
-        this.dashboardComponent = dashboardComponent;
         this.currentUser = {};
         this.myProfile = {};
-        this.currentUser = this.dashboardComponent.currentUser;
+    }
+    MyProfileComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.profileService.getProfile()
             .subscribe(function (data) {
-            _this.myProfile = JSON.parse(localStorage.getItem('profile'));
-            // todo: need to update this local storage method later
-            // console.log(JSON.stringify(data));
-            // console.log(JSON.parse(localStorage.getItem('profile')));
+            _this.myProfile = data;
         }, function (error) {
             _this.alertService.error(error);
         });
-    }
-    MyProfileComponent.prototype.ngOnInit = function () { };
-    MyProfileComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'myprofile.component.html'
-        }), 
-        __metadata('design:paramtypes', [index_1.AlertService, index_1.UserService, index_1.ProfileService, dashboard_component_1.DashboardComponent])
-    ], MyProfileComponent);
+    };
     return MyProfileComponent;
 }());
+MyProfileComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: 'myprofile.component.html'
+    }),
+    __metadata("design:paramtypes", [index_1.AlertService,
+        index_1.ProfileService])
+], MyProfileComponent);
 exports.MyProfileComponent = MyProfileComponent;
 //# sourceMappingURL=myprofile.component.js.map

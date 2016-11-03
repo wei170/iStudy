@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserService, ProfileService, AlertService } from '../_services/index';
-import { DashboardComponent } from '../dashboard/index';
+import { ProfileService, AlertService } from '../_services/index';
 import { MyProfileComponent } from './index';
 
 
@@ -12,23 +11,28 @@ import { MyProfileComponent } from './index';
 })
 
 export class EditProfileComponent implements OnInit{
+    model: any = {};
     currentUser: any = {};
     profile: any = {};
-    model: any = {};
 
     constructor(
         private router: Router,
-        private userService: UserService,
         private profileService: ProfileService,
-        private alertService: AlertService,
-        private userProfile: MyProfileComponent,
-        private dashboardComponent: DashboardComponent,
-    ) {
-        this.currentUser = this.userProfile.currentUser;
-        this.profile = this.dashboardComponent.currentUser;
-    }
+        private alertService: AlertService
+    ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.profileService.getProfile()
+        .subscribe(
+            data => {
+                this.profile = data;
+            },
+            error => {
+                this.alertService.error(error);
+            }
+        );
+    }
 
     editProfile() {
         this.profileService.editProfile(this.model)

@@ -18,10 +18,9 @@ var index_1 = require("./_directives/index");
 var index_2 = require("./_guards/index");
 var index_3 = require("./_services/index");
 var index_4 = require("./login/index");
-var index_5 = require("./register/index");
-var index_6 = require("./dashboard/index");
-var index_7 = require("./myprofile/index");
-var index_8 = require("./class_registration/index");
+var index_5 = require("./dashboard/index");
+var index_6 = require("./myprofile/index");
+var index_7 = require("./class_registration/index");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -39,13 +38,13 @@ AppModule = __decorate([
             app_component_1.AppComponent,
             index_1.AlertComponent,
             index_4.LoginComponent,
-            index_5.RegisterComponent,
+            index_4.RegisterComponent,
             index_4.ForgotPasswordComponent,
-            index_6.DashboardComponent,
-            index_7.MyProfileComponent,
-            index_7.EditProfileComponent,
-            index_8.SearchCourseComponent,
-            index_8.CourseDetailsComponent
+            index_5.DashboardComponent,
+            index_6.MyProfileComponent,
+            index_6.EditProfileComponent,
+            index_7.SearchCourseComponent,
+            index_7.CourseDetailsComponent
         ],
         providers: [
             index_2.AuthGuard,

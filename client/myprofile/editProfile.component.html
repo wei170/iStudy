@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label>Visibility: </label>
                                 <select class="form-control" [(ngModel)]="model.visibility" name="visibility">
-                                    <option *ngFor="let vis of visibilities" [value]="vis.value">
+                                    <option *ngFor="let vis of visibilities" [selected]="vis.value === true" [value]="vis.value">
                                         {{vis.display}}
                                     </option>
                                 </select>

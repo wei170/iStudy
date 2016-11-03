@@ -12,7 +12,7 @@
             <div class="form-group" *ngIf="step === 0">
                 <label>Select Course Major</label>
                 <select class="form-control" [(ngModel)]="model.majorId" name="majorId" required>
-                    <option *ngFor="let major of majors" [value]="major.SubjectId">
+                    <option *ngFor="let major of majors" [selected]="index === 0" [value]="major.SubjectId">
                         {{major.Abbreviation}}
                     </option>
                 </select>
@@ -20,7 +20,7 @@
             <div class="form-group" *ngIf="step === 1">
                 <label>Select Course Number</label>
                 <select class="form-control" [(ngModel)]="model.courseId" name="courseId" required>
-                    <option *ngFor="let course of courses" [value]="course.CourseId">
+                    <option *ngFor="let course of courses" [selected]="index === 0" [value]="course.CourseId">
                         {{course.Number}}: {{course.Title}}
                     </option>
                 </select>

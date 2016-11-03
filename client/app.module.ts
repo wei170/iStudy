@@ -9,8 +9,7 @@ import { routing }        from './app.routing';
 import { AlertComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
 import { ProfileService, AlertService, AuthenticationService, UserService, CourseService, PasswordService } from './_services/index';
-import { LoginComponent, ForgotPasswordComponent } from './login/index';
-import { RegisterComponent } from './register/index';
+import { RegisterComponent, LoginComponent, ForgotPasswordComponent } from './login/index';
 import { DashboardComponent } from './dashboard/index';
 
 import { MyProfileComponent, EditProfileComponent} from './myprofile/index';

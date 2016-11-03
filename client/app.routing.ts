@@ -1,8 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './_guards/index';
-import { LoginComponent, ForgotPasswordComponent } from './login/index';
-import { RegisterComponent } from './register/index';
+import { RegisterComponent, LoginComponent, ForgotPasswordComponent } from './login/index';
 import { DashboardComponent } from './dashboard/index';
 import { MyProfileComponent, EditProfileComponent } from './myprofile/index';
 import { SearchCourseComponent } from './class_registration/search_course.component';

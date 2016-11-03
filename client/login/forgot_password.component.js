@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var index_1 = require('../_services/index');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var index_1 = require("../_services/index");
 var ForgotPasswordComponent = (function () {
     function ForgotPasswordComponent(router, passwordService, alertService) {
         this.router = router;
@@ -49,14 +49,18 @@ var ForgotPasswordComponent = (function () {
             });
         }
     };
-    ForgotPasswordComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'forgot_password.component.html'
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.PasswordService, index_1.AlertService])
-    ], ForgotPasswordComponent);
     return ForgotPasswordComponent;
 }());
+ForgotPasswordComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: 'forgot_password.component.html',
+        styleUrls: ['login.component.css'],
+        encapsulation: core_1.ViewEncapsulation.None
+    }),
+    __metadata("design:paramtypes", [router_1.Router,
+        index_1.PasswordService,
+        index_1.AlertService])
+], ForgotPasswordComponent);
 exports.ForgotPasswordComponent = ForgotPasswordComponent;
 //# sourceMappingURL=forgot_password.component.js.map

@@ -3,7 +3,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { UserService } from '../_services/index';
+import { UserService, AuthenticationService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
@@ -18,19 +18,20 @@ export class DashboardComponent implements OnInit {
 
     constructor(
         private userService: UserService,
-        private elementRef: ElementRef
+        private elementRef: ElementRef,
+        private authService: AuthenticationService
     ) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
 
-    ngOnInit(){
-        //called after the constructor and called  after the first ngOnChanges()
-    }
+    ngOnInit(){}
 
     ngAfterViewInit() {
         this.loadScript("/client/dashboard/custom-scripts.js");
     }
+
+    logout() { this.authService.logout(); }
 
     loadScript(url: string) {
         var script = document.createElement('script');
