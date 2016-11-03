@@ -77,24 +77,20 @@ router.post('/join', middleware.requireAuthentication, function (req, res) {
 										res.status(200).send({res: "Join the class successfully"});
 									}
 									else {
-										console.log('No such user exits!');
 										res.send({err: "No such user :("});
 									}
 								});
 							}else{
-								console.log('No such course exits!');
 								res.send({err: "No such course :("});
 							}
 						});
 				}
 				else {
-					console.log('Professor Not Found');
 					res.send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else{
-			console.log('Course Not Found');
 			res.send({err: "Course Not Found :("});
 		}
 	});
@@ -129,25 +125,21 @@ router.post('/students', middleware.requireAuthentication, function (req, res) {
 										res.json(students);
 									}
 									else {
-										console.log('No students joined this course.');
 										res.send({err: "No stduents joined this course"});
 									}
 								});
 							}
 							else {
-								console.log('No such course exits!');
 								res.send({err: "No such course :("});
 							}
 						});
 				}
 				else {
-					console.log('Professor Not Found');
 					res.send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else {
-			console.log('Course Not Found');
 			res.send({err: "Course Not Found :("});
 		}
 	});
