@@ -26,6 +26,7 @@ router.get('/dashboard', function(req, res, next) {
   res.render('index', { title: 'iStudy' });
 });
 
+//TODO: remove insecure routes from sprint 1
 router.get('/dashboard/myprofile', function(req, res, next) {
     console.log('heree');
   res.render('index', { title: 'iStudy' });
