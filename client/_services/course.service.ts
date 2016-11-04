@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { Class } from '../_models/index';
 
 @Injectable()
 export class CourseService {
