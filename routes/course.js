@@ -4,6 +4,7 @@ var router = express.Router();
 var db = require(__dirname + '/../db.js');
 var middleware = require(__dirname + '/../middleware.js')(db);
 var _ = require('underscore');
+var Promise = require('bluebird');
 
 /******************************************************
  *  GET all course names along with their descriptions
@@ -18,7 +19,6 @@ router.get('/', middleware.requireAuthentication,  function(req, res){
 		res.status(400).send({err: "fail to get courses"});
 	});
 });
-
 
 /**************************************************
  * 			Get Relevant Professors
@@ -145,5 +145,64 @@ router.post('/students', middleware.requireAuthentication, function (req, res) {
 	});
 });
 
+
+/**************************************************
+ * 			Get User Course List
+ **************************************************/
+router.post('/get-class-list', middleware.requireAuthentication, function(req, res){
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"userName": "..."
+	 * 	}
+	 */
+	var course_list = {};
+	var courses = [];
+	course_list.courses = courses;
+	var body = _.pick(req.body, 'userName');
+	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+		if (user){
+			console.log(user.userName);
+			user.getCourses().then(function (c_ids) {
+				if (c_ids){
+					retrieveCourseAndProfessors(c_ids, course_list)
+						.then(function () {
+							res.json(course_list.courses);
+						});
+				}
+				else {
+					res.send({err: "User Didn't Attend Any Course Yet :("});
+				}
+			});
+		}
+		else{
+			res.send({err: "User Not Found :("});
+		}
+	});
+});
+
+
+/**
+ * Function used to retrieve relevant Course Name and Professor Name
+ * @param c_ids
+ * @param course_list
+ */
+var retrieveCourseAndProfessors = function (c_ids, course_list) {
+	return new Promise(function (resolve, reject) {
+		var promises = [];
+		c_ids.forEach(function (c_id) {
+			promises.push(
+				Promise.all([
+					db.course_professor.findOne({where: {id: c_id}})
+				])
+					.spread(function (c_p) {
+						console.log(c_p.course_id);
+						console.log(c_p.professor_id);
+					})
+			)
+		});
+		return Promise.all(promises);
+	});
+};
 
 module.exports = router;

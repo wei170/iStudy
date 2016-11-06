@@ -166,7 +166,7 @@ var linkCourseAndProf = function () {
 	});
 };
 
-/*****
+/**
  * Function used to link students with courses
  * return a promise
  */
@@ -187,22 +187,22 @@ var linkCourseAndStudent = function () {
 											user.addCourse(c_u);
 										}
 										else {
-											res.send({err: "No Such Course :("});
+											console.log("No Such Course :(");
 										}
 									});
 								}
 								else {
-									res.send({err: 'Professor Not Found :('});
+									console.log("Professor Not Found :(");
 								}
 							});
 						}
 						else {
-							res.send({err: 'Course Not Found :('});
+							console.log("Course Not Found :(");
 						}
 					});
 				}
 				else {
-					res.send({err: 'User Not Found :('});
+					console.log("User Not Found :(");
 				}
 			});
 		});
