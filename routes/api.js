@@ -8,6 +8,7 @@ var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
 var seedCourseProssor = require('../models/seedCourseProfessor');
 var seedCourseStudent = require('../models/seedCourseStudent');
+var seedFriends = require('../models/seedFriends');
 var Promise = require('bluebird');
 
 
@@ -58,6 +59,15 @@ router.post('/link_course_student', function (req, res) {
 	linkCourseAndStudent()
 		.then(res.send({res: 'Linked Students With Courses Successfully'}));
 });
+
+/**************************************************
+ * 				Link Users
+ **************************************************/
+router.post('/link_users', function (req, res) {
+	linkUsers()
+		.then(res.send({res: "Linked Users Successfully"}));
+});
+
 
 
 //TODO: parse attributes with multiple values in Profile
@@ -138,6 +148,7 @@ var insertNewCourse = function(course){
 	db.course.create(course).then(function(){});
 };
 
+
 /**
  * Function used to link course with professors
  * Return a promise
@@ -203,6 +214,29 @@ var linkCourseAndStudent = function () {
 				}
 				else {
 					console.log("User Not Found :(");
+				}
+			});
+		});
+	});
+};
+
+/**
+ * Link user with user
+ * return a promise
+ */
+var linkUsers = function () {
+	return new Promise(function (resolve, reject) {
+		seedFriends.map(function (linking) {
+			var u_id = linking.user_id;
+			var f_id = linking.friend_id;
+			db.user.findById(u_id).then(function (user) {
+				if (user){
+					db.user.findById(f_id).then(function (friend) {
+						console.log('Map ' + user.userName + ', ' + friend.userName);
+						if (friend) {
+							user.addFriend(friend);
+						}
+					});
 				}
 			});
 		});

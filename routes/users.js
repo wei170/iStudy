@@ -6,9 +6,11 @@ var db = require(__dirname + '/../db.js');
 var _ = require('underscore');
 var randomstring = require("randomstring");
 var sendemail = require(__dirname + '/../helpers/mailer_helper.js').sendEmail;
+var middleware = require(__dirname + '/../middleware.js')(db);
 
-//sign up a new user
-//TODO: add JSON format for each request
+/******************************************************
+ *              Sign Up
+ ******************************************************/
 router.post('/', function(req, res, next) {
     console.log('user tries to sign up');
     var body = _.pick(req.body, 'userName', 'email', 'password');
@@ -29,6 +31,9 @@ router.post('/', function(req, res, next) {
     });
 });
 
+/******************************************************
+ *            Reset Password Request
+ ******************************************************/
 router.post('/reset', function(req, res, next) {
     console.log('user tries to reset password');
     var query = req.query;
@@ -62,7 +67,9 @@ router.post('/reset', function(req, res, next) {
     });
 });
 
-
+/******************************************************
+ *          Check Verification Code
+ ******************************************************/
 router.post('/checkcode', function(req, res) {
 	var body = _.pick(req.body, 'email', 'verificationcode');
     db.user.findOne({
@@ -78,9 +85,11 @@ router.post('/checkcode', function(req, res) {
             res.status(401).json({error: 'verification code invalid!'});
         }
     });
-
 });
 
+/******************************************************
+ *              Set New Password
+ ******************************************************/
 
 router.put('/newpassword', function(req, res) {
     var body = _.pick(req.body, 'email', 'newpassword');
@@ -125,6 +134,10 @@ router.put('/newpassword', function(req, res) {
     });
 });
 
+
+/******************************************************
+ *                      LogIN
+ ******************************************************/
 router.post('/login', function(req, res) {
     var body = _.pick(req.body, 'email', 'password');
     //console.log(JSON.stringify(body));
@@ -142,6 +155,29 @@ router.post('/login', function(req, res) {
         res.status(401).send();
 
     });
+});
+
+
+/******************************************************
+ *           Get User's Friend List
+ ******************************************************/
+router.post('/get-friends', middleware.requireAuthentication,function (req, res) {
+	/**
+	 * JSON Format: {
+	 * 		"user_id": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'user_id');
+	db.user.findById(body.user_id).then(function(user){
+		if (user){
+			user.getFriends().then(function (friends) {
+				res.json(friends);
+			});
+		}
+		else {
+			res.send({err: "User Not Found"});
+		}
+	});
 });
 
 module.exports = router;
