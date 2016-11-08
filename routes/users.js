@@ -12,7 +12,13 @@ var middleware = require(__dirname + '/../middleware.js')(db);
  *              Sign Up
  ******************************************************/
 router.post('/', function(req, res, next) {
-    console.log('user tries to sign up');
+	/**
+	 * JSON Format: {
+	 * 		"userName": "...",
+	 * 		"email": "...",
+	 * 		"password": "..."
+	 * }
+	 */
     var body = _.pick(req.body, 'userName', 'email', 'password');
 
     db.user.create(body).then(function(user) {
@@ -35,12 +41,10 @@ router.post('/', function(req, res, next) {
  *            Reset Password Request
  ******************************************************/
 router.post('/reset', function(req, res, next) {
-    console.log('user tries to reset password');
     var query = req.query;
     var where = {};
 
     if (query.hasOwnProperty('email') && query.email.length > 0) {
-        console.log('here -----');
         where.email = {
             $like: '%' + query.email + '%'
         };
@@ -60,7 +64,6 @@ router.post('/reset', function(req, res, next) {
         }, function(e) {
             res.status(400).json(e);
         });
-        //users[0].setDataValue('password','66666');
 
     }, function(e) {
         res.status(500).send();
@@ -71,6 +74,12 @@ router.post('/reset', function(req, res, next) {
  *          Check Verification Code
  ******************************************************/
 router.post('/checkcode', function(req, res) {
+	/**
+	 * JSON Format: {
+	 * 		"email": "...",
+	 * 		"verificationcode': "..."
+	 * }
+	 */
 	var body = _.pick(req.body, 'email', 'verificationcode');
     db.user.findOne({
         where: {
@@ -92,6 +101,12 @@ router.post('/checkcode', function(req, res) {
  ******************************************************/
 
 router.put('/newpassword', function(req, res) {
+	/**
+	 * JSON Format: {
+	 * 		"email": "..."
+	 * 		"newpassword": "..."
+	 * }
+	 */
     var body = _.pick(req.body, 'email', 'newpassword');
     body.password = body.newpassword;
 
@@ -139,6 +154,12 @@ router.put('/newpassword', function(req, res) {
  *                      LogIN
  ******************************************************/
 router.post('/login', function(req, res) {
+	/**
+	 * JSON Format: {
+	 * 		"email": "...",
+	 * 		"password": "..."
+	 * }
+	 */
     var body = _.pick(req.body, 'email', 'password');
     //console.log(JSON.stringify(body));
 
@@ -164,11 +185,11 @@ router.post('/login', function(req, res) {
 router.post('/get-friends', middleware.requireAuthentication,function (req, res) {
 	/**
 	 * JSON Format: {
-	 * 		"user_id": "..."
+	 * 		"userName": "..."
 	 * }
 	 */
-	var body = _.pick(req.body, 'user_id');
-	db.user.findById(body.user_id).then(function(user){
+	var body = _.pick(req.body, 'userName');
+	db.user.findOne({where: {userName: body.userName}}).then(function(user){
 		if (user){
 			user.getFriends().then(function (friends) {
 				res.json(friends);
@@ -176,6 +197,35 @@ router.post('/get-friends', middleware.requireAuthentication,function (req, res)
 		}
 		else {
 			res.send({err: "User Not Found"});
+		}
+	});
+});
+
+/******************************************************
+ *           Send Friend Request
+ ******************************************************/
+router.post('/send-friend-request', middleware.requireAuthentication,function (req, res) {
+	/**
+	 * JSON Format: {
+	 * 		"senderName": "...",
+	 * 		"receiverName": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'senderName', 'receiverName');
+	db.user.findOne({where: {userName: body.senderName}}).then(function(sender){
+		if (sender){
+			db.user.findOne({where: {userName: body.receiverName}}).then(function (receiver) {
+				if (receiver){
+					db.friend_request.create({sender_id: sender.id, receiver_id: receiver.id});
+					res.send({res: "Sent Friend Request Successfully"});
+				}
+				else {
+					res.send({err: "Receiver Not Exist"});
+				}
+			});
+		}
+		else {
+			res.send({err: "Sender Not Exist"});
 		}
 	});
 });
