@@ -217,8 +217,13 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 		if (sender){
 			db.user.findOne({where: {userName: body.receiverName}}).then(function (receiver) {
 				if (receiver){
-					db.friend_request.create({sender_id: sender.id, receiver_id: receiver.id});
-					res.send({res: "Sent Friend Request Successfully"});
+					if (receiver.id === sender.id){
+						res.send({err: "One can not send friend invitation to oneself"});
+					}
+					else {
+						db.friend_request.create({sender_id: sender.id, receiver_id: receiver.id});
+						res.send({res: "Sent Friend Request Successfully"});
+					}
 				}
 				else {
 					res.send({err: "Receiver Not Exist"});
