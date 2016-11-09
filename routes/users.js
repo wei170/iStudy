@@ -312,9 +312,9 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 });
 
 /******************************************************
- *           	Accept Request
+ *           Accept Or Decline Request
  ******************************************************/
-router.post('/accept-invitation', middleware.requireAuthentication,function (req, res){
+router.post('/invitation-accept-or-not', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
 	 * 		"sender": "...",
@@ -322,7 +322,12 @@ router.post('/accept-invitation', middleware.requireAuthentication,function (req
 	 * 		"status_code": "..."
 	 * }
 	 */
+	var attributes = {};
 	var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
+	if (body.hasOwnProperty('status_code')){
+		attributes.status = body.status_code;
+	}
+
 	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
 		if (receiver){
 			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
@@ -334,7 +339,13 @@ router.post('/accept-invitation', middleware.requireAuthentication,function (req
 						db.friend_request.findOne({where: {sender_id: sender.id, receiver_id: receiver.id}})
 							.then(function (request) {
 								if (request){
-									db.friend_request.update()
+									request.updateAttributes(attributes).then(function (request) {
+										if (request){
+											res.json(request);
+										}
+									}, function (e) {
+										res.send({err: "Fail to update the friend_request"});
+									})
 								}
 								else {
 									res.send({err: "Request does not exist"});
