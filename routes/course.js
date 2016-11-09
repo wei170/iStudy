@@ -142,6 +142,53 @@ router.post('/students', middleware.requireAuthentication, function (req, res) {
 	});
 });
 
+/**************************************************
+ * 		Get Number Of Students In One Class
+ **************************************************/
+router.post('/number-of-students', middleware.requireAuthentication, function (req, res) {
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "course name"
+	 * 	"professor": "professor name"
+	 * }
+	 */
+	var body = _.pick(req.body, 'course', 'professor');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			//TODO: two prof with same name might cause problem
+			// *Note: course name set to be unique
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (c_u) {
+							if (c_u){
+								// find course by a specific professor
+								c_u.getStudents().then(function (students) {
+									if (students){
+										res.send({number: students.length});
+									}
+									else {
+										res.send({err: "No stduents joined this course"});
+									}
+								});
+							}
+							else {
+								res.send({err: "No such course :("});
+							}
+						});
+				}
+				else {
+					res.send({err: "Professor Not Found :("});
+				}
+			});
+		}
+		else {
+			res.send({err: "Course Not Found :("});
+		}
+	});
+});
+
 
 /**************************************************
  * 			Get User Course List
