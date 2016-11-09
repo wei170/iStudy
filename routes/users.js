@@ -311,4 +311,46 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 
 });
 
+/******************************************************
+ *           	Accept Request
+ ******************************************************/
+router.post('/accept-invitation', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"sender": "...",
+	 * 		"receiver": "..."
+	 * 		"status_code": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
+	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
+		if (receiver){
+			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
+				if (sender){
+					if (sender.id === receiver.id){
+						res.send({err: "Not a valid request"});
+					}
+					else {
+						db.friend_request.findOne({where: {sender_id: sender.id, receiver_id: receiver.id}})
+							.then(function (request) {
+								if (request){
+									db.friend_request.update()
+								}
+								else {
+									res.send({err: "Request does not exist"});
+								}
+							});
+					}
+				}
+				else {
+					res.send({err: "Sender does not exist"});
+				}
+			});
+		}
+		else {
+			res.send({err: "Sender does not exist"});
+		}
+	});
+});
+
 module.exports = router;
