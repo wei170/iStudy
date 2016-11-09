@@ -7,6 +7,7 @@ var _ = require('underscore');
 var randomstring = require("randomstring");
 var sendemail = require(__dirname + '/../helpers/mailer_helper.js').sendEmail;
 var middleware = require(__dirname + '/../middleware.js')(db);
+var Sequelize = require('sequelize');
 
 /******************************************************
  *              Sign Up
@@ -228,6 +229,45 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 			res.send({err: "Sender Not Exist"});
 		}
 	});
+});
+
+/******************************************************
+ *           Get Friend Request
+ ******************************************************/
+router.post('/get-friend-request', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"userName": "...",
+	 * }
+	 */
+	var sender_list = {};
+	var senders = [];
+	var sender_ids = [];
+	var s;
+	sender_list.senders = senders;
+	var body = _.pick(req.body, 'userName');
+	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+		if (user){
+			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (requests) {
+				if (requests){
+					//getSenders();
+					requests.map(function (request) {
+						sender_ids.push(request.sender_id);
+					});
+
+					db.user.findAll({
+						where: { id: { $in: sender_ids}},
+						attributes: ['userName']
+					}).then(function (names) {
+						res.json(names);
+					});
+				}
+			});
+		}
+		else {
+			res.send({err: "No Such User"});
+		}
+	})
 });
 
 module.exports = router;

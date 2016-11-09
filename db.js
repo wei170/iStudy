@@ -8,7 +8,7 @@ var db = {};
 var sequelize;
 
 // set debug as 1 to init db every time server restarts otherwise set debug as 0
-var debug = 1;
+var debug = 0;
 
 /*****************************************************
  * 				Connect to DB
@@ -60,6 +60,10 @@ db.user.belongsToMany(db.user, {as: 'friends', through: 'user_friends'});
 // one request can have only one receiver and one sender
 db.friend_request.belongsTo(db.user, {as: 'receiver'});
 db.friend_request.belongsTo(db.user, {as: 'sender'});
+
+// Below only adds user_id to request table, not enough, needs both senders and receivers
+// db.user.hasMany(db.friend_request, {as: 'friend_requests'});
+// db.user.hasMany(db.friend_request, {as: 'friend_invitations'});
 
 
 // test config relationship
