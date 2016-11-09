@@ -232,35 +232,33 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 });
 
 /******************************************************
- *           Get Friend Request
+ *           Get Friend Invitations
  ******************************************************/
-router.post('/get-friend-request', middleware.requireAuthentication,function (req, res){
+router.post('/get-friend-invitations', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
 	 * 		"userName": "...",
 	 * }
 	 */
-	var sender_list = {};
-	var senders = [];
 	var sender_ids = [];
-	var s;
-	sender_list.senders = senders;
 	var body = _.pick(req.body, 'userName');
 	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
 		if (user){
-			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (requests) {
-				if (requests){
-					//getSenders();
-					requests.map(function (request) {
-						sender_ids.push(request.sender_id);
+			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (invitations) {
+				if (invitations){
+					invitations.map(function (invitation) {
+						sender_ids.push(invitation.sender_id);
 					});
 
 					db.user.findAll({
 						where: { id: { $in: sender_ids}},
 						attributes: ['userName']
-					}).then(function (names) {
-						res.json(names);
+					}).then(function (senders) {
+						res.json(senders);
 					});
+				}
+				else {
+					res.send({err: "No invitations received"});
 				}
 			});
 		}
@@ -268,6 +266,44 @@ router.post('/get-friend-request', middleware.requireAuthentication,function (re
 			res.send({err: "No Such User"});
 		}
 	})
+});
+
+/******************************************************
+ *           Get Friend Requests
+ ******************************************************/
+router.post('/get-friend-requests', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"userName": "...",
+	 * }
+	 */
+	var receiver_ids = [];
+	var body = _.pick(req.body, 'userName');
+	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+		if (user){
+			db.friend_request.findAll({where: {sender_id: user.id}}).then(function (requests){
+				if (requests){
+					requests.map(function(request){
+						receiver_ids.push(request.receiver_id);
+					});
+
+					db.user.findAll({
+						where: { id: { $in: receiver_ids}},
+						attributes: ['userName']
+					}).then(function (receivers) {
+						res.json(receivers);
+					});
+				}
+				else {
+					res.send({err: "No requests sent"});
+				}
+			});
+		}
+		else {
+			res.send({err: "No Such User"});
+		}
+	});
+
 });
 
 module.exports = router;
