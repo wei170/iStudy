@@ -8,8 +8,7 @@ var db = {};
 var sequelize;
 
 // set debug as 1 to init db every time server restarts otherwise set debug as 0
-//var debug = 1;
-var debug = 1;
+var debug = 0;
 
 /*****************************************************
  * 				Connect to DB
@@ -36,7 +35,8 @@ db.professor = sequelize.import(__dirname + '/models/Professor');
 db.course = sequelize.import(__dirname + '/models/Course');
 // a course is defined by a course id and professor id
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
-
+// a friend request is defined by user_id of a sender and a receiver
+db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
 
 /*****************************************************
  * 				Config Relationships
@@ -54,6 +54,17 @@ db.professor.belongsToMany(db.course, {through: db.course_professor});
 db.user.belongsToMany(db.course_professor, {as: 'courses', through: 'course_student'});
 db.course_professor.belongsToMany(db.user, {as: 'students', through: 'course_student'});
 
+// one user can have many friends
+db.user.belongsToMany(db.user, {as: 'friends', through: 'user_friends'});
+
+// one request can have only one receiver and one sender
+db.friend_request.belongsTo(db.user, {as: 'receiver'});
+db.friend_request.belongsTo(db.user, {as: 'sender'});
+
+// Below only adds user_id to request table, not enough, needs both senders and receivers
+// db.user.hasMany(db.friend_request, {as: 'friend_requests'});
+// db.user.hasMany(db.friend_request, {as: 'friend_invitations'});
+
 
 // test config relationship
 console.log('User associations: ', Object.keys(db.user.associations));
@@ -61,6 +72,7 @@ console.log('Profile associations: ', Object.keys(db.profile.associations));
 console.log('Course associations: ', Object.keys(db.course.associations));
 console.log('Professor associations: ', Object.keys(db.professor.associations));
 console.log('Course_Professor associations:', Object.keys(db.course_professor.associations));
+console.log('Friend_Request associations:', Object.keys(db.friend_request.associations));
 
 db.sequelize = sequelize;
 

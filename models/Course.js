@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.STRING,
 			defaultValue: 'There\'s no description about this course yet :('
 		}
-		//TODO: add ratings, classmates, resources
+		//TODO: add ratings, resources
 	}, {
 		tableName: 'course',
 		underscored: true,
