@@ -156,19 +156,24 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 	 * 	"userName": "..."
 	 * 	}
 	 */
-	var course_list = {};
-	var courses = [];
-	course_list.courses = courses;
+	var course_ids = [];
 	var body = _.pick(req.body, 'userName');
 	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
 		if (user){
 			console.log(user.userName);
 			user.getCourses().then(function (c_ids) {
 				if (c_ids){
-					retrieveCourseAndProfessors(c_ids, course_list)
-						.then(function () {
-							res.json(course_list.courses);
-						});
+					c_ids.map(function (c_id) {
+						course_ids.push(c_id.course_id);
+					});
+
+					db.course.findAll({where: {id: {$in: course_ids}}}).then(function (courses) {
+						res.json(courses);
+					});
+					// retrieveCourseAndProfessors(c_ids, course_list)
+					// 	.then(function () {
+					// 		res.json(course_list.courses);
+					// 	});
 				}
 				else {
 					res.send({err: "User Didn't Attend Any Course Yet :("});
