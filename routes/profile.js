@@ -7,6 +7,36 @@ var _ = require('underscore');
 
 
 /******************************************************
+ *           Get Existed Language
+ ******************************************************/
+router.get('/languages', middleware.requireAuthentication, function(req, res){
+	db.language.findAll().then(function (languages) {
+		if (languages){
+			res.json(languages);
+		}
+		else {
+			res.send({err: "No Language Found"});
+		}
+	});
+});
+
+
+/******************************************************
+ *           Get Existed Hobbies
+ ******************************************************/
+router.get('/hobbies', middleware.requireAuthentication, function(req, res){
+	db.hobby.findAll().then(function (hobbies) {
+		if (hobbies){
+			res.json(hobbies);
+		}
+		else {
+			res.send({err: "No Hobby Found"});
+		}
+	});
+});
+
+
+/******************************************************
  *           	Get Profile
  ******************************************************/
 router.post('/', middleware.requireAuthentication, function(req, res) {
@@ -16,10 +46,32 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
 	 * }
      */
     var body = _.pick(req.body, 'userName');
+	var compelete_profile = {};
+	var extra = {};
+	compelete_profile.extra = extra;
     db.user.findOne({where: {userName: body.userName}}).then(function (user) {
        if (user){
            user.getProfile().then(function (profile) {
-               res.json(profile);
+               if (profile){
+				   compelete_profile.profile = profile;
+				   profile.getLanguages().then(function (languages) {
+					   if (languages){
+						   extra.language = languages;
+					   }
+					   else{
+						   extra.language = "";
+					   }
+					   profile.getHobbies().then(function (hobbies) {
+						   if (hobbies){
+							   extra.hobby = hobbies;
+						   }
+						   else {
+							   extra.hobby = "";
+						   }
+						   res.json(compelete_profile);
+					   })
+				   })
+			   }
            });
        }
        else {
@@ -39,29 +91,20 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 * JSON Format: {
 	 * 		"userName": "...",
 	 * 		"major": "...",
-	 * 		"language": "...",
+	 * 		"nation": "...",
 	 * 		"birthday": "...",
-	 *		"hobby": "...",
 	 * 		"visibility": "..."
 	 * }
 	 */
-	var body = _.pick(req.body, 'userName', 'major', 'language', 'birthday', 'hobby', 'visibility');
+	var body = _.pick(req.body, 'userName', 'major', 'birthday', 'visibility');
     var attributes = {};
 
     if (body.hasOwnProperty('major')) {
         attributes.major = body.major;
     }
 
-    if (body.hasOwnProperty('language')) {
-        attributes.language = body.language;
-    }
-
     if (body.hasOwnProperty('birthday')) {
         attributes.birthday = body.birthday;
-    }
-
-    if (body.hasOwnProperty('hobby')) {
-        attributes.hobby = body.hobby;
     }
 
     if (body.hasOwnProperty('visibility')) {

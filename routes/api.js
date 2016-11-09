@@ -9,25 +9,10 @@ var seedCourses = require('../models/seedCourse');
 var seedCourseProssor = require('../models/seedCourseProfessor');
 var seedCourseStudent = require('../models/seedCourseStudent');
 var seedFriends = require('../models/seedFriends');
+var seedLanguages = require('../models/seedLanguages');
+var seedHobbies = require('../models/seedHobbies');
 var Promise = require('bluebird');
-
-
 var router = express.Router();
-
-// __  ____/__  ____/__  __/
-// _  / __ __  __/  __  /
-// / /_/ / _  /___  _  /
-// \____/  /_____/  /_/
-
-/**************************************************
- *				Get All Users
- **************************************************/
-router.get('/users', function (req, res) {
-    db.user.findAll().then(function (users) {
-        res.json(users);
-    });
-});
-
 
 // _______________________  /_
 // ___  __ \  __ \_  ___/  __/
@@ -85,8 +70,9 @@ var initDB = function(){
 		insertData(insertNewUser, admins)
 			.then(insertData(insertNewProf, seedProfs))
 			.then(insertData(insertNewUser, seedUsers))
-			.then(insertData(insertNewCourse, seedCourses));
-		resolve();
+			.then(insertData(insertNewCourse, seedCourses))
+			.then(insertData(insertNewLanguages, seedLanguages))
+			.then(insertData(insertNewHobbies, seedHobbies));
 	});
 };
 
@@ -99,11 +85,16 @@ var initDB = function(){
 var insertData = function(insertFunction, data){
     if (typeof insertFunction === "function"){
 		return new Promise(function (resolve, reject) {
+			var count = 0;
+			var number = data.length;
 			// insert data
 			data.forEach(function (d) {
+				count++;
 				insertFunction(d);
 			});
-			resolve();
+			if (count === number){
+				resolve();
+			}
 		});
     }else {
 		console.log('The first param passed in is not function');
@@ -146,6 +137,22 @@ var insertNewProf = function(prof){
  */
 var insertNewCourse = function(course){
 	db.course.create(course).then(function(){});
+};
+
+/**
+ * Function used to insert new languages to db
+ * @param language
+ */
+var insertNewLanguages = function (language) {
+	db.language.create(language).then(function (){});
+};
+
+/**
+ * Function used to insert new hobbies to db
+ * @param hobby
+ */
+var insertNewHobbies = function (hobby) {
+	db.hobby.create(hobby).then(function () {});
 };
 
 

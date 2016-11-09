@@ -142,6 +142,7 @@ router.post('/students', middleware.requireAuthentication, function (req, res) {
 	});
 });
 
+
 /**************************************************
  * 		Get Number Of Students In One Class
  **************************************************/
