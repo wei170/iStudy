@@ -93,10 +93,13 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 * 		"major": "...",
 	 * 		"nation": "...",
 	 * 		"birthday": "...",
-	 * 		"visibility": "..."
+	 * 		"gender": "...",
+	 * 		"visibility": "...",
+	 * 		"language": "...",
+	 * 		"hobby": "..."
 	 * }
 	 */
-	var body = _.pick(req.body, 'userName', 'major', 'birthday', 'visibility');
+	var body = _.pick(req.body, 'userName', 'major', 'birthday', 'gender','visibility', 'language', 'hobby');
     var attributes = {};
 
     if (body.hasOwnProperty('major')) {
@@ -107,16 +110,62 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
         attributes.birthday = body.birthday;
     }
 
+    if (body.hasOwnProperty('gender')) {
+		attributes.gender = body.gender;
+	}
+
+	if (body.hasOwnProperty('nation')){
+		attributes.nation = body.nation;
+	}
+
     if (body.hasOwnProperty('visibility')) {
         attributes.visibility = body.visibility;
     }
+
 	db.user.findOne({where: {userName: body.userName}}).then(function(user){
 		if (user){
 			user.getProfile().then(function (profile) {
 				if (profile){
 					profile.updateAttributes(attributes).then(function (profile) {
 						if (profile){
-							res.json(profile);
+							if (body.language !== ""){
+								//update LANGUAGE
+								var language_list = [];
+								body.language.map(function (language) {
+									language_list.push(language.name);
+								});
+
+								db.language.findAll({where: {name: {$in: language_list}}})
+									.then(function (languages) {
+										if (languages){
+											profile.addLanguages(languages).then(function () {
+												if (body.hobby !== ""){
+													// update HOBBY
+													var hobby_list = [];
+													body.hobby.map(function (hobby) {
+														hobby_list.push(hobby.name);
+													});
+
+													db.hobby.findAll({where: {name: {$in: hobby_list}}})
+														.then(function (hobbies) {
+															if (hobbies){
+																profile.addHobbies(hobbies);
+															}
+															else {
+																res.send({err: "Hobbies Not Found"});
+															}
+														});
+												}
+												res.send({res: "Profile Updated Successfully"});
+										});
+
+
+									}
+									else {
+											res.send({err: "Languages Not Found"});
+										}
+									});
+							}
 						}
 					}, function (e) {
 						res.send({err: "Fail to update profile"});
