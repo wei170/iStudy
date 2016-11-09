@@ -10,9 +10,6 @@ var Promise = require('bluebird');
  *  GET all course names along with their descriptions
  ******************************************************/
 router.get('/', middleware.requireAuthentication,  function(req, res){
-	/**
-	 * JSON Format: NULL
-	 */
 	db.course.findAll({attributes: ['name', 'description']}).then(function (course) {
 		res.json(course);
 	}, function(e){
