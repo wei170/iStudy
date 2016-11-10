@@ -28,11 +28,13 @@ if (env == 'production') {
 /*****************************************************
  * 				Config Tables
  *****************************************************/
-
-db.profile = sequelize.import(__dirname + '/models/Profile');
 db.user = sequelize.import(__dirname + '/models/User');
 db.professor = sequelize.import(__dirname + '/models/Professor');
 db.course = sequelize.import(__dirname + '/models/Course');
+db.profile = sequelize.import(__dirname + '/models/Profile');
+db.language = sequelize.import(__dirname + '/models/Language');
+db.hobby = sequelize.import(__dirname + '/models/Hobby');
+
 // a course is defined by a course id and professor id
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
 // a friend request is defined by user_id of a sender and a receiver
@@ -45,6 +47,14 @@ db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
 // one user has only one profile
 db.user.hasOne(db.profile);
 db.profile.belongsTo(db.user);
+
+// one user can speak many languages and one language can be spoken by many users
+db.profile.belongsToMany(db.language, {through: 'profile_language'});
+db.language.belongsToMany(db.profile, {through: 'profile_language'});
+
+//one user can have many hobbies and one hobby can belong to many users;
+db.profile.belongsToMany(db.hobby, {through: 'profile_hobby'});
+db.hobby.belongsToMany(db.profile, {through: 'profile_hobby'});
 
 // one prof can teach different courses, one course can be taught by different prof
 db.course.belongsToMany(db.professor, {through: db.course_professor});
@@ -69,6 +79,8 @@ db.friend_request.belongsTo(db.user, {as: 'sender'});
 // test config relationship
 console.log('User associations: ', Object.keys(db.user.associations));
 console.log('Profile associations: ', Object.keys(db.profile.associations));
+console.log('Language associations: ', Object.keys(db.language.associations));
+console.log('Hobby associations: ', Object.keys(db.hobby.associations));
 console.log('Course associations: ', Object.keys(db.course.associations));
 console.log('Professor associations: ', Object.keys(db.professor.associations));
 console.log('Course_Professor associations:', Object.keys(db.course_professor.associations));
