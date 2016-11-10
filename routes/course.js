@@ -30,11 +30,11 @@ router.post('/', middleware.requireAuthentication, function(req, res){
 	/**
 	 * JSON Format:
 	 * {
-	 * 	"course_name": "..."
+	 * 	"course": "..."
 	 * }
 	 */
-	var body = _.pick(req.body, 'course_name');
-	db.course.findOne({where: {"name": body.course_name}}).then(function(course){
+	var body = _.pick(req.body, 'course');
+	db.course.findOne({where: {"name": body.course}}).then(function(course){
 		if (course){
 			// found and send user relevant professors
 			course.getProfessors().then(function(professors){
