@@ -12,7 +12,7 @@
                         <p>Time: {{section.Meetings[0].DaysOfWeek}}</p>
                         <p>Professor: {{section.Meetings[0].Instructors[0].Name}} </p>
                         <p>Email: {{section.Meetings[0].Instructors[0].Email}}</p>
-                        <button class = "submit"> Join this class</button>
+                        <button class = "submit" (click)="joinClass(section.Meetings[0].Instructors[0].Name)"> Join this class</button>
                     </div>
 
                     <div class="panel-footer">
@@ -28,7 +28,7 @@
                 Course Description
             </div>
             <div class="panel-body">
-                <label>hahahahahh</label>
+                <label>There's no description about the this course yet :(</label>
             </div>
         </div>
 

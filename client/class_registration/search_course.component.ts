@@ -15,6 +15,8 @@ export class SearchCourseComponent implements OnInit{
     private majors: any[] = [];
     private courses: any[] = [];
     private sections: any[] = [];
+    private major: any;
+    private number: any;
     private professorInfo: any;
 
     constructor(
@@ -37,21 +39,23 @@ export class SearchCourseComponent implements OnInit{
 
     private searchCourse() {
         if (this.step === 0) {
-            this.courseService.getMajorCourses(this.model.majorId).subscribe (
+            this.courseService.getMajorCourses(this.model.majorInfo.SubjectId).subscribe (
                 data => {
                     this.step = 1;
+                    this.courses = [];// empty the array first
                     for (var i = 0; i < data.value.length; i++) {
                         this.courses.push(data.value[i]);
                     }
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(error.err);
                 }
             )
         } else if (this.step === 1) {
-            this.courseService.getCoursesDetails(this.model.courseId).subscribe (
+            this.courseService.getCoursesDetails(this.model.courseInfo.CourseId).subscribe (
                 data => {
                     this.step = 2;
+                    this.sections = []; // empty it
                     for (var i = 0; i < data.value.length; i++) {
                         for (var j = 0; j < data.value[i].Sections.length; j++) {
                             if (data.value[i].Sections[j].Type === "Lecture") {
@@ -59,10 +63,9 @@ export class SearchCourseComponent implements OnInit{
                             }
                         }
                     }
-                    console.log(this.sections);
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(error.err);
                 }
             )
         }
@@ -75,8 +78,5 @@ export class SearchCourseComponent implements OnInit{
 
     private back() {
         this.step--;
-        if (this.step === 0) this.courses = [];
-        else if (this.step === 1) this.sections = [];
-
     }
 }

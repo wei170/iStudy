@@ -15,21 +15,44 @@ var ProfileService = (function () {
     function ProfileService(http) {
         this.http = http;
     }
-    ProfileService.prototype.getProfile = function () {
+    /**
+    * JSON Format: {
+    * 		"userName": "...",
+    * }
+    */
+    ProfileService.prototype.getProfile = function (userName) {
         var profileUrl = '/profile';
+        var body = { "userName": userName };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        return this.http.get(profileUrl, {
+        return this.http.post(profileUrl, body, {
             headers: headers
         })
             .map(function (res) { return res.json(); });
     };
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * 		"major": "...",
+     * 		"language": "...",
+     * 		"birthday": "...",
+     *		"hobby": "...",
+     * 		"visibility": "..."
+     * }
+     */
     ProfileService.prototype.editProfile = function (model) {
-        var url = '/profile';
+        var url = '/profile/update';
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        var body = { "language": model.language, "major": model.major, "hobby": model.hobby, "visibility": model.visibility };
-        return this.http.put(url, body, {
+        var body = {
+            "major": model.major,
+            "language": model.language,
+            "birthday": model.birthday,
+            "hobby": model.hobby,
+            "visibility": model.visibility
+        };
+        console.log(body);
+        return this.http.post(url, body, {
             headers: headers
         })
             .map(function (res) { return res.json(); });

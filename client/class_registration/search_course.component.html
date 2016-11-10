@@ -9,23 +9,23 @@
 <div class="row">
     <div class="col-lg-12">
         <form role="form" (ngSubmit)="f.form.valid && searchCourse()" #f="ngForm" novalidate>
-            <div class="form-group" *ngIf="step != 2">
+            <div class="form-group" *ngIf="step === 0">
                 <label>Select Course Major</label>
-                <select class="selectpicker" [(ngModel)]="model.majorId" name="majorId" required>
-                    <option *ngFor="let major of majors" [selected]="index === 0" [value]="major.SubjectId">
+                <select class="selectpicker" [(ngModel)]="model.majorInfo" name="majorInfo" required>
+                    <option *ngFor="let major of majors" [ngValue]="major">
                         {{major.Abbreviation}}
                     </option>
                 </select>
             </div>
             <div class="form-group" *ngIf="step === 1">
                 <label>Select Course Number</label>
-                <select class="selectpicker" [(ngModel)]="model.courseId" name="courseId" required>
-                    <option *ngFor="let course of courses" [selected]="index === 0" [value]="course.CourseId">
+                <select class="selectpicker" [(ngModel)]="model.courseInfo" name="courseInfo" required>
+                    <option *ngFor="let course of courses" [ngValue]="course">
                         {{course.Number}}: {{course.Title}}
                     </option>
                 </select>
             </div>
-            <courseDetails *ngIf="step === 2" [sections]="sections"></courseDetails>
+            <courseDetails *ngIf="step === 2" [sections]="sections" [major]="model.majorInfo.Abbreviation" [courseNumber]="model.courseInfo.Number"></courseDetails>
             <div class = "form-group">
                 <button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
                 <a *ngIf="step <= 2 && step > 0" (click)="back()">Back</a>

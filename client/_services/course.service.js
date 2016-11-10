@@ -17,6 +17,9 @@ var CourseService = (function () {
         this.apiUrl = 'http://api.purdue.io/odata';
         this.termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     }
+    /**************************************************
+     * 				Class Searching
+     **************************************************/
     CourseService.prototype.getAllMajors = function () {
         var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
         var abbrOrder = ')))&$orderby=Abbreviation%20asc';
@@ -38,6 +41,25 @@ var CourseService = (function () {
         var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
         return this.http.get(detailedUrl)
             .map(function (res) { return res.json(); });
+    };
+    /**************************************************
+     * 				Classrooms
+     **************************************************/
+    /**
+    * Join a class
+    * JSON Format:
+    * {
+    * 	"course": "...",
+    * 	"professor": "...",
+    * 	"userName": "..."
+    * }
+    */
+    CourseService.prototype.joinClass = function (courseName, professor, userName) {
+        var url = '/course/join';
+        var body = { "course": courseName, "professor": professor, "userName": userName };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
     };
     return CourseService;
 }());

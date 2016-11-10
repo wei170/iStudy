@@ -27,11 +27,11 @@ var EditProfileComponent = (function () {
     EditProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.profileService.getProfile()
+        this.profileService.getProfile(this.model)
             .subscribe(function (data) {
             _this.profile = data;
-        }, function (error) {
-            _this.alertService.error(error);
+        }, function (err) {
+            _this.alertService.error(err);
         });
     };
     EditProfileComponent.prototype.editProfile = function () {
@@ -41,8 +41,8 @@ var EditProfileComponent = (function () {
             // successfully edit the profile
             _this.alertService.success('Successfully edit the profile');
             _this.router.navigate(['/dashboard/myprofile']);
-        }, function (error) {
-            _this.alertService.error(error);
+        }, function (err) {
+            _this.alertService.error(err.message);
         });
     };
     return EditProfileComponent;

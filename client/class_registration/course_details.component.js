@@ -9,11 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var index_1 = require("../_services/index");
 var CourseDetailsComponent = (function () {
-    function CourseDetailsComponent() {
+    function CourseDetailsComponent(courseService, alertService) {
+        this.courseService = courseService;
+        this.alertService = alertService;
+        this.courseName = this.major + this.courseNumber;
     }
+    CourseDetailsComponent.prototype.joinClass = function (professor) {
+        var _this = this;
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        this.courseService.joinClass(this.courseName, professor, userName).subscribe(function (data) {
+            _this.alertService.success("Sucessfully join the class!");
+        }, function (err) {
+            _this.alertService.error(err);
+        });
+    };
     return CourseDetailsComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], CourseDetailsComponent.prototype, "major", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], CourseDetailsComponent.prototype, "courseNumber", void 0);
 CourseDetailsComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -21,7 +42,8 @@ CourseDetailsComponent = __decorate([
         templateUrl: 'course_details.component.html',
         inputs: ['sections']
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [index_1.CourseService,
+        index_1.AlertService])
 ], CourseDetailsComponent);
 exports.CourseDetailsComponent = CourseDetailsComponent;
 //# sourceMappingURL=course_details.component.js.map

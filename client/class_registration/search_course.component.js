@@ -32,18 +32,20 @@ var SearchCourseComponent = (function () {
     SearchCourseComponent.prototype.searchCourse = function () {
         var _this = this;
         if (this.step === 0) {
-            this.courseService.getMajorCourses(this.model.majorId).subscribe(function (data) {
+            this.courseService.getMajorCourses(this.model.majorInfo.SubjectId).subscribe(function (data) {
                 _this.step = 1;
+                _this.courses = []; // empty the array first
                 for (var i = 0; i < data.value.length; i++) {
                     _this.courses.push(data.value[i]);
                 }
             }, function (error) {
-                _this.alertService.error(error);
+                _this.alertService.error(error.err);
             });
         }
         else if (this.step === 1) {
-            this.courseService.getCoursesDetails(this.model.courseId).subscribe(function (data) {
+            this.courseService.getCoursesDetails(this.model.courseInfo.CourseId).subscribe(function (data) {
                 _this.step = 2;
+                _this.sections = []; // empty it
                 for (var i = 0; i < data.value.length; i++) {
                     for (var j = 0; j < data.value[i].Sections.length; j++) {
                         if (data.value[i].Sections[j].Type === "Lecture") {
@@ -51,9 +53,8 @@ var SearchCourseComponent = (function () {
                         }
                     }
                 }
-                console.log(_this.sections);
             }, function (error) {
-                _this.alertService.error(error);
+                _this.alertService.error(error.err);
             });
         }
     };
@@ -63,10 +64,6 @@ var SearchCourseComponent = (function () {
     // }
     SearchCourseComponent.prototype.back = function () {
         this.step--;
-        if (this.step === 0)
-            this.courses = [];
-        else if (this.step === 1)
-            this.sections = [];
     };
     return SearchCourseComponent;
 }());

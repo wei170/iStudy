@@ -20,7 +20,7 @@ var MyProfileComponent = (function () {
     MyProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.profileService.getProfile()
+        this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
             _this.myProfile = data;
         }, function (error) {

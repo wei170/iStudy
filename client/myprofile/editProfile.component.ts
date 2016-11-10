@@ -23,13 +23,13 @@ export class EditProfileComponent implements OnInit{
 
     ngOnInit() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.profileService.getProfile()
+        this.profileService.getProfile(this.model)
         .subscribe(
             data => {
                 this.profile = data;
             },
-            error => {
-                this.alertService.error(error);
+            err => {
+                this.alertService.error(err);
             }
         );
     }
@@ -42,8 +42,8 @@ export class EditProfileComponent implements OnInit{
                     this.alertService.success('Successfully edit the profile');
                     this.router.navigate(['/dashboard/myprofile']);
                 },
-                error => {
-                    this.alertService.error(error);
+                err => {
+                    this.alertService.error(err.message);
                 }
             );
     }

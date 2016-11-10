@@ -20,12 +20,16 @@
                                 <span id="helpBlock" class="help-block">{{currentUser.email}}</span>
                             </div>
                             <div class="form-group">
+                                <label>Major: </label>
+                                <input class="form-control" placeholder="{{profile.major}}" [(ngModel)]="model.major" name="major">
+                            </div>
+                            <div class="form-group">
                                 <label>Language: </label>
                                 <input class="form-control" placeholder="{{profile.language}}" [(ngModel)]="model.language" name="language">
                             </div>
                             <div class="form-group">
-                                <label>Major: </label>
-                                <input class="form-control" placeholder="{{profile.major}}" [(ngModel)]="model.major" name="major">
+                                <label>Birthday: </label>
+                                <input class="form-control" placeholder="{{profile.birthday}}" [(ngModel)]="model.birthday" type="date" name="birthday">
                             </div>
                             <div class="form-group">
                                 <label>Hobby: </label>

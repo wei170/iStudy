@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 
@@ -10,6 +10,9 @@ export class CourseService {
     constructor(private http: Http) {
     }
 
+    /**************************************************
+     * 				Class Searching
+     **************************************************/
     getAllMajors() {
         var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
         var abbrOrder = ')))&$orderby=Abbreviation%20asc';
@@ -35,4 +38,24 @@ export class CourseService {
             .map((res: Response) => res.json());
     }
 
+    /**************************************************
+     * 				Classrooms
+     **************************************************/
+     /**
+     * Join a class
+     * JSON Format:
+     * {
+     * 	"course": "...",
+     * 	"professor": "...",
+     * 	"userName": "..."
+     * }
+     */
+     joinClass(courseName: string, professor: string, userName: string) {
+         var url = '/course/join';
+         var body = { "course" : courseName, "professor": professor, "userName": userName};
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+
+     }
 }
