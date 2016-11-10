@@ -395,6 +395,39 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 });
 
 
+/******************************************************
+ *           	Find Friends
+ ******************************************************/
+// find friends in same class by country, hobby, language
+router.post('/find-friends', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"nationality": "...",
+	 * 		"hobby": [
+	 * 			{name: "..."},
+	 * 			{name: "..."}
+	 * 			],
+	 * 		"language": [
+	 * 			{name: "..."},
+	 * 			...
+	 * 		]
+	 * }
+	 */
+	var body = _.pick(req.body, 'nationality', 'hobby', 'language');
+	var preference = {};
+	if (body.hasOwnProperty('nationality')) {
+		preference.nationality = body.nationality;
+	}
+	if (body.hasOwnProperty('hobby')){
+		preference.hobby = body.hobby;
+	}
+	if (body.hasOwnProperty('language')){
+		preference.language = body.language;
+	}
+
+
+});
+
 /**
  * Add friendship of sender and receiver to db
  * Rerturn a promise
