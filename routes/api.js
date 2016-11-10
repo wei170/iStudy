@@ -25,7 +25,9 @@ var router = express.Router();
  **************************************************/
 router.post('/seeds', function (req, res) {
 	initDB()
-		.then(showPage(res, 'seed'));
+		.then(showPage(res, 'seed'), function (err) {
+			res.status(400).send({err: "Error"});
+		});
 });
 
 
