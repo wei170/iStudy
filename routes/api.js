@@ -26,7 +26,7 @@ var router = express.Router();
 router.post('/seeds', function (req, res) {
 	initDB()
 		.then(showPage(res, 'seed'), function (err) {
-			res.status(400).send({err: "Error"});
+			res.status(404).send({err: "Error"});
 		});
 });
 
@@ -44,7 +44,7 @@ router.post('/link_prof_course', function (req, res) {
  **************************************************/
 router.post('/link_course_student', function (req, res) {
 	linkCourseAndStudent()
-		.then(res.send({res: 'Linked Students With Courses Successfully'}));
+		.then(res.status(200).send({res: 'Linked Students With Courses Successfully'}));
 });
 
 /**************************************************
@@ -52,7 +52,7 @@ router.post('/link_course_student', function (req, res) {
  **************************************************/
 router.post('/link_users', function (req, res) {
 	linkUsers()
-		.then(res.send({res: "Linked Users Successfully"}));
+		.then(res.status(200).send({res: "Linked Users Successfully"}));
 });
 
 

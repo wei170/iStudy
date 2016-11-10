@@ -10,10 +10,16 @@ var Promise = require('bluebird');
  *  GET all course names along with their descriptions
  ******************************************************/
 router.get('/', middleware.requireAuthentication,  function(req, res){
-	db.course.findAll({attributes: ['name', 'description']}).then(function (course) {
-		res.json(course);
-	}, function(e){
-		res.status(400).send({err: "fail to get courses"});
+	db.course.findAll({attributes: ['name', 'description']}).then(function (courses) {
+		if (courses){
+			res.status(200).json(courses);
+		}
+		else {
+			res.status(404).send({err: "fail to get courses"});
+		}
+
+	}, function(error){
+		res.status(400).send({err: error});
 	});
 });
 
@@ -32,11 +38,11 @@ router.post('/', middleware.requireAuthentication, function(req, res){
 		if (course){
 			// found and send user relevant professors
 			course.getProfessors().then(function(professors){
-				res.json(professors);
+				res.status(200).json(professors);
 			});
 		}
 		else {
-			res.send({err: "Course Not Found :("});
+			res.status(404).send({err: "Course Not Found :("});
 		}
 	}, function (err) {
 		res.status(400).send(err);
@@ -74,21 +80,21 @@ router.post('/join', middleware.requireAuthentication, function (req, res) {
 										res.status(200).send({res: "Join the class successfully"});
 									}
 									else {
-										res.send({err: "No such user :("});
+										res.status(400).send({err: "No such user :("});
 									}
 								});
 							}else{
-								res.send({err: "No such course :("});
+								res.status(400).send({err: "No such course :("});
 							}
 						});
 				}
 				else {
-					res.send({err: "Professor Not Found :("});
+					res.status(400).send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else{
-			res.send({err: "Course Not Found :("});
+			res.status(400).send({err: "Course Not Found :("});
 		}
 	});
 });
@@ -119,25 +125,25 @@ router.post('/students', middleware.requireAuthentication, function (req, res) {
 								// find course by a specific professor
 								c_u.getStudents().then(function (students) {
 									if (students){
-										res.json(students);
+										res.status(200).json(students);
 									}
 									else {
-										res.send({err: "No stduents joined this course"});
+										res.status(404).send({err: "No stduents joined this course"});
 									}
 								});
 							}
 							else {
-								res.send({err: "No such course :("});
+								res.status(404).send({err: "No such course :("});
 							}
 						});
 				}
 				else {
-					res.send({err: "Professor Not Found :("});
+					res.status(404).send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else {
-			res.send({err: "Course Not Found :("});
+			res.status(404).send({err: "Course Not Found :("});
 		}
 	});
 });
@@ -167,25 +173,25 @@ router.post('/number-of-students', middleware.requireAuthentication, function (r
 								// find course by a specific professor
 								c_u.getStudents().then(function (students) {
 									if (students){
-										res.send({number: students.length});
+										res.status(200).send({number: students.length});
 									}
 									else {
-										res.send({err: "No stduents joined this course"});
+										res.status(404).send({err: "No stduents joined this course"});
 									}
 								});
 							}
 							else {
-								res.send({err: "No such course :("});
+								res.status(404).send({err: "No such course :("});
 							}
 						});
 				}
 				else {
-					res.send({err: "Professor Not Found :("});
+					res.status(404).send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else {
-			res.send({err: "Course Not Found :("});
+			res.status(404).send({err: "Course Not Found :("});
 		}
 	});
 });
@@ -213,20 +219,16 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 					});
 
 					db.course.findAll({where: {id: {$in: course_ids}}}).then(function (courses) {
-						res.json(courses);
+						res.status(200).json(courses);
 					});
-					// retrieveCourseAndProfessors(c_ids, course_list)
-					// 	.then(function () {
-					// 		res.json(course_list.courses);
-					// 	});
 				}
 				else {
-					res.send({err: "User Didn't Attend Any Course Yet :("});
+					res.status(404).send({err: "User Didn't Attend Any Course Yet :("});
 				}
 			});
 		}
 		else{
-			res.send({err: "User Not Found :("});
+			res.status(404).send({err: "User Not Found :("});
 		}
 	});
 });

@@ -26,15 +26,18 @@ router.post('/', function(req, res, next) {
         db.profile.create({
             user_id: user.id
         }).then(function(profile) {
-            res.json(user.toPublicJSON());
+			if (profile){
+				res.status(200).json(user.toPublicJSON());
+			}
+			else {
+				res.status(404).send({err: "Profile Creation Error"});
+			}
         }, function(e) {
-            console.log("fail to create user profile");
-            res.status(400).json({err: "fail to create user profile"});
+            res.status(400).send({err: e});
         });
     }, function(e) {
 		//TODO: need to tell if it's invalid userName or email by frontend send request check if userName exists
-        console.log("fail to create account");
-        res.status(400).json({err: "fail to create account"});
+        res.status(400).send({err: e});
     });
 });
 
@@ -63,7 +66,7 @@ router.post('/reset', function(req, res, next) {
         }).then(function(user) {
             res.json(verificationcode);
         }, function(e) {
-            res.status(400).json(e);
+            res.status(400).send({err: e});
         });
 
     }, function(e) {
@@ -92,7 +95,7 @@ router.post('/checkcode', function(req, res) {
             res.status(200).send();
 
         } else {
-            res.status(401).json({error: 'verification code invalid!'});
+            res.status(401).send({error: 'verification code invalid!'});
         }
     });
 });
@@ -126,25 +129,30 @@ router.put('/newpassword', function(req, res) {
         }
         if (body.hasOwnProperty('password')) {
             attributes.password = body.password;
-
         }
         db.user.findAll({
             where: where
         }).then(function(users) {
-            users[0].update(
-                attributes
-            ).then(function(user) {
-                //new password set
-                console.log('@@@@' + attributes.password);
-                res.json(user.toPublicJSON());
-            }, function(e) {
-                res.status(400).json(e);
-            });
-            //users[0].setDataValue('password','66666');
+			if (users){
+				users[0].update(
+					attributes
+				).then(function(user) {
+					//new password set
+					console.log('@@@@' + attributes.password);
+					res.json(user.toPublicJSON());
+				}, function(e) {
+					res.status(400).json(e);
+				});
+				//users[0].setDataValue('password','66666');
+
+			}
+			else {
+				//no such email in database
+				res.status(404).send({err: "No Such User"});
+			}
 
         }, function(e) {
-            //no such email in database
-            res.status(404).send();
+            res.status(400).send({err: e});
         });
 
     });
@@ -173,8 +181,8 @@ router.post('/login', function(req, res) {
             res.status(401).send();
         }
 
-    }, function() {
-        res.status(401).send();
+    }, function(e) {
+        res.status(400).send({err: e});
 
     });
 });
@@ -193,11 +201,11 @@ router.post('/get-friends', middleware.requireAuthentication,function (req, res)
 	db.user.findOne({where: {userName: body.userName}}).then(function(user){
 		if (user){
 			user.getFriends().then(function (friends) {
-				res.json(friends);
+				res.status(200).json(friends);
 			});
 		}
 		else {
-			res.send({err: "User Not Found"});
+			res.status(404).send({err: "User Not Found"});
 		}
 	});
 });
@@ -218,20 +226,20 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 			db.user.findOne({where: {userName: body.receiverName}}).then(function (receiver) {
 				if (receiver){
 					if (receiver.id === sender.id){
-						res.send({err: "One can not send friend invitation to oneself"});
+						res.status(400).send({err: "One can not send friend invitation to oneself"});
 					}
 					else {
 						db.friend_request.create({sender_id: sender.id, receiver_id: receiver.id});
-						res.send({res: "Sent Friend Request Successfully"});
+						res.status(200).send({res: "Sent Friend Request Successfully"});
 					}
 				}
 				else {
-					res.send({err: "Receiver Not Exist"});
+					res.status(404).send({err: "Receiver Not Exist"});
 				}
 			});
 		}
 		else {
-			res.send({err: "Sender Not Exist"});
+			res.status(404).send({err: "Sender Not Exist"});
 		}
 	});
 });
@@ -259,16 +267,16 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
 						where: { id: { $in: sender_ids}},
 						attributes: ['userName']
 					}).then(function (senders) {
-						res.json(senders);
+						res.status(200).json(senders);
 					});
 				}
 				else {
-					res.send({err: "No invitations received"});
+					res.status(404).send({err: "No invitations received"});
 				}
 			});
 		}
 		else {
-			res.send({err: "No Such User"});
+			res.status(404).send({err: "No Such User"});
 		}
 	})
 });
@@ -296,16 +304,16 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 						where: { id: { $in: receiver_ids}},
 						attributes: ['userName']
 					}).then(function (receivers) {
-						res.json(receivers);
+						res.status(200).json(receivers);
 					});
 				}
 				else {
-					res.send({err: "No requests sent"});
+					res.status(404).send({err: "No requests sent"});
 				}
 			});
 		}
 		else {
-			res.send({err: "No Such User"});
+			res.status(404).send({err: "No Such User"});
 		}
 	});
 
@@ -333,7 +341,7 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
 				if (sender){
 					if (sender.id === receiver.id){
-						res.send({err: "Not a valid request"});
+						res.status(400).send({err: "Not a valid request"});
 					}
 					else {
 						db.friend_request.findOne({where: {sender_id: sender.id, receiver_id: receiver.id}})
@@ -341,25 +349,28 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 								if (request){
 									request.updateAttributes(attributes).then(function (request) {
 										if (request){
-											res.json(request);
+											res.status(200).json(request);
+										}
+										else {
+											res.status(400).send({err: "Fail to update the friend_request"});
 										}
 									}, function (e) {
-										res.send({err: "Fail to update the friend_request"});
+										res.status(400).send({err: e});
 									})
 								}
 								else {
-									res.send({err: "Request does not exist"});
+									res.status(404).send({err: "Request does not exist"});
 								}
 							});
 					}
 				}
 				else {
-					res.send({err: "Sender does not exist"});
+					res.status(404).send({err: "Sender does not exist"});
 				}
 			});
 		}
 		else {
-			res.send({err: "Sender does not exist"});
+			res.status(404).send({err: "Sender does not exist"});
 		}
 	});
 });

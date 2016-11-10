@@ -12,10 +12,10 @@ var _ = require('underscore');
 router.get('/languages', middleware.requireAuthentication, function(req, res){
 	db.language.findAll().then(function (languages) {
 		if (languages){
-			res.json(languages);
+			res.status(200).json(languages);
 		}
 		else {
-			res.send({err: "No Language Found"});
+			res.status(404).send({err: "No Language Found"});
 		}
 	});
 });
@@ -27,10 +27,10 @@ router.get('/languages', middleware.requireAuthentication, function(req, res){
 router.get('/hobbies', middleware.requireAuthentication, function(req, res){
 	db.hobby.findAll().then(function (hobbies) {
 		if (hobbies){
-			res.json(hobbies);
+			res.status(200).json(hobbies);
 		}
 		else {
-			res.send({err: "No Hobby Found"});
+			res.status(404).send({err: "No Hobby Found"});
 		}
 	});
 });
@@ -68,14 +68,14 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
 						   else {
 							   extra.hobby = "";
 						   }
-						   res.json(compelete_profile);
+						   res.status(200).json(compelete_profile);
 					   })
 				   })
 			   }
            });
        }
        else {
-           res.send({error: "User Not Found"});
+           res.status(404).send({error: "User Not Found"});
        }
     });
 });
@@ -152,32 +152,32 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 																profile.addHobbies(hobbies);
 															}
 															else {
-																res.send({err: "Hobbies Not Found"});
+																res.status(200).send({err: "Hobbies Not Found"});
 															}
 														});
 												}
-												res.send({res: "Profile Updated Successfully"});
+												res.status(404).send({res: "Profile Updated Successfully"});
 										});
 
 
 									}
 									else {
-											res.send({err: "Languages Not Found"});
+											res.status(404).send({err: "Languages Not Found"});
 										}
 									});
 							}
 						}
-					}, function (e) {
-						res.send({err: "Fail to update profile"});
+					}, function (error) {
+						res.status(400).send({err: error});
 					});
 				}
 				else {
-					res.send({err: "That's weird. Profile should have existed..."});
+					res.status(404).send({err: "That's weird. Profile should have existed..."});
 				}
 			});
 		}
 		else {
-			res.send({err: "User Not Found"});
+			res.status(404).send({err: "User Not Found"});
 		}
 	});
 });
