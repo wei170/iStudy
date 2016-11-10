@@ -348,7 +348,6 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 	if (body.hasOwnProperty('status_code')){
 		attributes.status = body.status_code;
 	}
-
 	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
 		if (receiver){
 			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
@@ -362,7 +361,14 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 								if (request){
 									request.updateAttributes(attributes).then(function (request) {
 										if (request){
-											res.status(200).json(request);
+											if (attributes.status === 1){
+												// add request sender as friend of request receiver
+												console.log("gonna make them friends");
+												addFriend(sender.id, receiver.id, res)
+													.then(function () {
+														res.status(200).json(request);
+													});
+											}
 										}
 										else {
 											res.status(400).send({err: "Fail to update the friend_request"});
@@ -387,5 +393,41 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 		}
 	});
 });
+
+
+/**
+ * Add friendship of sender and receiver to db
+ * Rerturn a promise
+ * @param sender_id
+ * @param receiver_id
+ * @param res to send back info to frontend
+ */
+var addFriend = function (sender_id, receiver_id, res) {
+	return new Promise(function (resolve, reject) {
+		db.user.findById(sender_id).then(function (sender) {
+			if (sender){
+				db.user.findById(receiver_id).then(function (receiver) {
+					if (receiver){
+						receiver.addFriend(sender).then(function (success) {
+							if (success){
+								sender.addFriend(receiver).then(function (success) {
+									if (success){
+										resolve();
+									}
+								});
+							}
+						});
+					}
+					else {
+						res.status(404).send({err: "Receiver Not Found"});
+					}
+				})
+			}
+			else {
+				res.status(404).send({err: "Sender Not Found"});
+			}
+		});
+	});
+};
 
 module.exports = router;
