@@ -200,6 +200,8 @@ var linkCourseAndProf = function (res) {
  */
 var linkCourseAndStudent = function (res) {
 	return new Promise(function (resolve, reject) {
+		var number = seedCourseStudent.length;
+		var count = 0;
 		seedCourseStudent.map(function (linking) {
 			var course = linking.course;
 			var professor = linking.professor;
@@ -212,6 +214,7 @@ var linkCourseAndStudent = function (res) {
 								if (professor){
 									db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}}).then(function (c_u){
 										if (c_u){
+											count++;
 											user.addCourse(c_u);
 										}
 										else {
@@ -230,10 +233,14 @@ var linkCourseAndStudent = function (res) {
 					});
 				}
 				else {
+					console.log(userName);
 					res.status(404).send({err: "User Not Found :("});
 				}
 			});
 		});
+		if (count === number){
+			resolve();
+		}
 	});
 };
 
