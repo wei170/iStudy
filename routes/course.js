@@ -49,6 +49,45 @@ router.post('/', middleware.requireAuthentication, function(req, res){
 	});
 });
 
+
+/**************************************************
+ * 				Get Course ID
+ **************************************************/
+router.post('/get-course-id', middleware.requireAuthentication, function(req, res){
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'course', 'professor');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor){
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (aCourse) {
+							if (aCourse){
+								res.send({course_id: aCourse.id});
+							}
+							else {
+								res.status(404).send({err: "No Such Course"});
+							}
+						})
+				}
+				else {
+					res.status(404).send({err: "Professor Not Found :("});
+				}
+			});
+		}
+		else {
+			res.status(404).send({err: "Course Not Found :("});
+		}
+	})
+});
+
+
 /**************************************************
  * 				Join A Class
  **************************************************/
