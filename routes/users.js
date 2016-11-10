@@ -247,6 +247,7 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 /******************************************************
  *           Get Friend Invitations
  ******************************************************/
+// Notes: Collect All the requests a user has received
 router.post('/get-friend-invitations', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
@@ -284,13 +285,18 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
 /******************************************************
  *           Get Friend Requests
  ******************************************************/
+// Notes: Collect All the requests one has sent out
 router.post('/get-friend-requests', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
 	 * 		"userName": "...",
 	 * }
 	 */
+	var request_list = {};
+	var rs = [];
 	var receiver_ids = [];
+	var request_statuses = [];
+	request_list.requests = rs;
 	var body = _.pick(req.body, 'userName');
 	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
 		if (user){
@@ -298,13 +304,20 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 				if (requests){
 					requests.map(function(request){
 						receiver_ids.push(request.receiver_id);
+						request_statuses.push(request.status);
 					});
 
 					db.user.findAll({
 						where: { id: { $in: receiver_ids}},
 						attributes: ['userName']
 					}).then(function (receivers) {
-						res.status(200).json(receivers);
+						for (var i = 0; i < receivers.length; i++){
+							rs.push({
+								"receiver": receivers[i].userName,
+								"status": request_statuses[i]
+							});
+						}
+						res.status(200).json(request_list);
 					});
 				}
 				else {
