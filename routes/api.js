@@ -25,8 +25,8 @@ var router = express.Router();
  **************************************************/
 router.post('/seeds', function (req, res) {
 	initDB()
-		.then(showPage(res, 'seed'), function (err) {
-			res.status(404).send({err: "Error"});
+		.then(showPage(res, 'seed'), function (e) {
+			res.status(404).send({err: e});
 		});
 });
 
@@ -35,15 +35,17 @@ router.post('/seeds', function (req, res) {
  * 			Link Professor with Course
  **************************************************/
 router.post('/link_prof_course', function (req, res) {
-	linkCourseAndProf()
-		.then(showPage(res, 'seed'));
+	linkCourseAndProf(res)
+		.then(function () {
+			res.status(200).send({res: "linked prof with course successfully"});
+		});
 });
 
 /**************************************************
  * 			Link Student with Course
  **************************************************/
 router.post('/link_course_student', function (req, res) {
-	linkCourseAndStudent()
+	linkCourseAndStudent(res)
 		.then(res.status(200).send({res: 'Linked Students With Courses Successfully'}));
 });
 
@@ -51,7 +53,7 @@ router.post('/link_course_student', function (req, res) {
  * 				Link Users
  **************************************************/
 router.post('/link_users', function (req, res) {
-	linkUsers()
+	linkUsers(res)
 		.then(res.status(200).send({res: "Linked Users Successfully"}));
 });
 
@@ -110,7 +112,7 @@ var insertData = function(insertFunction, data){
  */
 var showPage = function(res, page){
     var emoji = cool();
-    res.status(200).render(page, { emoji: emoji });
+    res.render(page, { emoji: emoji });
 };
 
 /**
@@ -162,9 +164,12 @@ var insertNewHobbies = function (hobby) {
  * Function used to link course with professors
  * Return a promise
  */
-var linkCourseAndProf = function () {
+var linkCourseAndProf = function (res) {
 	return new Promise(function(resolve, reject){
+		var count = 0;
+		var len = seedCourseProssor.length;
 		seedCourseProssor.map(function (linking) {
+			count++;
 			var course = linking.course;
 			var professor = linking.professor;
 			db.course.findOne({where: {name: course}}).then(function (course) {
@@ -174,15 +179,18 @@ var linkCourseAndProf = function () {
 							course.addProfessor(prof);
 						}
 						else {
-							console.log('Professor Not Found :(');
+							res.status(404).send({err: 'Professor Not Found :('});
 						}
 					});
 				}
 				else {
-					console.log('Course Not Found :(');
+					res.status(404).send({err:'Course Not Found :('});
 				}
 			});
 		});
+		if (count === len){
+			resolve();
+		}
 	});
 };
 
@@ -190,7 +198,7 @@ var linkCourseAndProf = function () {
  * Function used to link students with courses
  * return a promise
  */
-var linkCourseAndStudent = function () {
+var linkCourseAndStudent = function (res) {
 	return new Promise(function (resolve, reject) {
 		seedCourseStudent.map(function (linking) {
 			var course = linking.course;
@@ -207,22 +215,22 @@ var linkCourseAndStudent = function () {
 											user.addCourse(c_u);
 										}
 										else {
-											console.log("No Such Course :(");
+											res.status(404).send({err: "No Such Course :("});
 										}
 									});
 								}
 								else {
-									console.log("Professor Not Found :(");
+									res.status(404).send({err: "Professor Not Found :("});
 								}
 							});
 						}
 						else {
-							console.log("Course Not Found :(");
+							res.status(404).send({err:"Course Not Found :("});
 						}
 					});
 				}
 				else {
-					console.log("User Not Found :(");
+					res.status(404).send({err: "User Not Found :("});
 				}
 			});
 		});
@@ -233,7 +241,7 @@ var linkCourseAndStudent = function () {
  * Link user with user
  * return a promise
  */
-var linkUsers = function () {
+var linkUsers = function (res) {
 	return new Promise(function (resolve, reject) {
 		seedFriends.map(function (linking) {
 			var u_id = linking.user_id;
@@ -241,9 +249,12 @@ var linkUsers = function () {
 			db.user.findById(u_id).then(function (user) {
 				if (user){
 					db.user.findById(f_id).then(function (friend) {
-						console.log('Map ' + user.userName + ', ' + friend.userName);
+						//console.log('Map ' + user.userName + ', ' + friend.userName);
 						if (friend) {
 							user.addFriend(friend);
+						}
+						else {
+							res.status(404).send({err: "Friend Not Found :("});
 						}
 					});
 				}
