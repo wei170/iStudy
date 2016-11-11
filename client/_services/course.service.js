@@ -14,7 +14,7 @@ require("rxjs/add/operator/map");
 var CourseService = (function () {
     function CourseService(http) {
         this.http = http;
-        this.apiUrl = 'http://api.purdue.io/odata';
+        this.apiUrl = 'https://api.purdue.io/odata';
         this.termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     }
     /**************************************************

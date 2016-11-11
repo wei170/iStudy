@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CourseService {
-    private apiUrl = 'http://api.purdue.io/odata';
+    private apiUrl = 'https://api.purdue.io/odata';
     private termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     constructor(private http: Http) {
     }
