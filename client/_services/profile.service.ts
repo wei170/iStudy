@@ -37,7 +37,7 @@ export class ProfileService {
         var headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         var body = {
-            "userName": "Maoxia",
+            "userName": userName,
             "major": profile.profile.major,
             "visibility": profile.profile.visibility,
             "birthday": profile.profile.birthday,

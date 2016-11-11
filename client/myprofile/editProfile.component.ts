@@ -30,8 +30,12 @@ export class EditProfileComponent implements OnInit{
         }
     } = {
         "extra": {
-            "language": [],
-            "hobby": []
+            "language": [{
+                "name": ""
+            }],
+            "hobby": [{
+                "name": ""
+            }]
         },
         "profile": {
             "major": "Unknown",
@@ -63,7 +67,6 @@ export class EditProfileComponent implements OnInit{
         .subscribe(
             data => {
                 this.myProfile = data;
-                console.log(this.myProfile);
             },
             err => {
                 this.alertService.error(err);
@@ -72,6 +75,7 @@ export class EditProfileComponent implements OnInit{
     }
 
     editProfile() {
+        console.log(this.myProfile);
         this.profileService.editProfile(this.currentUser.userName, this.myProfile)
         .subscribe (
             data => {

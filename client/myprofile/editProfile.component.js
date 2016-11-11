@@ -19,8 +19,12 @@ var EditProfileComponent = (function () {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.myProfile = {
             "extra": {
-                "language": [],
-                "hobby": []
+                "language": [{
+                        "name": ""
+                    }],
+                "hobby": [{
+                        "name": ""
+                    }]
             },
             "profile": {
                 "major": "Unknown",
@@ -44,13 +48,13 @@ var EditProfileComponent = (function () {
         this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
             _this.myProfile = data;
-            console.log(_this.myProfile);
         }, function (err) {
             _this.alertService.error(err);
         });
     };
     EditProfileComponent.prototype.editProfile = function () {
         var _this = this;
+        console.log(this.myProfile);
         this.profileService.editProfile(this.currentUser.userName, this.myProfile)
             .subscribe(function (data) {
             // successfully edit the profile
