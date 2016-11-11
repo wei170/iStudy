@@ -35,6 +35,7 @@ var RoomComponent = (function () {
     };
     RoomComponent.prototype.chat = function () {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
+        console.log("check");
     };
     RoomComponent.prototype.update = function (room) {
         this.roomInfo = room;

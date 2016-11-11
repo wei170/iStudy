@@ -44,6 +44,7 @@ export class RoomComponent implements OnInit {
 
     chat() {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
+        console.log("check");
     }
 
     update(room: any) {
