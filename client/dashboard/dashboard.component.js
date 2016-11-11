@@ -40,7 +40,7 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.accept = function (req) {
         var _this = this;
-        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "1").subscribe(function (data) {
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, 1).subscribe(function (data) {
             _this.alertService.success("Accept the friend request");
         }, function (error) {
             _this.alertService.error(error);
@@ -48,7 +48,7 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.decline = function (req) {
         var _this = this;
-        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "2").subscribe(function (data) {
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, -1).subscribe(function (data) {
             _this.alertService.success("Decline the friend request");
         }, function (error) {
             _this.alertService.error(error);

@@ -22,14 +22,14 @@
                                     </div>
                                     <div *ngFor="let comment of rmp.comments">
                                         <div class="panel-heading">
-                                            <b>User: </b>
+                                            <b>User: {{comment.userName}}</b>
                                         </div>
                                         <div class="panel-body">
-                                            hahahahahh
+                                            {{comment.comment}}
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>

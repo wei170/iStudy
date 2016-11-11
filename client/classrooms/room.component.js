@@ -11,16 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../_services/index");
 var RoomComponent = (function () {
-    function RoomComponent(classroomService, alertService, courseService, friendService) {
+    function RoomComponent(classroomService, profileService, alertService, courseService, friendService) {
         this.classroomService = classroomService;
+        this.profileService = profileService;
         this.alertService = alertService;
         this.courseService = courseService;
         this.friendService = friendService;
+        this.hasInClass = false;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.roomInfo = {};
+        this.languages = [];
+        // private majors: any[] = [];
+        this.hobbies = [];
+        this.preference = {
+            "nationality": "",
+            "hobby": "",
+            "language": ""
+        };
     }
     RoomComponent.prototype.ngOnInit = function () {
         this.getEnrolledClasses();
+        this.getAllChoices();
     };
     RoomComponent.prototype.getEnrolledClasses = function () {
         var _this = this;
@@ -32,7 +43,27 @@ var RoomComponent = (function () {
         var _this = this;
         this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
             _this.studentList = data;
-            console.log(_this.studentList[0]);
+        });
+    };
+    RoomComponent.prototype.getAllChoices = function () {
+        var _this = this;
+        this.profileService.getAllLanguages().subscribe(function (data) {
+            _this.languages = data;
+        });
+        this.profileService.getAllHobbies().subscribe(function (data) {
+            _this.hobbies = data;
+        });
+        // this.profileService.getAllMajors().subscribe(
+        //     data => {
+        //         this.majors = data.value;
+        //     }
+        // );
+    };
+    RoomComponent.prototype.filterStudents = function () {
+        var _this = this;
+        this.friendService.filterStudents(this.preference, this.currentUser.userName, this.roomInfo.course, this.roomInfo.professor)
+            .subscribe(function (data) {
+            _this.studentList = data;
         });
     };
     RoomComponent.prototype.getNumOfStudents = function () {
@@ -48,6 +79,7 @@ var RoomComponent = (function () {
         this.roomInfo = room;
         this.getAllStudents();
         this.getNumOfStudents();
+        this.hasInClass = true;
     };
     RoomComponent.prototype.sendRequest = function (reciever) {
         var _this = this;
@@ -66,6 +98,7 @@ RoomComponent = __decorate([
         styleUrls: ['room.component.css']
     }),
     __metadata("design:paramtypes", [index_1.ClassroomService,
+        index_1.ProfileService,
         index_1.AlertService,
         index_1.CourseService,
         index_1.FriendService])
