@@ -557,10 +557,52 @@ var filterByPreference = function (student_ids, preference, res) {
 		}
 		else {
 			//ONLY by LANGUAGE
-			
+			filterByLanguage(res, student_ids, preference, possible_friends);
 		}
 
 	});
+};
+
+/**
+ * Find Friends by languages
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByLanguage = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByLanguage = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids}
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by language
+									getProfileByLanguage(profiles, preference.language, profileByLanguage)
+										.then(function () {
+											getUserNames(profileByLanguage, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject with same hobby found"});
+			}
+		});
 };
 
 /**
@@ -588,7 +630,7 @@ var filterByHobby = function (res, student_ids, preference, possible_friends) {
 							.then(function (profiles) {
 								if (profiles) {
 									// filter by hobby
-									getProfileIdsByHobby(profiles, preference.hobby, profileByHobby)
+									getProfileByHobby(profiles, preference.hobby, profileByHobby)
 										.then(function () {
 											getUserNames(profileByHobby, possible_friends)
 												.then(function () {
@@ -643,6 +685,38 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
 		});
 };
 
+/**
+ * Get Profiles with same language speaking
+ * @param profiles
+ * @param language
+ * @param profileByLanguage
+ * @returns {Promise}
+ */
+var getProfileByLanguage = function (profiles, language, profileByLanguage) {
+	return new Promise(function (resolve, reject) {
+		var count = 0;
+		var len = profiles.length;
+		console.log("h");
+		profiles.map(function (profile) {
+			profile.getLanguages().then(function (languages) {
+				if (languages){
+					count++;
+					languages.map(function (l) {
+						if (l.name === language){
+							// find a matched one
+							profileByLanguage.push(profile);
+						}
+						resolve();
+					});
+					resolve();
+				}
+			});
+		});
+		if (count === len){
+			resolve();
+		}
+	});
+};
 
 /**
  * Get Profile Ids with same Hobby
@@ -651,7 +725,7 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
  * @param profileByHobby
  * @returns {Promise}
  */
-var getProfileIdsByHobby = function (profiles, hobby, profileByHobby) {
+var getProfileByHobby = function (profiles, hobby, profileByHobby) {
 	return new Promise(function (resolve, reject) {
 		var count = 0;
 		var len = profiles.length;
