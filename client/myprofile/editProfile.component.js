@@ -16,7 +16,6 @@ var EditProfileComponent = (function () {
         this.router = router;
         this.profileService = profileService;
         this.alertService = alertService;
-        this.model = {};
         this.currentUser = {};
         this.profile = {};
         this.visibilities = [
@@ -25,9 +24,14 @@ var EditProfileComponent = (function () {
         ];
     }
     EditProfileComponent.prototype.ngOnInit = function () {
+        this.fetchProfile();
+        this.getAllChoices();
+    };
+    EditProfileComponent.prototype.fetchProfile = function () {
         var _this = this;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.profileService.getProfile(this.model)
+        this.model.userName = this.currentUser.userName;
+        this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
             _this.profile = data;
         }, function (err) {
@@ -43,6 +47,19 @@ var EditProfileComponent = (function () {
             _this.router.navigate(['/dashboard/myprofile']);
         }, function (err) {
             _this.alertService.error(err.message);
+        });
+    };
+    EditProfileComponent.prototype.getAllChoices = function () {
+        var _this = this;
+        this.profileService.getAllLanguages().subscribe(function (data) {
+            _this.languages = data;
+        });
+        this.profileService.getAllHobbies().subscribe(function (data) {
+            _this.hobbies = data;
+        });
+        this.profileService.getAllMajors().subscribe(function (data) {
+            console.log(data.value);
+            _this.majors = data.value;
         });
     };
     return EditProfileComponent;

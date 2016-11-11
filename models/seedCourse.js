@@ -1,8 +1,8 @@
 module.exports = [
 	{
-		name: 'cs307'
+		name: 'CS30700'
 	},
 	{
-		name: 'cs381'
+		name: 'CS38100'
 	}
 ];

@@ -1,14 +1,14 @@
 module.exports = [
 	{
-		course: 'cs381',
+		course: 'CS38100',
 		professor: 'Greg N. Frederickson'
 	},
 	{
-		course: 'cs381',
+		course: 'CS38100',
 		professor: 'Susanne E. Hambrusch'
 	},
 	{
-		course: 'cs307',
+		course: 'CS30700',
 		professor: 'H. E. Dunsmore'
 	}
 ];

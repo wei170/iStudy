@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes){
         birthday: {
             type: DataTypes.DATEONLY
         },
-        nation: {
+        nationality: {
             type: DataTypes.STRING,
             defaultValue: "Unknown"
         },

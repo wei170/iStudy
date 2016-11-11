@@ -247,6 +247,7 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 /******************************************************
  *           Get Friend Invitations
  ******************************************************/
+// Notes: Collect All the requests a user has received
 router.post('/get-friend-invitations', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
@@ -260,7 +261,10 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
 			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (invitations) {
 				if (invitations){
 					invitations.map(function (invitation) {
-						sender_ids.push(invitation.sender_id);
+						// only get unhandled invitations
+						if (invitation.status === 0){
+							sender_ids.push(invitation.sender_id);
+						}
 					});
 
 					db.user.findAll({
@@ -284,13 +288,18 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
 /******************************************************
  *           Get Friend Requests
  ******************************************************/
+// Notes: Collect All the requests one has sent out
 router.post('/get-friend-requests', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
 	 * 		"userName": "...",
 	 * }
 	 */
+	var request_list = {};
+	var rs = [];
 	var receiver_ids = [];
+	var request_statuses = [];
+	request_list.requests = rs;
 	var body = _.pick(req.body, 'userName');
 	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
 		if (user){
@@ -298,13 +307,20 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 				if (requests){
 					requests.map(function(request){
 						receiver_ids.push(request.receiver_id);
+						request_statuses.push(request.status);
 					});
 
 					db.user.findAll({
 						where: { id: { $in: receiver_ids}},
 						attributes: ['userName']
 					}).then(function (receivers) {
-						res.status(200).json(receivers);
+						for (var i = 0; i < receivers.length; i++){
+							rs.push({
+								"receiver": receivers[i].userName,
+								"status": request_statuses[i]
+							});
+						}
+						res.status(200).json(request_list);
 					});
 				}
 				else {
@@ -335,7 +351,6 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 	if (body.hasOwnProperty('status_code')){
 		attributes.status = body.status_code;
 	}
-
 	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
 		if (receiver){
 			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
@@ -349,7 +364,15 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 								if (request){
 									request.updateAttributes(attributes).then(function (request) {
 										if (request){
-											res.status(200).json(request);
+											if (attributes.status === 1 || attributes.status === 0){
+												// add request sender as friend of request receiver
+												if (attributes.status === 1){
+													addFriend(sender.id, receiver.id, res)
+														.then(function () {
+															res.status(200).json(request);
+														});
+												}
+											}
 										}
 										else {
 											res.status(400).send({err: "Fail to update the friend_request"});
@@ -374,5 +397,97 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 		}
 	});
 });
+
+
+/******************************************************
+ *           	Find Friends
+ ******************************************************/
+// find friends in same class by country, hobby, language
+router.post('/find-friends', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"course": "..."
+	 * 		"professor": "..."
+	 * 		"preference" : {
+	 * 			"nationality": "...",
+	 * 			"hobby": [
+	 * 				{name: "..."},
+	 * 				{name: "..."}
+	 * 			],
+	 * 			"language": [
+	 * 				{name: "..."},
+	 * 				...
+	 * 			]
+	 * 		}
+	 *
+	 * }
+	 */
+	var body = _.pick(req.body, 'course', 'professor', 'preference');
+	var preference = body.preference;
+	var filter = {};
+	if (preference.hasOwnProperty('nationality')) {
+		filter.nationality = preference.nationality;
+	}
+	if (preference.hasOwnProperty('hobby')){
+		filter.hobby = preference.hobby;
+	}
+	if (preference.hasOwnProperty('language')){
+		filter.language = preference.language;
+	}
+
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor){
+				if (professor){
+					// get students from course
+
+				}
+				else {
+					res.status(404).send({err: "Professor Not Found"});
+				}
+			})
+		}
+		else {
+			res.status(404).send({err: "Course Not Found"});
+		}
+	});
+
+
+});
+
+/**
+ * Add friendship of sender and receiver to db
+ * Rerturn a promise
+ * @param sender_id
+ * @param receiver_id
+ * @param res to send back info to frontend
+ */
+var addFriend = function (sender_id, receiver_id, res) {
+	return new Promise(function (resolve, reject) {
+		db.user.findById(sender_id).then(function (sender) {
+			if (sender){
+				db.user.findById(receiver_id).then(function (receiver) {
+					if (receiver){
+						receiver.addFriend(sender).then(function (success) {
+							if (success){
+								sender.addFriend(receiver).then(function (success) {
+									if (success){
+										resolve();
+									}
+								});
+							}
+						});
+					}
+					else {
+						res.status(404).send({err: "Receiver Not Found"});
+					}
+				})
+			}
+			else {
+				res.status(404).send({err: "Sender Not Found"});
+			}
+		});
+	});
+};
 
 module.exports = router;

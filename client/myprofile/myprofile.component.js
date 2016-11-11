@@ -15,14 +15,21 @@ var MyProfileComponent = (function () {
         this.alertService = alertService;
         this.profileService = profileService;
         this.currentUser = {};
-        this.myProfile = {};
+        this.myProfile = {
+            extra: {},
+            profile: {}
+        };
     }
     MyProfileComponent.prototype.ngOnInit = function () {
+        this.fetchProfile();
+    };
+    MyProfileComponent.prototype.fetchProfile = function () {
         var _this = this;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
             _this.myProfile = data;
+            console.log(_this.myProfile.profile.major);
         }, function (error) {
             _this.alertService.error(error);
         });

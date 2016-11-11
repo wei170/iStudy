@@ -91,7 +91,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 * JSON Format: {
 	 * 		"userName": "...",
 	 * 		"major": "...",
-	 * 		"nation": "...",
+	 * 		"nationality": "...",
 	 * 		"birthday": "...",
 	 * 		"gender": "...",
 	 * 		"visibility": "...",
@@ -99,7 +99,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 * 		"hobby": "..."
 	 * }
 	 */
-	var body = _.pick(req.body, 'userName', 'major', 'birthday', 'gender','visibility', 'language', 'hobby');
+	var body = _.pick(req.body, 'userName', 'major', 'nationality', 'birthday', 'gender','visibility', 'language', 'hobby');
     var attributes = {};
 
     if (body.hasOwnProperty('major')) {
@@ -114,8 +114,8 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 		attributes.gender = body.gender;
 	}
 
-	if (body.hasOwnProperty('nation')){
-		attributes.nation = body.nation;
+	if (body.hasOwnProperty('nationality')){
+		attributes.nationality = body.nationality;
 	}
 
     if (body.hasOwnProperty('visibility')) {
@@ -152,11 +152,11 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 																profile.addHobbies(hobbies);
 															}
 															else {
-																res.status(200).send({err: "Hobbies Not Found"});
+																res.status(404).send({err: "Hobbies Not Found"});
 															}
 														});
 												}
-												res.status(404).send({res: "Profile Updated Successfully"});
+												res.status(200).send({res: "Profile Updated Successfully"});
 										});
 
 
