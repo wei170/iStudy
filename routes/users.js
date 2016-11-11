@@ -261,7 +261,10 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
 			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (invitations) {
 				if (invitations){
 					invitations.map(function (invitation) {
-						sender_ids.push(invitation.sender_id);
+						// only get unhandled invitations
+						if (invitation.status === 0){
+							sender_ids.push(invitation.sender_id);
+						}
 					});
 
 					db.user.findAll({
@@ -363,16 +366,11 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 										if (request){
 											if (attributes.status === 1 || attributes.status === 0){
 												// add request sender as friend of request receiver
-												// make them friends
 												if (attributes.status === 1){
 													addFriend(sender.id, receiver.id, res)
 														.then(function () {
-															// remove the handled invitation
 															res.status(200).json(request);
 														});
-												}
-												else {
-													// remove the handled invitation
 												}
 											}
 										}
