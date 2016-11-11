@@ -25,7 +25,6 @@ router.get('/chat.html', function(req, res, next) {
   res.render('chat', { title: 'iStudy' });
 });
 
-
 router.get('/dashboard', function(req, res, next) {
     console.log('heree');
   res.render('index', { title: 'iStudy' });
