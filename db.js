@@ -50,7 +50,7 @@ db.user.hasOne(db.profile);
 db.profile.belongsTo(db.user);
 
 // one professor has many comments
-db.course_professor.belongsToMany(db.RMP);
+db.course_professor.belongsToMany(db.RMP,{through: 'course_professor'});
 
 // one user can speak many languages and one language can be spoken by many users
 db.profile.belongsToMany(db.language, {through: 'profile_language'});
