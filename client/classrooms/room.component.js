@@ -35,12 +35,19 @@ var RoomComponent = (function () {
             console.log(_this.studentList[0]);
         });
     };
+    RoomComponent.prototype.getNumOfStudents = function () {
+        var _this = this;
+        this.courseService.getNumOfStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
+            _this.numOfStudents = data.number;
+        });
+    };
     RoomComponent.prototype.chat = function () {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
     };
     RoomComponent.prototype.update = function (room) {
         this.roomInfo = room;
         this.getAllStudents();
+        this.getNumOfStudents();
     };
     RoomComponent.prototype.sendRequest = function (reciever) {
         var _this = this;

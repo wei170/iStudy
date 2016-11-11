@@ -44,6 +44,7 @@ var EditProfileComponent = (function () {
         this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
             _this.myProfile = data;
+            console.log(_this.myProfile);
         }, function (err) {
             _this.alertService.error(err);
         });
@@ -68,7 +69,6 @@ var EditProfileComponent = (function () {
             _this.hobbies = data;
         });
         this.profileService.getAllMajors().subscribe(function (data) {
-            console.log(data.value);
             _this.majors = data.value;
         });
     };

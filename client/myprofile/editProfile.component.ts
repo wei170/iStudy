@@ -14,8 +14,12 @@ export class EditProfileComponent implements OnInit{
     private currentUser = JSON.parse(localStorage.getItem('currentUser'));
     myProfile: {
         extra: {
-            language: string[];
-            hobby: string[];
+            language: {
+                name: string;
+            }[];
+            hobby: {
+                name: string;
+            }[];
         },
         profile: {
             major: string;
@@ -59,6 +63,7 @@ export class EditProfileComponent implements OnInit{
         .subscribe(
             data => {
                 this.myProfile = data;
+                console.log(this.myProfile);
             },
             err => {
                 this.alertService.error(err);
@@ -93,7 +98,6 @@ export class EditProfileComponent implements OnInit{
         );
         this.profileService.getAllMajors().subscribe(
             data => {
-                console.log(data.value);
                 this.majors = data.value;
             }
         );
