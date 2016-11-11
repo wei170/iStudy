@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "postinstall": "typings install",
+    "postinstall": "npm install typings",
     "build": "npm run build:tsc && npm run build:sass",
     "build:tsc": "tsc",
     "build:sass": "node-sass client/",
