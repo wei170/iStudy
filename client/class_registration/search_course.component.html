@@ -25,7 +25,7 @@
                     </option>
                 </select>
             </div>
-            <courseDetails *ngIf="step === 2" [sections]="sections" [major]="model.majorInfo.Abbreviation" [courseNumber]="model.courseInfo.Number"></courseDetails>
+            <courseDetails *ngIf="step === 2" [sections]="sections" [courseName]="courseName"></courseDetails>
             <div class = "form-group">
                 <button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
                 <a *ngIf="step <= 2 && step > 0" (click)="back()">Back</a>

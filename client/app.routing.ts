@@ -5,6 +5,7 @@ import { RegisterComponent, LoginComponent, ForgotPasswordComponent } from './lo
 import { DashboardComponent } from './dashboard/index';
 import { MyProfileComponent, EditProfileComponent } from './myprofile/index';
 import { SearchCourseComponent } from './class_registration/search_course.component';
+import { RoomComponent } from './classrooms/index';
 
 const appRoutes: Routes = [
     { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -16,11 +17,13 @@ const appRoutes: Routes = [
             { path: '', component: MyProfileComponent},
             { path: 'myprofile', component: MyProfileComponent },
             { path: 'edit_profile', component: EditProfileComponent },
-            { path: 'class_registration', component: SearchCourseComponent }
-        ]},
+            { path: 'class_registration', component: SearchCourseComponent },
+            { path: 'rooms', component: RoomComponent },
+        ]
+    }
 
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    // { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

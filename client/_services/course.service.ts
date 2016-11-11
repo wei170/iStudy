@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-
 @Injectable()
 export class CourseService {
     private apiUrl = 'http://api.purdue.io/odata';
@@ -28,15 +27,15 @@ export class CourseService {
         var detailedUrl = this.apiUrl + filterUrl + this.termId + major + order;
         return this.http.get(detailedUrl).map((res: Response) => res.json());
     }
-
-    getCoursesDetails(courseId: string) {
-        var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
-        var midUrl = '%20and%20Term/TermId%20eq%20';
-        var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
-        var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
-        return this.http.get(detailedUrl)
-            .map((res: Response) => res.json());
-    }
+    //
+    // getCoursesDetails(courseId: string) {
+    //     var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+    //     var midUrl = '%20and%20Term/TermId%20eq%20';
+    //     var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+    //     var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+    //     return this.http.get(detailedUrl)
+    //         .map((res: Response) => res.json());
+    // }
 
     /**************************************************
      * 				Classrooms
@@ -53,6 +52,22 @@ export class CourseService {
      joinClass(courseName: string, professor: string, userName: string) {
          var url = '/course/join';
          var body = { "course" : courseName, "professor": professor, "userName": userName};
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+
+     }
+     getCourseDetails(courseName: string) {
+         var url = '/course';
+         var body = { "course": courseName };
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+
+     }
+     getStudents(courseName: string, professor: string) {
+         var url = '/course/students';
+         var body = { "course" : courseName, "professor": professor};
          var headers = new Headers();
          headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());

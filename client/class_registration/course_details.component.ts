@@ -9,9 +9,7 @@ import { CourseService, AlertService } from '../_services/index';
 })
 
 export class CourseDetailsComponent {
-    @Input() major: string;
-    @Input() courseNumber: string;
-    private courseName = this.major + this.courseNumber;
+    @Input() courseName: string;
 
     constructor(
         private courseService: CourseService,

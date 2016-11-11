@@ -16,13 +16,15 @@
                     <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Message
-                                <span class="pull-right text-muted small">4 min</span>
-                            </div>
-                        </a>
+                    <li *ngFor="let req of friendRequests">
+                        <div>
+                            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                            {{req.userName}}
+                            <span class="pull-right text-muted small">
+                                <button class="fa fa-check" aria-hidden="true" (click)="accept(req)"> </button>
+                                <button class="fa fa-times" aria-hidden="true" (click)="decline(req)"> </button>
+                            </span>
+                        </div>
                     </li>
                     <li class="divider"></li>
                     <li>
@@ -74,19 +76,19 @@
             <ul class="nav" id="main-menu">
 
                 <li>
-                    <a class="active-menu" href="/dashboard/myprofile"><i class="fa fa-dashboard"></i>Profile</a>
+                    <a class="active-menu" href="/dashboard/myprofile">Profile</a>
                 </li>
 
                 <li>
-                    <a class="active-menu" href="/dashboard"><i class="fa fa-dashboard"></i>Meeting</a>
+                    <a class="active-menu" href="/dashboard">Meeting</a>
                 </li>
 
                 <li>
-                    <a class="active-menu" href="/dashboard/class_registration"><i class="fa fa-dashboard"></i>Registration</a>
+                    <a class="active-menu" href="/dashboard/class_registration">Registration</a>
                 </li>
 
                 <li>
-                    <a class="active-menu" href="/dashboard"><i class="fa fa-dashboard"></i>Classes</a>
+                    <a class="active-menu" href="/dashboard/rooms">Classes</a>
                 </li>
 
             </ul>

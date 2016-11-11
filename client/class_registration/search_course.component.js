@@ -43,16 +43,11 @@ var SearchCourseComponent = (function () {
             });
         }
         else if (this.step === 1) {
-            this.courseService.getCoursesDetails(this.model.courseInfo.CourseId).subscribe(function (data) {
+            this.courseName = this.model.majorInfo.Abbreviation + this.model.courseInfo.Number;
+            console.log(this.courseName);
+            this.courseService.getCourseDetails(this.courseName).subscribe(function (data) {
                 _this.step = 2;
-                _this.sections = []; // empty it
-                for (var i = 0; i < data.value.length; i++) {
-                    for (var j = 0; j < data.value[i].Sections.length; j++) {
-                        if (data.value[i].Sections[j].Type === "Lecture") {
-                            _this.sections.push(data.value[i].Sections[j]);
-                        }
-                    }
-                }
+                _this.sections = data;
             }, function (error) {
                 _this.alertService.error(error.err);
             });

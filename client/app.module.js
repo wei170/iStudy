@@ -21,6 +21,7 @@ var index_4 = require("./login/index");
 var index_5 = require("./dashboard/index");
 var index_6 = require("./myprofile/index");
 var index_7 = require("./class_registration/index");
+var index_8 = require("./classrooms/index");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -44,7 +45,8 @@ AppModule = __decorate([
             index_6.MyProfileComponent,
             index_6.EditProfileComponent,
             index_7.SearchCourseComponent,
-            index_7.CourseDetailsComponent
+            index_7.CourseDetailsComponent,
+            index_8.RoomComponent
         ],
         providers: [
             index_2.AuthGuard,
@@ -53,7 +55,9 @@ AppModule = __decorate([
             index_3.UserService,
             index_3.ProfileService,
             index_3.CourseService,
-            index_3.PasswordService
+            index_3.PasswordService,
+            index_3.FriendService,
+            index_3.ClassroomService
         ],
         bootstrap: [app_component_1.AppComponent]
     }),
