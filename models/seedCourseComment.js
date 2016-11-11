@@ -1,15 +1,15 @@
 module.exports = [
 	{
-        course_id: 2,
+        course_id: 3,
 		comment_id: 1
 
 	},
 	{
-		course_id: 2,
+		course_id: 3,
 		comment_id: 2
 	},
     {
-		course_id: 2,
+		course_id: 3,
 		comment_id: 3
 	},
     {
