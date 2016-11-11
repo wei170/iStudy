@@ -9,7 +9,10 @@ export class AuthenticationService {
         var url = 'users/login';
         var body = {"email": email, "password": password};
         return this.http.post(url, body)
-            .map((response: Response) => {
+        .map((response: Response) => {
+            if(response.status < 200 || response.status >= 300) {
+                response.json();
+            }  else {
                 // login successful if there's a jwt token in the response
                 let user = response.json();
                 // console.log(response.headers.get('Auth'));
@@ -18,7 +21,8 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     localStorage.setItem('token', response.headers.get('Auth'));
                 }
-            });
+            }
+        });
     }
 
     logout() {

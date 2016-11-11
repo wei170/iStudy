@@ -11,29 +11,37 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 
 export class MyProfileComponent implements OnInit{
     currentUser: any = {};
-    myProfile: any = {};
+    myProfile: {
+        extra: any;
+        profile: any;
+    } = {
+        extra: {},
+        profile: {}
+    }
 
     constructor(
         private alertService: AlertService,
-        private userService: UserService,
-        private profileService: ProfileService,
-        private dashboardComponent: DashboardComponent
+        private profileService: ProfileService
     ) {
-        this.currentUser = this.dashboardComponent.currentUser;
-        this.profileService.getProfile()
+    }
+
+    ngOnInit() {
+        this.fetchProfile();
+    }
+
+    fetchProfile() {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.profileService.getProfile(this.currentUser.userName)
         .subscribe(
             data => {
-                this.myProfile = JSON.parse(localStorage.getItem('profile'));
-                // todo: need to update this local storage method later
-                // console.log(JSON.stringify(data));
-                // console.log(JSON.parse(localStorage.getItem('profile')));
+                this.myProfile = data;
+                console.log(this.myProfile.profile.major);
             },
             error => {
                 this.alertService.error(error);
             }
         );
-    }
 
-    ngOnInit() {}
+    }
 
 }

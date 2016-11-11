@@ -24,6 +24,7 @@
     "@angular/upgrade": "~2.0.2",
     "angular-in-memory-web-api": "~0.1.1",
     "bcrypt": "^0.8.5",
+    "bluebird": "^3.4.6",
     "body-parser": "~1.15.1",
     "bootstrap": "4.0.0-alpha.4",
     "cookie-parser": "~1.4.3",
@@ -53,6 +54,7 @@
     "concurrently": "^3.0.0",
     "metismenu": "^2.5.2",
     "node-sass": "~3.10.1",
+    "rmp-api": "^1.2.5",
     "typescript": "^2.0.3",
     "typings": "^1.4.0"
   },

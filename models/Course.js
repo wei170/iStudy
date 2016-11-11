@@ -7,12 +7,6 @@ module.exports = function(sequelize, DataTypes){
 			primaryKey: true,
 			autoIncrement: true
 		},
-		// professor_id: {
-		// 	type: DataTypes.INTEGER,
-		// 	primaryKey: true,
-		// 	model: 'professor',
-		// 	key: 'id'
-		// },
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -22,7 +16,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.STRING,
 			defaultValue: 'There\'s no description about this course yet :('
 		}
-		//TODO: add ratings, classmates, resources
+		//TODO: add ratings, resources
 	}, {
 		tableName: 'course',
 		underscored: true,

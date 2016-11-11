@@ -8,37 +8,64 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-require('rxjs/add/operator/map');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var CourseService = (function () {
     function CourseService(http) {
         this.http = http;
+        this.apiUrl = 'http://api.purdue.io/odata';
+        this.termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     }
-    CourseService.prototype.searchMajor = function (major) {
+    /**************************************************
+     * 				Class Searching
+     **************************************************/
+    CourseService.prototype.getAllMajors = function () {
+        var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
+        var abbrOrder = ')))&$orderby=Abbreviation%20asc';
+        var detailedUrl = this.apiUrl + filterUrl + this.termId + abbrOrder;
+        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getMajorCourses = function (majorId) {
         // todo: need to change later
-        var url = '/course';
-        var headers = new http_1.Headers();
-        headers.append('Auth', localStorage.getItem('token'));
-        return this.http.get(url, {
-            headers: headers
-        })
+        var filterUrl = '/Courses/?$filter=(Classes/any(c:%20c/Term/TermId%20eq%20';
+        var major = '))%20and%20Subject/SubjectId%20eq%20' + majorId;
+        var order = '&$orderby=Number%20asc';
+        var detailedUrl = this.apiUrl + filterUrl + this.termId + major + order;
+        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getCoursesDetails = function (courseId) {
+        var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+        var midUrl = '%20and%20Term/TermId%20eq%20';
+        var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+        var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+        return this.http.get(detailedUrl)
             .map(function (res) { return res.json(); });
     };
-    CourseService.prototype.searchCourse = function (courseName) {
-        var url = '/course/' + courseName;
+    /**************************************************
+     * 				Classrooms
+     **************************************************/
+    /**
+    * Join a class
+    * JSON Format:
+    * {
+    * 	"course": "...",
+    * 	"professor": "...",
+    * 	"userName": "..."
+    * }
+    */
+    CourseService.prototype.joinClass = function (courseName, professor, userName) {
+        var url = '/course/join';
+        var body = { "course": courseName, "professor": professor, "userName": userName };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        return this.http.get(url, {
-            headers: headers
-        })
-            .map(function (res) { return res.json(); });
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
     };
-    CourseService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], CourseService);
     return CourseService;
 }());
+CourseService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], CourseService);
 exports.CourseService = CourseService;
 //# sourceMappingURL=course.service.js.map

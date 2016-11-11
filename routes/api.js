@@ -6,47 +6,13 @@ var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
 var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
-
-
-var sampleProfile = require('../models/seedProfile').p1;
-
+var seedCourseProssor = require('../models/seedCourseProfessor');
+var seedCourseStudent = require('../models/seedCourseStudent');
+var seedFriends = require('../models/seedFriends');
+var seedLanguages = require('../models/seedLanguages');
+var seedHobbies = require('../models/seedHobbies');
+var Promise = require('bluebird');
 var router = express.Router();
-
-/* Run Api Scripts*/
-
-// __  ____/__  ____/__  __/
-// _  / __ __  __/  __  /
-// / /_/ / _  /___  _  /
-// \____/  /_____/  /_/
-router.get('/users', function (req, res) {
-    db.user.findAll({ where: {id: {gt: 0}}}).then(function (user) {
-        res.json(user);
-    });
-});
-
-/**
- * Get user's profile by user_id
- */
-router.get('/user-profile/:id', function(req, res){
-    db.profile.findOne({where: {user_id: req.params.id}}).then(function(profile){
-      if (profile){
-          res.json(profile);
-		  console.log(profile.getDataValue('hobby'));
-		  console.log(db.profile.getterMethods.hobby);
-      }else {
-          res.send('The profile does not exist!');
-      }
-   });
-});
-
-
-
-router.get('/pwd/:id', function(req, res){
-	db.user.findOne({where: {id: req.params.id}}).then(function(user){
-		console.log(user.password);
-	});
-});
-
 
 // _______________________  /_
 // ___  __ \  __ \_  ___/  __/
@@ -54,51 +20,43 @@ router.get('/pwd/:id', function(req, res){
 // _  .___/\____//____/ \__/
 // /_/
 
-/**
+/**************************************************
  * Seed init data as users, admins, courses, profs
- */
+ **************************************************/
 router.post('/seeds', function (req, res) {
-	var init = function(callback, res, page){
-		insertData(insertNewUser, admins);
-		insertData(insertNewUser, seedUsers);
-		insertData(insertNewProf, seedProfs);
-		insertData(insertNewCourse, seedCourses);
-		// after inserting all the seeds data, exe this callback function
-		callback(res, page);
-	};
-	init(showPage, res, 'seed');
+	initDB()
+		.then(showPage(res, 'seed'), function (e) {
+			res.status(404).send({err: e});
+		});
 });
 
 
-/**
- * Test
- */
+/**************************************************
+ * 			Link Professor with Course
+ **************************************************/
 router.post('/link_prof_course', function (req, res) {
-	var linkCP = function (callback, res, page) {
-		linkCourseAndProf();
-		callback(res, page);
-	};
-	linkCP(showPage, res, 'seed');
+	linkCourseAndProf(res)
+		.then(function () {
+			res.status(200).send({res: "linked prof with course successfully"});
+		});
 });
 
-
-
-
-/**
- * Update a user's profile
- */
-router.post('/update-profile/:id', function (req, res) {
-	db.profile.findOne({where: {user_id: req.params.id}}).then(function (profile) {
-		if (profile){
-			profile.updateAttributes(sampleProfile).then(function (profile) {
-				res.json(profile);
-			});
-		}
-		else {
-			res.send('The profile does not exist!');
-		}
-	});
+/**************************************************
+ * 			Link Student with Course
+ **************************************************/
+router.post('/link_course_student', function (req, res) {
+	linkCourseAndStudent(res)
+		.then(res.status(200).send({res: 'Linked Students With Courses Successfully'}));
 });
+
+/**************************************************
+ * 				Link Users
+ **************************************************/
+router.post('/link_users', function (req, res) {
+	linkUsers(res)
+		.then(res.status(200).send({res: "Linked Users Successfully"}));
+});
+
 
 
 //TODO: parse attributes with multiple values in Profile
@@ -109,17 +67,42 @@ router.post('/update-profile/:id', function (req, res) {
 // /_/    \__,_/ /_/ /_/\___/ \__/ /_/  \____//_/ /_/
 
 /**
+ * Seed data into database, return a promise
+ */
+var initDB = function(){
+	return new Promise(function(resolve, reject){
+		insertData(insertNewUser, admins)
+			.then(insertData(insertNewProf, seedProfs))
+			.then(insertData(insertNewUser, seedUsers))
+			.then(insertData(insertNewCourse, seedCourses))
+			.then(insertData(insertNewLanguages, seedLanguages))
+			.then(insertData(insertNewHobbies, seedHobbies));
+	});
+};
+
+/**
  * Function used to insert data to db
  * @param insertFunction: insert function
  * @param data: chunk of data to be inserted
+ * @return a promise
  */
 var insertData = function(insertFunction, data){
     if (typeof insertFunction === "function"){
-        // insert data
-        data.forEach(function (d) {
-            insertFunction(d);
-        });
-    }
+		return new Promise(function (resolve, reject) {
+			var count = 0;
+			var number = data.length;
+			// insert data
+			data.forEach(function (d) {
+				count++;
+				insertFunction(d);
+			});
+			if (count === number){
+				resolve();
+			}
+		});
+    }else {
+		console.log('The first param passed in is not function');
+	}
 };
 
 /**
@@ -141,8 +124,6 @@ var insertNewUser = function (user){
 		id = user.id;
 		// init profile for new user
 		db.profile.create({user_id: id});
-	}, function (err){
-
 	});
 };
 
@@ -163,22 +144,128 @@ var insertNewCourse = function(course){
 };
 
 /**
- * Function used to link course with professors
+ * Function used to insert new languages to db
+ * @param language
  */
-var linkCourseAndProf = function () {
-	// cs381
-	db.course.findOne({where: {name: 'cs381'}}).then(function (course) {
-		db.professor.findOne({where: {name: 'Greg N. Frederickson'}}).then(function(prof){
-			course.addProfessor(prof);
+var insertNewLanguages = function (language) {
+	db.language.create(language).then(function (){});
+};
+
+/**
+ * Function used to insert new hobbies to db
+ * @param hobby
+ */
+var insertNewHobbies = function (hobby) {
+	db.hobby.create(hobby).then(function () {});
+};
+
+
+/**
+ * Function used to link course with professors
+ * Return a promise
+ */
+var linkCourseAndProf = function (res) {
+	return new Promise(function(resolve, reject){
+		var count = 0;
+		var len = seedCourseProssor.length;
+		seedCourseProssor.map(function (linking) {
+			count++;
+			var course = linking.course;
+			var professor = linking.professor;
+			db.course.findOne({where: {name: course}}).then(function (course) {
+				if (course){
+					db.professor.findOne({where: {name: professor}}).then(function (prof) {
+						if (prof){
+							course.addProfessor(prof);
+						}
+						else {
+							res.status(404).send({err: 'Professor Not Found :('});
+						}
+					});
+				}
+				else {
+					res.status(404).send({err:'Course Not Found :('});
+				}
+			});
 		});
-		db.professor.findOne({where: {name: 'Susanne E. Hambrusch'}}).then(function(prof){
-			course.addProfessor(prof);
-		});
+		if (count === len){
+			resolve();
+		}
 	});
-	// cs307
-	db.course.findOne({where: {name: 'cs307'}}).then(function (course){
-		db.professor.findOne({where: {name: 'H. E. Dunsmore'}}).then(function(prof){
-			course.addProfessor(prof);
+};
+
+/**
+ * Function used to link students with courses
+ * return a promise
+ */
+var linkCourseAndStudent = function (res) {
+	return new Promise(function (resolve, reject) {
+		var number = seedCourseStudent.length;
+		var count = 0;
+		seedCourseStudent.map(function (linking) {
+			var course = linking.course;
+			var professor = linking.professor;
+			var userName = linking.userName;
+			db.user.findOne({where: {userName: userName}}).then(function (user) {
+				if (user){
+					db.course.findOne({where: {name: course}}).then(function (course) {
+						if (course){
+							db.professor.findOne({where: {name: professor}}).then(function (professor){
+								if (professor){
+									db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}}).then(function (c_u){
+										if (c_u){
+											count++;
+											user.addCourse(c_u);
+										}
+										else {
+											res.status(404).send({err: "No Such Course :("});
+										}
+									});
+								}
+								else {
+									res.status(404).send({err: "Professor Not Found :("});
+								}
+							});
+						}
+						else {
+							res.status(404).send({err:"Course Not Found :("});
+						}
+					});
+				}
+				else {
+					console.log(userName);
+					res.status(404).send({err: "User Not Found :("});
+				}
+			});
+		});
+		if (count === number){
+			resolve();
+		}
+	});
+};
+
+/**
+ * Link user with user
+ * return a promise
+ */
+var linkUsers = function (res) {
+	return new Promise(function (resolve, reject) {
+		seedFriends.map(function (linking) {
+			var u_id = linking.user_id;
+			var f_id = linking.friend_id;
+			db.user.findById(u_id).then(function (user) {
+				if (user){
+					db.user.findById(f_id).then(function (friend) {
+						//console.log('Map ' + user.userName + ', ' + friend.userName);
+						if (friend) {
+							user.addFriend(friend);
+						}
+						else {
+							res.status(404).send({err: "Friend Not Found :("});
+						}
+					});
+				}
+			});
 		});
 	});
 };

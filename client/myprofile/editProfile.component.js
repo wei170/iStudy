@@ -8,30 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var index_1 = require('../_services/index');
-var index_2 = require('../dashboard/index');
-var index_3 = require('./index');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var index_1 = require("../_services/index");
 var EditProfileComponent = (function () {
-    function EditProfileComponent(router, userService, profileService, alertService, userProfile, dashboardComponent) {
+    function EditProfileComponent(router, profileService, alertService) {
         this.router = router;
-        this.userService = userService;
         this.profileService = profileService;
         this.alertService = alertService;
-        this.userProfile = userProfile;
-        this.dashboardComponent = dashboardComponent;
         this.currentUser = {};
         this.profile = {};
-        this.model = {};
         this.visibilities = [
             { value: true, display: "Public" },
             { value: false, display: "Private" }
         ];
-        this.currentUser = this.userProfile.currentUser;
-        this.profile = this.dashboardComponent.currentUser;
     }
-    EditProfileComponent.prototype.ngOnInit = function () { };
+    EditProfileComponent.prototype.ngOnInit = function () {
+        this.fetchProfile();
+        this.getAllChoices();
+    };
+    EditProfileComponent.prototype.fetchProfile = function () {
+        var _this = this;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.model.userName = this.currentUser.userName;
+        this.profileService.getProfile(this.currentUser.userName)
+            .subscribe(function (data) {
+            _this.profile = data;
+        }, function (err) {
+            _this.alertService.error(err);
+        });
+    };
     EditProfileComponent.prototype.editProfile = function () {
         var _this = this;
         this.profileService.editProfile(this.model)
@@ -39,19 +45,33 @@ var EditProfileComponent = (function () {
             // successfully edit the profile
             _this.alertService.success('Successfully edit the profile');
             _this.router.navigate(['/dashboard/myprofile']);
-        }, function (error) {
-            _this.alertService.error(error);
+        }, function (err) {
+            _this.alertService.error(err.message);
         });
     };
-    EditProfileComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: 'editProfile.component.html',
-            providers: [index_3.MyProfileComponent]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, index_1.UserService, index_1.ProfileService, index_1.AlertService, index_3.MyProfileComponent, index_2.DashboardComponent])
-    ], EditProfileComponent);
+    EditProfileComponent.prototype.getAllChoices = function () {
+        var _this = this;
+        this.profileService.getAllLanguages().subscribe(function (data) {
+            _this.languages = data;
+        });
+        this.profileService.getAllHobbies().subscribe(function (data) {
+            _this.hobbies = data;
+        });
+        this.profileService.getAllMajors().subscribe(function (data) {
+            console.log(data.value);
+            _this.majors = data.value;
+        });
+    };
     return EditProfileComponent;
 }());
+EditProfileComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: 'editProfile.component.html'
+    }),
+    __metadata("design:paramtypes", [router_1.Router,
+        index_1.ProfileService,
+        index_1.AlertService])
+], EditProfileComponent);
 exports.EditProfileComponent = EditProfileComponent;
 //# sourceMappingURL=editProfile.component.js.map

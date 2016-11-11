@@ -11,28 +11,24 @@
         <form role="form" (ngSubmit)="f.form.valid && searchCourse()" #f="ngForm" novalidate>
             <div class="form-group" *ngIf="step === 0">
                 <label>Select Course Major</label>
-                <select class="form-control" [(ngModel)]="model.major" name="name" required>
-                    <option *ngFor="let major of majors" [value]="major.value">
-                        {{major.display}}
+                <select class="selectpicker" [(ngModel)]="model.majorInfo" name="majorInfo" required>
+                    <option *ngFor="let major of majors" [ngValue]="major">
+                        {{major.Abbreviation}}
                     </option>
                 </select>
             </div>
             <div class="form-group" *ngIf="step === 1">
                 <label>Select Course Number</label>
-                <select class="form-control" [(ngModel)]="model.courseName" name="courseName" required>
-                    <option *ngFor="let course of courses" [value]="course.name">
-                        {{course.name}}
+                <select class="selectpicker" [(ngModel)]="model.courseInfo" name="courseInfo" required>
+                    <option *ngFor="let course of courses" [ngValue]="course">
+                        {{course.Number}}: {{course.Title}}
                     </option>
                 </select>
             </div>
-            <div *ngIf="step === 2">
-                <h2>{{course.name}}</h2>
-                <h3>Description:</h3>
-                <div>{{course.description}}</div>
-            </div>
+            <courseDetails *ngIf="step === 2" [sections]="sections" [major]="model.majorInfo.Abbreviation" [courseNumber]="model.courseInfo.Number"></courseDetails>
             <div class = "form-group">
                 <button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
-                <a *ngIf="step === 2" (click)="back()">Back</a>
+                <a *ngIf="step <= 2 && step > 0" (click)="back()">Back</a>
             </div>
         </form>
     </div>

@@ -8,13 +8,13 @@ import { routing }        from './app.routing';
 
 import { AlertComponent} from './_directives/index';
 import { AuthGuard } from './_guards/index';
-import { ProfileService, AlertService, AuthenticationService, UserService, CourseService, PasswordService } from './_services/index';
-import { LoginComponent, ForgotPasswordComponent } from './login/index';
-import { RegisterComponent } from './register/index';
+import { ProfileService, AlertService, AuthenticationService, UserService, CourseService, PasswordService, FriendService, ClassroomService } from './_services/index';
+import { RegisterComponent, LoginComponent, ForgotPasswordComponent } from './login/index';
 import { DashboardComponent } from './dashboard/index';
 
 import { MyProfileComponent, EditProfileComponent} from './myprofile/index';
-import { SearchCourseComponent } from './class_registration/index';
+import { SearchCourseComponent, CourseDetailsComponent } from './class_registration/index';
+import { ClassroomComponent, RoomComponent } from './classrooms/index';
 
 @NgModule({
     imports: [
@@ -34,6 +34,10 @@ import { SearchCourseComponent } from './class_registration/index';
         MyProfileComponent,
         EditProfileComponent,
         SearchCourseComponent,
+        CourseDetailsComponent,
+
+        RoomComponent,
+        ClassroomComponent
     ],
     providers: [
         AuthGuard,
@@ -42,7 +46,9 @@ import { SearchCourseComponent } from './class_registration/index';
         UserService,
         ProfileService,
         CourseService,
-        PasswordService
+        PasswordService,
+        FriendService,
+        ClassroomService
     ],
     bootstrap: [AppComponent]
 })

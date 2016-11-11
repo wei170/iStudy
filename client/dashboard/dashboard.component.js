@@ -1,5 +1,3 @@
-/// <reference path="../../typings/metismenu/metismenu.d.ts" />
-/// <reference path="../../typings/jquery/jquery.d.ts" />
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -13,23 +11,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../_services/index");
 var DashboardComponent = (function () {
-    function DashboardComponent(userService, elementRef) {
+    function DashboardComponent(userService, elementRef, authService, friendService, alertService) {
         this.userService = userService;
         this.elementRef = elementRef;
-        this.currentUser = {};
+        this.authService = authService;
+        this.friendService = friendService;
+        this.alertService = alertService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
     DashboardComponent.prototype.ngOnInit = function () {
-        //called after the constructor and called  after the first ngOnChanges()
+        this.updateMessages();
+    };
+    DashboardComponent.prototype.updateMessages = function () {
+        var _this = this;
+        this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(function (data) {
+            _this.friendRequests = data;
+        });
     };
     DashboardComponent.prototype.ngAfterViewInit = function () {
         this.loadScript("/client/dashboard/custom-scripts.js");
     };
+    DashboardComponent.prototype.logout = function () { this.authService.logout(); };
     DashboardComponent.prototype.loadScript = function (url) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = url;
         this.elementRef.nativeElement.appendChild(script);
+    };
+    DashboardComponent.prototype.accept = function (req) {
+        var _this = this;
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "1").subscribe(function (data) {
+            _this.alertService.success("Accept the friend request");
+        }, function (error) {
+            _this.alertService.error(error);
+        });
+    };
+    DashboardComponent.prototype.decline = function (req) {
+        var _this = this;
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "2").subscribe(function (data) {
+            _this.alertService.success("Decline the friend request");
+        }, function (error) {
+            _this.alertService.error(error);
+        });
     };
     return DashboardComponent;
 }());
@@ -38,11 +61,14 @@ DashboardComponent = __decorate([
         moduleId: module.id,
         templateUrl: 'dashboard.component.html',
         styleUrls: [
-            './custom-styles.css'
+            'custom-styles.css'
         ]
     }),
     __metadata("design:paramtypes", [index_1.UserService,
-        core_1.ElementRef])
+        core_1.ElementRef,
+        index_1.AuthenticationService,
+        index_1.FriendService,
+        index_1.AlertService])
 ], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dashboard.component.js.map

@@ -1,4 +1,3 @@
-/// <reference path="../typings/jquery/jquery.d.ts"; />
 import { Component } from '@angular/core';
 
 @Component({

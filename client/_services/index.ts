@@ -4,3 +4,6 @@ export * from './alert.service';
 export * from './profile.service';
 export * from './course.service';
 export * from './password.service';
+export * from './rmp.service';
+export * from './friend.service';
+export * from './classroom.service'

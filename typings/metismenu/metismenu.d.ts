@@ -3,7 +3,7 @@
 // Definitions by: onokums <https://github.com/onokumus/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference path="../jquery/jquery.d.ts"/>
+/// <reference path="../globals/jquery/index.d.ts"/>
 
 interface MetisMenuOptions {
     toggle?: boolean;

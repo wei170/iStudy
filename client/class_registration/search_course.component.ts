@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { AlertService } from '../_services/index';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-import { CourseService } from '../_services/index';
+import { CourseService, AlertService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
@@ -11,60 +8,74 @@ import { CourseService } from '../_services/index';
 })
 
 export class SearchCourseComponent implements OnInit{
-    private loading: boolean
+    private loading: boolean;
     private model: any = {};
     private step = 0;
+    private majors: any[] = [];
+    private courses: any[] = [];
+    private sections: any[] = [];
+    private major: any;
+    private number: any;
+    private professorInfo: any;
 
     constructor(
-        private router: Router,
         private alertService: AlertService,
         private courseService: CourseService
-    ) {}
+    ) {
+    }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.courseService.getAllMajors().subscribe(
+            data => {
+                // successfully search all majors
+                for (var i = 0; i < data.value.length; i++) {
+                    this.majors.push(data.value[i]);
+                }
+            }
+        )
 
-    private majors = [
-        { value: "CS", display: "CS" },
-        { value: "MGMT", display: "MGMT"},
-        { value: "OBHR", display: "OBHR"},
-        { value: "MATH", display: "MATH"},
-        { value: "PHYS", display: "PHYS"}
-    ];
-
-    private courses = [];
-    private course: any = {};
+    }
 
     private searchCourse() {
         if (this.step === 0) {
-            this.courseService.searchMajor(this.model.major)
-            .subscribe(
+            this.courseService.getMajorCourses(this.model.majorInfo.SubjectId).subscribe (
                 data => {
-                    // successfully search the course
                     this.step = 1;
-                    console.log(JSON.stringify(data));
-                    for (var i = 0; i < data.length; i++) {
-                        this.courses.push(data[i]);
+                    this.courses = [];// empty the array first
+                    for (var i = 0; i < data.value.length; i++) {
+                        this.courses.push(data.value[i]);
                     }
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(error.err);
                 }
             )
         } else if (this.step === 1) {
-            this.courseService.searchCourse(this.model.courseName)
-            .subscribe (
+            this.courseService.getCoursesDetails(this.model.courseInfo.CourseId).subscribe (
                 data => {
                     this.step = 2;
-                    this.course = data;
+                    this.sections = []; // empty it
+                    for (var i = 0; i < data.value.length; i++) {
+                        for (var j = 0; j < data.value[i].Sections.length; j++) {
+                            if (data.value[i].Sections[j].Type === "Lecture") {
+                                this.sections.push(data.value[i].Sections[j]);
+                            }
+                        }
+                    }
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(error.err);
                 }
             )
         }
     }
 
+    // private rmpHandler(professor: string) {
+    //     this.professorInfo = this.rmp.getProfessorInfo(professor);
+    //     return this.professorInfo;
+    // }
+
     private back() {
-        this.step = 0;
+        this.step--;
     }
 }
