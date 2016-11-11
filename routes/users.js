@@ -515,7 +515,7 @@ var filterByPreference = function (student_ids, preference, res) {
 		var possible_friends = [];
 		if (byNation === true && byHobby === true && byLanguage === true){
 			// ALL required
-
+			filterByNHL(res, student_ids, preference, possible_friends);
 		}
 		else if(byNation === true && byHobby === true){
 			filterByNationAndHobby(res, student_ids, preference, possible_friends);
@@ -542,7 +542,56 @@ var filterByPreference = function (student_ids, preference, res) {
 	});
 };
 
+/**
+ * Find Friends from same country and with same hobby and language speaking
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByNHL = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByNHL = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids},
+								nationality: preference.nationality
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by language
+									getProfileByHL(profiles, preference, profileByNHL)
+										.then(function () {
+											getUserNames(profileByNHL, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject from same country and with same hobby found"});
+			}
+		});
+};
 
+/**
+ * Find Friends from same nation and with same hobby
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
 var filterByNationAndHobby = function (res, student_ids, preference, possible_friends) {
 	var profile_ids = [];
 	var profileByNH = [];
