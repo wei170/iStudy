@@ -361,13 +361,19 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 								if (request){
 									request.updateAttributes(attributes).then(function (request) {
 										if (request){
-											if (attributes.status === 1){
+											if (attributes.status === 1 || attributes.status === 0){
 												// add request sender as friend of request receiver
-												console.log("gonna make them friends");
-												addFriend(sender.id, receiver.id, res)
-													.then(function () {
-														res.status(200).json(request);
-													});
+												// make them friends
+												if (attributes.status === 1){
+													addFriend(sender.id, receiver.id, res)
+														.then(function () {
+															// remove the handled invitation
+															res.status(200).json(request);
+														});
+												}
+												else {
+													// remove the handled invitation
+												}
 											}
 										}
 										else {
@@ -402,28 +408,51 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 router.post('/find-friends', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
-	 * 		"nationality": "...",
-	 * 		"hobby": [
-	 * 			{name: "..."},
-	 * 			{name: "..."}
+	 * 		"course": "..."
+	 * 		"professor": "..."
+	 * 		"preference" : {
+	 * 			"nationality": "...",
+	 * 			"hobby": [
+	 * 				{name: "..."},
+	 * 				{name: "..."}
 	 * 			],
-	 * 		"language": [
-	 * 			{name: "..."},
-	 * 			...
-	 * 		]
+	 * 			"language": [
+	 * 				{name: "..."},
+	 * 				...
+	 * 			]
+	 * 		}
+	 *
 	 * }
 	 */
-	var body = _.pick(req.body, 'nationality', 'hobby', 'language');
-	var preference = {};
-	if (body.hasOwnProperty('nationality')) {
-		preference.nationality = body.nationality;
+	var body = _.pick(req.body, 'course', 'professor', 'preference');
+	var preference = body.preference;
+	var filter = {};
+	if (preference.hasOwnProperty('nationality')) {
+		filter.nationality = preference.nationality;
 	}
-	if (body.hasOwnProperty('hobby')){
-		preference.hobby = body.hobby;
+	if (preference.hasOwnProperty('hobby')){
+		filter.hobby = preference.hobby;
 	}
-	if (body.hasOwnProperty('language')){
-		preference.language = body.language;
+	if (preference.hasOwnProperty('language')){
+		filter.language = preference.language;
 	}
+
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor){
+				if (professor){
+					// get students from course
+
+				}
+				else {
+					res.status(404).send({err: "Professor Not Found"});
+				}
+			})
+		}
+		else {
+			res.status(404).send({err: "Course Not Found"});
+		}
+	});
 
 
 });

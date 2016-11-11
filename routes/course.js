@@ -247,6 +247,11 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 	 * 	}
 	 */
 	var course_ids = [];
+	var professor_ids = [];
+	var course_list = {};
+	var courses = [];
+	course_list.courses = courses;
+
 	var body = _.pick(req.body, 'userName');
 	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
 		if (user){
@@ -255,10 +260,31 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 				if (c_ids){
 					c_ids.map(function (c_id) {
 						course_ids.push(c_id.course_id);
+						professor_ids.push(c_id.professor_id);
 					});
 
-					db.course.findAll({where: {id: {$in: course_ids}}}).then(function (courses) {
-						res.status(200).json(courses);
+					db.course.findAll({where: {id: {$in: course_ids}}}).then(function (course_names) {
+						if (course_names){
+							db.professor.findAll({where: {id: {$in: professor_ids}}}).then(function (professor_names){
+								if (professor_names){
+									for (var i = 0; i < professor_names.length; i++){
+										courses.push(
+											{
+												"course": course_names[i].name,
+												"professor": professor_names[i].name
+											}
+										)
+									}
+									res.status(200).send(course_list);
+								}
+								else {
+									res.status(404).send({err: "Professors Not Found"});
+								}
+							})
+						}
+						else {
+							res.status(404).send({err: "Courses Not Found"});
+						}
 					});
 				}
 				else {
