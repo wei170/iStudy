@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
+require("rxjs/add/operator/map");
 var FriendService = (function () {
     function FriendService(http) {
         this.http = http;
@@ -20,32 +21,32 @@ var FriendService = (function () {
     FriendService.prototype.getFriends = function (username) {
         var url = 'users/get-friends';
         var body = { "userName": username };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { res.json(); });
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // send friend request
     FriendService.prototype.sendFriendReq = function (senderName, receiverName) {
         var url = 'users/send-friend-request';
         var body = { "senderName": senderName, "receiverName": receiverName };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { res.json(); });
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend requests
     FriendService.prototype.getFriendReq = function (username) {
         var url = 'users/get-friend-requests';
         var body = { "userName": username };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { res.json(); });
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend invitations
     FriendService.prototype.getFriendInvitations = function (username) {
         var url = 'users/get-friend-invitations';
         var body = { "userName": username };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { res.json(); });
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // Accept Or Decline Request
     // need to update info of status code
-    FriendService.prototype.responseToRequest = function (sender, receiver, status_code) {
+    FriendService.prototype.responseToRequest = function (user, sender, status_code) {
         var url = 'users/get-friend-invitations';
-        var body = { "sender": sender, "receiver": receiver, "status_code": status_code };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { res.json(); });
+        var body = { "sender": sender, "receiver": user, "status_code": status_code };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     return FriendService;
 }());
