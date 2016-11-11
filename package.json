@@ -33,8 +33,6 @@
     "crypto-js": "^3.1.5",
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
-    "moment": "^2.10.6",
-    "socket.io": "^1.3.7",
     "express": "~4.13.4",
     "jsonwebtoken": "^5.0.5",
     "metismenu": "^2.5.2",
@@ -62,6 +60,6 @@
   },
   "engines": {
     "node": "4.5.0",
-    "npm": "3.10.7"
+    "npm": "2.15.9"
   }
 }

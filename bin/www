@@ -110,9 +110,7 @@ io.on('connection', function(socket) {
             sendCurrentUsers(socket);
         } else {
             var currentMessage = clientInfo[clientInfo[socket.id].room];
-            // currentMessage.
-            // currentMessage.text=message.text;
-            // currentMessage.timestamp=moment().valueOf();
+
             message.timestamp = moment().valueOf();
             io.to(clientInfo[socket.id].room).emit('message', message);
         }
