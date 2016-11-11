@@ -512,7 +512,6 @@ var filterByPreference = function (student_ids, preference, res) {
 		if (preference.language !== ""){
 			byLanguage = true;
 		}
-		var profile_ids = [];
 		var possible_friends = [];
 		if (byNation === true && byHobby === true && byLanguage === true){
 			// ALL required
@@ -550,20 +549,71 @@ var filterByPreference = function (student_ids, preference, res) {
 		}
 		else if (byNation === true){
 			// ONLY by NATION
-			filterByNation(res, student_ids, preference, profile_ids, possible_friends);
+			filterByNation(res, student_ids, preference, possible_friends);
 		}
 		else if (byHobby === true){
-
+			// ONLY by HOBBY
+			filterByHobby(res, student_ids, preference, possible_friends);
 		}
 		else {
-			//only by language
+			//ONLY by LANGUAGE
+			
 		}
 
 	});
 };
 
+/**
+ * Find Friends with same hobby
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByHobby = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByHobby = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids}
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by hobby
+									getProfileIdsByHobby(profiles, preference.hobby, profileByHobby)
+										.then(function () {
+											getUserNames(profileByHobby, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject with same hobby found"});
+			}
+		});
+};
 
-var filterByNation = function (res, student_ids, preference, profile_ids, possible_friends) {
+/**
+ * Find friends by nationality
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByNation = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
 	db.user.findAll({where: {id: {$in : student_ids}}})
 		.then(function (students) {
 			if (students) {
@@ -591,6 +641,39 @@ var filterByNation = function (res, student_ids, preference, profile_ids, possib
 				res.status(404).send({res: "No Subject from same country found"});
 			}
 		});
+};
+
+
+/**
+ * Get Profile Ids with same Hobby
+ * @param profiles
+ * @param hobby
+ * @param profileByHobby
+ * @returns {Promise}
+ */
+var getProfileIdsByHobby = function (profiles, hobby, profileByHobby) {
+	return new Promise(function (resolve, reject) {
+		var count = 0;
+		var len = profiles.length;
+		profiles.map(function (profile) {
+			profile.getHobbies().then(function (hobbies) {
+				if (hobbies){
+					count++;
+					hobbies.map(function (h) {
+						if (h.name === hobby){
+							// find a matched one
+							profileByHobby.push(profile);
+						}
+						resolve();
+					});
+					resolve();
+				}
+			});
+		});
+		if (count === len){
+			resolve();
+		}
+	});
 };
 
 
