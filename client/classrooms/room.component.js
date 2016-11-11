@@ -14,6 +14,7 @@ var RoomComponent = (function () {
     function RoomComponent(classroomService, courseService) {
         this.classroomService = classroomService;
         this.courseService = courseService;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.roomInfo = {};
     }
     RoomComponent.prototype.ngOnInit = function () {
@@ -31,6 +32,9 @@ var RoomComponent = (function () {
             _this.studentList = data;
             console.log(_this.studentList[0]);
         });
+    };
+    RoomComponent.prototype.chat = function () {
+        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
     };
     RoomComponent.prototype.update = function (room) {
         this.roomInfo = room;
