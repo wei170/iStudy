@@ -19,6 +19,8 @@ router.get('/register', function(req, res, next) {
   res.render('index', { title: 'iStudy' });
 });
 
+
+
 router.get('/dashboard', function(req, res, next) {
     console.log('heree');
   res.render('index', { title: 'iStudy' });
