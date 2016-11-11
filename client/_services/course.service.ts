@@ -80,4 +80,12 @@ export class CourseService {
          headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
      }
+
+     getRMP(courseName: string, professor: string) {
+         var url = '/course/get-RMP';
+         var body = { "course" : courseName, "professor": professor};
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+     }
 }
