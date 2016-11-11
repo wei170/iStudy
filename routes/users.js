@@ -515,34 +515,13 @@ var filterByPreference = function (student_ids, preference, res) {
 		var possible_friends = [];
 		if (byNation === true && byHobby === true && byLanguage === true){
 			// ALL required
-			db.user.findAll({where: {id: {$in : student_ids}}})
-				.then(function (students) {
-					if (students){
-						// get all the corresponding profile ids
-						getProfileIds(students, profile_ids)
-							.then(function () {
-								console.log("finished get pid");
-								// filter by nation in profile
-								db.profile.findAll({where: {id: {$in : profile_ids}, nationality: preference.nationality}})
-									.then(function (profiles) {
-										if (profiles){
-											// // send filtered results
-											res.status(200).send(profiles);
 
-										}
-									});
-							});
-					}
-					else {
-						res.status(404).send({res: "No Subject from same country found"});
-					}
-			})
 		}
 		else if(byNation === true && byHobby === true){
-
+			filterByNationAndHobby(res, student_ids, preference, possible_friends);
 		}
 		else if(byNation === true && byLanguage === true){
-
+			filterByNationAndLanguage(res, student_ids, preference, possible_friends);
 		}
 		else if (byHobby === true && byLanguage === true){
 			filterByHobbyAndLanguage(res, student_ids, preference, possible_friends);
@@ -561,6 +540,86 @@ var filterByPreference = function (student_ids, preference, res) {
 		}
 
 	});
+};
+
+
+var filterByNationAndHobby = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByNH = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids},
+								nationality: preference.nationality
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by language
+									getProfileByHobby(profiles, preference.hobby, profileByNH)
+										.then(function () {
+											getUserNames(profileByNH, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject from same country and with same hobby found"});
+			}
+		});
+};
+
+/**
+ * Find friends from same country and speak same lanuage
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByNationAndLanguage = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByNL = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids},
+								nationality: preference.nationality
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by language
+									getProfileByLanguage(profiles, preference.language, profileByNL)
+										.then(function () {
+											getUserNames(profileByNL, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject from same country and same language speaking found"});
+			}
+		});
 };
 
 /**
@@ -600,7 +659,7 @@ var filterByHobbyAndLanguage = function (res, student_ids, preference, possible_
 					});
 			}
 			else {
-				res.status(404).send({res: "No Subject with same hobby found"});
+				res.status(404).send({res: "No Subject with same hobby and same language speaking found"});
 			}
 		});
 };
@@ -642,7 +701,7 @@ var filterByLanguage = function (res, student_ids, preference, possible_friends)
 					});
 			}
 			else {
-				res.status(404).send({res: "No Subject with same hobby found"});
+				res.status(404).send({res: "No Subject with same language speaking found"});
 			}
 		});
 };
@@ -727,6 +786,7 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
 		});
 };
 
+
 /**
  * Get profiles with same hobby and same language speaking
  * @param profiles
@@ -735,7 +795,6 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
  * @returns {Promise}
  */
 var getProfileByHL = function (profiles, preference, profileByHL) {
-	console.log(preference);
 	return new Promise(function (resolve, reject) {
 		var count = 0;
 		var len = profiles.length;
