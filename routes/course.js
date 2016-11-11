@@ -298,6 +298,12 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 	});
 });
 
+/**************************************************
+ * 			Get Course Rating
+ **************************************************/
+router.post('/get-course-rating', middleware.requireAuthentication, function(req, res){
+
+});
 
 /**
  * Function used to retrieve relevant Course Name and Professor Name

@@ -2,8 +2,7 @@
 var db = require('../db');
 var _ = require('underscore');
 module.exports = function(sequelize, DataTypes){
-    var RMP =  sequelize.define('RMP', {
-
+    return sequelize.define('comment', {
         comment: {
             type: DataTypes.STRING,
             defaultValue: 'Unknown'
@@ -14,10 +13,9 @@ module.exports = function(sequelize, DataTypes){
         }
 
     }, {
-        tableName: 'RMP',
+        tableName: 'comment',
         underscored: true,
         timestamps: false
 
     });
-    return RMP;
 };
