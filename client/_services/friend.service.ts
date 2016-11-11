@@ -41,9 +41,31 @@ export class FriendService {
 
     // Accept Or Decline Request
     // need to update info of status code
-    responseToRequest(user: string, sender: string, status_code:string) {
+    responseToRequest(user: string, sender: string, status_code: number) {
         var url = 'users/invitation-accept-or-not';
         var body = { "sender": sender, "receiver": user, "status_code": status_code}
+        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
+    }
+
+    /**
+    * JSON Format: {
+    * 		"userName": "...",
+    * 		"course": "...",
+    * 		"professor": "...",
+    * 		"preference" : {
+    * 			"nationality": "...",
+    * 			"hobby": "...",
+    * 			"language": "..."
+    * 		}
+    */
+    filterStudents(preference: any, userName: string, course: string, professor: string) {
+        var url = 'users/find-friends';
+        var body = {
+            "userName": userName,
+            "course": course,
+            "professor": professor,
+            "preference": preference
+        }
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 

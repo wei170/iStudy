@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
     }
 
     accept(req: any) {
-        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "1").subscribe (
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, 1).subscribe (
             (data: any) => {
                 this.alertService.success("Accept the friend request");
             },
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
     }
 
     decline(req: any) {
-        this.friendService.responseToRequest(this.currentUser.userName, req.userName, "2").subscribe (
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, -1).subscribe (
             (data: any) => {
                 this.alertService.success("Decline the friend request");
             },

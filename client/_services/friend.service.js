@@ -48,6 +48,27 @@ var FriendService = (function () {
         var body = { "sender": sender, "receiver": user, "status_code": status_code };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
+    /**
+    * JSON Format: {
+    * 		"userName": "...",
+    * 		"course": "...",
+    * 		"professor": "...",
+    * 		"preference" : {
+    * 			"nationality": "...",
+    * 			"hobby": "...",
+    * 			"language": "..."
+    * 		}
+    */
+    FriendService.prototype.filterStudents = function (preference, userName, course, professor) {
+        var url = 'users/find-friends';
+        var body = {
+            "userName": userName,
+            "course": course,
+            "professor": professor,
+            "preference": preference
+        };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
     return FriendService;
 }());
 FriendService = __decorate([
