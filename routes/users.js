@@ -545,7 +545,7 @@ var filterByPreference = function (student_ids, preference, res) {
 
 		}
 		else if (byHobby === true && byLanguage === true){
-
+			filterByHobbyAndLanguage(res, student_ids, preference, possible_friends);
 		}
 		else if (byNation === true){
 			// ONLY by NATION
@@ -561,6 +561,48 @@ var filterByPreference = function (student_ids, preference, res) {
 		}
 
 	});
+};
+
+/**
+ * Finds Friends with same hobby and language speaking
+ * @param res
+ * @param student_ids
+ * @param preference
+ * @param possible_friends
+ */
+var filterByHobbyAndLanguage = function (res, student_ids, preference, possible_friends) {
+	var profile_ids = [];
+	var profileByHL = [];
+	db.user.findAll({where: {id: {$in : student_ids}}})
+		.then(function (students) {
+			if (students) {
+				// get all the corresponding profile ids
+				getProfileIds(students, profile_ids)
+					.then(function () {
+						// get all the profiles first
+						db.profile.findAll({
+							where: {
+								id: {$in: profile_ids}
+							}
+						})
+							.then(function (profiles) {
+								if (profiles) {
+									// filter by language and hobby
+									getProfileByHL(profiles, preference, profileByHL)
+										.then(function () {
+											getUserNames(profileByHL, possible_friends)
+												.then(function () {
+													res.status(200).send(possible_friends);
+												});
+										});
+								}
+							});
+					});
+			}
+			else {
+				res.status(404).send({res: "No Subject with same hobby found"});
+			}
+		});
 };
 
 /**
@@ -686,6 +728,67 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
 };
 
 /**
+ * Get profiles with same hobby and same language speaking
+ * @param profiles
+ * @param preference
+ * @param profileByHL
+ * @returns {Promise}
+ */
+var getProfileByHL = function (profiles, preference, profileByHL) {
+	console.log(preference);
+	return new Promise(function (resolve, reject) {
+		var count = 0;
+		var len = profiles.length;
+		var sameLanguage = false;
+		var sameHobby = false;
+		var cmpL = false;
+		var cmpH = false;
+		profiles.map(function (profile) {
+			profile.getLanguages().then(function (languages) {
+				if (languages){
+					profile.getHobbies().then(function (hobbies) {
+						if (hobbies){
+							// reset flags
+							sameHobby = false;
+							sameLanguage = false;
+							cmpL = false;
+							cmpH = false;
+							count++;
+							languages.map(function (language) {
+								if (language.name === preference.language){
+									sameLanguage = true;
+								}
+								cmpL = true;
+								resolve();
+							});
+							hobbies.map(function (hobby) {
+								if (hobby.name === preference.hobby){
+									sameHobby = true;
+								}
+								cmpH = true;
+								resolve();
+							});
+							if (sameHobby === true && sameLanguage === true){
+								profileByHL.push(profile);
+							}
+						}
+						if (cmpH === true && cmpL === true){
+							resolve();
+						}
+					});
+				}
+				if (cmpH === true && cmpL === true){
+					resolve();
+				}
+			});
+		});
+		if (count === len){
+			resolve();
+		}
+	});
+};
+
+/**
  * Get Profiles with same language speaking
  * @param profiles
  * @param language
@@ -696,7 +799,6 @@ var getProfileByLanguage = function (profiles, language, profileByLanguage) {
 	return new Promise(function (resolve, reject) {
 		var count = 0;
 		var len = profiles.length;
-		console.log("h");
 		profiles.map(function (profile) {
 			profile.getLanguages().then(function (languages) {
 				if (languages){
