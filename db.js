@@ -34,6 +34,7 @@ db.course = sequelize.import(__dirname + '/models/Course');
 db.profile = sequelize.import(__dirname + '/models/Profile');
 db.language = sequelize.import(__dirname + '/models/Language');
 db.hobby = sequelize.import(__dirname + '/models/Hobby');
+db.RMP = sequelize.import(__dirname + '/models/RMP');
 
 // a course is defined by a course id and professor id
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
@@ -47,6 +48,9 @@ db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
 // one user has only one profile
 db.user.hasOne(db.profile);
 db.profile.belongsTo(db.user);
+
+// one professor has many comments
+db.course_professor.belongsToMany(db.RMP);
 
 // one user can speak many languages and one language can be spoken by many users
 db.profile.belongsToMany(db.language, {through: 'profile_language'});
