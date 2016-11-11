@@ -8,11 +8,8 @@
                         Section {{i+1}}
                     </div>
                     <div class="panel-body">
-                        <p>Type: {{section.Type}}</p>
-                        <p>Time: {{section.Meetings[0].DaysOfWeek}}</p>
-                        <p>Professor: {{section.Meetings[0].Instructors[0].Name}} </p>
-                        <p>Email: {{section.Meetings[0].Instructors[0].Email}}</p>
-                        <button class = "submit" (click)="joinClass(section.Meetings[0].Instructors[0].Name)"> Join this class</button>
+                        <p>Professor: {{section.name}} </p>
+                        <button class = "submit" (click)="joinClass(section.name)"> Join this class</button>
                     </div>
 
                     <div class="panel-footer">

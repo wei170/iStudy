@@ -14,7 +14,6 @@ var CourseDetailsComponent = (function () {
     function CourseDetailsComponent(courseService, alertService) {
         this.courseService = courseService;
         this.alertService = alertService;
-        this.courseName = this.major + this.courseNumber;
     }
     CourseDetailsComponent.prototype.joinClass = function (professor) {
         var _this = this;
@@ -30,11 +29,7 @@ var CourseDetailsComponent = (function () {
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
-], CourseDetailsComponent.prototype, "major", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], CourseDetailsComponent.prototype, "courseNumber", void 0);
+], CourseDetailsComponent.prototype, "courseName", void 0);
 CourseDetailsComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
