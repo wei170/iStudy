@@ -6,12 +6,11 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        rating: {
+            type: DataTypes.DOUBLE,
+            defaultValue: 0.0
         }
-        // rating: {
-        //     type: DataTypes.DOUBLE,
-        //     defaultValue: 0
-        //
-        // }
     }, {
         tableName: 'course_professor',
         underscored: true,

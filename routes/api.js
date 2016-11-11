@@ -6,11 +6,13 @@ var admins = require('../models/admin');
 var seedUsers = require('../models/seedUser');
 var seedProfs = require('../models/seedProfessor');
 var seedCourses = require('../models/seedCourse');
-var seedCourseProssor = require('../models/seedCourseProfessor');
+var seedCourseProfessor = require('../models/seedCourseProfessor');
 var seedCourseStudent = require('../models/seedCourseStudent');
 var seedFriends = require('../models/seedFriends');
 var seedLanguages = require('../models/seedLanguages');
 var seedHobbies = require('../models/seedHobbies');
+var seedComments = require('../models/seedComments');
+var seedCourseComment = require('../models/seedCourseComment');
 var Promise = require('bluebird');
 var router = express.Router();
 
@@ -37,7 +39,7 @@ router.post('/seeds', function (req, res) {
 router.post('/link_prof_course', function (req, res) {
 	linkCourseAndProf(res)
 		.then(function () {
-			res.status(200).send({res: "linked prof with course successfully"});
+			res.status(200).send({res: "linked Prof with Course Successfully"});
 		});
 });
 
@@ -57,9 +59,21 @@ router.post('/link_users', function (req, res) {
 		.then(res.status(200).send({res: "Linked Users Successfully"}));
 });
 
+/**************************************************
+ * 				Link Course with Comments
+ **************************************************/
+router.post('/link_course_comment', function (req, res) {
+	linkCourseAndComments(res)
+		.then(res.status(200).send({res: 'Linked Course with Comments Successfully'}));
+});
 
-
-//TODO: parse attributes with multiple values in Profile
+/**************************************************
+ * 				Link Course with Ratings
+ **************************************************/
+router.post('/link_course_rating', function (req, res) {
+	addRating(res)
+		.then(res.status(200).send({res: "Added Rating Successfully"}));
+});
 
 // ___  __/___  ________________  /___(_)____________
 // __  /_ _  / / /_  __ \  ___/  __/_  /_  __ \_  __ \
@@ -76,7 +90,8 @@ var initDB = function(){
 			.then(insertData(insertNewUser, seedUsers))
 			.then(insertData(insertNewCourse, seedCourses))
 			.then(insertData(insertNewLanguages, seedLanguages))
-			.then(insertData(insertNewHobbies, seedHobbies));
+			.then(insertData(insertNewHobbies, seedHobbies))
+			.then(insertData(insertNewComments, seedComments));
 	});
 };
 
@@ -159,6 +174,14 @@ var insertNewHobbies = function (hobby) {
 	db.hobby.create(hobby).then(function () {});
 };
 
+/**
+ * Function used to insert new comment to db
+ * @param comment
+ */
+var insertNewComments = function (comment) {
+	db.comment.create(comment).then(function () {});
+};
+
 
 /**
  * Function used to link course with professors
@@ -167,8 +190,8 @@ var insertNewHobbies = function (hobby) {
 var linkCourseAndProf = function (res) {
 	return new Promise(function(resolve, reject){
 		var count = 0;
-		var len = seedCourseProssor.length;
-		seedCourseProssor.map(function (linking) {
+		var len = seedCourseProfessor.length;
+		seedCourseProfessor.map(function (linking) {
 			count++;
 			var course = linking.course;
 			var professor = linking.professor;
@@ -191,6 +214,41 @@ var linkCourseAndProf = function (res) {
 		if (count === len){
 			resolve();
 		}
+	});
+};
+
+/**
+ * Add Rating to each course
+ * @param res
+ */
+var addRating = function (res) {
+	return new Promise(function (resolve, reject) {
+		var attributes = {};
+		seedCourseProfessor.map(function (c_p) {
+			var professor = c_p.professor;
+			var course = c_p.course;
+			var rating = c_p.rating;
+			db.course.findOne({where: {name: course}}).then(function (c) {
+				if (c){
+					db.professor.findOne({where: {name: professor}}).then(function(p){
+						if (p){
+							db.course_professor.findOne({where: {course_id: c.id, professor_id: p.id}})
+								.then(function (theCourse) {
+									attributes.rating = rating;
+									theCourse.updateAttributes(attributes).then(function (theCourse) {});
+								});
+						}
+						else {
+							res.status(404).send({err:'Professor Not Found :('});
+						}
+					});
+				}
+				else{
+					res.status(404).send({err:'Course Not Found :('});
+				}
+			})
+
+		});
 	});
 };
 
@@ -264,6 +322,34 @@ var linkUsers = function (res) {
 							res.status(404).send({err: "Friend Not Found :("});
 						}
 					});
+				}
+			});
+		});
+	});
+};
+
+/**
+ * Link comments with courses
+ * @param res
+ */
+var linkCourseAndComments = function (res) {
+	return new Promise(function (resolve, reject) {
+		seedCourseComment.map(function (linking) {
+			var course_id = linking.course_id;
+			var comment_id = linking.comment_id;
+			db.course_professor.findById(course_id).then(function (course) {
+				if (course){
+					db.comment.findById(comment_id).then(function (comment) {
+						if(comment){
+							course.addComment(comment);
+						}
+						else {
+							res.status(404).send({err: "Comment Not Found :("});
+						}
+					})
+				}
+				else {
+					res.status(404).send({err: "Course Not Found :("});
 				}
 			});
 		});
