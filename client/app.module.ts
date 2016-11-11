@@ -14,7 +14,7 @@ import { DashboardComponent } from './dashboard/index';
 
 import { MyProfileComponent, EditProfileComponent} from './myprofile/index';
 import { SearchCourseComponent, CourseDetailsComponent } from './class_registration/index';
-import { ClassroomComponent, RoomComponent } from './classrooms/index';
+import { RoomComponent } from './classrooms/index';
 
 @NgModule({
     imports: [
@@ -36,8 +36,7 @@ import { ClassroomComponent, RoomComponent } from './classrooms/index';
         SearchCourseComponent,
         CourseDetailsComponent,
 
-        RoomComponent,
-        ClassroomComponent
+        RoomComponent
     ],
     providers: [
         AuthGuard,

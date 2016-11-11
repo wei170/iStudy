@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../_services/index");
 var RoomComponent = (function () {
-    function RoomComponent(classroomService, courseService) {
+    function RoomComponent(classroomService, alertService, courseService, friendService) {
         this.classroomService = classroomService;
+        this.alertService = alertService;
         this.courseService = courseService;
+        this.friendService = friendService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.roomInfo = {};
     }
@@ -35,11 +37,18 @@ var RoomComponent = (function () {
     };
     RoomComponent.prototype.chat = function () {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
-        console.log("check");
     };
     RoomComponent.prototype.update = function (room) {
         this.roomInfo = room;
         this.getAllStudents();
+    };
+    RoomComponent.prototype.sendRequest = function (reciever) {
+        var _this = this;
+        this.friendService.sendFriendReq(this.currentUser.userName, reciever).subscribe(function (data) {
+            _this.alertService.success("Sent Request!");
+        }, function (error) {
+            _this.alertService.error(error);
+        });
     };
     return RoomComponent;
 }());
@@ -50,7 +59,9 @@ RoomComponent = __decorate([
         styleUrls: ['room.component.css']
     }),
     __metadata("design:paramtypes", [index_1.ClassroomService,
-        index_1.CourseService])
+        index_1.AlertService,
+        index_1.CourseService,
+        index_1.FriendService])
 ], RoomComponent);
 exports.RoomComponent = RoomComponent;
 //# sourceMappingURL=room.component.js.map
