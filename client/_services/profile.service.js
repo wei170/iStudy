@@ -40,17 +40,19 @@ var ProfileService = (function () {
      * 		"visibility": "..."
      * }
      */
-    ProfileService.prototype.editProfile = function (model) {
+    ProfileService.prototype.editProfile = function (userName, profile) {
         var url = '/profile/update';
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
         var body = {
-            "userName": model.userName,
-            "major": model.major,
-            "language": model.language,
-            "birthday": model.birthday,
-            "hobby": model.hobby,
-            "visibility": model.visibility
+            "userName": "Maoxia",
+            "major": profile.profile.major,
+            "visibility": profile.profile.visibility,
+            "birthday": profile.profile.birthday,
+            "gender": profile.profile.gender,
+            "nation": profile.profile.nationality,
+            "language": profile.extra.language,
+            "hobby": profile.extra.hobby
         };
         console.log(body);
         return this.http.post(url, body, {

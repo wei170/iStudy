@@ -16,6 +16,7 @@ export class RoomComponent implements OnInit {
     private currentUser = JSON.parse(localStorage.getItem('currentUser'));
     private roomInfo: any = {};
     private studentList: [{ }];
+    private numOfStudents: number;
     constructor(
         private classroomService: ClassroomService,
         private alertService: AlertService,
@@ -44,6 +45,14 @@ export class RoomComponent implements OnInit {
         );
     }
 
+    getNumOfStudents() {
+        this.courseService.getNumOfStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(
+            data => {
+                this.numOfStudents = data.number;
+            }
+        );
+    }
+
     chat() {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
     }
@@ -51,6 +60,7 @@ export class RoomComponent implements OnInit {
     update(room: any) {
         this.roomInfo = room;
         this.getAllStudents();
+        this.getNumOfStudents();
     }
 
     sendRequest(reciever: string) {

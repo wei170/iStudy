@@ -11,16 +11,36 @@ import { MyProfileComponent } from './index';
 })
 
 export class EditProfileComponent implements OnInit{
-    private model: {
-        userName: any;
-        major: string;
-        hobby: any[];
-        language: any[];
-        birthday: string;
-        visibility: boolean
-    };
-    private currentUser: any = {};
-    private profile: any = {};
+    private currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    myProfile: {
+        extra: {
+            language: {
+                name: string;
+            }[];
+            hobby: {
+                name: string;
+            }[];
+        },
+        profile: {
+            major: string;
+            birthday: string;
+            nationality: string;
+            gender: string;
+            visibility: boolean;
+        }
+    } = {
+        "extra": {
+            "language": [],
+            "hobby": []
+        },
+        "profile": {
+            "major": "Unknown",
+            "birthday": "",
+            "nationality": "Unknown",
+            "gender": "Unknown",
+            "visibility": true
+        }
+}
 
     private languages: any[];
     private hobbies: any[];
@@ -39,12 +59,11 @@ export class EditProfileComponent implements OnInit{
     }
 
     fetchProfile() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.model.userName = this.currentUser.userName;
         this.profileService.getProfile(this.currentUser.userName)
         .subscribe(
             data => {
-                this.profile = data;
+                this.myProfile = data;
+                console.log(this.myProfile);
             },
             err => {
                 this.alertService.error(err);
@@ -53,7 +72,7 @@ export class EditProfileComponent implements OnInit{
     }
 
     editProfile() {
-        this.profileService.editProfile(this.model)
+        this.profileService.editProfile(this.currentUser.userName, this.myProfile)
         .subscribe (
             data => {
                 // successfully edit the profile
@@ -79,7 +98,6 @@ export class EditProfileComponent implements OnInit{
         );
         this.profileService.getAllMajors().subscribe(
             data => {
-                console.log(data.value);
                 this.majors = data.value;
             }
         );

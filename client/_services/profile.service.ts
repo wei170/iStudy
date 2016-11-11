@@ -32,17 +32,19 @@ export class ProfileService {
 	 * 		"visibility": "..."
 	 * }
 	 */
-    editProfile(model: any) {
+    editProfile(userName: string, profile: any) {
         var url = '/profile/update';
         var headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         var body = {
-            "userName": model.userName,
-            "major": model.major,
-            "language": model.language,
-            "birthday": model.birthday,
-            "hobby": model.hobby,
-            "visibility": model.visibility
+            "userName": "Maoxia",
+            "major": profile.profile.major,
+            "visibility": profile.profile.visibility,
+            "birthday": profile.profile.birthday,
+            "gender": profile.profile.gender,
+            "nation": profile.profile.nationality,
+            "language": profile.extra.language,
+            "hobby": profile.extra.hobby
         };
         console.log(body);
         return this.http.post(url, body, {

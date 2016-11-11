@@ -14,6 +14,10 @@ var CourseDetailsComponent = (function () {
     function CourseDetailsComponent(courseService, alertService) {
         this.courseService = courseService;
         this.alertService = alertService;
+        this.rmp = {
+            "rating": 0,
+            "comments": []
+        };
     }
     CourseDetailsComponent.prototype.joinClass = function (professor) {
         var _this = this;
@@ -22,6 +26,12 @@ var CourseDetailsComponent = (function () {
             _this.alertService.success("Sucessfully join the class!");
         }, function (err) {
             _this.alertService.error(err);
+        });
+    };
+    CourseDetailsComponent.prototype.getRMP = function (professor) {
+        var _this = this;
+        this.courseService.getRMP(this.courseName, professor).subscribe(function (data) {
+            _this.rmp = data;
         });
     };
     return CourseDetailsComponent;

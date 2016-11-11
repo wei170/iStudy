@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CourseService {
-    private apiUrl = 'http://api.purdue.io/odata';
+    private apiUrl = 'https://api.purdue.io/odata';
     private termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     constructor(private http: Http) {
     }
@@ -71,6 +71,21 @@ export class CourseService {
          var headers = new Headers();
          headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+     }
 
+     getNumOfStudents(courseName: string, professor: string) {
+         var url = '/course/number-of-students';
+         var body = { "course" : courseName, "professor": professor};
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+     }
+
+     getRMP(courseName: string, professor: string) {
+         var url = '/course/get-RMP';
+         var body = { "course" : courseName, "professor": professor};
+         var headers = new Headers();
+         headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
      }
 }

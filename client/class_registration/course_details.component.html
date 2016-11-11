@@ -10,6 +10,30 @@
                     <div class="panel-body">
                         <p>Professor: {{section.name}} </p>
                         <button class = "submit" (click)="joinClass(section.name)"> Join this class</button>
+                        <button class="submit"  (click)="getRMP(section.name)" data-toggle="modal" data-target="#myModal1">
+                            Prof. Rate
+                        </button>
+                        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel1">Overall Quality Rating: {{rmp.rating}}</h4>
+                                    </div>
+                                    <div *ngFor="let comment of rmp.comments">
+                                        <div class="panel-heading">
+                                            <b>User: </b>
+                                        </div>
+                                        <div class="panel-body">
+                                            hahahahahh
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="panel-footer">

@@ -14,7 +14,7 @@ require("rxjs/add/operator/map");
 var CourseService = (function () {
     function CourseService(http) {
         this.http = http;
-        this.apiUrl = 'http://api.purdue.io/odata';
+        this.apiUrl = 'https://api.purdue.io/odata';
         this.termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
     }
     /**************************************************
@@ -71,6 +71,20 @@ var CourseService = (function () {
     };
     CourseService.prototype.getStudents = function (courseName, professor) {
         var url = '/course/students';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getNumOfStudents = function (courseName, professor) {
+        var url = '/course/number-of-students';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getRMP = function (courseName, professor) {
+        var url = '/course/get-RMP';
         var body = { "course": courseName, "professor": professor };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));

@@ -17,8 +17,17 @@ var MyProfileComponent = (function () {
         this.friendService = friendService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.myProfile = {
-            extra: {},
-            profile: {}
+            "extra": {
+                "language": [],
+                "hobby": []
+            },
+            "profile": {
+                "major": "Unknown",
+                "birthday": "",
+                "nationality": "Unknown",
+                "gender": "Unknown",
+                "visibility": true,
+            }
         };
     }
     MyProfileComponent.prototype.ngOnInit = function () {
@@ -38,7 +47,6 @@ var MyProfileComponent = (function () {
     MyProfileComponent.prototype.fetchFriendList = function () {
         var _this = this;
         this.friendService.getFriends(this.currentUser.userName).subscribe(function (data) {
-            console.log("check");
             _this.friendList = data;
         });
     };
