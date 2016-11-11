@@ -12,12 +12,30 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 export class MyProfileComponent implements OnInit{
     currentUser: any = JSON.parse(localStorage.getItem('currentUser'));
     myProfile: {
-        extra: any;
-        profile: any;
+        extra: {
+            language: string[];
+            hobby: string[];
+        },
+        profile: {
+            major: string;
+            birthday: string;
+            nationality: string;
+            gender: string;
+            visibility: boolean;
+        }
     } = {
-        extra: {},
-        profile: {}
-    }
+        "extra": {
+            "language": [],
+            "hobby": []
+        },
+        "profile": {
+            "major": "Unknown",
+            "birthday": "",
+            "nationality": "Unknown",
+            "gender": "Unknown",
+            "visibility": true,
+        }
+}
     friendList: any[];
 
     constructor(
@@ -49,7 +67,6 @@ export class MyProfileComponent implements OnInit{
     fetchFriendList() {
         this.friendService.getFriends(this.currentUser.userName).subscribe(
             data => {
-                console.log("check");
                 this.friendList = data;
             }
         );

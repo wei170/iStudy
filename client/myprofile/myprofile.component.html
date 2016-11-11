@@ -46,7 +46,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Language: </label>
-                                <span id="helpBlock" class="help-block">{{myProfile.extra.language}}</span>
+                                <span id="helpBlock" class="help-block" *ngFor="let language of myProfile.extra.language">{{language.name}}</span>
                             </div>
                             <div class="form-group">
                                 <label>Birthday: </label>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Hobby: </label>
-                                <span id="helpBlock" class="help-block">{{myProfile.extra.hobby}}</span>
+                                <span id="helpBlock" class="help-block" *ngFor="let hobby of myProfile.extra.hobby">{{hobby.name}}</span>
                             </div>
                             <div class="form-group">
                                 <label>Visibility: </label>
