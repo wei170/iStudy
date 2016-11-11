@@ -320,7 +320,7 @@ router.post('/get-friend-requests', middleware.requireAuthentication,function (r
 								"status": request_statuses[i]
 							});
 						}
-						res.status(200).json(request_list);
+						res.status(200).json(request_list.requests);
 					});
 				}
 				else {
@@ -400,14 +400,15 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 
 
 /******************************************************
- *           	Find Friends
+ *           		Find Friends
  ******************************************************/
 // find friends in same class by country, hobby, language
 router.post('/find-friends', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
-	 * 		"course": "..."
-	 * 		"professor": "..."
+	 * 		"userName": "...",
+	 * 		"course": "...",
+	 * 		"professor": "...",
 	 * 		"preference" : {
 	 * 			"nationality": "...",
 	 * 			"hobby": [
@@ -422,7 +423,7 @@ router.post('/find-friends', middleware.requireAuthentication,function (req, res
 	 *
 	 * }
 	 */
-	var body = _.pick(req.body, 'course', 'professor', 'preference');
+	var body = _.pick(req.body, 'userName','course', 'professor', 'preference');
 	var preference = body.preference;
 	var filter = {};
 	if (preference.hasOwnProperty('nationality')) {
@@ -440,7 +441,19 @@ router.post('/find-friends', middleware.requireAuthentication,function (req, res
 			db.professor.findOne({where: {name: body.professor}}).then(function (professor){
 				if (professor){
 					// get students from course
-
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function(c_u){
+							c_u.getStudents().then(function(students){
+								if (students){
+									// exclude user himself
+									findAndRemove(students, "userName", body.userName);
+									res.send(students);
+								}
+								else {
+									res.status(404).send({err: "No stduents joined this course"});
+								}
+							});
+						});
 				}
 				else {
 					res.status(404).send({err: "Professor Not Found"});
@@ -454,6 +467,22 @@ router.post('/find-friends', middleware.requireAuthentication,function (req, res
 
 
 });
+
+
+/**
+ * Remove one element from array
+ * @param array
+ * @param property
+ * @param value
+ */
+var findAndRemove = function (array, property, value) {
+	array.forEach(function (result, index) {
+		if (result[property] === value){
+			// remove from array
+			array.splice(index, 1);
+		}
+	});
+};
 
 /**
  * Add friendship of sender and receiver to db
