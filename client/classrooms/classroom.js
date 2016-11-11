@@ -10,13 +10,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var index_1 = require("../_services/index");
 var ClassroomComponent = (function () {
-    function ClassroomComponent(router) {
+    function ClassroomComponent(router, courseService) {
         this.router = router;
+        this.courseService = courseService;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
+    ClassroomComponent.prototype.ngOnInit = function () {
+        this.getAllStudents();
+    };
     ClassroomComponent.prototype.chat = function () {
-        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.name;
+        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
+    };
+    ClassroomComponent.prototype.getAllStudents = function () {
+        var _this = this;
+        console.log(this.roomInfo.professor);
+        this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
+            console.log(data);
+            _this.studentList = data;
+        });
     };
     return ClassroomComponent;
 }());
@@ -30,7 +43,8 @@ ClassroomComponent = __decorate([
         selector: 'classroom',
         templateUrl: 'classroom.html'
     }),
-    __metadata("design:paramtypes", [router_1.Router])
+    __metadata("design:paramtypes", [router_1.Router,
+        index_1.CourseService])
 ], ClassroomComponent);
 exports.ClassroomComponent = ClassroomComponent;
 //# sourceMappingURL=classroom.js.map

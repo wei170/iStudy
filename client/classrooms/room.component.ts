@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ClassroomService, AlertService } from '../_services/index';
+import { ClassroomService, CourseService, AlertService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
@@ -13,8 +13,10 @@ export class RoomComponent implements OnInit {
         name: string;
     }];
     private roomInfo: any = {};
+    private studentList: [{ }];
     constructor(
-        private classroomService: ClassroomService
+        private classroomService: ClassroomService,
+        private courseService: CourseService
     ) {}
 
     ngOnInit() {
@@ -24,12 +26,23 @@ export class RoomComponent implements OnInit {
     getEnrolledClasses() {
         this.classroomService.getUserCourseList().subscribe(
             data => {
-                this.userClasses = data;
+                this.userClasses = data.courses;
+            }
+        );
+    }
+
+    getAllStudents() {
+        this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(
+            data => {
+                this.studentList = data;
+                console.log(this.studentList[0]);
             }
         );
     }
 
     update(room: any) {
         this.roomInfo = room;
+        this.getAllStudents();
     }
+
 }

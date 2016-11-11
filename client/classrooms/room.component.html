@@ -7,7 +7,7 @@
         <div class="collapse navbar-toggleable-sm" id="exCollapsingNavbar2">
             <ul class="nav navbar-nav">
                 <li class="nav-item active" *ngFor="let room of userClasses">
-                    <button class="nav-link" (click)="update(room)" >{{room.name}}<span class="sr-only">(current)</span></button>
+                    <button class="nav-link" (click)="update(room)" >{{room.course}}<span class="sr-only">(current)</span></button>
                 </li>
             </ul>
         </div>
@@ -15,4 +15,15 @@
 
 </div>
 
-<classroom [roomInfo]="roomInfo"></classroom>
+<h1>{{roomInfo.course}}</h1>
+<button (click)="chat()"><a href="{{chatUrl}}">Chat Room</a></button>
+<div class="collapse navbar-toggleable-sm" id="exCollapsingNavbar2">
+    <ul class="nav navbar-nav">
+        <li class="nav-item active" *ngFor="let student of studentList">
+            <button class="nav-link" >
+                {{student.userName}}
+                {{student.email}}
+            </button>
+        </li>
+    </ul>
+</div>

@@ -61,6 +61,13 @@ var CourseService = (function () {
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
     };
+    CourseService.prototype.getStudents = function (courseName, professor) {
+        var url = '/course/students';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
     return CourseService;
 }());
 CourseService = __decorate([

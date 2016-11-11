@@ -44,7 +44,7 @@ var FriendService = (function () {
     // Accept Or Decline Request
     // need to update info of status code
     FriendService.prototype.responseToRequest = function (user, sender, status_code) {
-        var url = 'users/get-friend-invitations';
+        var url = 'users/invitation-accept-or-not';
         var body = { "sender": sender, "receiver": user, "status_code": status_code };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };

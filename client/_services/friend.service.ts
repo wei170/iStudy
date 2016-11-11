@@ -42,7 +42,7 @@ export class FriendService {
     // Accept Or Decline Request
     // need to update info of status code
     responseToRequest(user: string, sender: string, status_code:string) {
-        var url = 'users/get-friend-invitations';
+        var url = 'users/invitation-accept-or-not';
         var body = { "sender": sender, "receiver": user, "status_code": status_code}
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }

@@ -11,8 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var index_1 = require("../_services/index");
 var RoomComponent = (function () {
-    function RoomComponent(classroomService) {
+    function RoomComponent(classroomService, courseService) {
         this.classroomService = classroomService;
+        this.courseService = courseService;
         this.roomInfo = {};
     }
     RoomComponent.prototype.ngOnInit = function () {
@@ -21,11 +22,19 @@ var RoomComponent = (function () {
     RoomComponent.prototype.getEnrolledClasses = function () {
         var _this = this;
         this.classroomService.getUserCourseList().subscribe(function (data) {
-            _this.userClasses = data;
+            _this.userClasses = data.courses;
+        });
+    };
+    RoomComponent.prototype.getAllStudents = function () {
+        var _this = this;
+        this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
+            _this.studentList = data;
+            console.log(_this.studentList[0]);
         });
     };
     RoomComponent.prototype.update = function (room) {
         this.roomInfo = room;
+        this.getAllStudents();
     };
     return RoomComponent;
 }());
@@ -35,7 +44,8 @@ RoomComponent = __decorate([
         templateUrl: 'room.component.html',
         styleUrls: ['room.component.css']
     }),
-    __metadata("design:paramtypes", [index_1.ClassroomService])
+    __metadata("design:paramtypes", [index_1.ClassroomService,
+        index_1.CourseService])
 ], RoomComponent);
 exports.RoomComponent = RoomComponent;
 //# sourceMappingURL=room.component.js.map
