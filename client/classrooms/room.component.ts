@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ClassroomService, CourseService, AlertService } from '../_services/index';
+import { ClassroomService, CourseService, AlertService, FriendService } from '../_services/index';
 
 @Component({
     moduleId: module.id,
@@ -18,7 +18,9 @@ export class RoomComponent implements OnInit {
     private studentList: [{ }];
     constructor(
         private classroomService: ClassroomService,
-        private courseService: CourseService
+        private alertService: AlertService,
+        private courseService: CourseService,
+        private friendService: FriendService
     ) {}
 
     ngOnInit() {
@@ -44,12 +46,22 @@ export class RoomComponent implements OnInit {
 
     chat() {
         this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
-        console.log("check");
     }
 
     update(room: any) {
         this.roomInfo = room;
         this.getAllStudents();
+    }
+
+    sendRequest(reciever: string) {
+        this.friendService.sendFriendReq(this.currentUser.userName, reciever).subscribe(
+            data => {
+                this.alertService.success("Sent Request!")
+            },
+            error => {
+                this.alertService.error(error);
+            }
+        );
     }
 
 }

@@ -299,26 +299,77 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 });
 
 
+/**************************************************
+ * 				Get RMP
+ **************************************************/
+router.post('/get-RMP', middleware.requireAuthentication, function(req, res){
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "...",
+	 *
+	 * 	}
+	 */
+	var RMP = {};
+	var r;
+	var c = [];
+	RMP.rating = r;
+	RMP.comments = c;
+	var finished = false;
+	var body = _.pick(req.body, 'course', 'professor');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (c_p) {
+							if (c_p){
+								c_p.getComments().then(function (comments) {
+									//console.log(comments);
+									if (comments){
+										retrieveRatingAndComments(res, c_p,RMP);
+									}
+								});
+							}
+							else {
+								res.status(404).send({err: "No Such Course"});
+							}
+						});
+				}
+				else {
+					res.status(404).send({err: "Professor Not Found"});
+				}
+			})
+		}
+		else{
+			res.status(404).send({err: "Course Not Found"});
+		}
+	})
+});
+
 /**
- * Function used to retrieve relevant Course Name and Professor Name
- * @param c_ids
- * @param course_list
+ * Get rating score and comments of a Course
+ * @param res
+ * @param c_p
+ * @param RMP
  */
-var retrieveCourseAndProfessors = function (c_ids, course_list) {
+var retrieveRatingAndComments = function (res, c_p, RMP) {
 	return new Promise(function (resolve, reject) {
-		var promises = [];
-		c_ids.forEach(function (c_id) {
-			promises.push(
-				Promise.all([
-					db.course_professor.findOne({where: {id: c_id}})
-				])
-					.spread(function (c_p) {
-						console.log(c_p.course_id);
-						console.log(c_p.professor_id);
-					})
-			)
+		var len = -1;
+		RMP.rating = c_p.rating;
+		c_p.getComments().then(function (comments) {
+			if (comments){
+				len = comments.length;
+				comments.map(function (c) {
+					RMP.comments.push(c);
+				});
+			}
+			if (RMP.comments.length === len){
+				res.status(200).send(RMP);
+				resolve();
+			}
 		});
-		return Promise.all(promises);
 	});
 };
 

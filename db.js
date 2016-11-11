@@ -34,7 +34,7 @@ db.course = sequelize.import(__dirname + '/models/Course');
 db.profile = sequelize.import(__dirname + '/models/Profile');
 db.language = sequelize.import(__dirname + '/models/Language');
 db.hobby = sequelize.import(__dirname + '/models/Hobby');
-db.RMP = sequelize.import(__dirname + '/models/RMP');
+db.comment = sequelize.import(__dirname + '/models/Comment');
 
 // a course is defined by a course id and professor id
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
@@ -49,8 +49,8 @@ db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
 db.user.hasOne(db.profile);
 db.profile.belongsTo(db.user);
 
-// one professor has many comments
-db.course_professor.belongsToMany(db.RMP,{through: 'course_professor'});
+// one course_profess has many comments
+db.course_professor.belongsToMany(db.comment,{through: 'course_comment'});
 
 // one user can speak many languages and one language can be spoken by many users
 db.profile.belongsToMany(db.language, {through: 'profile_language'});
@@ -75,10 +75,6 @@ db.user.belongsToMany(db.user, {as: 'friends', through: 'user_friends'});
 db.friend_request.belongsTo(db.user, {as: 'receiver'});
 db.friend_request.belongsTo(db.user, {as: 'sender'});
 
-// Below only adds user_id to request table, not enough, needs both senders and receivers
-// db.user.hasMany(db.friend_request, {as: 'friend_requests'});
-// db.user.hasMany(db.friend_request, {as: 'friend_invitations'});
-
 
 // test config relationship
 console.log('User associations: ', Object.keys(db.user.associations));
@@ -89,6 +85,7 @@ console.log('Course associations: ', Object.keys(db.course.associations));
 console.log('Professor associations: ', Object.keys(db.professor.associations));
 console.log('Course_Professor associations:', Object.keys(db.course_professor.associations));
 console.log('Friend_Request associations:', Object.keys(db.friend_request.associations));
+console.log('Comment associations:', Object.keys(db.comment.associations));
 
 db.sequelize = sequelize;
 

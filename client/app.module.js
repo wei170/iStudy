@@ -46,8 +46,7 @@ AppModule = __decorate([
             index_6.EditProfileComponent,
             index_7.SearchCourseComponent,
             index_7.CourseDetailsComponent,
-            index_8.RoomComponent,
-            index_8.ClassroomComponent
+            index_8.RoomComponent
         ],
         providers: [
             index_2.AuthGuard,

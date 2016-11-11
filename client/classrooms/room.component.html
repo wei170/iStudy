@@ -17,13 +17,11 @@
 
 <h1>{{roomInfo.course}}</h1>
 <button (click)="chat()"><a href="{{chatUrl}}">Chat Room</a></button>
-<div class="collapse navbar-toggleable-sm" id="exCollapsingNavbar2">
-    <ul class="nav navbar-nav">
-        <li class="nav-item active" *ngFor="let student of studentList">
-            <button class="nav-link" >
-                {{student.userName}}
-                {{student.email}}
-            </button>
-        </li>
-    </ul>
+
+<div class="list-group">
+    <button class="list-group-item" *ngFor="let student of studentList">
+        {{student.userName}}
+        {{student.email}}
+        <button class="fa fa-plus" (click)="sendRequest(student.userName)" aria-hidden="true"></button>
+    </button>
 </div>

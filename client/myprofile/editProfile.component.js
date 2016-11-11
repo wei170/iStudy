@@ -16,8 +16,20 @@ var EditProfileComponent = (function () {
         this.router = router;
         this.profileService = profileService;
         this.alertService = alertService;
-        this.currentUser = {};
-        this.profile = {};
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.myProfile = {
+            "extra": {
+                "language": [],
+                "hobby": []
+            },
+            "profile": {
+                "major": "Unknown",
+                "birthday": "",
+                "nationality": "Unknown",
+                "gender": "Unknown",
+                "visibility": true
+            }
+        };
         this.visibilities = [
             { value: true, display: "Public" },
             { value: false, display: "Private" }
@@ -29,18 +41,16 @@ var EditProfileComponent = (function () {
     };
     EditProfileComponent.prototype.fetchProfile = function () {
         var _this = this;
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.model.userName = this.currentUser.userName;
         this.profileService.getProfile(this.currentUser.userName)
             .subscribe(function (data) {
-            _this.profile = data;
+            _this.myProfile = data;
         }, function (err) {
             _this.alertService.error(err);
         });
     };
     EditProfileComponent.prototype.editProfile = function () {
         var _this = this;
-        this.profileService.editProfile(this.model)
+        this.profileService.editProfile(this.currentUser.userName, this.myProfile)
             .subscribe(function (data) {
             // successfully edit the profile
             _this.alertService.success('Successfully edit the profile');
