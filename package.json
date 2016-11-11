@@ -39,7 +39,7 @@
     "jsonwebtoken": "^5.0.5",
     "metismenu": "^2.5.2",
     "morgan": "~1.7.0",
-    "mysql": "^2.11.1",
+    "mysql": "^2.5",
     "nodemailer": "^2.6.4",
     "pg": "^4.4.1",
     "pg-hstore": "^2.3.2",
