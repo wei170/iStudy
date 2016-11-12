@@ -17,7 +17,12 @@ var debug = 1;
 if (env == 'production') {
     // for heroku
     sequelize = new Sequelize(process.env.DATABASE_URL, {
-        dialect: 'mysql'
+        dialect: 'mysql',
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000
+        }
     });
 } else {
     // for local
@@ -50,30 +55,57 @@ db.user.hasOne(db.profile);
 db.profile.belongsTo(db.user);
 
 // one course_profess has many comments
-db.course_professor.belongsToMany(db.comment,{through: 'course_comment'});
+db.course_professor.belongsToMany(db.comment, {
+    through: 'course_comment'
+});
 
 // one user can speak many languages and one language can be spoken by many users
-db.profile.belongsToMany(db.language, {through: 'profile_language'});
-db.language.belongsToMany(db.profile, {through: 'profile_language'});
+db.profile.belongsToMany(db.language, {
+    through: 'profile_language'
+});
+db.language.belongsToMany(db.profile, {
+    through: 'profile_language'
+});
 
 //one user can have many hobbies and one hobby can belong to many users;
-db.profile.belongsToMany(db.hobby, {through: 'profile_hobby'});
-db.hobby.belongsToMany(db.profile, {through: 'profile_hobby'});
+db.profile.belongsToMany(db.hobby, {
+    through: 'profile_hobby'
+});
+db.hobby.belongsToMany(db.profile, {
+    through: 'profile_hobby'
+});
 
 // one prof can teach different courses, one course can be taught by different prof
-db.course.belongsToMany(db.professor, {through: db.course_professor});
-db.professor.belongsToMany(db.course, {through: db.course_professor});
+db.course.belongsToMany(db.professor, {
+    through: db.course_professor
+});
+db.professor.belongsToMany(db.course, {
+    through: db.course_professor
+});
 
 // one student can join different courses, one course can have different students
-db.user.belongsToMany(db.course_professor, {as: 'courses', through: 'course_student'});
-db.course_professor.belongsToMany(db.user, {as: 'students', through: 'course_student'});
+db.user.belongsToMany(db.course_professor, {
+    as: 'courses',
+    through: 'course_student'
+});
+db.course_professor.belongsToMany(db.user, {
+    as: 'students',
+    through: 'course_student'
+});
 
 // one user can have many friends
-db.user.belongsToMany(db.user, {as: 'friends', through: 'user_friends'});
+db.user.belongsToMany(db.user, {
+    as: 'friends',
+    through: 'user_friends'
+});
 
 // one request can have only one receiver and one sender
-db.friend_request.belongsTo(db.user, {as: 'receiver'});
-db.friend_request.belongsTo(db.user, {as: 'sender'});
+db.friend_request.belongsTo(db.user, {
+    as: 'receiver'
+});
+db.friend_request.belongsTo(db.user, {
+    as: 'sender'
+});
 
 
 // test config relationship
@@ -93,15 +125,18 @@ db.sequelize = sequelize;
  * 			Create Tables All At Once
  *****************************************************/
 // init all the tables
-if (debug){
+if (debug) {
     db.sequelize
-        .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
+        .query('SET FOREIGN_KEY_CHECKS = 0', {
+            raw: true
+        })
         .then(function(results) {
-            db.sequelize.sync({force: true});
+            db.sequelize.sync({
+                force: true
+            });
         });
     // db.sequelize.sync({force: true}).then();
-}
-else {
+} else {
     db.sequelize.sync().then();
 }
 
