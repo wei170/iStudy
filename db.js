@@ -17,12 +17,8 @@ var debug = 1;
 if (env == 'production') {
     // for heroku
     sequelize = new Sequelize(process.env.DATABASE_URL, {
-        dialect: 'mysql',
-        pool: {
-            max: 5,
-            min: 0,
-            idle: 10000
-        }
+        dialect: 'mysql'
+
     });
 } else {
     // for local
