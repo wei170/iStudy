@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ProfileService, AlertService } from '../_services/index';
-import { MyProfileComponent } from './index';
-
 
 @Component({
     moduleId: module.id,

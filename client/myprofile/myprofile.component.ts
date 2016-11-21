@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService, ProfileService, FriendService, AlertService } from '../_services/index';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-
 
 @Component({
     moduleId: module.id,
