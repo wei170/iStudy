@@ -16,6 +16,9 @@ const routes: Routes = [
     { path: 'grid', loadChildren: () => System.import('../grid/grid.module') },
     { path: 'charts', loadChildren: () => System.import('../charts/charts.module') },
     { path: 'widgets', loadChildren: () => System.import('../widgets/widgets.module') },
+
+    // iStudy
+    { path: 'registration', loadChildren: () => System.import('../registration/registration.module') },
   ]}
 ];
 

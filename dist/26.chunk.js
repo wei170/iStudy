@@ -1,4 +1,4 @@
-webpackJsonpac__name_([14],{
+webpackJsonpac__name_([26],{
 
 /***/ "./src/app/profile/profile.component.ts":
 /***/ function(module, exports, __webpack_require__) {
@@ -164,4 +164,4 @@ module.exports = "<ol class=\"breadcrumb\">\r\n\t<li class=\"breadcrumb-item\">Y
 /***/ }
 
 });
-//# sourceMappingURL=14.map
+//# sourceMappingURL=26.map

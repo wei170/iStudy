@@ -103,6 +103,10 @@ export class Profile implements OnInit {
       this.toEdit = true;
     }
 
+    cancelEdit() {
+        this.toEdit = false;
+    }
+
     getAllChoices() {
         this.profileService.getAllLanguages().subscribe(
             data => {

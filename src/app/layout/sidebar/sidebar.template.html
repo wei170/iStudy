@@ -20,7 +20,15 @@
   </div>
   <!-- main notification links are placed inside of .sidebar-nav -->
   <ul class="sidebar-nav">
-    <li>
+     <li>
+      <a [routerLink]=" ['profile'] ">
+          <span class="icon">
+            <i class="glyphicon glyphicon-user"></i>
+          </span>
+        Profile
+      </a>
+    </li>
+    <!--<li>
       <a class="collapsed" data-target="#sidebar-dashboard" data-toggle="collapse" data-parent="#sidebar">
           <span class="icon">
             <i class="fa fa-desktop"></i>
@@ -32,7 +40,7 @@
         <li><a [routerLink]=" ['dashboard'] ">Dashboard</a></li>
         <li><a [routerLink]=" ['widgets'] ">Widgets</a></li>
       </ul>
-    </li>
+    </li>-->
     <li>
       <a [routerLink]=" ['inbox'] ">
           <span class="icon">
@@ -44,25 +52,22 @@
           </span>
       </a>
     </li>
-    <li>
+    <!--<li>
       <a [routerLink]=" ['charts'] ">
           <span class="icon">
             <i class="glyphicon glyphicon-stats"></i>
           </span>
         Charts
       </a>
-    </li>
-    <li>
-      <a [routerLink]=" ['profile'] ">
+    </li>-->
+     <li>
+      <a [routerLink]=" ['registration'] ">
           <span class="icon">
-            <i class="glyphicon glyphicon-user"></i>
+            <i class="fa fa-institution"></i>
           </span>
-        Profile
-        <sup class="text-warning fw-semi-bold">
-          new
-        </sup>
+        Registration
       </a>
-    </li>
+    </li>    
   </ul>
   <!-- every .sidebar-nav may have a title -->
   <h5 class="sidebar-nav-title">Template <a class="action-link" href="#"><i class="glyphicon glyphicon-refresh"></i></a></h5>

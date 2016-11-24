@@ -667,9 +667,9 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var AppConfig = (function () {
     function AppConfig() {
         this.config = {
-            name: 'sing',
-            title: 'Sing Dashboard App with Angular 2.0 support by Flatlogic',
-            version: '3.2.0',
+            name: 'iStudy',
+            title: 'iStudy socialize your study experience',
+            version: '1.0.0',
             /**
              * Whether to print and alert some log information
              */
