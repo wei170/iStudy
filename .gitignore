@@ -42,3 +42,5 @@ jspm_packages
 database/*.sqlite
 *.swp
 .DS_Store
+semantic
+semantic.json

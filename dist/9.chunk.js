@@ -16557,7 +16557,7 @@ var ng_table_filtering_directive_1 = __webpack_require__("./node_modules/ng2-tab
 var ng_table_paging_directive_1 = __webpack_require__("./node_modules/ng2-table/components/table/ng-table-paging.directive.js");
 var ng_table_sorting_directive_1 = __webpack_require__("./node_modules/ng2-table/components/table/ng-table-sorting.directive.js");
 exports.NG_TABLE_DIRECTIVES = [ng_table_component_1.NgTableComponent, ng_table_filtering_directive_1.NgTableFilteringDirective, ng_table_paging_directive_1.NgTablePagingDirective, ng_table_sorting_directive_1.NgTableSortingDirective];
-
+//# sourceMappingURL=ng-table-directives.js.map
 
 /***/ },
 
@@ -16566,15 +16566,6 @@ exports.NG_TABLE_DIRECTIVES = [ng_table_component_1.NgTableComponent, ng_table_f
 
 "use strict";
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
 var ng_table_component_1 = __webpack_require__("./node_modules/ng2-table/components/table/ng-table.component.js");
@@ -16595,7 +16586,7 @@ var Ng2TableModule = (function () {
     return Ng2TableModule;
 }());
 exports.Ng2TableModule = Ng2TableModule;
-
+//# sourceMappingURL=ng-table-module.js.map
 
 /***/ },
 
@@ -16604,16 +16595,8 @@ exports.Ng2TableModule = Ng2TableModule;
 
 "use strict";
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+// import {setProperty} from 'angular2/ts/src/core/forms/directives/shared';
 function setProperty(renderer, elementRef, propName, propValue) {
     renderer.setElementProperty(elementRef, propName, propValue);
 }
@@ -16626,6 +16609,7 @@ var NgTableFilteringDirective = (function () {
         this.tableChanged = new core_1.EventEmitter();
         this.element = element;
         this.renderer = renderer;
+        // Set default value for filter
         setProperty(this.renderer, this.element, 'value', this.ngTableFiltering.filterString);
     }
     Object.defineProperty(NgTableFilteringDirective.prototype, "config", {
@@ -16667,7 +16651,7 @@ var NgTableFilteringDirective = (function () {
     return NgTableFilteringDirective;
 }());
 exports.NgTableFilteringDirective = NgTableFilteringDirective;
-
+//# sourceMappingURL=ng-table-filtering.directive.js.map
 
 /***/ },
 
@@ -16676,15 +16660,6 @@ exports.NgTableFilteringDirective = NgTableFilteringDirective;
 
 "use strict";
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var NgTablePagingDirective = (function () {
     function NgTablePagingDirective() {
@@ -16702,6 +16677,7 @@ var NgTablePagingDirective = (function () {
         configurable: true
     });
     NgTablePagingDirective.prototype.onChangePage = function (event) {
+        // Object.assign(this.config, event);
         if (this.ngTablePaging) {
             this.tableChanged.emit({ paging: event });
         }
@@ -16731,7 +16707,7 @@ var NgTablePagingDirective = (function () {
     return NgTablePagingDirective;
 }());
 exports.NgTablePagingDirective = NgTablePagingDirective;
-
+//# sourceMappingURL=ng-table-paging.directive.js.map
 
 /***/ },
 
@@ -16740,15 +16716,6 @@ exports.NgTablePagingDirective = NgTablePagingDirective;
 
 "use strict";
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var NgTableSortingDirective = (function () {
     function NgTableSortingDirective() {
@@ -16812,7 +16779,7 @@ var NgTableSortingDirective = (function () {
     return NgTableSortingDirective;
 }());
 exports.NgTableSortingDirective = NgTableSortingDirective;
-
+//# sourceMappingURL=ng-table-sorting.directive.js.map
 
 /***/ },
 
@@ -16821,23 +16788,36 @@ exports.NgTableSortingDirective = NgTableSortingDirective;
 
 "use strict";
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-browser/index.js");
 var NgTableComponent = (function () {
-    function NgTableComponent() {
+    function NgTableComponent(sanitizer) {
+        this.sanitizer = sanitizer;
+        // Table values
         this.rows = [];
-        this.config = {};
+        // Outputs (Events)
         this.tableChanged = new core_1.EventEmitter();
+        this.cellClicked = new core_1.EventEmitter();
+        this.showFilterRow = false;
         this._columns = [];
+        this._config = {};
     }
+    Object.defineProperty(NgTableComponent.prototype, "config", {
+        get: function () {
+            return this._config;
+        },
+        set: function (conf) {
+            if (!conf.className) {
+                conf.className = 'table-striped table-bordered';
+            }
+            if (conf.className instanceof Array) {
+                conf.className = conf.className.join(' ');
+            }
+            this._config = conf;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(NgTableComponent.prototype, "columns", {
         get: function () {
             return this._columns;
@@ -16845,6 +16825,12 @@ var NgTableComponent = (function () {
         set: function (values) {
             var _this = this;
             values.forEach(function (value) {
+                if (value.filtering) {
+                    _this.showFilterRow = true;
+                }
+                if (value.className && value.className instanceof Array) {
+                    value.className = value.className.join(' ');
+                }
                 var column = _this._columns.find(function (col) { return col.name === value.name; });
                 if (column) {
                     Object.assign(column, value);
@@ -16857,6 +16843,9 @@ var NgTableComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    NgTableComponent.prototype.sanitize = function (html) {
+        return this.sanitizer.bypassSecurityTrustHtml(html);
+    };
     Object.defineProperty(NgTableComponent.prototype, "configColumns", {
         get: function () {
             var sortColumns = [];
@@ -16881,18 +16870,26 @@ var NgTableComponent = (function () {
     NgTableComponent.prototype.getData = function (row, propertyName) {
         return propertyName.split('.').reduce(function (prev, curr) { return prev[curr]; }, row);
     };
+    NgTableComponent.prototype.cellClick = function (row, column) {
+        this.cellClicked.emit({ row: row, column: column });
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
     ], NgTableComponent.prototype, "rows", void 0);
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Object)
-    ], NgTableComponent.prototype, "config", void 0);
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
+    ], NgTableComponent.prototype, "config", null);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', core_1.EventEmitter)
     ], NgTableComponent.prototype, "tableChanged", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], NgTableComponent.prototype, "cellClicked", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array), 
@@ -16901,14 +16898,14 @@ var NgTableComponent = (function () {
     NgTableComponent = __decorate([
         core_1.Component({
             selector: 'ng-table',
-            template: "\n    <table class=\"table table-striped table-bordered dataTable\"\n           role=\"grid\" style=\"width: 100%;\">\n      <thead>\n      <tr role=\"row\">\n        <th *ngFor=\"let column of columns\" [ngTableSorting]=\"config\" [column]=\"column\" (sortChanged)=\"onChangeTable($event)\">\n          {{column.title}}\n          <i *ngIf=\"config && column.sort\" class=\"pull-right fa\"\n            [ngClass]=\"{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}\"></i>\n        </th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr *ngFor=\"let row of rows\">\n        <td *ngFor=\"let column of columns\">{{getData(row, column.name)}}</td>\n      </tr>\n      </tbody>\n    </table>\n  "
+            template: "\n    <table class=\"table dataTable\" ngClass=\"{{config.className || ''}}\"\n           role=\"grid\" style=\"width: 100%;\">\n      <thead>\n        <tr role=\"row\">\n          <th *ngFor=\"let column of columns\" [ngTableSorting]=\"config\" [column]=\"column\" \n              (sortChanged)=\"onChangeTable($event)\" ngClass=\"{{column.className || ''}}\">\n            {{column.title}}\n            <i *ngIf=\"config && column.sort\" class=\"pull-right fa\"\n              [ngClass]=\"{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}\"></i>\n          </th>\n        </tr>\n      </thead>\n      <tbody>\n      <tr *ngIf=\"showFilterRow\">\n        <td *ngFor=\"let column of columns\">\n          <input *ngIf=\"column.filtering\" placeholder=\"{{column.filtering.placeholder}}\"\n                 [ngTableFiltering]=\"column.filtering\"\n                 class=\"form-control\"\n                 style=\"width: auto;\"\n                 (tableChanged)=\"onChangeTable(config)\"/>\n        </td>\n      </tr>\n        <tr *ngFor=\"let row of rows\">\n          <td (click)=\"cellClick(row, column.name)\" *ngFor=\"let column of columns\" [innerHtml]=\"sanitize(getData(row, column.name))\"></td>\n        </tr>\n      </tbody>\n    </table>\n  "
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [platform_browser_1.DomSanitizer])
     ], NgTableComponent);
     return NgTableComponent;
 }());
 exports.NgTableComponent = NgTableComponent;
-
+//# sourceMappingURL=ng-table.component.js.map
 
 /***/ },
 
@@ -16940,7 +16937,7 @@ exports.default = {
 };
 var ng_table_module_1 = __webpack_require__("./node_modules/ng2-table/components/ng-table-module.js");
 exports.Ng2TableModule = ng_table_module_1.Ng2TableModule;
-
+//# sourceMappingURL=ng2-table.js.map
 
 /***/ },
 

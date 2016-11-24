@@ -19,6 +19,7 @@ const routes: Routes = [
 
     // iStudy
     { path: 'registration', loadChildren: () => System.import('../registration/registration.module') },
+    { path: 'classroom', loadChildren: () => System.import('../classroom/classroom.module') }
   ]}
 ];
 
