@@ -42,35 +42,44 @@ router.get('/hobbies', middleware.requireAuthentication, function(req, res){
 router.post('/', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-	 * 		"userName": "...",
+	 * 		"hostName": "...",
+	 * 		"requester": "..."
 	 * }
      */
-    var body = _.pick(req.body, 'userName');
-	var compelete_profile = {};
-	var extra = {};
-	compelete_profile.extra = extra;
-    db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+    var body = _.pick(req.body, 'hostName', 'requester');
+	var complete_profile = {};
+	var visibility;
+    db.user.findOne({where: {userName: body.hostName}}).then(function (user) {
        if (user){
            user.getProfile().then(function (profile) {
                if (profile){
-				   compelete_profile.profile = profile;
-				   profile.getLanguages().then(function (languages) {
-					   if (languages){
-						   extra.language = languages;
+				   visibility = profile.visibility;
+				   if (visibility === true){
+					   // can be viewed by anyone
+					   getPublicProfile(complete_profile, profile, res);
+				   }
+				   else {
+					   // can only be viewed by the host or host's friends
+					   if (body.requester === body.hostName){
+						   getPublicProfile(complete_profile, profile, res);
 					   }
-					   else{
-						   extra.language = "";
+					   else {
+						   // check if these two are friends or not
+							db.user.findOne({where: {userName: body.requester}}).then(function (requester) {
+								if (requester){
+									requester.getFriends().then(function (friends) {
+										if (checkIfIsFriend(friends, user) === true){
+											getPublicProfile(complete_profile, profile, res);
+										}
+										else {
+											res.send("Private Prof");
+										}
+									});
+								}
+							})
 					   }
-					   profile.getHobbies().then(function (hobbies) {
-						   if (hobbies){
-							   extra.hobby = hobbies;
-						   }
-						   else {
-							   extra.hobby = "";
-						   }
-						   res.status(200).json(compelete_profile);
-					   })
-				   })
+				   }
+
 			   }
            });
        }
@@ -80,6 +89,65 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
     });
 });
 
+/**
+ * Get user's public profile
+ * @param complete_profile
+ * @param profile
+ * @param res
+ */
+var getPublicProfile = function (complete_profile, profile, res) {
+	var extra = {};
+	complete_profile.extra = extra;
+	complete_profile.profile = profile;
+	profile.getLanguages().then(function (languages) {
+		if (languages){
+			extra.language = languages;
+		}
+		else{
+			extra.language = "";
+		}
+		profile.getHobbies().then(function (hobbies) {
+			if (hobbies){
+				extra.hobby = hobbies;
+			}
+			else {
+				extra.hobby = "";
+			}
+			res.status(200).json(complete_profile);
+		})
+	})
+};
+
+/**
+ * Check if two users are friends
+ * @param friends
+ * @param host
+ * @returns {boolean}
+ */
+var checkIfIsFriend = function (friends, host) {
+	var isFriend = false;
+	new Promise(function (resolve, reject) {
+		var count = 0;
+		var len = friends.length;
+		friends.map(function (friend) {
+			count++;
+			if (friend.id === host.id){
+				isFriend = true;
+				resolve();
+			}
+		});
+		if (count === len){
+			resolve();
+		}
+	}).then(function () {
+		return isFriend;
+	});
+};
+
+
+var getPrivateProfile = function () {
+
+};
 
 
 /******************************************************

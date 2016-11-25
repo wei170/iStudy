@@ -381,7 +381,9 @@ var linkUsers = function(res) {
                     db.user.findById(f_id).then(function(friend) {
                         //console.log('Map ' + user.userName + ', ' + friend.userName);
                         if (friend) {
+                            // add friend to each other
                             user.addFriend(friend);
+                            friend.addFriend(user);
                         } else {
                             res.status(404).send({
                                 err: "Friend Not Found  "
