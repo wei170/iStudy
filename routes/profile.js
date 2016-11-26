@@ -54,7 +54,7 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
            user.getProfile().then(function (profile) {
                if (profile){
 				   visibility = profile.visibility;
-				   if (visibility === true){
+				   if (visibility == true){
 					   // can be viewed by anyone
 					   getPublicProfile(complete_profile, profile, res);
 				   }
@@ -68,13 +68,24 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
 							db.user.findOne({where: {userName: body.requester}}).then(function (requester) {
 								if (requester){
 									requester.getFriends().then(function (friends) {
-										if (checkIfIsFriend(friends, user) === true){
-											getPublicProfile(complete_profile, profile, res);
-										}
-										else {
-											res.send("Private Prof");
-										}
+										var result = [];
+										result.isFriend = false;
+										checkIfIsFriend(friends, user, result).then(function () {
+											console.log("res is " + result.isFriend);
+											if (result.isFriend == true){
+												getPublicProfile(complete_profile, profile, res);
+											}
+											else {
+												// get private profile instead to the requester
+												// res.send("Private Access");
+												getPrivateProfile(profile, res);
+											}
+										})
+
 									});
+								}
+								else {
+									res.status(404).send({err: "Requester Not Found"});
 								}
 							})
 					   }
@@ -84,7 +95,7 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
            });
        }
        else {
-           res.status(404).send({error: "User Not Found"});
+           res.status(404).send({err: "User Not Found"});
        }
     });
 });
@@ -118,35 +129,44 @@ var getPublicProfile = function (complete_profile, profile, res) {
 	})
 };
 
+
+/**
+ * Send private profile with owner's name, gender, and nationality
+ * @param profile
+ * @param res
+ */
+var getPrivateProfile = function (profile, res) {
+	profile.getUser().then(function (user) {
+		res.status(200).send({
+			userName: user.userName,
+			gender: profile.gender,
+			nationality: profile.nationality
+		});
+	});
+
+};
+
 /**
  * Check if two users are friends
  * @param friends
  * @param host
- * @returns {boolean}
+ * @returns a promise to determine if two are friends
  */
-var checkIfIsFriend = function (friends, host) {
-	var isFriend = false;
-	new Promise(function (resolve, reject) {
+var checkIfIsFriend = function (friends, host, result) {
+	return new Promise(function (resolve, reject) {
 		var count = 0;
 		var len = friends.length;
 		friends.map(function (friend) {
 			count++;
 			if (friend.id === host.id){
-				isFriend = true;
-				resolve();
+				result.isFriend = true;
 			}
 		});
 		if (count === len){
+			console.log("isFriend is " + result.isFriend);
 			resolve();
 		}
-	}).then(function () {
-		return isFriend;
 	});
-};
-
-
-var getPrivateProfile = function () {
-
 };
 
 
