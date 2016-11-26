@@ -95,7 +95,7 @@ router.post('/checkcode', function(req, res) {
             res.status(200).send();
 
         } else {
-            res.status(401).send({error: 'verification code invalid!'});
+            res.status(401).send({err: 'verification code invalid!'});
         }
     });
 });

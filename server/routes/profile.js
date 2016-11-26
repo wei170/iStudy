@@ -53,13 +53,33 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
            user.getProfile().then(function (profile) {
                if (profile){
 				   //check who is viewing the user's profile
-				   if (db.requester === db.hostName){
+				   if (body.requester === body.hostName){
 				   		//oneself
 						getPublicProfile(complete_profile, profile, res);
 				   }
 				   else {
 				   	// check if two are friends of each other
-
+					db.user.findOne({where: {userName: body.requester}}).then(function (requester) {
+						if (requester){
+							var result = [];
+							result.isFriend = false;
+							requester.getFriends().then(function (friends) {
+								// check two's association
+								checkIfIsFriend(friends, user, result)
+									.then(function () {
+										if (result.isFriend == true){
+											getPublicProfile(complete_profile, profile, res);
+										}
+										else {
+											getPrivateProfile(user, profile, res);
+										}
+									})
+							});
+						}
+						else {
+							res.status(404).send({err: "Requester Not Found"});
+						}
+					})
 				   }
 			   }
            });
@@ -70,7 +90,12 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
     });
 });
 
-
+/**
+ * Send user the public profile
+ * @param complete_profile
+ * @param profile
+ * @param res
+ */
 var getPublicProfile = function(complete_profile, profile, res){
 	var extra = {};
 	complete_profile.extra = extra;
@@ -91,6 +116,46 @@ var getPublicProfile = function(complete_profile, profile, res){
 			}
 			res.status(200).json(complete_profile);
 		})
+	});
+};
+
+
+/**
+ * Return user's private profile
+ * @param user
+ * @param profile
+ * @param res
+ */
+var getPrivateProfile = function(user, profile, res){
+	res.status(200).send({
+		userName: user.userName,
+		nationality: profile.nationality,
+		gender: profile.gender
+	});
+};
+
+/**
+ * Check if two are friends
+ * @param friends
+ * @param host
+ * @param result
+ */
+var checkIfIsFriend = function (friends, host, result) {
+	return new Promise(function (resolve, reject) {
+		// isFriend by default is false
+		var count = 0;
+		var len = friends.length;
+		friends.map(function (friend) {
+			if (friend.userName === host.userName){
+				result.isFriend = true;
+				resolve();
+			}
+			count++;
+		});
+		if (count === len){
+			//console.log("res is " + isFriend);
+			resolve();
+		}
 	});
 };
 
