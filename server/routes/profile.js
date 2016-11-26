@@ -42,44 +42,57 @@ router.get('/hobbies', middleware.requireAuthentication, function(req, res){
 router.post('/', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-	 * 		"userName": "...",
+	 * 		"hostName": "...",
+	 * 		"requester": "..."
 	 * }
      */
-    var body = _.pick(req.body, 'userName');
-	var compelete_profile = {};
-	var extra = {};
-	compelete_profile.extra = extra;
-    db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+    var body = _.pick(req.body, 'hostName', "requester");
+	var complete_profile = {};
+    db.user.findOne({where: {userName: body.hostName}}).then(function (user) {
        if (user){
            user.getProfile().then(function (profile) {
                if (profile){
-				   compelete_profile.profile = profile;
-				   profile.getLanguages().then(function (languages) {
-					   if (languages){
-						   extra.language = languages;
-					   }
-					   else{
-						   extra.language = "";
-					   }
-					   profile.getHobbies().then(function (hobbies) {
-						   if (hobbies){
-							   extra.hobby = hobbies;
-						   }
-						   else {
-							   extra.hobby = "";
-						   }
-						   res.status(200).json(compelete_profile);
-					   })
-				   })
+				   //check who is viewing the user's profile
+				   if (db.requester === db.hostName){
+				   		//oneself
+						getPublicProfile(complete_profile, profile, res);
+				   }
+				   else {
+				   	// check if two are friends of each other
+
+				   }
 			   }
            });
        }
        else {
-           res.status(404).send({error: "User Not Found"});
+           res.status(404).send({err: "User Not Found"});
        }
     });
 });
 
+
+var getPublicProfile = function(complete_profile, profile, res){
+	var extra = {};
+	complete_profile.extra = extra;
+	complete_profile.profile = profile;
+	profile.getLanguages().then(function (languages) {
+		if (languages){
+			extra.language = languages;
+		}
+		else{
+			extra.language = "";
+		}
+		profile.getHobbies().then(function (hobbies) {
+			if (hobbies){
+				extra.hobby = hobbies;
+			}
+			else {
+				extra.hobby = "";
+			}
+			res.status(200).json(complete_profile);
+		})
+	});
+};
 
 
 /******************************************************

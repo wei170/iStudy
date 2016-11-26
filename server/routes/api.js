@@ -382,6 +382,7 @@ var linkUsers = function(res) {
                         //console.log('Map ' + user.userName + ', ' + friend.userName);
                         if (friend) {
                             user.addFriend(friend);
+                            friend.addFriend(user);
                         } else {
                             res.status(404).send({
                                 err: "Friend Not Found  "
