@@ -1,0 +1,49 @@
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">YOU ARE HERE</li>
+	<li class="active breadcrumb-item">Classroom</li>
+</ol>
+<h1 class="page-title">Classroom</h1>
+
+<div class="col-lg-6 col-xs-12">
+	<div class="clearfix">
+		<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist" *ngFor="let room of userClasses">
+			<li class="nav-item">
+				<a (click)="update(room)" class="nav-link" data-toggle="tab" href="#{{room.course}}" id="home-tab" role="tab">{{room.course}}</a>
+			</li>
+		</ul>
+	</div>
+	<div *ngIf="hasInClass" class="tab-content mb-lg" id="myTabContent">
+		<div aria-expanded="true" class="tab-pane clearfix" id="{{roomInfo.course}}" role="tabpanel">
+			<h4>Numbers Of Classmates: {{numOfStudents}}</h4>
+			<div class="form-group">
+
+				<h6>Search Friends By</h6>
+                <label><input class="form-control" placeholder="Nationality:"[(ngModel)]="preference.nationality" type="text" name="nationality"></label>
+
+                <div class="ui sub header">Language</div>
+                <select class="ui fluid normal dropdown" [(ngModel)]="preference.language" name="language" >
+                    <option *ngFor="let language of languages" [ngValue]="language.name">{{language.name}}</option>
+                </select>
+
+                <div class="ui sub header">Hobby</div>
+                <select class="ui fluid normal dropdown" [(ngModel)]="preference.hobby" name="hobby">
+                    <option *ngFor="let hobby of hobbies" [ngValue]="hobby.name">{{hobby.name}}</option>                    
+                </select>
+			</div>
+			<div class = "form-group">
+
+				<button (click)="filterStudents()" >Search</button>
+
+			</div>
+
+			<div class="list-group">
+				<button class="list-group-item" *ngFor="let student of studentList">
+					{{student.userName}}
+					{{student.email}}
+					<button class="fa fa-plus" (click)="sendRequest(student.userName)" aria-hidden="true"></button>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<button (click)="chat()"><a href="{{chatUrl}}">Chat Room</a></button>
