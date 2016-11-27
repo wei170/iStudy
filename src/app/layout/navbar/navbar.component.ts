@@ -14,7 +14,13 @@ export class Navbar implements OnInit {
   config: any;
   router: Router;
 
-  constructor(el: ElementRef, config: AppConfig, router: Router) {
+  private currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  constructor(
+    el: ElementRef, 
+    config: AppConfig, 
+    router: Router,
+  ) {
     this.$el = jQuery(el.nativeElement);
     this.config = config.getConfig();
     this.router = router;

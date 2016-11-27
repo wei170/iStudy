@@ -16,6 +16,9 @@ import { SearchPipe } from './pipes/search.pipe';
 import { NotificationLoad } from './notifications/notifications-load.directive';
 import { Notifications } from './notifications/notifications.component';
 
+// iStudy
+import { FriendService, AlertService } from '../_services/index';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -32,6 +35,10 @@ import { Notifications } from './notifications/notifications.component';
     Notifications,
     NotificationLoad,
     ChatMessage
+  ],
+  providers: [
+    FriendService,
+    AlertService
   ]
 })
 export default class LayoutModule {

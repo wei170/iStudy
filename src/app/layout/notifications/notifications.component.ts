@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { AppConfig } from '../../app.config';
+import { FriendService, AlertService } from '../../_services/index';
 declare var jQuery: any;
 
 @Component({
@@ -7,10 +8,13 @@ declare var jQuery: any;
   templateUrl: './notifications.template.html'
 })
 export class Notifications implements OnInit {
+  private currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  private friendRequests: any[];
+
   $el: any;
   config: any;
 
-  constructor(el: ElementRef, config: AppConfig) {
+  constructor(el: ElementRef, config: AppConfig, private friendService: FriendService, private alertService: AlertService) {
     this.$el = jQuery(el.nativeElement);
     this.config = config;
   }
@@ -24,6 +28,7 @@ export class Notifications implements OnInit {
   }
 
   ngOnInit(): void {
+    this.updateMessages();
     this.config.onScreenSize(['sm', 'xs'], this.moveNotificationsDropdown);
     this.config.onScreenSize(['sm', 'xs'], this.moveBackNotificationsDropdown, false);
 
@@ -41,4 +46,37 @@ export class Notifications implements OnInit {
       $input.trigger('change');
     });
   }
+
+  // iStudy
+  updateMessages() {
+      this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(
+          (data: any) => {
+              this.friendRequests = data;
+          }
+      );
+  }
+
+  accept(req: any) {
+      this.friendService.responseToRequest(this.currentUser.userName, req.userName, 1).subscribe (
+          (data: any) => {
+              this.alertService.success("Accept the friend request");
+              this.updateMessages();
+          },
+          (error: any) => {
+              this.alertService.error(error);
+          }
+      )
+  }
+
+  decline(req: any) {
+      this.friendService.responseToRequest(this.currentUser.userName, req.userName, -1).subscribe (
+          (data: any) => {
+              this.alertService.success("Decline the friend request");
+              this.updateMessages();
+          },
+          (error: any) => {
+              this.alertService.error(error);
+          }
+      )
+  }  
 }

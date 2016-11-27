@@ -12221,6 +12221,569 @@ module.exports = function(module) {
 
 /***/ },
 
+/***/ "./src/app/_services/alert.service.ts":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var AlertService = (function () {
+    function AlertService() {
+    }
+    AlertService.prototype.ngOnInit = function () {
+    };
+    AlertService.prototype.success = function (message) {
+        Messenger().post({
+            message: message,
+            type: 'success',
+            showCloseButton: true
+        });
+        return false;
+    };
+    AlertService.prototype.error = function (message) {
+        var i;
+        Messenger().run({
+            errorMessage: message,
+            action: function (opts) {
+                if (++i < 3) {
+                    return opts.error({
+                        status: 500,
+                        readyState: 0,
+                        responseText: 0
+                    });
+                }
+                else {
+                    return opts.success();
+                }
+            }
+        });
+        return false;
+    };
+    AlertService.prototype.info = function (message) {
+        var msg = Messenger().post({
+            message: 'Launching thermonuclear war...',
+            actions: {
+                cancel: {
+                    label: 'cancel launch',
+                    action: function () {
+                        return msg.update({
+                            message: 'Thermonuclear war averted',
+                            type: 'success',
+                            actions: false
+                        });
+                    }
+                }
+            }
+        });
+        return false;
+    };
+    return AlertService;
+}());
+exports.AlertService = AlertService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/authentication.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+var AuthenticationService = (function () {
+    function AuthenticationService(http) {
+        this.http = http;
+    }
+    AuthenticationService.prototype.login = function (email, password) {
+        var url = 'users/login';
+        var body = { "email": email, "password": password };
+        return this.http.post(url, body)
+            .map(function (response) {
+            if (response.status < 200 || response.status >= 300) {
+                response.json();
+            }
+            else {
+                // login successful if there's a jwt token in the response
+                var user = response.json();
+                // console.log(response.headers.get('Auth'));
+                if (user) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('token', response.headers.get('Auth'));
+                }
+            }
+        });
+    };
+    AuthenticationService.prototype.logout = function () {
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+    };
+    AuthenticationService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], AuthenticationService);
+    return AuthenticationService;
+    var _a;
+}());
+exports.AuthenticationService = AuthenticationService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/classroom.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+var ClassroomService = (function () {
+    function ClassroomService(http) {
+        this.http = http;
+        this.headers = new http_1.Headers();
+        this.headers.append('Auth', localStorage.getItem('token'));
+    }
+    /**
+     * JSON Format:
+     * {
+     * 	"userName": "..."
+     * 	}
+     */
+    ClassroomService.prototype.getUserCourseList = function () {
+        var url = '/course/get-class-list';
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        var body = { "userName": userName };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    /**
+     * JSON Format:
+     * {
+     * 	"course": "course name"
+     * 	"professor": "professor name"
+     * }
+     */
+    ClassroomService.prototype.getAllStudents = function (courseName, professor) {
+        var url = '/course/get-class-list';
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        var body = { "course": courseName, "professor": professor };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    ClassroomService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], ClassroomService);
+    return ClassroomService;
+    var _a;
+}());
+exports.ClassroomService = ClassroomService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/course.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var CourseService = (function () {
+    function CourseService(http) {
+        this.http = http;
+        this.apiUrl = 'https://api.purdue.io/odata';
+        this.termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
+    }
+    /**************************************************
+     * 				Class Searching
+     **************************************************/
+    CourseService.prototype.getAllMajors = function () {
+        var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
+        var abbrOrder = ')))&$orderby=Abbreviation%20asc';
+        var detailedUrl = this.apiUrl + filterUrl + this.termId + abbrOrder;
+        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getMajorCourses = function (majorId) {
+        // todo: need to change later
+        var filterUrl = '/Courses/?$filter=(Classes/any(c:%20c/Term/TermId%20eq%20';
+        var major = '))%20and%20Subject/SubjectId%20eq%20' + majorId;
+        var order = '&$orderby=Number%20asc';
+        var detailedUrl = this.apiUrl + filterUrl + this.termId + major + order;
+        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+    };
+    //
+    // getCoursesDetails(courseId: string) {
+    //     var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+    //     var midUrl = '%20and%20Term/TermId%20eq%20';
+    //     var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+    //     var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+    //     return this.http.get(detailedUrl)
+    //         .map((res: Response) => res.json());
+    // }
+    /**************************************************
+     * 				Classrooms
+     **************************************************/
+    /**
+    * Join a class
+    * JSON Format:
+    * {
+    * 	"course": "...",
+    * 	"professor": "...",
+    * 	"userName": "..."
+    * }
+    */
+    CourseService.prototype.joinClass = function (courseName, professor, userName) {
+        var url = '/course/join';
+        var body = { "course": courseName, "professor": professor, "userName": userName };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getCourseDetails = function (courseName) {
+        var url = '/course';
+        var body = { "course": courseName };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getStudents = function (courseName, professor) {
+        var url = '/course/students';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getNumOfStudents = function (courseName, professor) {
+        var url = '/course/number-of-students';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService.prototype.getRMP = function (courseName, professor) {
+        var url = '/course/get-RMP';
+        var body = { "course": courseName, "professor": professor };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    CourseService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], CourseService);
+    return CourseService;
+    var _a;
+}());
+exports.CourseService = CourseService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/friend.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var FriendService = (function () {
+    function FriendService(http) {
+        this.http = http;
+        this.headers = new http_1.Headers();
+        this.headers.append('Auth', localStorage.getItem('token'));
+    }
+    // get friend list
+    FriendService.prototype.getFriends = function (username) {
+        var url = 'users/get-friends';
+        var body = { "userName": username };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    // send friend request
+    FriendService.prototype.sendFriendReq = function (senderName, receiverName) {
+        var url = 'users/send-friend-request';
+        var body = { "senderName": senderName, "receiverName": receiverName };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    // get friend requests
+    FriendService.prototype.getFriendReq = function (username) {
+        var url = 'users/get-friend-requests';
+        var body = { "userName": username };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    // get friend invitations
+    FriendService.prototype.getFriendInvitations = function (username) {
+        var url = 'users/get-friend-invitations';
+        var body = { "userName": username };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    // Accept Or Decline Request
+    // need to update info of status code
+    FriendService.prototype.responseToRequest = function (user, sender, status_code) {
+        var url = 'users/invitation-accept-or-not';
+        var body = { "sender": sender, "receiver": user, "status_code": status_code };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    /**
+    * JSON Format: {
+    * 		"userName": "...",
+    * 		"course": "...",
+    * 		"professor": "...",
+    * 		"preference" : {
+    * 			"nationality": "...",
+    * 			"hobby": "...",
+    * 			"language": "..."
+    * 		}
+    */
+    FriendService.prototype.filterStudents = function (preference, userName, course, professor) {
+        var url = 'users/find-friends';
+        var body = {
+            "userName": userName,
+            "course": course,
+            "professor": professor,
+            "preference": preference
+        };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    FriendService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], FriendService);
+    return FriendService;
+    var _a;
+}());
+exports.FriendService = FriendService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/index.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+__export(__webpack_require__("./src/app/_services/authentication.service.ts"));
+__export(__webpack_require__("./src/app/_services/user.service.ts"));
+__export(__webpack_require__("./src/app/_services/alert.service.ts"));
+__export(__webpack_require__("./src/app/_services/profile.service.ts"));
+__export(__webpack_require__("./src/app/_services/course.service.ts"));
+__export(__webpack_require__("./src/app/_services/password.service.ts"));
+__export(__webpack_require__("./src/app/_services/rmp.service.ts"));
+__export(__webpack_require__("./src/app/_services/friend.service.ts"));
+__export(__webpack_require__("./src/app/_services/classroom.service.ts"));
+
+
+/***/ },
+
+/***/ "./src/app/_services/password.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var PasswordService = (function () {
+    function PasswordService(http) {
+        this.http = http;
+    }
+    PasswordService.prototype.verificationCheck = function (model) {
+        var url = '/users/checkcode';
+        var body = {
+            "email": model.email,
+            "verificationcode": model.verificationcode
+        };
+        return this.http.post(url, body);
+    };
+    PasswordService.prototype.forgotPassword = function (model) {
+        var _this = this;
+        var url = '/users/reset?email=' + model.email;
+        var body = {
+            "email": model.email
+        };
+        return this.http.post(url, body)
+            .map(function (res) { return _this.extractData(res); });
+    };
+    PasswordService.prototype.resetPassword = function (model) {
+        var _this = this;
+        var url = '/users/newpassword';
+        var body = {
+            "email": model.email,
+            "newpassword": model.newpassword
+        };
+        return this.http.put(url, body)
+            .map(function (res) { return _this.extractData(res); });
+    };
+    PasswordService.prototype.extractData = function (res) {
+        var body = res.json();
+        localStorage.setItem('profile', JSON.stringify(body));
+        return body.data || {};
+    };
+    PasswordService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], PasswordService);
+    return PasswordService;
+    var _a;
+}());
+exports.PasswordService = PasswordService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/profile.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var ProfileService = (function () {
+    function ProfileService(http) {
+        this.http = http;
+    }
+    /**
+    * JSON Format: {
+    * 		"userName": "...",
+    * }
+    */
+    ProfileService.prototype.getProfile = function (userName) {
+        var profileUrl = '/profile';
+        var body = { "userName": userName };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(profileUrl, body, {
+            headers: headers
+        })
+            .map(function (res) { return res.json(); });
+    };
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * 		"major": "...",
+     * 		"language": "...",
+     * 		"birthday": "...",
+     *		"hobby": "...",
+     * 		"visibility": "..."
+     * }
+     */
+    ProfileService.prototype.editProfile = function (userName, profile) {
+        var url = '/profile/update';
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        var body = {
+            "userName": userName,
+            "major": profile.profile.major,
+            "visibility": profile.profile.visibility,
+            "birthday": profile.profile.birthday,
+            "gender": profile.profile.gender,
+            "nation": profile.profile.nationality,
+            "language": profile.extra.language,
+            "hobby": profile.extra.hobby
+        };
+        console.log(body);
+        return this.http.post(url, body, {
+            headers: headers
+        })
+            .map(function (res) { return res.json(); });
+    };
+    ProfileService.prototype.getAllLanguages = function () {
+        var url = '/profile/languages';
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.get(url, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    ProfileService.prototype.getAllHobbies = function () {
+        var url = '/profile/hobbies';
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.get(url, { headers: headers }).map(function (res) { return res.json(); });
+    };
+    ProfileService.prototype.getAllMajors = function () {
+        var apiUrl = 'http://api.purdue.io/odata';
+        var termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
+        var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
+        var abbrOrder = ')))&$orderby=Abbreviation%20asc';
+        var detailedUrl = apiUrl + filterUrl + termId + abbrOrder;
+        return this.http.get(detailedUrl).map(function (res) { return res.json(); });
+    };
+    ProfileService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], ProfileService);
+    return ProfileService;
+    var _a;
+}());
+exports.ProfileService = ProfileService;
+
+
+/***/ },
+
+/***/ "./src/app/_services/rmp.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var RMPService = (function () {
+    function RMPService(http) {
+        this.http = http;
+    }
+    RMPService.prototype.getProfessorInfo = function (name) {
+        var rmp_url = 'https://api.morph.io/chrisguags/ratemyprofessors/data.json';
+        var params = {
+            // Keep this key secret!
+            key: 'xABz9pgTrRX6JVP6fGfI',
+            query: "select * from 'data' where College = 'Purdue' and Name = '" + name + "'"
+        };
+        return this.http.get(rmp_url + '?' + $.param(params)).map(function (response) { return response.json(); });
+    };
+    RMPService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], RMPService);
+    return RMPService;
+    var _a;
+}());
+exports.RMPService = RMPService;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
+
+/***/ },
+
+/***/ "./src/app/_services/user.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+var UserService = (function () {
+    function UserService(http) {
+        this.http = http;
+    }
+    UserService.prototype.create = function (user) {
+        return this.http.post('/users/', user).map(function (response) { return response.json(); });
+    };
+    UserService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], UserService);
+    return UserService;
+    var _a;
+}());
+exports.UserService = UserService;
+
+
+/***/ },
+
 /***/ "./src/app/layout/chat-sidebar/chat-message/chat-message.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -12677,6 +13240,8 @@ var chat_message_component_1 = __webpack_require__("./src/app/layout/chat-sideba
 var search_pipe_1 = __webpack_require__("./src/app/layout/pipes/search.pipe.ts");
 var notifications_load_directive_1 = __webpack_require__("./src/app/layout/notifications/notifications-load.directive.ts");
 var notifications_component_1 = __webpack_require__("./src/app/layout/notifications/notifications.component.ts");
+// iStudy
+var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var LayoutModule = (function () {
     function LayoutModule() {
     }
@@ -12697,6 +13262,10 @@ var LayoutModule = (function () {
                 notifications_component_1.Notifications,
                 notifications_load_directive_1.NotificationLoad,
                 chat_message_component_1.ChatMessage
+            ],
+            providers: [
+                index_1.FriendService,
+                index_1.AlertService
             ]
         }), 
         __metadata('design:paramtypes', [])
@@ -12761,6 +13330,7 @@ var Navbar = (function () {
     function Navbar(el, config, router) {
         this.toggleSidebarEvent = new core_1.EventEmitter();
         this.toggleChatEvent = new core_1.EventEmitter();
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.$el = jQuery(el.nativeElement);
         this.config = config.getConfig();
         this.router = router;
@@ -12822,7 +13392,7 @@ exports.Navbar = Navbar;
 /***/ "./src/app/layout/navbar/navbar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch(f)\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" ngModel type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\n                </span>\n          &nbsp;\n          Philip <strong>Smith</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\">\n                    13\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"\n          ></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch(f)\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" ngModel type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\n                </span>\n          &nbsp;\n          <strong>{{currentUser.userName}}</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\">\n                    13\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
 
 /***/ },
 
@@ -12893,8 +13463,12 @@ exports.NotificationLoad = NotificationLoad;
 /* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var app_config_1 = __webpack_require__("./src/app/app.config.ts");
+var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var Notifications = (function () {
-    function Notifications(el, config) {
+    function Notifications(el, config, friendService, alertService) {
+        this.friendService = friendService;
+        this.alertService = alertService;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.$el = jQuery(el.nativeElement);
         this.config = config;
     }
@@ -12905,6 +13479,7 @@ var Notifications = (function () {
         jQuery('#notifications-dropdown-toggle').after(jQuery('[notifications]').detach());
     };
     Notifications.prototype.ngOnInit = function () {
+        this.updateMessages();
         this.config.onScreenSize(['sm', 'xs'], this.moveNotificationsDropdown);
         this.config.onScreenSize(['sm', 'xs'], this.moveBackNotificationsDropdown, false);
         if (this.config.isScreen('sm')) {
@@ -12923,15 +13498,40 @@ var Notifications = (function () {
             $input.trigger('change');
         });
     };
+    // iStudy
+    Notifications.prototype.updateMessages = function () {
+        var _this = this;
+        this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(function (data) {
+            _this.friendRequests = data;
+        });
+    };
+    Notifications.prototype.accept = function (req) {
+        var _this = this;
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, 1).subscribe(function (data) {
+            _this.alertService.success("Accept the friend request");
+            _this.updateMessages();
+        }, function (error) {
+            _this.alertService.error(error);
+        });
+    };
+    Notifications.prototype.decline = function (req) {
+        var _this = this;
+        this.friendService.responseToRequest(this.currentUser.userName, req.userName, -1).subscribe(function (data) {
+            _this.alertService.success("Decline the friend request");
+            _this.updateMessages();
+        }, function (error) {
+            _this.alertService.error(error);
+        });
+    };
     Notifications = __decorate([
         core_1.Component({
             selector: '[notifications]',
             template: __webpack_require__("./src/app/layout/notifications/notifications.template.html")
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _b) || Object, (typeof (_c = typeof index_1.FriendService !== 'undefined' && index_1.FriendService) === 'function' && _c) || Object, (typeof (_d = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _d) || Object])
     ], Notifications);
     return Notifications;
-    var _a, _b;
+    var _a, _b, _c, _d;
 }());
 exports.Notifications = Notifications;
 
@@ -12942,7 +13542,7 @@ exports.Notifications = Notifications;
 /***/ "./src/app/layout/notifications/notifications.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<section class=\"card notifications\">\r\n  <header class=\"card-header\">\r\n    <div class=\"text-xs-center mb-sm\">\r\n      <strong>You have 13 notifications</strong>\r\n    </div>\r\n    <div class=\"btn-group btn-group-sm btn-group-justified\" id=\"notifications-toggle\" data-toggle=\"buttons\">\r\n      <label class=\"btn btn-secondary active\">\r\n        <!-- ajax-load plugin in action. setting data-ajax-load & data-ajax-target is the\r\n             only requirement for async reloading -->\r\n        <input type=\"radio\"\r\n               notification-load\r\n               data-ajax-trigger=\"change\"\r\n               data-ajax-load=\"assets/demo/notifications/notifications.html\"\r\n               data-ajax-target=\"#notifications-list\"> Notifications\r\n      </label>\r\n      <label class=\"btn btn-secondary\">\r\n        <input type=\"radio\"\r\n               notification-load\r\n               data-ajax-trigger=\"change\"\r\n               data-ajax-load=\"assets/demo/notifications/messages.html\"\r\n               data-ajax-target=\"#notifications-list\"> Messages\r\n      </label>\r\n      <label class=\"btn btn-secondary\">\r\n        <input type=\"radio\"\r\n               notification-load\r\n               data-ajax-trigger=\"change\"\r\n               data-ajax-load=\"assets/demo/notifications/progress.html\"\r\n               data-ajax-target=\"#notifications-list\"> Progress\r\n      </label>\r\n    </div>\r\n  </header>\r\n  <!-- notification list with .thin-scroll which styles scrollbar for webkit -->\r\n  <div id=\"notifications-list\" class=\"list-group thin-scroll\">\r\n    <div class=\"list-group-item\">\r\n      <span class=\"thumb-sm pull-xs-left mr clearfix\">\r\n        <img class=\"img-circle\" src=\"assets/img/people/a3.jpg\" alt=\"...\">\r\n      </span>\r\n      <p class=\"no-margin overflow-hidden\">\r\n        1 new user just signed up! Check out\r\n        <a href=\"#\">Monica Smith</a>'s account.\r\n        <time class=\"help-block no-margin\">\r\n          2 mins ago\r\n        </time>\r\n      </p>\r\n    </div>\r\n    <a class=\"list-group-item\" href=\"#\">\r\n      <span class=\"thumb-sm pull-xs-left mr\">\r\n        <i class=\"glyphicon glyphicon-upload fa-lg\"></i>\r\n      </span>\r\n      <p class=\"text-ellipsis no-margin\">\r\n        2.1.0-pre-alpha just released. </p>\r\n      <time class=\"help-block no-margin\">\r\n        5h ago\r\n      </time>\r\n    </a>\r\n    <a class=\"list-group-item\" href=\"#\">\r\n      <span class=\"thumb-sm pull-xs-left mr\">\r\n        <i class=\"fa fa-bolt fa-lg\"></i>\r\n      </span>\r\n      <p class=\"text-ellipsis no-margin\">\r\n        Server load limited. </p>\r\n      <time class=\"help-block no-margin\">\r\n        7h ago\r\n      </time>\r\n    </a>\r\n    <div class=\"list-group-item\">\r\n      <span class=\"thumb-sm pull-xs-left mr clearfix\">\r\n        <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\r\n      </span>\r\n      <p class=\"no-margin overflow-hidden\">\r\n        User <a href=\"#\">Jeff</a> registered\r\n        &nbsp;&nbsp;\r\n        <button class=\"btn btn-xs btn-success\">Allow</button>\r\n        <button class=\"btn btn-xs btn-danger\">Deny</button>\r\n        <time class=\"help-block no-margin\">\r\n          12:18 AM\r\n        </time>\r\n      </p>\r\n    </div>\r\n    <div class=\"list-group-item\">\r\n      <span class=\"thumb-sm pull-xs-left mr\">\r\n        <i class=\"fa fa-shield fa-lg\"></i>\r\n      </span>\r\n      <p class=\"no-margin overflow-hidden\">\r\n        Instructions for changing your Envato Account password. Please\r\n        check your account <a href=\"#\">security page</a>.\r\n        <time class=\"help-block no-margin\">\r\n          12:18 AM\r\n        </time>\r\n      </p>\r\n    </div>\r\n    <a class=\"list-group-item\" href=\"#\">\r\n      <span class=\"thumb-sm pull-xs-left mr\">\r\n        <span class=\"rounded bg-primary rounded-lg\">\r\n          <i class=\"fa fa-facebook text-white\"></i>\r\n        </span>\r\n      </span>\r\n      <p class=\"text-ellipsis no-margin\">\r\n        New <strong>76</strong> facebook likes received.</p>\r\n      <time class=\"help-block no-margin\">\r\n        15 Apr 2014\r\n      </time>\r\n    </a>\r\n    <a class=\"list-group-item\" href=\"#\">\r\n      <span class=\"thumb-sm pull-xs-left mr\">\r\n        <span class=\"circle circle-lg bg-gray-dark\">\r\n          <i class=\"fa fa-circle-o text-white\"></i>\r\n        </span>\r\n      </span>\r\n      <p class=\"text-ellipsis no-margin\">\r\n        Dark matter detected.</p>\r\n      <time class=\"help-block no-margin\">\r\n        15 Apr 2014\r\n      </time>\r\n    </a>\r\n  </div>\r\n  <footer class=\"card-footer text-sm\">\r\n    <!-- ajax-load button. loads assets/demo/notifications/notifications.php to #notifications-list\r\n         when clicked -->\r\n    <button class=\"btn btn-xs btn-link pull-xs-right btn-notifications-reload\"\r\n            id=\"load-notifications-btn\"\r\n            notification-load\r\n            data-ajax-load=\"assets/demo/notifications/notifications.php\"\r\n            data-ajax-target=\"#notifications-list\"\r\n            data-loading-text=\"<i class='fa fa-refresh fa-spin mr-xs'></i> Loading...\">\r\n      <i class=\"fa fa-refresh\"></i>\r\n    </button>\r\n    <span class=\"fs-mini\">Synced at: 21 Apr 2014 18:36</span>\r\n  </footer>\r\n</section>\r\n"
+module.exports = "<section class=\"card notifications\">\r\n  <header class=\"card-header\">\r\n    <div class=\"text-xs-center mb-sm\">\r\n      <strong>You have 13 notifications</strong>\r\n    </div>\r\n    <div class=\"btn-group btn-group-sm btn-group-justified\" id=\"notifications-toggle\" data-toggle=\"buttons\">\r\n      <label class=\"btn btn-secondary active\" notification-load>\r\n        <!-- ajax-load plugin in action. setting data-ajax-load & data-ajax-target is the\r\n             only requirement for async reloading -->\r\n        Notifications\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Messages\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Progress\r\n      </label>\r\n    </div>\r\n  </header>\r\n  <!-- notification list with .thin-scroll which styles scrollbar for webkit -->\r\n  <div id=\"notifications-list\" class=\"list-group thin-scroll\">\r\n    <div class=\"list-group-item\" *ngFor=\"let req of friendRequests\">\r\n      <p class=\"no-margin overflow-hidden\">\r\n        <a href=\"#\">{{req.userName}}</a> sent you a friend request\r\n        &nbsp;&nbsp;<br/>\r\n        <button class=\"btn btn-xs btn-success col-lg-4\" (click)=\"accept(req)\">Accept</button>\r\n        <button class=\"btn btn-xs btn-danger col-lg-4\" (click)=\"decline(req)\">Deny</button>\r\n        <time class=\"help-block no-margin\">\r\n          12:18 AM\r\n        </time>\r\n      </p>\r\n    </div>\r\n  </div>\r\n  <footer class=\"card-footer text-sm\">\r\n    <button class=\"btn btn-xs btn-link pull-xs-right btn-notifications-reload\" (click)=\"updateMessages()\">\r\n      <!-- Put reload here -->\r\n      <i class=\"fa fa-refresh\"></i>\r\n    </button>\r\n    <!-- Put local time here -->\r\n    <span class=\"fs-mini\">Synced at: 21 Apr 2014 18:36</span>\r\n  </footer>\r\n</section>\r\n"
 
 /***/ },
 

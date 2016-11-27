@@ -16,7 +16,6 @@ import { AppState } from './app.service';
     './scss/application.scss'
   ],
   template: `
-  <alert></alert>
   <router-outlet></router-outlet>
   `
 })

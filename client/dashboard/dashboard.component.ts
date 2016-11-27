@@ -29,16 +29,16 @@ export class DashboardComponent implements OnInit {
         this.updateMessages();
     }
 
+    ngAfterViewInit() {
+        this.loadScript("/client/dashboard/custom-scripts.js");
+    }
+
     updateMessages() {
         this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(
             (data: any) => {
                 this.friendRequests = data;
             }
         );
-    }
-
-    ngAfterViewInit() {
-        this.loadScript("/client/dashboard/custom-scripts.js");
     }
 
     logout() { this.authService.logout(); }

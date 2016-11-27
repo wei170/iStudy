@@ -17,9 +17,6 @@ import { AppState, InteralStateType } from './app.service';
 import { AppConfig } from './app.config';
 import { ErrorComponent } from './error/error.component';
 
-import { AlertService } from './_services/index';
-import { AlertComponent} from './_directives/index';
-
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -40,8 +37,7 @@ type StoreType = {
   bootstrap: [ App ],
   declarations: [
     App,
-    ErrorComponent,
-    AlertComponent
+    ErrorComponent
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -51,8 +47,7 @@ type StoreType = {
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
-    APP_PROVIDERS,
-    AlertService
+    APP_PROVIDERS
   ]
 })
 export class AppModule {

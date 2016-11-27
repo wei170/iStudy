@@ -1,39 +1,59 @@
-import { Injectable } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
+import { Directive, ElementRef, Input } from '@angular/core';
+declare var jQuery: any;
+declare var Messenger: any;
 
-@Injectable()
 export class AlertService {
-    private subject = new Subject<any>();
-    private keepAfterNavigationChange = false;
 
-    constructor(private router: Router) {
-        // clear alert message on route change
-        router.events.subscribe(event => {
-            if (event instanceof NavigationStart) {
-                if (this.keepAfterNavigationChange) {
-                    // only keep for a single location change
-                    this.keepAfterNavigationChange = false;
+    constructor() {}
+
+    ngOnInit() {
+    }
+
+    success(message: string) {
+        Messenger().post({
+            message: message,
+            type: 'success',
+            showCloseButton: true
+        });
+        return false;
+    }
+
+    error(message: string) {
+        var i;
+        Messenger().run({
+            errorMessage: message,
+            action: function(opts): any {
+                if (++i < 3) {
+                    return opts.error({
+                    status: 500,
+                    readyState: 0,
+                    responseText: 0
+                    });
                 } else {
-                    // clear alert
-                    this.subject.next();
+                    return opts.success();
                 }
             }
         });
+        return false;
     }
 
-    success(message: string, keepAfterNavigationChange = false) {
-        this.keepAfterNavigationChange = keepAfterNavigationChange;
-        this.subject.next({ type: 'success', text: message });
-    }
+    info(message: string) {
+      let msg = Messenger().post({
+        message: 'Launching thermonuclear war...',
+        actions: {
+          cancel: {
+            label: 'cancel launch',
+            action: function(): any {
+              return msg.update({
+                message: 'Thermonuclear war averted',
+                type: 'success',
+                actions: false
+              });
+            }
+          }
+        }
+      });
 
-    error(message: string, keepAfterNavigationChange = false) {
-        this.keepAfterNavigationChange = keepAfterNavigationChange;
-        this.subject.next({ type: 'error', text: message });
-    }
-
-    getMessage(): Observable<any> {
-        return this.subject.asObservable();
+      return false;
     }
 }
