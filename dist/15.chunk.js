@@ -147,9 +147,7 @@ var Classroom = (function () {
         this.alertService = alertService;
         this.courseService = courseService;
         this.friendService = friendService;
-        this.hasInClass = false;
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.roomInfo = {};
         this.languages = [];
         // private majors: any[] = [];
         this.hobbies = [];
@@ -169,9 +167,9 @@ var Classroom = (function () {
             _this.userClasses = data.courses;
         });
     };
-    Classroom.prototype.getAllStudents = function () {
+    Classroom.prototype.getAllStudents = function (room) {
         var _this = this;
-        this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
+        this.courseService.getStudents(room.course, room.professor).subscribe(function (data) {
             _this.studentList = data;
         });
     };
@@ -184,27 +182,25 @@ var Classroom = (function () {
             _this.hobbies = data;
         });
     };
-    Classroom.prototype.filterStudents = function () {
+    Classroom.prototype.filterStudents = function (room) {
         var _this = this;
-        this.friendService.filterStudents(this.preference, this.currentUser.userName, this.roomInfo.course, this.roomInfo.professor)
+        this.friendService.filterStudents(this.preference, this.currentUser.userName, room.course, room.professor)
             .subscribe(function (data) {
             _this.studentList = data;
         });
     };
-    Classroom.prototype.getNumOfStudents = function () {
+    Classroom.prototype.getNumOfStudents = function (room) {
         var _this = this;
-        this.courseService.getNumOfStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(function (data) {
+        this.courseService.getNumOfStudents(room.course, room.professor).subscribe(function (data) {
             _this.numOfStudents = data.number;
         });
     };
-    Classroom.prototype.chat = function () {
-        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
+    Classroom.prototype.chat = function (room) {
+        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + room.course;
     };
     Classroom.prototype.update = function (room) {
-        this.roomInfo = room;
-        this.getAllStudents();
-        this.getNumOfStudents();
-        this.hasInClass = true;
+        this.getAllStudents(room);
+        this.getNumOfStudents(room);
     };
     Classroom.prototype.sendRequest = function (reciever) {
         var _this = this;
@@ -280,7 +276,7 @@ exports.default = FormModule;
 /***/ "./src/app/classroom/classroom.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Classroom</li>\n</ol>\n<h1 class=\"page-title\">Classroom</h1>\n\n<section class=\"col-lg-6 col-xs-12\">\n\t<div class=\"clearfix\">\n\t\t<ul class=\"nav nav-tabs pull-xs-left\" id=\"myTab\" role=\"tablist\">\n\t\t\t<li class=\"nav-item\" *ngFor=\"let room of userClasses\">\n\t\t\t\t<a (click)=\"update(room)\" class=\"nav-link\" data-toggle=\"tab\" href=\"#{{room.course}}\" id=\"home-tab\" role=\"tab\">{{room.course}}</a>\n\t\t\t</li>\n\t\t</ul>\n\t</div>\n\t<div *ngIf=\"hasInClass\" class=\"tab-content mb-lg\" id=\"myTabContent\">\n\t\t<div aria-expanded=\"true\" class=\"tab-pane clearfix\" id=\"{{roomInfo.course}}\" role=\"tabpanel\">\n\t\t\t<h4>Numbers Of Classmates: {{numOfStudents}}</h4>\n\t\t\t<div class=\"form-group\">\n\n\t\t\t\t<h6>Search Friends By</h6>\n                <label><input class=\"form-control\" placeholder=\"Nationality:\"[(ngModel)]=\"preference.nationality\" type=\"text\" name=\"nationality\"></label>\n\n                <div class=\"ui sub header\">Language</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.language\" name=\"language\" >\n                    <option *ngFor=\"let language of languages\" [ngValue]=\"language.name\">{{language.name}}</option>\n                </select>\n\n                <div class=\"ui sub header\">Hobby</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.hobby\" name=\"hobby\">\n                    <option *ngFor=\"let hobby of hobbies\" [ngValue]=\"hobby.name\">{{hobby.name}}</option>                    \n                </select>\n\t\t\t</div>\n\t\t\t<div class = \"form-group\">\n\n\t\t\t\t<button (click)=\"filterStudents()\" >Search</button>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"list-group\">\n\t\t\t\t<button class=\"list-group-item\" *ngFor=\"let student of studentList\">\n\t\t\t\t\t{{student.userName}}\n\t\t\t\t\t{{student.email}}\n\t\t\t\t\t<button class=\"fa fa-plus\" (click)=\"sendRequest(student.userName)\" aria-hidden=\"true\"></button>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</section>\n<button (click)=\"chat()\"><a href=\"{{chatUrl}}\">Chat Room</a></button>"
+module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Classroom</li>\n</ol>\n<h1 class=\"page-title\">Classroom</h1>\n\n<div class=\"row\">\n\t<div class=\"col-lg-6 widget-container ui-sortable\">\n\t\t<section class=\"widget\" widget=\"\">\n\t\t\t<header class=\"ui-sortable-handle\">\n\t\t\t\t<h4>\n\t\t\t\t\tClassmates\n\t\t\t\t</h4>\n\t\t\t\t<div class=\"widget-controls\">\n\t\t\t\t\t<a class=\"\" data-original-title=\"Reload\" data-widgster=\"load\" href=\"#\" title=\"\"><i class=\"fa fa-refresh\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Expand\" data-widgster=\"expand\" href=\"#\" style=\"display: none;\" title=\"\"><i class=\"glyphicon glyphicon-chevron-up\"></i></a>\n\t\t\t\t\t<a class=\"\" data-original-title=\"Collapse\" data-widgster=\"collapse\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-chevron-down\"></i></a>\n\t\t\t\t\t<a class=\"\" data-original-title=\"Full Screen\" data-widgster=\"fullscreen\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-fullscreen\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Restore\" data-widgster=\"restore\" href=\"#\" style=\"display: none;\" title=\"\"><i class=\"glyphicon glyphicon-resize-small\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Close\" data-widgster=\"close\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-remove\"></i></a>\n\t\t\t\t</div>\n\t\t\t</header>\n\t\t\t<br>\n\t\t\t<div class=\"clearfix\">\n\t\t\t\t<ul class=\"nav nav-tabs pull-xs-left\" id=\"myTab\" role=\"tablist\">\n\t\t\t\t\t<li class=\"nav-item\" *ngFor=\"let room of userClasses\">\n\t\t\t\t\t\t<a (click)=\"update(room)\" data-toggle=\"tab\" class=\"nav-link\" href=\"#{{room.course}}\" id=\"home-tab\" role=\"tab\">{{room.course}}</a>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<div class=\"tab-content mb-lg\" id=\"myTabContent\">\n\t\t\t\t<div class=\"tab-pane clearfix\" *ngFor=\"let room of userClasses\" id=\"{{room.course}}\" role=\"tabpanel\">\n\t\t\t\t\t<h4>Numbers Of Classmates: {{numOfStudents}}</h4>\n\t\t\t\t\t<div class=\"form-group\">\n\n\t\t\t\t\t\t<h6>Search Friends By</h6>\n\t\t\t\t\t\t<label><input class=\"form-control\" placeholder=\"Nationality:\"[(ngModel)]=\"preference.nationality\" type=\"text\" name=\"nationality\"></label>\n\n\t\t\t\t\t\t<div class=\"ui sub header\">Language</div>\n\t\t\t\t\t\t<select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.language\" name=\"language\" >\n\t\t\t\t\t\t\t<option *ngFor=\"let language of languages\" [ngValue]=\"language.name\">{{language.name}}</option>\n\t\t\t\t\t\t</select>\n\n\t\t\t\t\t\t<div class=\"ui sub header\">Hobby</div>\n\t\t\t\t\t\t<select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.hobby\" name=\"hobby\">\n\t\t\t\t\t\t\t<option *ngFor=\"let hobby of hobbies\" [ngValue]=\"hobby.name\">{{hobby.name}}</option>                    \n\t\t\t\t\t\t</select>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class = \"form-group\">\n\n\t\t\t\t\t\t<button (click)=\"filterStudents(room)\" >Search</button>\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"list-group\">\n\t\t\t\t\t\t<button class=\"list-group-item\" *ngFor=\"let student of studentList\">\n\t\t\t\t\t\t\t{{student.userName}}\n\t\t\t\t\t\t\t{{student.email}}\n\t\t\t\t\t\t\t<button class=\"fa fa-plus\" (click)=\"sendRequest(student.userName)\" aria-hidden=\"true\"></button>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\t</div>\n\n\t<div class=\"col-lg-6 widget-container ui-sortable\">\n\t\t<section class=\"widget\" widget=\"\">\n\t\t\t<header class=\"ui-sortable-handle\">\n\t\t\t\t<h4>\n\t\t\t\t\tChat Rooms\n\t\t\t\t</h4>\n\t\t\t\t<div class=\"widget-controls\">\n\t\t\t\t\t<a class=\"\" data-original-title=\"Reload\" data-widgster=\"load\" href=\"#\" title=\"\"><i class=\"fa fa-refresh\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Expand\" data-widgster=\"expand\" href=\"#\" style=\"display: none;\" title=\"\"><i class=\"glyphicon glyphicon-chevron-up\"></i></a>\n\t\t\t\t\t<a class=\"\" data-original-title=\"Collapse\" data-widgster=\"collapse\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-chevron-down\"></i></a>\n\t\t\t\t\t<a class=\"\" data-original-title=\"Full Screen\" data-widgster=\"fullscreen\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-fullscreen\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Restore\" data-widgster=\"restore\" href=\"#\" style=\"display: none;\" title=\"\"><i class=\"glyphicon glyphicon-resize-small\"></i></a>\n\t\t\t\t\t<a data-original-title=\"Close\" data-widgster=\"close\" href=\"#\" title=\"\"><i class=\"glyphicon glyphicon-remove\"></i></a>\n\t\t\t\t</div>\n\t\t\t</header>\n\t\t\t<br>\n\t\t\t<div class=\"clearfix\">\n\t\t\t\t<ul class=\"nav nav-tabs pull-xs-left\" id=\"myTab\" role=\"tablist\">\n\t\t\t\t\t<li class=\"nav-item\" *ngFor=\"let room of userClasses\">\n\t\t\t\t\t\t<a class=\"nav-link\" data-toggle=\"tab\" href=\"#{{room.course}}chat\" id=\"home-tab\" role=\"tab\">{{room.course}}</a>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<div class=\"tab-content mb-lg\" id=\"myTabContent\">\n\t\t\t\t<div class=\"tab-pane clearfix\" *ngFor=\"let room of userClasses\" id=\"{{room.course}}chat\" role=\"tabpanel\">\n\t\t\t\t\t<h4>Check</h4>\n\t\t\t\t\t<button (click)=\"chat(room)\"><a href=\"{{chatUrl}}\">Chat Room</a></button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</section>\n\t</div>\n</div>"
 
 /***/ }
 

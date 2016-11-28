@@ -15,10 +15,8 @@ export class Classroom implements OnInit {
         name: string;
         active: boolean;
     }];
-    private hasInClass: boolean = false;
     private chatUrl: string;
     private currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    private roomInfo: any = {};
     private studentList: [{ }];
     private numOfStudents: number;
 
@@ -56,8 +54,8 @@ export class Classroom implements OnInit {
         );
     }
 
-    getAllStudents() {
-        this.courseService.getStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(
+    getAllStudents(room: any) {
+        this.courseService.getStudents(room.course, room.professor).subscribe(
             data => {
                 this.studentList = data;
             }
@@ -77,8 +75,8 @@ export class Classroom implements OnInit {
         );
     }
 
-    filterStudents() {
-        this.friendService.filterStudents(this.preference, this.currentUser.userName, this.roomInfo.course, this.roomInfo.professor)
+    filterStudents(room: any) {
+        this.friendService.filterStudents(this.preference, this.currentUser.userName, room.course, room.professor)
         .subscribe(
             data => {
                 this.studentList = data;
@@ -86,23 +84,21 @@ export class Classroom implements OnInit {
         );
     }
 
-    getNumOfStudents() {
-        this.courseService.getNumOfStudents(this.roomInfo.course, this.roomInfo.professor).subscribe(
+    getNumOfStudents(room: any) {
+        this.courseService.getNumOfStudents(room.course, room.professor).subscribe(
             data => {
                 this.numOfStudents = data.number;
             }
         );
     }
 
-    chat() {
-        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + this.roomInfo.course;
+    chat(room: any) {
+        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + room.course;
     }
 
     update(room: any) {
-        this.roomInfo = room;
-        this.getAllStudents();
-        this.getNumOfStudents();
-        this.hasInClass = true;
+        this.getAllStudents(room);
+        this.getNumOfStudents(room);
     }
 
     sendRequest(reciever: string) {
