@@ -425,7 +425,7 @@ var ClassRegistration = (function () {
         this.rows = [];
         this.page = 1;
         this.itemsPerPage = 20;
-        this.maxSize = 10;
+        this.maxSize = 5;
         this.numPages = 1;
         this.length = 0;
         this.config = {
@@ -462,15 +462,13 @@ var ClassRegistration = (function () {
             this.courseService.getCourseDetails(this.courseName).subscribe(function (data) {
                 _this.step = 2;
                 _this.sections = data;
+                _this.length = data.length;
+                _this.onChangeTable(_this.config);
             }, function (error) {
                 _this.alertService.error(error.err);
             });
         }
     };
-    // private rmpHandler(professor: string) {
-    //     this.professorInfo = this.rmp.getProfessorInfo(professor);
-    //     return this.professorInfo;
-    // }
     ClassRegistration.prototype.back = function () {
         this.step--;
     };
@@ -577,7 +575,7 @@ exports.ClassRegistration = ClassRegistration;
 /***/ "./src/app/registration/class_registration.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Registration</li>\n</ol>\n<h1 class=\"page-title\">Registration</h1>\n\n<div class=\"row\">\n\t<div class=\"col-lg-4\">\n\t\t<form role=\"form\" (ngSubmit)=\"f.form.valid && searchCourse()\" #f=\"ngForm\" novalidate>\n\t\t\t<div *ngIf=\"step === 0\">\n\t\t\t\t<label>Select Course Major</label>\n\t\t\t\t<select class=\"form-control form-group\" style=\"max-width: 100px\" [(ngModel)]=\"model.majorInfo\" name=\"majorInfo\" required>\n\t\t\t\t\t<option *ngFor=\"let major of majors\" [ngValue]=\"major\">\n\t\t\t\t\t{{major.Abbreviation}}\n\t\t\t\t\t</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\n\t\t\t<div *ngIf=\"step >= 1\"  style=\"min-width:350px; max-width: 450px\">\n\t\t\t\t<ng-table [config]=\"config\"\n\t\t\t\t\t(tableChanged)=\"onChangeTable(config)\"\n\t\t\t\t\t(cellClicked)=\"onCellClick($event)\"\n\t\t\t\t\t[rows]=\"rows\" [columns]=\"columns\">\n\t\t\t\t</ng-table>\n\t\t\t\t<pagination *ngIf=\"config.paging\"\n\t\t\t\t\tclass=\"pagination-sm\"\n\t\t\t\t\t[(ngModel)]=\"page\" name=\"page\"\n\t\t\t\t\t[totalItems]=\"length\"\n\t\t\t\t\t[itemsPerPage]=\"itemsPerPage\"\n\t\t\t\t\t[maxSize]=\"maxSize\"\n\t\t\t\t\t[boundaryLinks]=\"true\"\n\t\t\t\t\t[rotate]=\"false\"\n\t\t\t\t\t(pageChanged)=\"onChangeTable(config, $event)\"\n\t\t\t\t\t(numPages)=\"numPages = $event\">\n\t\t\t\t</pagination>\n\t\t\t\t<pre *ngIf=\"config.paging\" class=\"card card-block card-header\">Page: {{page}} / {{numPages}}</pre>\n\t\t\t</div>\n\t\t\t<div class = \"form-group\">\n\t\t\t\t<button *ngIf=\"step < 2\" [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n\t\t\t\t<a *ngIf=\"step <= 2 && step > 0\" (click)=\"back()\">Back</a>\n\t\t\t</div>\n\t\t</form>\n\t</div>\n\t<div class=\"col-lg-8\">\n\t\t<!-- your page content -->\n\t\t<courseDetails [sections]=\"sections\" [courseName]=\"courseName\" *ngIf=\"step === 2\"></courseDetails>\n\t</div>\n</div>\n"
+module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Registration</li>\n</ol>\n<h1 class=\"page-title\">Registration</h1>\n\n<div class=\"row\">\n\t<div class=\"col-lg-4\">\n\t\t<form role=\"form\" (ngSubmit)=\"f.form.valid && searchCourse()\" #f=\"ngForm\" novalidate>\n\t\t\t<div *ngIf=\"step === 0\">\n\t\t\t\t<label>Select Course Major</label>\n\t\t\t\t<select class=\"form-control form-group\" style=\"max-width: 100px\" [(ngModel)]=\"model.majorInfo\" name=\"majorInfo\" required>\n\t\t\t\t\t<option *ngFor=\"let major of majors\" [ngValue]=\"major\">\n\t\t\t\t\t{{major.Abbreviation}}\n\t\t\t\t\t</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\n\t\t\t<div *ngIf=\"step >= 1\"  style=\"width:100%\">\n\t\t\t\t<ng-table [config]=\"config\"\n\t\t\t\t\t(tableChanged)=\"onChangeTable(config)\"\n\t\t\t\t\t(cellClicked)=\"onCellClick($event)\"\n\t\t\t\t\t[rows]=\"rows\" [columns]=\"columns\">\n\t\t\t\t</ng-table>\n\t\t\t\t<pagination *ngIf=\"config.paging\"\n\t\t\t\t\tclass=\"pagination-sm\"\n\t\t\t\t\t[(ngModel)]=\"page\" name=\"page\"\n\t\t\t\t\t[totalItems]=\"length\"\n\t\t\t\t\t[itemsPerPage]=\"itemsPerPage\"\n\t\t\t\t\t[maxSize]=\"maxSize\"\n\t\t\t\t\t[boundaryLinks]=\"true\"\n\t\t\t\t\t[rotate]=\"false\"\n\t\t\t\t\t(pageChanged)=\"onChangeTable(config, $event)\"\n\t\t\t\t\t(numPages)=\"numPages = $event\">\n\t\t\t\t</pagination>\n\t\t\t\t<pre *ngIf=\"config.paging\" class=\"card card-block card-header\">Page: {{page}} / {{numPages}}</pre>\n\t\t\t</div>\n\t\t\t<div class = \"form-group\">\n\t\t\t\t<button *ngIf=\"step < 2\" [disabled]=\"loading\" class=\"btn btn-primary\">Submit</button>\n\t\t\t\t<a *ngIf=\"step <= 2 && step > 0\" (click)=\"back()\">Back</a>\n\t\t\t</div>\n\t\t</form>\n\t</div>\n\t<div class=\"col-lg-8\">\n\t\t<!-- your page content -->\n\t\t<courseDetails [sections]=\"sections\" [courseName]=\"courseName\" *ngIf=\"step === 2\"></courseDetails>\n\t</div>\n</div>\n"
 
 /***/ },
 
@@ -684,8 +682,6 @@ var RegistrationModule = (function () {
                 router_1.RouterModule.forChild(exports.routes),
             ],
             providers: [
-                index_1.FriendService,
-                index_1.AlertService,
                 index_1.CourseService
             ]
         }), 

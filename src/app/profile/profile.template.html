@@ -275,14 +275,14 @@
 			</header>
 			<div class="widget-body no-padding">
 				<div class="list-group list-group-lg">
-					<a class="list-group-item" href="#" *ngFor="let friend of friendList">
+					<div class="list-group-item" href="#" *ngFor="let friend of friendList">
 						<span class="thumb-sm pull-xs-left mr">
-							<img alt="..." class="img-circle" src="assets/img/people/a1.jpg">
+							<a href="#"><img alt="..." class="img-circle" src="assets/img/people/a1.jpg" (click)="pop(friend.userName)"></a>
 						</span>
-						<i class="fa fa-circle pull-xs-right text-danger mt-sm"></i>
-						<h6 class="no-margin">{{friend.userName}}</h6>
+						<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName)">Unfollow</button></span>						
+						<h6 class="no-margin" (click)="pop(friend.userName)"><a href="#">{{friend.userName}}</a></h6>
 						<small class="text-muted">{{friend.email}}</small>
-					</a>
+					</div>
 				</div>
 			</div>
 		</section>

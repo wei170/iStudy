@@ -17,14 +17,19 @@ import { NotificationLoad } from './notifications/notifications-load.directive';
 import { Notifications } from './notifications/notifications.component';
 
 // iStudy
-import { FriendService, AlertService } from '../_services/index';
+import { ProfileService, UserService, FriendService, AlertService, PopupService } from '../_services/index';
+import { AuthGuard } from '../_guards/index'
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     TooltipModule,
     ROUTES,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   declarations: [
     Layout,
@@ -35,10 +40,17 @@ import { FriendService, AlertService } from '../_services/index';
     Notifications,
     NotificationLoad,
     ChatMessage
+
+    // Guocheng's work
   ],
   providers: [
+    ProfileService,
     FriendService,
-    AlertService
+    AlertService,
+    AuthGuard,
+    PopupService,
+
+    // Other dev npm files
   ]
 })
 export default class LayoutModule {

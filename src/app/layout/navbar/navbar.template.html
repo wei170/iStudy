@@ -61,8 +61,8 @@
                 </span>
           &nbsp;
           <strong>{{currentUser.userName}}</strong>&nbsp;
-                <span class="circle bg-warning fw-bold">
-                    13
+                <span class="circle bg-warning fw-bold" *ngIf="numOfNotifications != 0">
+                    {{numOfNotifications}}
                 </span>
           <b class="caret"></b>
         </a>
@@ -70,7 +70,7 @@
                      consists of three components:
                      notifications, messages, progress. leave or add what's important for you.
                      uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->
-        <div notifications class="dropdown-menu dropdown-menu-right animated animated-fast fadeInUp"></div>
+        <div notifications (numOfNotifications)="updateNotificationsNum($event)" class="dropdown-menu dropdown-menu-right animated animated-fast fadeInUp"></div>
       </li>
       <li class="nav-item dropdown">
         <a href class="nav-link dropdown-toggle" data-toggle="dropdown">

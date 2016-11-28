@@ -4,10 +4,10 @@
 </ol>
 <h1 class="page-title">Classroom</h1>
 
-<div class="col-lg-6 col-xs-12">
+<section class="col-lg-6 col-xs-12">
 	<div class="clearfix">
-		<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist" *ngFor="let room of userClasses">
-			<li class="nav-item">
+		<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist">
+			<li class="nav-item" *ngFor="let room of userClasses">
 				<a (click)="update(room)" class="nav-link" data-toggle="tab" href="#{{room.course}}" id="home-tab" role="tab">{{room.course}}</a>
 			</li>
 		</ul>
@@ -45,5 +45,5 @@
 			</div>
 		</div>
 	</div>
-</div>
+</section>
 <button (click)="chat()"><a href="{{chatUrl}}">Chat Room</a></button>

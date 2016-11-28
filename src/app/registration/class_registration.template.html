@@ -16,7 +16,7 @@
 				</select>
 			</div>
 
-			<div *ngIf="step >= 1"  style="min-width:350px; max-width: 450px">
+			<div *ngIf="step >= 1"  style="width:100%">
 				<ng-table [config]="config"
 					(tableChanged)="onChangeTable(config)"
 					(cellClicked)="onCellClick($event)"

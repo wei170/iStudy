@@ -8,7 +8,7 @@ import { PaginationModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { ClassRegistration } from './class_registration.component';
 import { CourseDetailsComponent } from './course_details.component'
 
-import { FriendService, AlertService, CourseService } from '../_services/index';
+import { CourseService } from '../_services/index';
 
 export const routes = [
   {path: '', component: ClassRegistration, pathMatch: 'full'}
@@ -28,8 +28,6 @@ export const routes = [
     RouterModule.forChild(routes),
   ],
   providers: [
-    FriendService,
-    AlertService,
     CourseService
   ]
 })

@@ -111,7 +111,7 @@ export class Classroom implements OnInit {
                 this.alertService.success("Sent Request!")
             },
             error => {
-                this.alertService.error(error);
+                this.alertService.error("Cannot add yourself!");
             }
         );
     }

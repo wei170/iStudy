@@ -6,7 +6,7 @@ import { Select2Module } from 'ng2-select2';
 
 import { Classroom } from './classroom.component';
 
-import { ClassroomService, CourseService, AlertService, FriendService, ProfileService } from '../_services/index';
+import { ClassroomService, CourseService } from '../_services/index';
 
 export const routes = [
   {path: '', component: Classroom, pathMatch: 'full'}
@@ -25,10 +25,7 @@ export const routes = [
   ],
   providers: [
     ClassroomService, 
-    CourseService, 
-    AlertService, 
-    FriendService, 
-    ProfileService
+    CourseService
   ]
 })
 export default class FormModule {

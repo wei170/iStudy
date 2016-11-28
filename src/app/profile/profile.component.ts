@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { UserService, ProfileService, FriendService, AlertService } from '../_services/index';
+import { ProfileService, FriendService, AlertService, PopupService } from '../_services/index';
 
 @Component({
   selector: '[profile]',
@@ -49,7 +49,8 @@ export class Profile implements OnInit {
     constructor(
         private alertService: AlertService,
         private profileService: ProfileService,
-        private friendService: FriendService
+        private friendService: FriendService,
+        private popupService: PopupService
     ) {
       this.toEdit = false;
     }
@@ -61,6 +62,7 @@ export class Profile implements OnInit {
         this.fetchFriendList();
     }
 
+    /**************** Get Basic Info **************/
     fetchProfile() {
         this.profileService.getProfile(this.currentUser.userName)
         .subscribe(
@@ -81,30 +83,6 @@ export class Profile implements OnInit {
                 this.friendList = data;
             }
         );
-    }
-
-    /* Edit Profile */
-    editProfile() {
-        console.log(this.myProfile)
-        this.profileService.editProfile(this.currentUser.userName, this.myProfile)
-        .subscribe (
-            data => {
-                // successfully edit the profile
-                this.toEdit = false;
-                this.alertService.success('Successfully edit the profile');
-            },
-            err => {
-                this.alertService.error(err.message);
-            }
-        );
-    }
-
-    edit() {
-      this.toEdit = true;
-    }
-
-    cancelEdit() {
-        this.toEdit = false;
     }
 
     getAllChoices() {
@@ -129,4 +107,44 @@ export class Profile implements OnInit {
         { value: true, display: "Public" },
         { value: false, display: "Private" }
     ];
+
+    /**************** Method-kind *****************/
+    /* Edit Profile */
+    editProfile() {
+        console.log(this.myProfile)
+        this.profileService.editProfile(this.currentUser.userName, this.myProfile)
+        .subscribe (
+            data => {
+                // successfully edit the profile
+                this.toEdit = false;
+                this.alertService.success('Successfully edit the profile');
+            },
+            err => {
+                this.alertService.error(err.message);
+            }
+        );
+    }
+
+    edit() {
+      this.toEdit = true;
+    }
+
+    cancelEdit() {
+        this.toEdit = false;
+    }
+
+    unFollow (victim: string) {
+        this.friendService.unFriend(this.currentUser.userName, victim).subscribe(
+            data => {
+                this.alertService.successWT("Unfollow", "Successfully unfollow" + victim);                
+            },
+            err => {
+                this.alertService.error(err);                
+            }
+        );
+    }
+
+    pop(userName: string) {
+        this.popupService.popUser(userName);
+    }
 }

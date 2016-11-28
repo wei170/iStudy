@@ -211,7 +211,7 @@ var Classroom = (function () {
         this.friendService.sendFriendReq(this.currentUser.userName, reciever).subscribe(function (data) {
             _this.alertService.success("Sent Request!");
         }, function (error) {
-            _this.alertService.error(error);
+            _this.alertService.error("Cannot add yourself!");
         });
     };
     Classroom = __decorate([
@@ -264,10 +264,7 @@ var FormModule = (function () {
             ],
             providers: [
                 index_1.ClassroomService,
-                index_1.CourseService,
-                index_1.AlertService,
-                index_1.FriendService,
-                index_1.ProfileService
+                index_1.CourseService
             ]
         }), 
         __metadata('design:paramtypes', [])
@@ -283,7 +280,7 @@ exports.default = FormModule;
 /***/ "./src/app/classroom/classroom.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Classroom</li>\n</ol>\n<h1 class=\"page-title\">Classroom</h1>\n\n<div class=\"col-lg-6 col-xs-12\">\n\t<div class=\"clearfix\">\n\t\t<ul class=\"nav nav-tabs pull-xs-left\" id=\"myTab\" role=\"tablist\" *ngFor=\"let room of userClasses\">\n\t\t\t<li class=\"nav-item\">\n\t\t\t\t<a (click)=\"update(room)\" class=\"nav-link\" data-toggle=\"tab\" href=\"#{{room.course}}\" id=\"home-tab\" role=\"tab\">{{room.course}}</a>\n\t\t\t</li>\n\t\t</ul>\n\t</div>\n\t<div *ngIf=\"hasInClass\" class=\"tab-content mb-lg\" id=\"myTabContent\">\n\t\t<div aria-expanded=\"true\" class=\"tab-pane clearfix\" id=\"{{roomInfo.course}}\" role=\"tabpanel\">\n\t\t\t<h4>Numbers Of Classmates: {{numOfStudents}}</h4>\n\t\t\t<div class=\"form-group\">\n\n\t\t\t\t<h6>Search Friends By</h6>\n                <label><input class=\"form-control\" placeholder=\"Nationality:\"[(ngModel)]=\"preference.nationality\" type=\"text\" name=\"nationality\"></label>\n\n                <div class=\"ui sub header\">Language</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.language\" name=\"language\" >\n                    <option *ngFor=\"let language of languages\" [ngValue]=\"language.name\">{{language.name}}</option>\n                </select>\n\n                <div class=\"ui sub header\">Hobby</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.hobby\" name=\"hobby\">\n                    <option *ngFor=\"let hobby of hobbies\" [ngValue]=\"hobby.name\">{{hobby.name}}</option>                    \n                </select>\n\t\t\t</div>\n\t\t\t<div class = \"form-group\">\n\n\t\t\t\t<button (click)=\"filterStudents()\" >Search</button>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"list-group\">\n\t\t\t\t<button class=\"list-group-item\" *ngFor=\"let student of studentList\">\n\t\t\t\t\t{{student.userName}}\n\t\t\t\t\t{{student.email}}\n\t\t\t\t\t<button class=\"fa fa-plus\" (click)=\"sendRequest(student.userName)\" aria-hidden=\"true\"></button>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<button (click)=\"chat()\"><a href=\"{{chatUrl}}\">Chat Room</a></button>"
+module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU ARE HERE</li>\n\t<li class=\"active breadcrumb-item\">Classroom</li>\n</ol>\n<h1 class=\"page-title\">Classroom</h1>\n\n<section class=\"col-lg-6 col-xs-12\">\n\t<div class=\"clearfix\">\n\t\t<ul class=\"nav nav-tabs pull-xs-left\" id=\"myTab\" role=\"tablist\">\n\t\t\t<li class=\"nav-item\" *ngFor=\"let room of userClasses\">\n\t\t\t\t<a (click)=\"update(room)\" class=\"nav-link\" data-toggle=\"tab\" href=\"#{{room.course}}\" id=\"home-tab\" role=\"tab\">{{room.course}}</a>\n\t\t\t</li>\n\t\t</ul>\n\t</div>\n\t<div *ngIf=\"hasInClass\" class=\"tab-content mb-lg\" id=\"myTabContent\">\n\t\t<div aria-expanded=\"true\" class=\"tab-pane clearfix\" id=\"{{roomInfo.course}}\" role=\"tabpanel\">\n\t\t\t<h4>Numbers Of Classmates: {{numOfStudents}}</h4>\n\t\t\t<div class=\"form-group\">\n\n\t\t\t\t<h6>Search Friends By</h6>\n                <label><input class=\"form-control\" placeholder=\"Nationality:\"[(ngModel)]=\"preference.nationality\" type=\"text\" name=\"nationality\"></label>\n\n                <div class=\"ui sub header\">Language</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.language\" name=\"language\" >\n                    <option *ngFor=\"let language of languages\" [ngValue]=\"language.name\">{{language.name}}</option>\n                </select>\n\n                <div class=\"ui sub header\">Hobby</div>\n                <select class=\"ui fluid normal dropdown\" [(ngModel)]=\"preference.hobby\" name=\"hobby\">\n                    <option *ngFor=\"let hobby of hobbies\" [ngValue]=\"hobby.name\">{{hobby.name}}</option>                    \n                </select>\n\t\t\t</div>\n\t\t\t<div class = \"form-group\">\n\n\t\t\t\t<button (click)=\"filterStudents()\" >Search</button>\n\n\t\t\t</div>\n\n\t\t\t<div class=\"list-group\">\n\t\t\t\t<button class=\"list-group-item\" *ngFor=\"let student of studentList\">\n\t\t\t\t\t{{student.userName}}\n\t\t\t\t\t{{student.email}}\n\t\t\t\t\t<button class=\"fa fa-plus\" (click)=\"sendRequest(student.userName)\" aria-hidden=\"true\"></button>\n\t\t\t\t</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</section>\n<button (click)=\"chat()\"><a href=\"{{chatUrl}}\">Chat Room</a></button>"
 
 /***/ }
 

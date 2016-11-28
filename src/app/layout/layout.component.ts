@@ -15,7 +15,8 @@ declare var Raphael: any;
     '[class.chat-sidebar-opened]' : 'chatOpened',
     '[class.app]' : 'true',
     id: 'app'
-  }
+  },
+  // styleUrls: ['../ui-elements/notifications/notifications.style.scss']
 })
 export class Layout {
   config: any;

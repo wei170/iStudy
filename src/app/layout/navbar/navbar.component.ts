@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, ElementRef, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../app.config';
+import { FriendService } from '../../_services/index'
 declare var jQuery: any;
 
 @Component({
@@ -14,12 +15,14 @@ export class Navbar implements OnInit {
   config: any;
   router: Router;
 
+  private numOfNotifications: Number;
+
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   constructor(
     el: ElementRef, 
     config: AppConfig, 
-    router: Router,
+    router: Router
   ) {
     this.$el = jQuery(el.nativeElement);
     this.config = config.getConfig();
@@ -61,4 +64,9 @@ export class Navbar implements OnInit {
         [e.type === 'focus' ? 'addClass' : 'removeClass']('focus');
     });
   }
+
+    // Guocheng
+    updateNotificationsNum(num: Number) {
+        this.numOfNotifications = num;
+    }
 }

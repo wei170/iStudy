@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 
 import { Profile } from './profile.component';
 
-import { UserService, ProfileService, FriendService, AlertService } from '../_services/index';
-
 export const routes = [
   {path: '', component: Profile, pathMatch: 'full'}
 ];
@@ -22,10 +20,8 @@ export const routes = [
     RouterModule.forChild(routes),
   ],
   providers: [
-    UserService,
-    ProfileService,
-    FriendService,
-    AlertService
+
+    // Other npm devDependencies
   ]
 })
 export default class FormModule {

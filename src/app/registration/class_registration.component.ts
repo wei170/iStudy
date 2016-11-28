@@ -35,7 +35,6 @@ export class ClassRegistration implements OnInit {
 				}
 			}
 		)
-
 	}
 
 	private searchCourse() {
@@ -58,6 +57,8 @@ export class ClassRegistration implements OnInit {
 				data => {
 					this.step = 2;
 					this.sections = data;
+					this.length = data.length;
+					this.onChangeTable(this.config);
 				},
 				error => {
 					this.alertService.error(error.err);
@@ -66,10 +67,6 @@ export class ClassRegistration implements OnInit {
 		}
 	}
 
-	// private rmpHandler(professor: string) {
-	//     this.professorInfo = this.rmp.getProfessorInfo(professor);
-	//     return this.professorInfo;
-	// }
 
 	private back() {
 		this.step--;
@@ -83,7 +80,7 @@ export class ClassRegistration implements OnInit {
 	public rows:Array<any> = [];
 	public page:number = 1;
 	public itemsPerPage:number = 20;
-	public maxSize:number = 10;
+	public maxSize:number = 5;
 	public numPages:number = 1;
 	public length:number = 0;
 

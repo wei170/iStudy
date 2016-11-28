@@ -11,6 +11,7 @@ export class FriendService {
         this.headers.append('Auth', localStorage.getItem('token'));
     }
 
+    /*********************** Get, Add, Request or Filter Friend ***********************/
     // get friend list
     getFriends (username: string) {
         var url = 'users/get-friends';
@@ -69,4 +70,10 @@ export class FriendService {
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
+    /************* Delete Friend *************/
+    unFriend(murder: string, victim: string) {
+        var url = 'users/delete-friend';
+        var body = { "sender": murder, "receiver": victim}
+        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());         
+    }
 }

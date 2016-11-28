@@ -4,6 +4,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 import { AppState } from './app.service';
+import { SimpleNotificationsComponent } from 'angular2-notifications'
 
 /*
  * App Component
@@ -16,6 +17,7 @@ import { AppState } from './app.service';
     './scss/application.scss'
   ],
   template: `
+  <simple-notifications [options]="options"></simple-notifications>
   <router-outlet></router-outlet>
   `
 })
@@ -28,6 +30,12 @@ export class App {
 
   ngOnInit() {
     console.log('Initial App State', this.appState.state);
+  }
+
+  public options = {
+      position: ["bottom", "right"],
+      timeOut: 5000,
+      lastOnBottom: true
   }
 
 }

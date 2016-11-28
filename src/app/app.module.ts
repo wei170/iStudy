@@ -17,6 +17,9 @@ import { AppState, InteralStateType } from './app.service';
 import { AppConfig } from './app.config';
 import { ErrorComponent } from './error/error.component';
 
+// iStudy
+import { SimpleNotificationsModule } from 'angular2-notifications';
+
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -43,6 +46,7 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    SimpleNotificationsModule,
     RouterModule.forRoot(ROUTES, { useHash: true })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection

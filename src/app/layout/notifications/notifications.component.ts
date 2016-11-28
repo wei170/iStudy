@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppConfig } from '../../app.config';
-import { FriendService, AlertService } from '../../_services/index';
+import { FriendService, AlertService, PopupService } from '../../_services/index';
 declare var jQuery: any;
 
 @Component({
@@ -9,12 +9,20 @@ declare var jQuery: any;
 })
 export class Notifications implements OnInit {
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  private friendRequests: any[];
+  private friendRequests: Array<any> = [];
+
+  @Output() numOfNotifications = new EventEmitter();
 
   $el: any;
   config: any;
 
-  constructor(el: ElementRef, config: AppConfig, private friendService: FriendService, private alertService: AlertService) {
+  constructor(
+      el: ElementRef, 
+      config: AppConfig, 
+      private friendService: FriendService, 
+      private alertService: AlertService, 
+      private popupService: PopupService
+  ) {
     this.$el = jQuery(el.nativeElement);
     this.config = config;
   }
@@ -51,7 +59,11 @@ export class Notifications implements OnInit {
   updateMessages() {
       this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(
           (data: any) => {
-              this.friendRequests = data;
+            this.friendRequests = [];
+            for (let d of data) {
+                this.friendRequests.push(d);
+            }
+            this.numOfNotifications.emit(this.friendRequests.length);
           }
       );
   }
@@ -79,4 +91,8 @@ export class Notifications implements OnInit {
           }
       )
   }  
+
+  popInfo (userName: string) {
+    this.popupService.popUser(userName);
+  }
 }
