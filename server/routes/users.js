@@ -517,11 +517,11 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 router.post('/search-user', middleware.requireAuthentication,function (req, res){
 	/**
 	 * JSON Format: {
-	 * 		"email": "..."
+	 * 		"userName": "..."
 	 * }
  	 */
-	var body = _.pick(req.body, 'email');
-	db.user.findOne({where: {email: body.email}})
+	var body = _.pick(req.body, 'userName');
+	db.user.findOne({where: {userName: body.userName}})
 		.then(function (user) {
 			if (user){
 				res.status(200).send({userName: user.userName});
