@@ -2,7 +2,6 @@
 var Sequelize = require('sequelize');
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
-
 var env = process.env.NODE_ENV || 'development';
 var db = {};
 var sequelize;
@@ -41,6 +40,8 @@ db.comment = sequelize.import(__dirname + '/models/Comment');
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
 // a friend request is defined by user_id of a sender and a receiver
 db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
+// friend association
+db.user_friends = sequelize.import(__dirname + '/models/UserFriend');
 
 /*****************************************************
  * 				Config Relationships
@@ -92,7 +93,7 @@ db.course_professor.belongsToMany(db.user, {
 // one user can have many friends
 db.user.belongsToMany(db.user, {
     as: 'friends',
-    through: 'user_friends'
+    through: db.user_friends
 });
 
 // one request can have only one receiver and one sender
@@ -114,6 +115,7 @@ console.log('Professor associations: ', Object.keys(db.professor.associations));
 console.log('Course_Professor associations:', Object.keys(db.course_professor.associations));
 console.log('Friend_Request associations:', Object.keys(db.friend_request.associations));
 console.log('Comment associations:', Object.keys(db.comment.associations));
+console.log('User_Friends associations: ', Object.keys(db.user_friends.associations));
 
 db.sequelize = sequelize;
 

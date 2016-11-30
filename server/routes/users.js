@@ -244,6 +244,118 @@ router.post('/send-friend-request', middleware.requireAuthentication,function (r
 	});
 });
 
+
+/******************************************************
+ *           		Delete A Friend
+ ******************************************************/
+router.post('/delete-friend', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"userName": "...",
+	 * 		"friendName": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'userName', 'friendName');
+	db.user.findOne({where: {userName: body.userName}})
+		.then(function(user){
+			if (user){
+				var result = [];
+				result.isFriend = false;
+				user.getFriends().then(function (friends) {
+					checkIfIsFriend(friends, body.friendName, result)
+						.then(function () {
+							if (result.isFriend == true){
+								// two are friends of each other
+								db.user.findOne({where: {userName: body.friendName}})
+									.then(function (friend) {
+										if (friend){
+											deleteEachOther(user, friend)
+												.then(function () {
+													res.status(200).send("Deleted Friend Successfully!");
+												})
+										}
+										else {
+											res.status(404).send({err: "Friend Not Found"});
+										}
+									})
+							}
+							else {
+								res.status(400).send({err: "Two are not friends"});
+							}
+						})
+
+				})
+			}
+			else {
+				res.status(404).send({err: "User Not Exist"});
+			}
+		});
+});
+
+/**
+ * Delete A from B's friend's list and Delete B from A's friend's list
+ * @param A
+ * @param B
+ */
+var deleteEachOther = function(A, B){
+	return new Promise(function (resolve, reject) {
+		var deletedB = false;
+		var deletedA = false;
+		db.user_friends.findOne({where: {user_id: A.id, friend_id: B.id}})
+			.then(function (friendship) {
+				if (friendship){
+					friendship.destroy()
+						.then(function () {
+							deletedB = true;
+							if (deletedA == true && deletedB == true){
+								resolve();
+							}
+						})
+				}
+			});
+		db.user_friends.findOne({where: {user_id: B.id, friend_id: A.id}})
+			.then(function (friendship) {
+				if (friendship){
+					friendship.destroy()
+						.then(function () {
+							deletedA = true;
+							if (deletedA == true && deletedB == true){
+								resolve();
+							}
+						});
+				}
+			});
+
+	});
+};
+
+
+/**
+ * Check if two are friends
+ * @param friends
+ * @param friendName
+ * @param result
+ */
+var checkIfIsFriend = function (friends, friendName, result) {
+	return new Promise(function (resolve, reject) {
+		// isFriend by default is false
+		var count = 0;
+		var len = friends.length;
+		friends.map(function (friend) {
+			if (friend.userName === friendName){
+				result.isFriend = true;
+				resolve();
+			}
+			count++;
+		});
+		if (count === len){
+			//console.log("res is " + isFriend);
+			resolve();
+		}
+	});
+};
+
+
 /******************************************************
  *           Get Friend Invitations
  ******************************************************/
