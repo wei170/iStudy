@@ -212,11 +212,11 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 								body.language.map(function (language) {
 									language_list.push(language.name);
 								});
-
 								db.language.findAll({where: {name: {$in: language_list}}})
 									.then(function (languages) {
 										if (languages){
-											profile.addLanguages(languages).then(function () {
+
+											profile.setLanguages(languages).then(function () {
 												if (body.hobby !== ""){
 													// update HOBBY
 													var hobby_list = [];
@@ -227,7 +227,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 													db.hobby.findAll({where: {name: {$in: hobby_list}}})
 														.then(function (hobbies) {
 															if (hobbies){
-																profile.addHobbies(hobbies);
+																profile.setHobbies(hobbies);
 															}
 															else {
 																res.status(404).send({err: "Hobbies Not Found"});
@@ -246,7 +246,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 							}
 						}
 					}, function (error) {
-						res.status(400).send({err: error});
+						res.status(400).send({err: "Update Fails"});
 					});
 				}
 				else {
