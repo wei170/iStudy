@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { ClassroomService, CourseService, AlertService, FriendService, ProfileService } from '../_services/index';
+import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService } from '../_services/index';
 import { Select2Module } from 'ng2-select2';
 
 @Component({
-  selector: '[classroom]',
-  moduleId: module.id,
-  templateUrl: './classroom.template.html',
-  encapsulation: ViewEncapsulation.None
+    selector: '[classroom]',
+    moduleId: module.id,
+    templateUrl: './classroom.template.html',
+    encapsulation: ViewEncapsulation.None
 })
 
 export class Classroom implements OnInit {
@@ -23,7 +23,6 @@ export class Classroom implements OnInit {
     private languages: any[] = [];
     // private majors: any[] = [];
     private hobbies: any[] = [];
-
     private preference: {
         nationality: string;
         hobby: string;
@@ -38,7 +37,8 @@ export class Classroom implements OnInit {
         private profileService: ProfileService,
         private alertService: AlertService,
         private courseService: CourseService,
-        private friendService: FriendService
+        private friendService: FriendService,
+        private popupService: PopupService
     ) {}
 
     ngOnInit() {
@@ -110,6 +110,10 @@ export class Classroom implements OnInit {
                 this.alertService.error("Cannot add yourself!");
             }
         );
+    }
+
+    popInfo (userName: string) {
+        this.popupService.popUser(userName);
     }
 
 }

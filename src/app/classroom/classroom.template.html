@@ -52,13 +52,16 @@
 
 					</div>
 
-					<div class="list-group">
-						<button class="list-group-item" *ngFor="let student of studentList">
-							{{student.userName}}
-							{{student.email}}
-							<button class="fa fa-plus" (click)="sendRequest(student.userName)" aria-hidden="true"></button>
-						</button>
-					</div>
+					<md-list>
+						<md-list-item *ngFor="let student of studentList">
+							<img md-list-avatar (click)="sendRequest(student.userName)" src="assets/img/people/a5.jpg" alt="...">
+							<span class="pull-xs-right"><button class="btn btn-primary" (click)="sendRequest(student.userName)">Friend</button></span>						
+							<h3 md-line><a (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
+							<p md-line>
+								<span> {{student.email}} </span>
+							</p>
+						</md-list-item>
+					</md-list>
 				</div>
 			</div>
 		</section>
@@ -89,8 +92,8 @@
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}chat" role="tabpanel">
-					<h4>Check</h4>
-					<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>
+					<h4>{{room.course}} ChatRoom</h4>
+					<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>				
 				</div>
 			</div>
 		</section>

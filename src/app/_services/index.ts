@@ -6,5 +6,6 @@ export * from './course.service';
 export * from './password.service';
 export * from './rmp.service';
 export * from './friend.service';
-export * from './classroom.service'
-export * from './popup.service'
+export * from './classroom.service';
+export * from './popup.service';
+export * from './chat.service';

@@ -6,7 +6,8 @@ import { Select2Module } from 'ng2-select2';
 
 import { Classroom } from './classroom.component';
 
-import { ClassroomService, CourseService } from '../_services/index';
+import { MaterialModule } from '@angular/material';
+import { ClassroomService, CourseService, PopupService } from '../_services/index';
 
 export const routes = [
   {path: '', component: Classroom, pathMatch: 'full'}
@@ -22,10 +23,12 @@ export const routes = [
     FormsModule,
     Select2Module,
     RouterModule.forChild(routes),
+    MaterialModule.forRoot()
   ],
   providers: [
     ClassroomService, 
-    CourseService
+    CourseService,
+    PopupService
   ]
 })
 export default class FormModule {

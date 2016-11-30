@@ -46,9 +46,16 @@ export class PopupService {
             .size('lg')
             .showClose(true)
             .title('User Profile')
-            .body(`
-            <h4>{{userName}}</h4>
-            `)
+            .body(
+                '<h4>'+userName+'</h4>'+
+                '<p>'+this.profile.extra.language + '</p>'+
+                '<p>'+this.profile.extra.hobby+'</p>'+
+                '<p>'+this.profile.profile.major+'</p>'+
+                '<p>'+this.profile.profile.birthday+'</p>'+
+                '<p>'+this.profile.profile.nationality+'</p>'+
+                '<p>'+this.profile.profile.gender+'</p>'+
+                '<p>'+this.profile.profile.visibility+'</p>'            
+            )
             .open();
     }
 }

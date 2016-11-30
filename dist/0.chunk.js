@@ -15037,6 +15037,80 @@ exports.AuthenticationService = AuthenticationService;
 
 /***/ },
 
+/***/ "./src/app/_services/chat.service.ts":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+var ChatService = (function () {
+    function ChatService() {
+        /* tslint:disable */
+        this.todayConversations = [{
+                name: 'Chris Gray',
+                status: 'success',
+                lastMessage: 'Hey! What\'s up? So many times since we',
+                image: 'assets/img/people/a2.jpg',
+                messages: [{
+                        text: 'Hey! What\'s up?'
+                    }, {
+                        text: 'Are you there?'
+                    }, {
+                        text: 'Let me know when you come back.'
+                    }, {
+                        text: 'I am here!',
+                        fromMe: true
+                    }]
+            }, {
+                name: 'Jamey Brownlow',
+                status: 'gray-light',
+                lastMessage: 'Good news coming tonight. Seems they agreed to proceed',
+                image: 'assets/img/avatar.png'
+            }, {
+                name: 'Livia Walsh',
+                status: 'danger',
+                lastMessage: 'Check out my latest email plz!',
+                image: 'assets/img/people/a1.jpg'
+            }, {
+                name: 'Jaron Fitzroy',
+                status: 'gray-light',
+                lastMessage: 'What about summer break?',
+                image: 'assets/img/avatar.png'
+            }, {
+                name: 'Mike Lewis',
+                status: 'success',
+                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
+                image: 'assets/img/people/a4.jpg'
+            }];
+        this.lastWeekConversations = [{
+                name: 'Freda Edison',
+                status: 'gray-light',
+                lastMessage: 'Hey what\'s up? Me and Monica going for a lunch somewhere. Wanna join?',
+                image: 'assets/img/people/a6.jpg'
+            }, {
+                name: 'Livia Walsh',
+                status: 'success',
+                lastMessage: 'Check out my latest email plz!',
+                image: 'assets/img/people/a5.jpg'
+            }, {
+                name: 'Jaron Fitzroy',
+                status: 'warning',
+                lastMessage: 'What about summer break?',
+                image: 'assets/img/people/a3.jpg'
+            }, {
+                name: 'Mike Lewis',
+                status: 'gray-light',
+                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
+                image: 'assets/img/avatar.png'
+            }];
+        /* tslint:enable */
+    }
+    return ChatService;
+}());
+exports.ChatService = ChatService;
+
+
+/***/ },
+
 /***/ "./src/app/_services/classroom.service.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15289,6 +15363,7 @@ __export(__webpack_require__("./src/app/_services/rmp.service.ts"));
 __export(__webpack_require__("./src/app/_services/friend.service.ts"));
 __export(__webpack_require__("./src/app/_services/classroom.service.ts"));
 __export(__webpack_require__("./src/app/_services/popup.service.ts"));
+__export(__webpack_require__("./src/app/_services/chat.service.ts"));
 
 
 /***/ },
@@ -15382,7 +15457,14 @@ var PopupService = (function () {
             .size('lg')
             .showClose(true)
             .title('User Profile')
-            .body("\n            <h4>{{userName}}</h4>\n            ")
+            .body('<h4>' + userName + '</h4>' +
+            '<p>' + this.profile.extra.language + '</p>' +
+            '<p>' + this.profile.extra.hobby + '</p>' +
+            '<p>' + this.profile.profile.major + '</p>' +
+            '<p>' + this.profile.profile.birthday + '</p>' +
+            '<p>' + this.profile.profile.nationality + '</p>' +
+            '<p>' + this.profile.profile.gender + '</p>' +
+            '<p>' + this.profile.profile.visibility + '</p>')
             .open();
     };
     PopupService = __decorate([
@@ -16060,21 +16142,21 @@ var index_1 = __webpack_require__("./src/app/_guards/index.ts");
 var routes = [
     { path: '', canActivate: [index_1.AuthGuard], component: layout_component_1.Layout, children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', loadChildren: function () { return __webpack_require__.e/* System.import */(11).then(__webpack_require__.bind(null, "./src/app/dashboard/dashboard.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'inbox', loadChildren: function () { return __webpack_require__.e/* System.import */(13).then(__webpack_require__.bind(null, "./src/app/inbox/inbox.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'dashboard', loadChildren: function () { return __webpack_require__.e/* System.import */(12).then(__webpack_require__.bind(null, "./src/app/dashboard/dashboard.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'inbox', loadChildren: function () { return __webpack_require__.e/* System.import */(14).then(__webpack_require__.bind(null, "./src/app/inbox/inbox.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'charts', loadChildren: function () { return __webpack_require__.e/* System.import */(4).then(__webpack_require__.bind(null, "./src/app/charts/charts.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'profile', loadChildren: function () { return __webpack_require__.e/* System.import */(16).then(__webpack_require__.bind(null, "./src/app/profile/profile.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'forms', loadChildren: function () { return __webpack_require__.e/* System.import */(6).then(__webpack_require__.bind(null, "./src/app/forms/forms.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'ui', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/ui-elements/ui-elements.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'forms', loadChildren: function () { return __webpack_require__.e/* System.import */(7).then(__webpack_require__.bind(null, "./src/app/forms/forms.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'ui', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/ui-elements/ui-elements.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'extra', loadChildren: function () { return __webpack_require__.e/* System.import */(5).then(__webpack_require__.bind(null, "./src/app/extra/extra.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'tables', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/tables/tables.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'maps', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/maps/maps.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'grid', loadChildren: function () { return __webpack_require__.e/* System.import */(14).then(__webpack_require__.bind(null, "./src/app/grid/grid.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'tables', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/tables/tables.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'maps', loadChildren: function () { return __webpack_require__.e/* System.import */(11).then(__webpack_require__.bind(null, "./src/app/maps/maps.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'grid', loadChildren: function () { return __webpack_require__.e/* System.import */(15).then(__webpack_require__.bind(null, "./src/app/grid/grid.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'charts', loadChildren: function () { return __webpack_require__.e/* System.import */(4/* duplicate */).then(__webpack_require__.bind(null, "./src/app/charts/charts.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'widgets', loadChildren: function () { return __webpack_require__.e/* System.import */(7).then(__webpack_require__.bind(null, "./src/app/widgets/widgets.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'widgets', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/widgets/widgets.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             // iStudy
-            { path: 'registration', loadChildren: function () { return __webpack_require__.e/* System.import */(12).then(__webpack_require__.bind(null, "./src/app/registration/registration.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'classroom', loadChildren: function () { return __webpack_require__.e/* System.import */(15).then(__webpack_require__.bind(null, "./src/app/classroom/classroom.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } }
+            { path: 'registration', loadChildren: function () { return __webpack_require__.e/* System.import */(13).then(__webpack_require__.bind(null, "./src/app/registration/registration.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'classroom', loadChildren: function () { return __webpack_require__.e/* System.import */(6).then(__webpack_require__.bind(null, "./src/app/classroom/classroom.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } }
         ] }
 ];
 exports.ROUTES = router_1.RouterModule.forChild(routes);
