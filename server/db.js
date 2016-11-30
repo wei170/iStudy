@@ -42,6 +42,8 @@ db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
 db.friend_request = sequelize.import(__dirname + '/models/FriendRequest');
 // friend association
 db.user_friends = sequelize.import(__dirname + '/models/UserFriend');
+// students in a course
+db.course_student = sequelize.import(__dirname + '/models/CourseStudent');
 
 /*****************************************************
  * 				Config Relationships
@@ -83,11 +85,11 @@ db.professor.belongsToMany(db.course, {
 // one student can join different courses, one course can have different students
 db.user.belongsToMany(db.course_professor, {
     as: 'courses',
-    through: 'course_student'
+    through: db.course_student
 });
 db.course_professor.belongsToMany(db.user, {
     as: 'students',
-    through: 'course_student'
+    through: db.course_student
 });
 
 // one user can have many friends
@@ -116,6 +118,7 @@ console.log('Course_Professor associations:', Object.keys(db.course_professor.as
 console.log('Friend_Request associations:', Object.keys(db.friend_request.associations));
 console.log('Comment associations:', Object.keys(db.comment.associations));
 console.log('User_Friends associations: ', Object.keys(db.user_friends.associations));
+console.log('Course_Student associations: ', Object.keys(db.course_student.associations));
 
 db.sequelize = sequelize;
 
