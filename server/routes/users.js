@@ -400,6 +400,28 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 
 
 /******************************************************
+ *           		Search A User
+ ******************************************************/
+router.post('/search-user', middleware.requireAuthentication,function (req, res){
+	/**
+	 * JSON Format: {
+	 * 		"email": "..."
+	 * }
+ 	 */
+	var body = _.pick(req.body, 'email');
+	db.user.findOne({where: {email: body.email}})
+		.then(function (user) {
+			if (user){
+				res.status(200).send({userName: user.userName});
+			}
+			else {
+				res.status(404).send({err: "User Not Exist"});
+			}
+		});
+});
+
+
+/******************************************************
  *           		Find Friends
  ******************************************************/
 // find friends in same class by country, hobby, language
