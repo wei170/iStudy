@@ -185,8 +185,12 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
     }
 
     if (body.hasOwnProperty('birthday')) {
-    	if (body.birthday !== null || body.birthday !== ""){
+    	// temp fix when bday is empty
+    	if (body.birthday != ''){
 			attributes.birthday = body.birthday;
+		}
+		else {
+    		console.log("birthday is " + body.birthday);
 		}
     }
 
