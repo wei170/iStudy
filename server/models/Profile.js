@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes){
         },
         gender: {
             type: DataTypes.STRING,
-            defaultValue: "Unknown",
+            defaultValue: "Unknown"
         },
         visibility: {
             type: DataTypes.BOOLEAN,

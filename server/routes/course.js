@@ -138,6 +138,58 @@ router.post('/join', middleware.requireAuthentication, function (req, res) {
 	});
 });
 
+/**************************************************
+ * 				Leave A Class
+ **************************************************/
+router.post('/leave', middleware.requireAuthentication, function (req, res) {
+	/**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "...",
+	 * 	"userName": "..."
+	 * }
+	 */
+	var body = _.pick(req.body, 'course', 'professor', 'userName');
+	db.course.findOne({where: {name: body.course}}).then(function (course) {
+		if (course){
+			//TODO: two prof with same name might cause problem
+			// *Note: course name set to be unique
+			db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+				if (professor){
+					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
+						.then(function (c_u) {
+							if (c_u){
+								// first find the actual course the student wants to join
+								db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+									if (user){
+										// remove the user from the course
+										db.course_student.findOne({where: {user_id: user.id, course_professor_id: c_u.id}})
+											.then(function (item) {
+												item.destroy().then(function () {
+													res.status(200).send("Leave the course successfully!");
+												});
+											});
+									}
+									else {
+										res.status(400).send({err: "No such user :("});
+									}
+								});
+							}else{
+								res.status(400).send({err: "No such course :("});
+							}
+						});
+				}
+				else {
+					res.status(400).send({err: "Professor Not Found :("});
+				}
+			});
+		}
+		else{
+			res.status(400).send({err: "Course Not Found :("});
+		}
+	});
+});
 
 
 /**************************************************

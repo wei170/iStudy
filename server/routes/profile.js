@@ -42,44 +42,122 @@ router.get('/hobbies', middleware.requireAuthentication, function(req, res){
 router.post('/', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-	 * 		"userName": "...",
+	 * 		"hostName": "...",
+	 * 		"requester": "..."
 	 * }
      */
-    var body = _.pick(req.body, 'userName');
-	var compelete_profile = {};
-	var extra = {};
-	compelete_profile.extra = extra;
-    db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+    var body = _.pick(req.body, 'hostName', "requester");
+	var complete_profile = {};
+    db.user.findOne({where: {userName: body.hostName}}).then(function (user) {
        if (user){
            user.getProfile().then(function (profile) {
                if (profile){
-				   compelete_profile.profile = profile;
-				   profile.getLanguages().then(function (languages) {
-					   if (languages){
-						   extra.language = languages;
-					   }
-					   else{
-						   extra.language = "";
-					   }
-					   profile.getHobbies().then(function (hobbies) {
-						   if (hobbies){
-							   extra.hobby = hobbies;
-						   }
-						   else {
-							   extra.hobby = "";
-						   }
-						   res.status(200).json(compelete_profile);
-					   })
-				   })
+				   //check who is viewing the user's profile
+				   if (body.requester === body.hostName){
+				   		//oneself
+						getPublicProfile(complete_profile, profile, res);
+				   }
+				   else {
+				   	// check if two are friends of each other
+					db.user.findOne({where: {userName: body.requester}}).then(function (requester) {
+						if (requester){
+							var result = [];
+							result.isFriend = false;
+							requester.getFriends().then(function (friends) {
+								// check two's association
+								checkIfIsFriend(friends, user, result)
+									.then(function () {
+										if (result.isFriend == true){
+											getPublicProfile(complete_profile, profile, res);
+										}
+										else {
+											getPrivateProfile(user, profile, res);
+										}
+									})
+							});
+						}
+						else {
+							res.status(404).send({err: "Requester Not Found"});
+						}
+					})
+				   }
 			   }
            });
        }
        else {
-           res.status(404).send({error: "User Not Found"});
+           res.status(404).send({err: "User Not Found"});
        }
     });
 });
 
+/**
+ * Send user the public profile
+ * @param complete_profile
+ * @param profile
+ * @param res
+ */
+var getPublicProfile = function(complete_profile, profile, res){
+	var extra = {};
+	complete_profile.extra = extra;
+	complete_profile.profile = profile;
+	profile.getLanguages().then(function (languages) {
+		if (languages){
+			extra.language = languages;
+		}
+		else{
+			extra.language = "";
+		}
+		profile.getHobbies().then(function (hobbies) {
+			if (hobbies){
+				extra.hobby = hobbies;
+			}
+			else {
+				extra.hobby = "";
+			}
+			res.status(200).json(complete_profile);
+		})
+	});
+};
+
+
+/**
+ * Return user's private profile
+ * @param user
+ * @param profile
+ * @param res
+ */
+var getPrivateProfile = function(user, profile, res){
+	res.status(200).send({
+		userName: user.userName,
+		nationality: profile.nationality,
+		gender: profile.gender
+	});
+};
+
+/**
+ * Check if two are friends
+ * @param friends
+ * @param host
+ * @param result
+ */
+var checkIfIsFriend = function (friends, host, result) {
+	return new Promise(function (resolve, reject) {
+		// isFriend by default is false
+		var count = 0;
+		var len = friends.length;
+		friends.map(function (friend) {
+			if (friend.userName === host.userName){
+				result.isFriend = true;
+				resolve();
+			}
+			count++;
+		});
+		if (count === len){
+			//console.log("res is " + isFriend);
+			resolve();
+		}
+	});
+};
 
 
 /******************************************************
@@ -134,11 +212,11 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 								body.language.map(function (language) {
 									language_list.push(language.name);
 								});
-
 								db.language.findAll({where: {name: {$in: language_list}}})
 									.then(function (languages) {
 										if (languages){
-											profile.addLanguages(languages).then(function () {
+
+											profile.setLanguages(languages).then(function () {
 												if (body.hobby !== ""){
 													// update HOBBY
 													var hobby_list = [];
@@ -149,7 +227,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 													db.hobby.findAll({where: {name: {$in: hobby_list}}})
 														.then(function (hobbies) {
 															if (hobbies){
-																profile.addHobbies(hobbies);
+																profile.setHobbies(hobbies);
 															}
 															else {
 																res.status(404).send({err: "Hobbies Not Found"});
@@ -168,7 +246,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 							}
 						}
 					}, function (error) {
-						res.status(400).send({err: error});
+						res.status(400).send({err: "Update Fails"});
 					});
 				}
 				else {
