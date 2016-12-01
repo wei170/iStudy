@@ -185,7 +185,9 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
     }
 
     if (body.hasOwnProperty('birthday')) {
-        attributes.birthday = body.birthday;
+    	if (body.birthday !== null || body.birthday !== ""){
+			attributes.birthday = body.birthday;
+		}
     }
 
     if (body.hasOwnProperty('gender')) {

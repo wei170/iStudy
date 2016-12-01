@@ -9,7 +9,8 @@ module.exports = function(sequelize, DataTypes){
             defaultValue: 'Unknown'
         },
         birthday: {
-            type: DataTypes.DATEONLY
+            type: DataTypes.DATEONLY,
+            allowNull: true
         },
         nationality: {
             type: DataTypes.STRING,

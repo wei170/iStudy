@@ -485,6 +485,9 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication,functi
 														});
 												}
 											}
+											else {
+												res.status(200).send({res: "Declined the invitation"});
+											}
 										}
 										else {
 											res.status(400).send({err: "Fail to update the friend_request"});
