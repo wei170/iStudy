@@ -72,8 +72,14 @@ export class FriendService {
 
     /************* Delete Friend *************/
     unFriend(murder: string, victim: string) {
+        /**
+         * JSON Format: {
+         * 		"userName": "...",
+         * 		"friendName": "..."
+         * }
+	     */
         var url = 'users/delete-friend';
-        var body = { "sender": murder, "receiver": victim}
+        var body = { "userName": murder, "friendName": victim}
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());         
     }
 }

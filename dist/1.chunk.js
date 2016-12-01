@@ -2798,7 +2798,7 @@ var AlertService = (function () {
     AlertService.prototype.success = function (message) {
         if (message === void 0) { message = "Oh yeah!"; }
         this._service.success("Success", message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -2807,7 +2807,7 @@ var AlertService = (function () {
     AlertService.prototype.successWT = function (title, message) {
         if (message === void 0) { message = "Oh yeah!"; }
         this._service.success(title, message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -2816,7 +2816,16 @@ var AlertService = (function () {
     AlertService.prototype.error = function (message) {
         if (message === void 0) { message = "There is an error!"; }
         this._service.error("Error", message, {
-            timeOut: 3000,
+            timeOut: 2000,
+            showProgressBar: true,
+            pauseOnHover: false,
+            clickToClose: true
+        });
+    };
+    AlertService.prototype.info = function (message) {
+        if (message === void 0) { message = "Ther is an info"; }
+        this._service.info("Info", message, {
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -2944,6 +2953,20 @@ var ClassroomService = (function () {
         var url = '/course/get-class-list';
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         var body = { "course": courseName, "professor": professor };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    /**
+     * JSON Format:
+     * {
+     * 	"course": "...",
+     * 	"professor": "...",
+     * 	"userName": "..."
+     * }
+     */
+    ClassroomService.prototype.leaveClass = function (course, professor) {
+        var url = '/course/leave';
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        var body = { "course": course, "professor": professor, "userName": userName };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     ClassroomService = __decorate([
@@ -3126,8 +3149,14 @@ var FriendService = (function () {
     };
     /************* Delete Friend *************/
     FriendService.prototype.unFriend = function (murder, victim) {
+        /**
+         * JSON Format: {
+         * 		"userName": "...",
+         * 		"friendName": "..."
+         * }
+         */
         var url = 'users/delete-friend';
-        var body = { "sender": murder, "receiver": victim };
+        var body = { "userName": murder, "friendName": victim };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     FriendService = __decorate([
@@ -3233,35 +3262,46 @@ var PopupService = (function () {
     function PopupService(modal, profileService) {
         this.modal = modal;
         this.profileService = profileService;
-        this.profile = {
-            "extra": {
-                "language": [],
-                "hobby": []
-            },
-            "profile": {
-                "major": "Unknown",
-                "birthday": "",
-                "nationality": "Unknown",
-                "gender": "Unknown",
-                "visibility": true,
-            }
-        };
+        this.profile = {};
     }
-    PopupService.prototype.popUser = function (userName) {
+    PopupService.prototype.popUser = function (hostName) {
         var _this = this;
-        this.profileService.getProfile(userName).subscribe(function (data) { _this.profile = data; });
-        this.modal.alert()
+        // this.profile = {};
+        this.profileService.getProfile(hostName, JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+            if (data.profile) {
+                _this.modal.alert()
+                    .size('lg')
+                    .showClose(true)
+                    .title('User Public Profile')
+                    .body('<h4>' + hostName + '</h4>' +
+                    '<p>' + data.extra.language + '</p>' +
+                    '<p>' + data.extra.hobby + '</p>' +
+                    '<p>' + data.profile.major + '</p>' +
+                    '<p>' + data.profile.birthday + '</p>' +
+                    '<p>' + data.profile.nationality + '</p>' +
+                    '<p>' + data.profile.gender + '</p>' +
+                    '<p>' + data.profile.visibility + '</p>')
+                    .open();
+            }
+            else {
+                _this.modal.alert()
+                    .size('lg')
+                    .showClose(true)
+                    .title('User Private Profile')
+                    .body('<h4>' + hostName + '</h4>' + '<br><section>' +
+                    '<p>' + '<strong>Nationality:</strong>&nbsp;' + data.nationality + '</p>' +
+                    '<p>' + '<strong>Gender:</strong>&nbsp;&nbsp;' + data.gender + '</p>' + '</section>')
+                    .open();
+            }
+        });
+    };
+    PopupService.prototype.popConfirm = function (title, message) {
+        return this.modal.confirm()
             .size('lg')
-            .showClose(true)
-            .title('User Profile')
-            .body('<h4>' + userName + '</h4>' +
-            '<p>' + this.profile.extra.language[0].name + '</p>' +
-            '<p>' + this.profile.extra.hobby[0].name + '</p>' +
-            '<p>' + this.profile.profile.major + '</p>' +
-            '<p>' + this.profile.profile.birthday + '</p>' +
-            '<p>' + this.profile.profile.nationality + '</p>' +
-            '<p>' + this.profile.profile.gender + '</p>' +
-            '<p>' + this.profile.profile.visibility + '</p>')
+            .titleHtml('<h4 class="modal-title" style="font-size: 22px; color: grey; text-decoration: underline;">' + title + '</h4>')
+            .body('<p>' + message + '</p>')
+            .okBtn('Yes')
+            .cancelBtn('No')
             .open();
     };
     PopupService = __decorate([
@@ -3289,13 +3329,14 @@ var ProfileService = (function () {
         this.http = http;
     }
     /**
-    * JSON Format: {
-    * 		"userName": "...",
-    * }
-    */
-    ProfileService.prototype.getProfile = function (userName) {
+     * JSON Format: {
+     * 		"hostName": "...",
+     * 		"requester": "..."
+     * }
+     */
+    ProfileService.prototype.getProfile = function (hostName, requester) {
         var profileUrl = '/profile';
-        var body = { "userName": userName };
+        var body = { "hostName": hostName, "requester": requester };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(profileUrl, body, {
@@ -3533,7 +3574,7 @@ var Login = (function () {
             .subscribe(function (data) {
             _this.router.navigate(['/app/dashboard']);
         }, function (error) {
-            _this.alertService.error(error);
+            _this.alertService.error("There is an error of your email or your password!");
             _this.loading = false;
         });
     };
@@ -3651,10 +3692,10 @@ var Register = (function () {
         this.userService.create(this.model)
             .subscribe(function (data) {
             // set success message and pass true paramater to persist the message after redirecting to the login page
-            _this.alertService.success('Registration successful', true);
+            _this.alertService.success('Registration successful');
             _this.router.navigate(['/login']);
         }, function (error) {
-            _this.alertService.error(error);
+            _this.alertService.error(JSON.parse(error._body).err.errors[0].message);
             _this.loading = false;
         });
     };

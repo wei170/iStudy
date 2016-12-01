@@ -35,4 +35,19 @@ export class ClassroomService {
         var body = { "course": courseName, "professor": professor };
        return this.http.post(url, body, { headers: this.headers }) .map((res: Response) => res.json());
     }
+
+    /**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "...",
+	 * 	"userName": "..."
+	 * }
+	 */
+    leaveClass(course: string, professor: string) {
+        let url = '/course/leave';
+        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        let body = { "course": course, "professor": professor, "userName": userName};
+       return this.http.post(url, body, { headers: this.headers }) .map((res: Response) => res.json());
+    }
 }

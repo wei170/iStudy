@@ -48,7 +48,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     FriendService,
     AlertService,
     AuthGuard,
-    PopupService,
+    PopupService
 
     // Other dev npm files
   ]

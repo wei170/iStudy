@@ -34,7 +34,7 @@ export class Login implements OnInit {
                   this.router.navigate(['/app/dashboard']);
               },
               error => {
-                this.alertService.error(error);
+                this.alertService.error("There is an error of your email or your password!");
                 this.loading = false;
               });
   }

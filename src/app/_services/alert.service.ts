@@ -61,7 +61,7 @@ export class AlertService {
 
     success(message: string = "Oh yeah!") {
         this._service.success("Success", message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true     
@@ -70,7 +70,7 @@ export class AlertService {
 
     successWT(title:string, message: string = "Oh yeah!") {
         this._service.success(title, message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true     
@@ -79,7 +79,16 @@ export class AlertService {
 
     error(message: string = "There is an error!") {
         this._service.error("Error", message, {
-            timeOut: 3000,
+            timeOut: 2000,
+            showProgressBar: true,
+            pauseOnHover: false,
+            clickToClose: true
+        })
+    }
+
+    info(message: string = "Ther is an info") {
+        this._service.info("Info", message, {
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true

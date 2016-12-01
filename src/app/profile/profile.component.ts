@@ -64,14 +64,14 @@ export class Profile implements OnInit {
 
     /**************** Get Basic Info **************/
     fetchProfile() {
-        this.profileService.getProfile(this.currentUser.userName)
+        this.profileService.getProfile(this.currentUser.userName, this.currentUser.userName)
         .subscribe(
             data => {
                 this.myProfile = data;
                 // console.log(this.myProfile.profile.major);
             },
             error => {
-                this.alertService.error(error);
+                this.alertService.error(JSON.parse(error._body).err);
             }
         );
 
@@ -111,7 +111,7 @@ export class Profile implements OnInit {
     /**************** Method-kind *****************/
     /* Edit Profile */
     editProfile() {
-        console.log(this.myProfile)
+        console.log(this.myProfile);
         this.profileService.editProfile(this.currentUser.userName, this.myProfile)
         .subscribe (
             data => {
@@ -119,8 +119,8 @@ export class Profile implements OnInit {
                 this.toEdit = false;
                 this.alertService.success('Successfully edit the profile');
             },
-            err => {
-                this.alertService.error(err.message);
+            error => {
+                this.alertService.error(JSON.parse(error._body).err);
             }
         );
     }
@@ -139,6 +139,7 @@ export class Profile implements OnInit {
                 this.alertService.successWT("Unfollow", "Successfully unfollow" + victim);                
             },
             err => {
+                console.log(err);
                 this.alertService.error(err);                
             }
         );

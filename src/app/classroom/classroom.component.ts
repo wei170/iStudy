@@ -106,7 +106,7 @@ export class Classroom implements OnInit {
     sendRequest(reciever: string) {
         this.friendService.sendFriendReq(this.currentUser.userName, reciever).subscribe(
             data => {
-                this.alertService.success("Sent Request!")
+                this.alertService.success("Sent Request To " + reciever);
             },
             error => {
                 this.alertService.error("Cannot add yourself!");
@@ -118,4 +118,19 @@ export class Classroom implements OnInit {
         this.popupService.popUser(userName);
     }
 
+    leaveClass(room: any) {
+        this.popupService.popConfirm("Leave Class", "Are you sure to leave the class, "+ this.currentUser.userName + "?")
+        .catch(res => console.log("There is an error before the user make the choice"))
+        .then(res =>  {
+            this.classroomService.leaveClass(room.course, room.professor).subscribe(
+                data => {
+                    this.alertService.success("Sucessfully leave the class, peace!");
+                },
+                error => {
+                    this.alertService.error(error);
+                }
+            )
+        })
+        .catch(res => console.log("Bless you can make it! Keep it!"));
+    }
 }

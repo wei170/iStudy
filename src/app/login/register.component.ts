@@ -29,11 +29,11 @@ export class Register {
             .subscribe(
                 data => {
                     // set success message and pass true paramater to persist the message after redirecting to the login page
-                    this.alertService.success('Registration successful', true);
+                    this.alertService.success('Registration successful');
                     this.router.navigate(['/login']);
                 },
                 error => {
-                    this.alertService.error(error);
+                    this.alertService.error(JSON.parse(error._body).err.errors[0].message);
                     this.loading = false;
                 });
     }

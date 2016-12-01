@@ -14953,7 +14953,7 @@ var AlertService = (function () {
     AlertService.prototype.success = function (message) {
         if (message === void 0) { message = "Oh yeah!"; }
         this._service.success("Success", message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -14962,7 +14962,7 @@ var AlertService = (function () {
     AlertService.prototype.successWT = function (title, message) {
         if (message === void 0) { message = "Oh yeah!"; }
         this._service.success(title, message, {
-            timeOut: 3000,
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -14971,7 +14971,16 @@ var AlertService = (function () {
     AlertService.prototype.error = function (message) {
         if (message === void 0) { message = "There is an error!"; }
         this._service.error("Error", message, {
-            timeOut: 3000,
+            timeOut: 2000,
+            showProgressBar: true,
+            pauseOnHover: false,
+            clickToClose: true
+        });
+    };
+    AlertService.prototype.info = function (message) {
+        if (message === void 0) { message = "Ther is an info"; }
+        this._service.info("Info", message, {
+            timeOut: 2000,
             showProgressBar: true,
             pauseOnHover: false,
             clickToClose: true
@@ -15099,6 +15108,20 @@ var ClassroomService = (function () {
         var url = '/course/get-class-list';
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         var body = { "course": courseName, "professor": professor };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    /**
+     * JSON Format:
+     * {
+     * 	"course": "...",
+     * 	"professor": "...",
+     * 	"userName": "..."
+     * }
+     */
+    ClassroomService.prototype.leaveClass = function (course, professor) {
+        var url = '/course/leave';
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        var body = { "course": course, "professor": professor, "userName": userName };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     ClassroomService = __decorate([
@@ -15281,8 +15304,14 @@ var FriendService = (function () {
     };
     /************* Delete Friend *************/
     FriendService.prototype.unFriend = function (murder, victim) {
+        /**
+         * JSON Format: {
+         * 		"userName": "...",
+         * 		"friendName": "..."
+         * }
+         */
         var url = 'users/delete-friend';
-        var body = { "sender": murder, "receiver": victim };
+        var body = { "userName": murder, "friendName": victim };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     FriendService = __decorate([
@@ -15388,35 +15417,46 @@ var PopupService = (function () {
     function PopupService(modal, profileService) {
         this.modal = modal;
         this.profileService = profileService;
-        this.profile = {
-            "extra": {
-                "language": [],
-                "hobby": []
-            },
-            "profile": {
-                "major": "Unknown",
-                "birthday": "",
-                "nationality": "Unknown",
-                "gender": "Unknown",
-                "visibility": true,
-            }
-        };
+        this.profile = {};
     }
-    PopupService.prototype.popUser = function (userName) {
+    PopupService.prototype.popUser = function (hostName) {
         var _this = this;
-        this.profileService.getProfile(userName).subscribe(function (data) { _this.profile = data; });
-        this.modal.alert()
+        // this.profile = {};
+        this.profileService.getProfile(hostName, JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+            if (data.profile) {
+                _this.modal.alert()
+                    .size('lg')
+                    .showClose(true)
+                    .title('User Public Profile')
+                    .body('<h4>' + hostName + '</h4>' +
+                    '<p>' + data.extra.language + '</p>' +
+                    '<p>' + data.extra.hobby + '</p>' +
+                    '<p>' + data.profile.major + '</p>' +
+                    '<p>' + data.profile.birthday + '</p>' +
+                    '<p>' + data.profile.nationality + '</p>' +
+                    '<p>' + data.profile.gender + '</p>' +
+                    '<p>' + data.profile.visibility + '</p>')
+                    .open();
+            }
+            else {
+                _this.modal.alert()
+                    .size('lg')
+                    .showClose(true)
+                    .title('User Private Profile')
+                    .body('<h4>' + hostName + '</h4>' + '<br><section>' +
+                    '<p>' + '<strong>Nationality:</strong>&nbsp;' + data.nationality + '</p>' +
+                    '<p>' + '<strong>Gender:</strong>&nbsp;&nbsp;' + data.gender + '</p>' + '</section>')
+                    .open();
+            }
+        });
+    };
+    PopupService.prototype.popConfirm = function (title, message) {
+        return this.modal.confirm()
             .size('lg')
-            .showClose(true)
-            .title('User Profile')
-            .body('<h4>' + userName + '</h4>' +
-            '<p>' + this.profile.extra.language[0].name + '</p>' +
-            '<p>' + this.profile.extra.hobby[0].name + '</p>' +
-            '<p>' + this.profile.profile.major + '</p>' +
-            '<p>' + this.profile.profile.birthday + '</p>' +
-            '<p>' + this.profile.profile.nationality + '</p>' +
-            '<p>' + this.profile.profile.gender + '</p>' +
-            '<p>' + this.profile.profile.visibility + '</p>')
+            .titleHtml('<h4 class="modal-title" style="font-size: 22px; color: grey; text-decoration: underline;">' + title + '</h4>')
+            .body('<p>' + message + '</p>')
+            .okBtn('Yes')
+            .cancelBtn('No')
             .open();
     };
     PopupService = __decorate([
@@ -15444,13 +15484,14 @@ var ProfileService = (function () {
         this.http = http;
     }
     /**
-    * JSON Format: {
-    * 		"userName": "...",
-    * }
-    */
-    ProfileService.prototype.getProfile = function (userName) {
+     * JSON Format: {
+     * 		"hostName": "...",
+     * 		"requester": "..."
+     * }
+     */
+    ProfileService.prototype.getProfile = function (hostName, requester) {
         var profileUrl = '/profile';
-        var body = { "userName": userName };
+        var body = { "hostName": hostName, "requester": requester };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(profileUrl, body, {
@@ -16069,7 +16110,7 @@ var LayoutModule = (function () {
                 index_1.FriendService,
                 index_1.AlertService,
                 index_2.AuthGuard,
-                index_1.PopupService,
+                index_1.PopupService
             ]
         }), 
         __metadata('design:paramtypes', [])
@@ -16482,7 +16523,7 @@ exports.Sidebar = Sidebar;
 /***/ "./src/app/layout/sidebar/sidebar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"js-sidebar-content\">\r\n  <header class=\"logo hidden-sm-down\">\r\n    <a href=\"index.html\">{{config.name}}</a>\r\n  </header>\r\n  <div class=\"sidebar-status hidden-md-up\">\r\n    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n              <span class=\"thumb-sm avatar pull-xs-right\">\r\n        <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\r\n              </span>\r\n      <!-- .circle is a pretty cool way to add a bit of beauty to raw data.\r\n           should be used with bg-* and text-* classes for colors -->\r\n              <span class=\"circle bg-warning fw-bold text-gray-dark\">\r\n                  13\r\n              </span>\r\n      &nbsp;\r\n      Philip <strong>Smith</strong>\r\n      <b class=\"caret\"></b>\r\n    </a>\r\n    <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->\r\n  </div>\r\n  <!-- main notification links are placed inside of .sidebar-nav -->\r\n  <ul class=\"sidebar-nav\">\r\n     <li>\r\n      <a [routerLink]=\" ['profile'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-user\"></i>\r\n          </span>\r\n        Profile\r\n      </a>\r\n    </li>\r\n    <!--<li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-dashboard\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-desktop\"></i>\r\n          </span>\r\n        Dashboard\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-dashboard\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['dashboard'] \">Dashboard</a></li>\r\n        <li><a [routerLink]=\" ['widgets'] \">Widgets</a></li>\r\n      </ul>\r\n    </li>-->\r\n    <li>\r\n      <a [routerLink]=\" ['inbox'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-envelope\"></i>\r\n          </span>\r\n        Email\r\n          <span class=\"tag tag-danger\">\r\n            9\r\n          </span>\r\n      </a>\r\n    </li>\r\n    <!--<li>\r\n      <a [routerLink]=\" ['charts'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-stats\"></i>\r\n          </span>\r\n        Charts\r\n      </a>\r\n    </li>-->\r\n     <li>\r\n      <a [routerLink]=\" ['registration'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-institution\"></i>\r\n          </span>\r\n        Registration\r\n      </a>\r\n    </li>\r\n     <li>\r\n      <a [routerLink]=\" ['classroom'] \">\r\n          <span class=\"icon\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 48 60\" enable-background=\"new 0 0 48 48\" xml:space=\"preserve\"><g><g><g><ellipse fill=\"#818181\" cx=\"9.5\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M9.5,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C16.1,33.4,13.1,30.4,9.5,30.4z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"24.2\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M24.2,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.8,33.4,27.9,30.4,24.2,30.4z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"24\" cy=\"11.7\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M24,14.9c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.6,17.8,27.6,14.9,24,14.9z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"39\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M39,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C45.6,33.4,42.6,30.4,39,30.4z\"/></g></g><g><rect x=\"1\" y=\"41\" fill=\"#818181\" width=\"46\" height=\"2.1\"/></g><g><polygon fill=\"#818181\" points=\"17.4,14.2 15.2,14.2 15.2,18.5 12.3,14.2 1.6,14.2 1.6,4.9 17.4,4.9   \"/></g></g><text x=\"0\" y=\"63\" fill=\"#818181\" font-size=\"5px\" font-weight=\"bold\" font-family=\"'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif\">Created by Creative Stall</text><text x=\"0\" y=\"68\" fill=\"#818181\" font-size=\"5px\" font-weight=\"bold\" font-family=\"'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif\">from the Noun Project</text></svg>\r\n          </span>\r\n        Classroom\r\n      </a>\r\n    </li>      \r\n  </ul>\r\n  <!-- every .sidebar-nav may have a title -->\r\n  <h5 class=\"sidebar-nav-title\">Template <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-refresh\"></i></a></h5>\r\n  <ul class=\"sidebar-nav\">\r\n    <li>\r\n      <!-- an example of nested submenu. basic bootstrap collapse component -->\r\n      <a class=\"collapsed\" data-target=\"#sidebar-forms\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-align-right\"></i>\r\n          </span>\r\n        Forms\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-forms\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['forms/elements'] \">Form Elements</a></li>\r\n        <li><a [routerLink]=\" ['forms/validation'] \">Form Validation</a></li>\r\n        <li><a [routerLink]=\" ['forms/wizard'] \">Form Wizard</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-ui\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-tree-conifer\"></i>\r\n          </span>\r\n        UI Elements\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-ui\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['ui/components'] \">Components</a></li>\r\n        <li><a [routerLink]=\" ['ui/notifications'] \">Notifications</a></li>\r\n        <li><a [routerLink]=\" ['ui/icons'] \">Icons</a></li>\r\n        <li><a [routerLink]=\" ['ui/buttons'] \">Buttons</a></li>\r\n        <li><a [routerLink]=\" ['ui/tabs-accordion'] \">Tabs & Accordion</a></li>\r\n        <li><a [routerLink]=\" ['ui/list-groups'] \">List Groups</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['grid'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-th\"></i>\r\n          </span>\r\n        Grid\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-maps\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-map-marker\"></i>\r\n          </span>\r\n        Maps\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-maps\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['maps/google'] \">Google Maps</a></li>\r\n        <li><a [routerLink]=\" ['maps/vector'] \">Vector Maps</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <!-- an example of nested submenu. basic bootstrap collapse component -->\r\n      <a class=\"collapsed\" data-target=\"#sidebar-tables\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-table\"></i>\r\n          </span>\r\n        Tables\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-tables\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['tables/basic'] \">Tables Basic</a></li>\r\n        <li><a [routerLink]=\" ['tables/dynamic'] \">Tables Dynamic <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-extra\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-leaf\"></i>\r\n          </span>\r\n        Extra\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-extra\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['extra/calendar'] \">Calendar <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/invoice'] \">Invoice</a></li>\r\n        <li><a [routerLink]=\" ['/login'] \">Login Page</a></li>\r\n        <li><a [routerLink]=\" ['/error'] \">Error Page</a></li>\r\n        <li><a [routerLink]=\" ['extra/gallery'] \">Gallery <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/search'] \">Search Results</a></li>\r\n        <li><a [routerLink]=\" ['extra/timeline'] \">Time Line</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-folder-open\"></i>\r\n          </span>\r\n        Menu Levels\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-levels\" class=\"collapse\">\r\n        <li><a href>Level 1</a></li>\r\n        <li>\r\n          <a class=\"collapsed\" data-target=\"#sidebar-sub-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar-levels\">\r\n            Level 2\r\n            <i class=\"toggle fa fa-angle-down\"></i>\r\n          </a>\r\n          <ul id=\"sidebar-sub-levels\" class=\"collapse\">\r\n            <li><a href>Level 3</a></li>\r\n            <li><a href>Level 3</a></li>\r\n          </ul>\r\n        </li>\r\n      </ul>\r\n    </li>\r\n  </ul>\r\n  <h5 class=\"sidebar-nav-title\">Labels <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-plus\"></i></a></h5>\r\n  <!-- some styled links in sidebar. ready to use as links to email folders, projects, groups, etc -->\r\n  <ul class=\"sidebar-labels\">\r\n    <li>\r\n      <a href=\"#\">\r\n        <!-- yep, .circle again -->\r\n        <i class=\"fa fa-circle text-warning mr-xs\"></i>\r\n        <span class=\"label-name\">My Recent</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-gray mr-xs\"></i>\r\n        <span class=\"label-name\">Starred</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-danger mr-xs\"></i>\r\n        <span class=\"label-name\">Background</span>\r\n      </a>\r\n    </li>\r\n  </ul>\r\n  <h5 class=\"sidebar-nav-title\">Projects</h5>\r\n  <!-- A place for sidebar notifications & alerts -->\r\n  <div class=\"sidebar-alerts\">\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Sales Report</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-bar-gray-light mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 16%\"></progress>\r\n      </div>\r\n      <small>Calculating x-axis bias... 65%</small>\r\n    </div>\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Personal Responsibility</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-danger mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 23%\"></progress>\r\n      </div>\r\n      <small>Provide required notes</small>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"js-sidebar-content\">\r\n  <header class=\"logo hidden-sm-down\">\r\n    <a href=\"/#/app/profile\">{{config.name}}</a>\r\n  </header>\r\n  <div class=\"sidebar-status hidden-md-up\">\r\n    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n              <span class=\"thumb-sm avatar pull-xs-right\">\r\n        <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\r\n              </span>\r\n      <!-- .circle is a pretty cool way to add a bit of beauty to raw data.\r\n           should be used with bg-* and text-* classes for colors -->\r\n              <span class=\"circle bg-warning fw-bold text-gray-dark\">\r\n                  13\r\n              </span>\r\n      &nbsp;\r\n      Philip <strong>Smith</strong>\r\n      <b class=\"caret\"></b>\r\n    </a>\r\n    <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->\r\n  </div>\r\n  <!-- main notification links are placed inside of .sidebar-nav -->\r\n  <ul class=\"sidebar-nav\">\r\n     <li>\r\n      <a [routerLink]=\" ['profile'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-user\"></i>\r\n          </span>\r\n        Profile\r\n      </a>\r\n    </li>\r\n    <!--<li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-dashboard\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-desktop\"></i>\r\n          </span>\r\n        Dashboard\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-dashboard\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['dashboard'] \">Dashboard</a></li>\r\n        <li><a [routerLink]=\" ['widgets'] \">Widgets</a></li>\r\n      </ul>\r\n    </li>-->\r\n    <li>\r\n      <a [routerLink]=\" ['inbox'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-envelope\"></i>\r\n          </span>\r\n        Email\r\n          <span class=\"tag tag-danger\">\r\n            9\r\n          </span>\r\n      </a>\r\n    </li>\r\n    <!--<li>\r\n      <a [routerLink]=\" ['charts'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-stats\"></i>\r\n          </span>\r\n        Charts\r\n      </a>\r\n    </li>-->\r\n     <li>\r\n      <a [routerLink]=\" ['registration'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-institution\"></i>\r\n          </span>\r\n        Registration\r\n      </a>\r\n    </li>\r\n     <li>\r\n      <a [routerLink]=\" ['classroom'] \">\r\n          <span class=\"icon\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 48 60\" enable-background=\"new 0 0 48 48\" xml:space=\"preserve\"><g><g><g><ellipse fill=\"#818181\" cx=\"9.5\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M9.5,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C16.1,33.4,13.1,30.4,9.5,30.4z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"24.2\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M24.2,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.8,33.4,27.9,30.4,24.2,30.4z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"24\" cy=\"11.7\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M24,14.9c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.6,17.8,27.6,14.9,24,14.9z\"/></g></g><g><g><ellipse fill=\"#818181\" cx=\"39\" cy=\"27.3\" rx=\"2.8\" ry=\"2.8\"/></g><g><path fill=\"#818181\" d=\"M39,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C45.6,33.4,42.6,30.4,39,30.4z\"/></g></g><g><rect x=\"1\" y=\"41\" fill=\"#818181\" width=\"46\" height=\"2.1\"/></g><g><polygon fill=\"#818181\" points=\"17.4,14.2 15.2,14.2 15.2,18.5 12.3,14.2 1.6,14.2 1.6,4.9 17.4,4.9   \"/></g></g><text x=\"0\" y=\"63\" fill=\"#818181\" font-size=\"5px\" font-weight=\"bold\" font-family=\"'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif\">Created by Creative Stall</text><text x=\"0\" y=\"68\" fill=\"#818181\" font-size=\"5px\" font-weight=\"bold\" font-family=\"'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif\">from the Noun Project</text></svg>\r\n          </span>\r\n        Classroom\r\n      </a>\r\n    </li>      \r\n  </ul>\r\n  <!-- every .sidebar-nav may have a title -->\r\n  <h5 class=\"sidebar-nav-title\">Template <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-refresh\"></i></a></h5>\r\n  <ul class=\"sidebar-nav\">\r\n    <li>\r\n      <!-- an example of nested submenu. basic bootstrap collapse component -->\r\n      <a class=\"collapsed\" data-target=\"#sidebar-forms\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-align-right\"></i>\r\n          </span>\r\n        Forms\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-forms\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['forms/elements'] \">Form Elements</a></li>\r\n        <li><a [routerLink]=\" ['forms/validation'] \">Form Validation</a></li>\r\n        <li><a [routerLink]=\" ['forms/wizard'] \">Form Wizard</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-ui\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-tree-conifer\"></i>\r\n          </span>\r\n        UI Elements\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-ui\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['ui/components'] \">Components</a></li>\r\n        <li><a [routerLink]=\" ['ui/notifications'] \">Notifications</a></li>\r\n        <li><a [routerLink]=\" ['ui/icons'] \">Icons</a></li>\r\n        <li><a [routerLink]=\" ['ui/buttons'] \">Buttons</a></li>\r\n        <li><a [routerLink]=\" ['ui/tabs-accordion'] \">Tabs & Accordion</a></li>\r\n        <li><a [routerLink]=\" ['ui/list-groups'] \">List Groups</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['grid'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-th\"></i>\r\n          </span>\r\n        Grid\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-maps\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-map-marker\"></i>\r\n          </span>\r\n        Maps\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-maps\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['maps/google'] \">Google Maps</a></li>\r\n        <li><a [routerLink]=\" ['maps/vector'] \">Vector Maps</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <!-- an example of nested submenu. basic bootstrap collapse component -->\r\n      <a class=\"collapsed\" data-target=\"#sidebar-tables\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-table\"></i>\r\n          </span>\r\n        Tables\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-tables\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['tables/basic'] \">Tables Basic</a></li>\r\n        <li><a [routerLink]=\" ['tables/dynamic'] \">Tables Dynamic <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-extra\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-leaf\"></i>\r\n          </span>\r\n        Extra\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-extra\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['extra/calendar'] \">Calendar <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/invoice'] \">Invoice</a></li>\r\n        <li><a [routerLink]=\" ['/login'] \">Login Page</a></li>\r\n        <li><a [routerLink]=\" ['/error'] \">Error Page</a></li>\r\n        <li><a [routerLink]=\" ['extra/gallery'] \">Gallery <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/search'] \">Search Results</a></li>\r\n        <li><a [routerLink]=\" ['extra/timeline'] \">Time Line</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-folder-open\"></i>\r\n          </span>\r\n        Menu Levels\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-levels\" class=\"collapse\">\r\n        <li><a href>Level 1</a></li>\r\n        <li>\r\n          <a class=\"collapsed\" data-target=\"#sidebar-sub-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar-levels\">\r\n            Level 2\r\n            <i class=\"toggle fa fa-angle-down\"></i>\r\n          </a>\r\n          <ul id=\"sidebar-sub-levels\" class=\"collapse\">\r\n            <li><a href>Level 3</a></li>\r\n            <li><a href>Level 3</a></li>\r\n          </ul>\r\n        </li>\r\n      </ul>\r\n    </li>\r\n  </ul>\r\n  <h5 class=\"sidebar-nav-title\">Labels <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-plus\"></i></a></h5>\r\n  <!-- some styled links in sidebar. ready to use as links to email folders, projects, groups, etc -->\r\n  <ul class=\"sidebar-labels\">\r\n    <li>\r\n      <a href=\"#\">\r\n        <!-- yep, .circle again -->\r\n        <i class=\"fa fa-circle text-warning mr-xs\"></i>\r\n        <span class=\"label-name\">My Recent</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-gray mr-xs\"></i>\r\n        <span class=\"label-name\">Starred</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-danger mr-xs\"></i>\r\n        <span class=\"label-name\">Background</span>\r\n      </a>\r\n    </li>\r\n  </ul>\r\n  <h5 class=\"sidebar-nav-title\">Projects</h5>\r\n  <!-- A place for sidebar notifications & alerts -->\r\n  <div class=\"sidebar-alerts\">\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Sales Report</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-bar-gray-light mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 16%\"></progress>\r\n      </div>\r\n      <small>Calculating x-axis bias... 65%</small>\r\n    </div>\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Personal Responsibility</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-danger mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 23%\"></progress>\r\n      </div>\r\n      <small>Provide required notes</small>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }
 

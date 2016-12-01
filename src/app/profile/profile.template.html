@@ -121,25 +121,25 @@
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Birthday</label>
 							<div class="col-md-7 ">
-								<input type="date" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.birthday}}">
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="YY-MM-DD {{myProfile.profile.birthday}}" [(ngModel)]="myProfile.profile.birthday" name="birthday">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Gender</label>
 							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.gender}}">
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.gender}}" [(ngModel)]="myProfile.profile.gender" name="gender">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Nationality</label>
 							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.nationality}}">
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.nationality}}" [(ngModel)]="myProfile.profile.nationality" name="nationality">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Visibility</label>
 							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.visibility}}">
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.visibility}}" [(ngModel)]="myProfile.profile.visibility" name="visibility">
 							</div>
 						</div>
 					</fieldset>

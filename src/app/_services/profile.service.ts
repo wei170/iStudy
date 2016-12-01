@@ -6,14 +6,15 @@ import 'rxjs/add/operator/map';
 export class ProfileService {
     constructor(private http: Http) { }
 
-     /**
+    /**
      * JSON Format: {
-     * 		"userName": "...",
-     * }
+	 * 		"hostName": "...",
+	 * 		"requester": "..."
+	 * }
      */
-    getProfile(userName: string) {
+    getProfile(hostName: string, requester: string) {
         var profileUrl = '/profile';
-        var body = { "userName": userName }
+        var body = { "hostName": hostName, "requester": requester};
         var headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(profileUrl, body, {
