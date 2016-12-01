@@ -13,33 +13,40 @@ var Sequelize = require('sequelize');
  *              Sign Up
  ******************************************************/
 router.post('/', function(req, res, next) {
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * 		"email": "...",
-	 * 		"password": "..."
-	 * }
-	 */
-    var body = _.pick(req.body, 'userName', 'email', 'password');
+        /**
+         * JSON Format: {
+         * 		"userName": "...",
+         * 		"email": "...",
+         * 		"password": "..."
+         * }
+         */
+        var body = _.pick(req.body, 'userName', 'email', 'password');
 
-    db.user.create(body).then(function(user) {
-        db.profile.create({
-            user_id: user.id
-        }).then(function(profile) {
-			if (profile){
-				res.status(200).json(user.toPublicJSON());
-			}
-			else {
-				res.status(404).send({err: "Profile Creation Error"});
-			}
+        db.user.create(body).then(function(user) {
+            db.profile.create({
+                user_id: user.id
+            }).then(function(profile) {
+                if (profile) {
+                    res.status(200).json(user.toPublicJSON());
+                } else {
+                    res.status(404).send({
+                        err: "Profile Creation Error"
+                    });
+                }
+            }, function(e) {
+                res.status(400).send({
+                    err: e
+                });
+            });
         }, function(e) {
-            res.status(400).send({err: e});
+            //TODO: need to tell if it's invalid userName or email by frontend send request check if userName exists
+            res.status(400).send({
+                err: e
+            });
         });
-    }, function(e) {
-		//TODO: need to tell if it's invalid userName or email by frontend send request check if userName exists
-        res.status(400).send({err: e});
-    });
-});
+    }
+
+);
 
 /******************************************************
  *            Reset Password Request
@@ -66,7 +73,9 @@ router.post('/reset', function(req, res, next) {
         }).then(function(user) {
             res.json(verificationcode);
         }, function(e) {
-            res.status(400).send({err: e});
+            res.status(400).send({
+                err: e
+            });
         });
 
     }, function(e) {
@@ -78,13 +87,13 @@ router.post('/reset', function(req, res, next) {
  *          Check Verification Code
  ******************************************************/
 router.post('/checkcode', function(req, res) {
-	/**
-	 * JSON Format: {
-	 * 		"email": "...",
-	 * 		"verificationcode': "..."
-	 * }
-	 */
-	var body = _.pick(req.body, 'email', 'verificationcode');
+    /**
+     * JSON Format: {
+     * 		"email": "...",
+     * 		"verificationcode': "..."
+     * }
+     */
+    var body = _.pick(req.body, 'email', 'verificationcode');
     db.user.findOne({
         where: {
             email: body.email
@@ -95,7 +104,9 @@ router.post('/checkcode', function(req, res) {
             res.status(200).send();
 
         } else {
-            res.status(401).send({err: 'verification code invalid!'});
+            res.status(401).send({
+                err: 'verification code invalid!'
+            });
         }
     });
 });
@@ -105,12 +116,12 @@ router.post('/checkcode', function(req, res) {
  ******************************************************/
 
 router.put('/newpassword', function(req, res) {
-	/**
-	 * JSON Format: {
-	 * 		"email": "..."
-	 * 		"newpassword": "..."
-	 * }
-	 */
+    /**
+     * JSON Format: {
+     * 		"email": "..."
+     * 		"newpassword": "..."
+     * }
+     */
     var body = _.pick(req.body, 'email', 'newpassword');
     body.password = body.newpassword;
 
@@ -133,26 +144,29 @@ router.put('/newpassword', function(req, res) {
         db.user.findAll({
             where: where
         }).then(function(users) {
-			if (users){
-				users[0].update(
-					attributes
-				).then(function(user) {
-					//new password set
-					console.log('@@@@' + attributes.password);
-					res.json(user.toPublicJSON());
-				}, function(e) {
-					res.status(400).json(e);
-				});
-				//users[0].setDataValue('password','66666');
+            if (users) {
+                users[0].update(
+                    attributes
+                ).then(function(user) {
+                    //new password set
+                    console.log('@@@@' + attributes.password);
+                    res.json(user.toPublicJSON());
+                }, function(e) {
+                    res.status(400).json(e);
+                });
+                //users[0].setDataValue('password','66666');
 
-			}
-			else {
-				//no such email in database
-				res.status(404).send({err: "No Such User"});
-			}
+            } else {
+                //no such email in database
+                res.status(404).send({
+                    err: "No Such User"
+                });
+            }
 
         }, function(e) {
-            res.status(400).send({err: e});
+            res.status(400).send({
+                err: e
+            });
         });
 
     });
@@ -163,12 +177,12 @@ router.put('/newpassword', function(req, res) {
  *                      LogIN
  ******************************************************/
 router.post('/login', function(req, res) {
-	/**
-	 * JSON Format: {
-	 * 		"email": "...",
-	 * 		"password": "..."
-	 * }
-	 */
+    /**
+     * JSON Format: {
+     * 		"email": "...",
+     * 		"password": "..."
+     * }
+     */
     var body = _.pick(req.body, 'email', 'password');
     //console.log(JSON.stringify(body));
 
@@ -182,7 +196,9 @@ router.post('/login', function(req, res) {
         }
 
     }, function(e) {
-        res.status(400).send({err: e});
+        res.status(400).send({
+            err: e
+        });
 
     });
 });
@@ -191,105 +207,137 @@ router.post('/login', function(req, res) {
 /******************************************************
  *           Get User's Friend List
  ******************************************************/
-router.post('/get-friends', middleware.requireAuthentication,function (req, res) {
-	/**
-	 * JSON Format: {
-	 * 		"userName": "..."
-	 * }
-	 */
-	var body = _.pick(req.body, 'userName');
-	db.user.findOne({where: {userName: body.userName}}).then(function(user){
-		if (user){
-			user.getFriends().then(function (friends) {
-				res.status(200).json(friends);
-			});
-		}
-		else {
-			res.status(404).send({err: "User Not Found"});
-		}
-	});
+router.post('/get-friends', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "..."
+     * }
+     */
+    var body = _.pick(req.body, 'userName');
+    db.user.findOne({
+        where: {
+            userName: body.userName
+        }
+    }).then(function(user) {
+        if (user) {
+            user.getFriends().then(function(friends) {
+                res.status(200).json(friends);
+            });
+        } else {
+            res.status(404).send({
+                err: "User Not Found"
+            });
+        }
+    });
 });
 
 /******************************************************
  *           Send Friend Request
  ******************************************************/
-router.post('/send-friend-request', middleware.requireAuthentication,function (req, res) {
-	/**
-	 * JSON Format: {
-	 * 		"senderName": "...",
-	 * 		"receiverName": "..."
-	 * }
-	 */
-	var body = _.pick(req.body, 'senderName', 'receiverName');
-	db.user.findOne({where: {userName: body.senderName}}).then(function(sender){
-		if (sender){
-			db.user.findOne({where: {userName: body.receiverName}}).then(function (receiver) {
-				if (receiver){
-					if (receiver.id === sender.id){
-						res.status(400).send({err: "One can not send friend invitation to oneself"});
-					}
-					else {
-						db.friend_request.create({sender_id: sender.id, receiver_id: receiver.id});
-						res.status(200).send({res: "Sent Friend Request Successfully"});
-					}
-				}
-				else {
-					res.status(404).send({err: "Receiver Not Exist"});
-				}
-			});
-		}
-		else {
-			res.status(404).send({err: "Sender Not Exist"});
-		}
-	});
+router.post('/send-friend-request', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"senderName": "...",
+     * 		"receiverName": "..."
+     * }
+     */
+    var body = _.pick(req.body, 'senderName', 'receiverName');
+    db.user.findOne({
+        where: {
+            userName: body.senderName
+        }
+    }).then(function(sender) {
+        if (sender) {
+            db.user.findOne({
+                where: {
+                    userName: body.receiverName
+                }
+            }).then(function(receiver) {
+                if (receiver) {
+                    if (receiver.id === sender.id) {
+                        res.status(400).send({
+                            err: "One can not send friend invitation to oneself"
+                        });
+                    } else {
+                        db.friend_request.create({
+                            sender_id: sender.id,
+                            receiver_id: receiver.id
+                        });
+                        res.status(200).send({
+                            res: "Sent Friend Request Successfully"
+                        });
+                    }
+                } else {
+                    res.status(404).send({
+                        err: "Receiver Not Exist"
+                    });
+                }
+            });
+        } else {
+            res.status(404).send({
+                err: "Sender Not Exist"
+            });
+        }
+    });
 });
 
 
 /******************************************************
  *           		Delete A Friend
  ******************************************************/
-router.post('/delete-friend', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * 		"friendName": "..."
-	 * }
-	 */
-	var body = _.pick(req.body, 'userName', 'friendName');
-	db.user.findOne({where: {userName: body.userName}})
-		.then(function(user){
-			if (user){
-				var result = [];
-				result.isFriend = false;
-				user.getFriends().then(function (friends) {
-					checkIfIsFriend(friends, body.friendName, result)
-						.then(function () {
-							if (result.isFriend == true){
-								// two are friends of each other
-								db.user.findOne({where: {userName: body.friendName}})
-									.then(function (friend) {
-										if (friend){
-											deleteEachOther(user, friend)
-												.then(function () {
-													res.status(200).send("Deleted Friend Successfully!");
-												})
-										}
-										else {
-											res.status(404).send({err: "Friend Not Found"});
-										}
-									})
-							}
-							else {
-								res.status(400).send({err: "Two are not friends"});
-							}
-						})
+router.post('/delete-friend', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * 		"friendName": "..."
+     * }
+     */
+    var body = _.pick(req.body, 'userName', 'friendName');
+    db.user.findOne({
+            where: {
+                userName: body.userName
+            }
+        })
+        .then(function(user) {
+            if (user) {
+                var result = [];
+                result.isFriend = false;
+                user.getFriends().then(function(friends) {
+                    checkIfIsFriend(friends, body.friendName, result)
+                        .then(function() {
+                            if (result.isFriend == true) {
+                                // two are friends of each other
+                                db.user.findOne({
+                                        where: {
+                                            userName: body.friendName
+                                        }
+                                    })
+                                    .then(function(friend) {
+                                        if (friend) {
+                                            deleteEachOther(user, friend)
+                                                .then(function() {
+                                                    res.status(200).send("Deleted Friend Successfully!");
+                                                })
+                                        } else {
+                                            res.status(404).send({
+                                                err: "Friend Not Found"
+                                            });
+                                        }
+                                    })
+                            } else {
+                                res.status(400).send({
+                                    err: "Two are not friends"
+                                });
+                            }
+                        })
 
-				})
-			}
-			else {
-				res.status(404).send({err: "User Not Exist"});
-			}
-		});
+                })
+            } else {
+                res.status(404).send({
+                    err: "User Not Exist"
+                });
+            }
+        });
 });
 
 /**
@@ -297,36 +345,46 @@ router.post('/delete-friend', middleware.requireAuthentication,function (req, re
  * @param A
  * @param B
  */
-var deleteEachOther = function(A, B){
-	return new Promise(function (resolve, reject) {
-		var deletedB = false;
-		var deletedA = false;
-		db.user_friends.findOne({where: {user_id: A.id, friend_id: B.id}})
-			.then(function (friendship) {
-				if (friendship){
-					friendship.destroy()
-						.then(function () {
-							deletedB = true;
-							if (deletedA == true && deletedB == true){
-								resolve();
-							}
-						})
-				}
-			});
-		db.user_friends.findOne({where: {user_id: B.id, friend_id: A.id}})
-			.then(function (friendship) {
-				if (friendship){
-					friendship.destroy()
-						.then(function () {
-							deletedA = true;
-							if (deletedA == true && deletedB == true){
-								resolve();
-							}
-						});
-				}
-			});
+var deleteEachOther = function(A, B) {
+    return new Promise(function(resolve, reject) {
+        var deletedB = false;
+        var deletedA = false;
+        db.user_friends.findOne({
+                where: {
+                    user_id: A.id,
+                    friend_id: B.id
+                }
+            })
+            .then(function(friendship) {
+                if (friendship) {
+                    friendship.destroy()
+                        .then(function() {
+                            deletedB = true;
+                            if (deletedA == true && deletedB == true) {
+                                resolve();
+                            }
+                        })
+                }
+            });
+        db.user_friends.findOne({
+                where: {
+                    user_id: B.id,
+                    friend_id: A.id
+                }
+            })
+            .then(function(friendship) {
+                if (friendship) {
+                    friendship.destroy()
+                        .then(function() {
+                            deletedA = true;
+                            if (deletedA == true && deletedB == true) {
+                                resolve();
+                            }
+                        });
+                }
+            });
 
-	});
+    });
 };
 
 
@@ -336,23 +394,23 @@ var deleteEachOther = function(A, B){
  * @param friendName
  * @param result
  */
-var checkIfIsFriend = function (friends, friendName, result) {
-	return new Promise(function (resolve, reject) {
-		// isFriend by default is false
-		var count = 0;
-		var len = friends.length;
-		friends.map(function (friend) {
-			if (friend.userName === friendName){
-				result.isFriend = true;
-				resolve();
-			}
-			count++;
-		});
-		if (count === len){
-			//console.log("res is " + isFriend);
-			resolve();
-		}
-	});
+var checkIfIsFriend = function(friends, friendName, result) {
+    return new Promise(function(resolve, reject) {
+        // isFriend by default is false
+        var count = 0;
+        var len = friends.length;
+        friends.map(function(friend) {
+            if (friend.userName === friendName) {
+                result.isFriend = true;
+                resolve();
+            }
+            count++;
+        });
+        if (count === len) {
+            //console.log("res is " + isFriend);
+            resolve();
+        }
+    });
 };
 
 
@@ -360,41 +418,55 @@ var checkIfIsFriend = function (friends, friendName, result) {
  *           Get Friend Invitations
  ******************************************************/
 // Notes: Collect All the requests a user has received
-router.post('/get-friend-invitations', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * }
-	 */
-	var sender_ids = [];
-	var body = _.pick(req.body, 'userName');
-	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
-		if (user){
-			db.friend_request.findAll({where: {receiver_id: user.id}}).then(function (invitations) {
-				if (invitations){
-					invitations.map(function (invitation) {
-						// only get unhandled invitations
-						if (invitation.status === 0){
-							sender_ids.push(invitation.sender_id);
-						}
-					});
+router.post('/get-friend-invitations', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * }
+     */
+    var sender_ids = [];
+    var body = _.pick(req.body, 'userName');
+    db.user.findOne({
+        where: {
+            userName: body.userName
+        }
+    }).then(function(user) {
+        if (user) {
+            db.friend_request.findAll({
+                where: {
+                    receiver_id: user.id
+                }
+            }).then(function(invitations) {
+                if (invitations) {
+                    invitations.map(function(invitation) {
+                        // only get unhandled invitations
+                        if (invitation.status === 0) {
+                            sender_ids.push(invitation.sender_id);
+                        }
+                    });
 
-					db.user.findAll({
-						where: { id: { $in: sender_ids}},
-						attributes: ['userName']
-					}).then(function (senders) {
-						res.status(200).json(senders);
-					});
-				}
-				else {
-					res.status(404).send({err: "No invitations received"});
-				}
-			});
-		}
-		else {
-			res.status(404).send({err: "No Such User"});
-		}
-	})
+                    db.user.findAll({
+                        where: {
+                            id: {
+                                $in: sender_ids
+                            }
+                        },
+                        attributes: ['userName']
+                    }).then(function(senders) {
+                        res.status(200).json(senders);
+                    });
+                } else {
+                    res.status(404).send({
+                        err: "No invitations received"
+                    });
+                }
+            });
+        } else {
+            res.status(404).send({
+                err: "No Such User"
+            });
+        }
+    })
 });
 
 
@@ -402,135 +474,176 @@ router.post('/get-friend-invitations', middleware.requireAuthentication,function
  *           Get Friend Requests
  ******************************************************/
 // Notes: Collect All the requests one has sent out
-router.post('/get-friend-requests', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * }
-	 */
-	var request_list = {};
-	var rs = [];
-	var receiver_ids = [];
-	var request_statuses = [];
-	request_list.requests = rs;
-	var body = _.pick(req.body, 'userName');
-	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
-		if (user){
-			db.friend_request.findAll({where: {sender_id: user.id}}).then(function (requests){
-				if (requests){
-					requests.map(function(request){
-						receiver_ids.push(request.receiver_id);
-						request_statuses.push(request.status);
-					});
+router.post('/get-friend-requests', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * }
+     */
+    var request_list = {};
+    var rs = [];
+    var receiver_ids = [];
+    var request_statuses = [];
+    request_list.requests = rs;
+    var body = _.pick(req.body, 'userName');
+    db.user.findOne({
+        where: {
+            userName: body.userName
+        }
+    }).then(function(user) {
+        if (user) {
+            db.friend_request.findAll({
+                where: {
+                    sender_id: user.id
+                }
+            }).then(function(requests) {
+                if (requests) {
+                    requests.map(function(request) {
+                        receiver_ids.push(request.receiver_id);
+                        request_statuses.push(request.status);
+                    });
 
-					db.user.findAll({
-						where: { id: { $in: receiver_ids}},
-						attributes: ['userName']
-					}).then(function (receivers) {
-						for (var i = 0; i < receivers.length; i++){
-							rs.push({
-								"receiver": receivers[i].userName,
-								"status": request_statuses[i]
-							});
-						}
-						res.status(200).json(request_list.requests);
-					});
-				}
-				else {
-					res.status(404).send({err: "No requests sent"});
-				}
-			});
-		}
-		else {
-			res.status(404).send({err: "No Such User"});
-		}
-	});
+                    db.user.findAll({
+                        where: {
+                            id: {
+                                $in: receiver_ids
+                            }
+                        },
+                        attributes: ['userName']
+                    }).then(function(receivers) {
+                        for (var i = 0; i < receivers.length; i++) {
+                            rs.push({
+                                "receiver": receivers[i].userName,
+                                "status": request_statuses[i]
+                            });
+                        }
+                        res.status(200).json(request_list.requests);
+                    });
+                } else {
+                    res.status(404).send({
+                        err: "No requests sent"
+                    });
+                }
+            });
+        } else {
+            res.status(404).send({
+                err: "No Such User"
+            });
+        }
+    });
 
 });
 
 /******************************************************
  *           Accept Or Decline Request
  ******************************************************/
-router.post('/invitation-accept-or-not', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"sender": "...",
-	 * 		"receiver": "..."
-	 * 		"status_code": "..."
-	 * }
-	 */
-	var attributes = {};
-	var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
-	if (body.hasOwnProperty('status_code')){
-		attributes.status = body.status_code;
-	}
-	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
-		if (receiver){
-			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
-				if (sender){
-					if (sender.id === receiver.id){
-						res.status(400).send({err: "Not a valid request"});
-					}
-					else {
-						db.friend_request.findOne({where: {sender_id: sender.id, receiver_id: receiver.id}})
-							.then(function (request) {
-								if (request){
-									request.updateAttributes(attributes).then(function (request) {
-										if (request){
-											if (attributes.status === 1 || attributes.status === 0){
-												// add request sender as friend of request receiver
-												if (attributes.status === 1){
-													addFriend(sender.id, receiver.id, res)
-														.then(function () {
-															res.status(200).json(request);
-														});
-												}
-											}
-										}
-										else {
-											res.status(400).send({err: "Fail to update the friend_request"});
-										}
-									}, function (e) {
-										res.status(400).send({err: e});
-									})
-								}
-								else {
-									res.status(404).send({err: "Request does not exist"});
-								}
-							});
-					}
-				}
-				else {
-					res.status(404).send({err: "Sender does not exist"});
-				}
-			});
-		}
-		else {
-			res.status(404).send({err: "Sender does not exist"});
-		}
-	});
+router.post('/invitation-accept-or-not', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"sender": "...",
+     * 		"receiver": "..."
+     * 		"status_code": "..."
+     * }
+     */
+    var attributes = {};
+    var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
+    if (body.hasOwnProperty('status_code')) {
+        attributes.status = body.status_code;
+    }
+    db.user.findOne({
+        where: {
+            userName: body.receiver
+        }
+    }).then(function(receiver) {
+        if (receiver) {
+            db.user.findOne({
+                where: {
+                    userName: body.sender
+                }
+            }).then(function(sender) {
+                if (sender) {
+                    if (sender.id === receiver.id) {
+                        res.status(400).send({
+                            err: "Not a valid request"
+                        });
+                    } else {
+                        db.friend_request.findOne({
+                                where: {
+                                    sender_id: sender.id,
+                                    receiver_id: receiver.id
+                                }
+                            })
+                            .then(function(request) {
+                                if (request) {
+                                    request.updateAttributes(attributes).then(function(request) {
+                                        if (request) {
+                                            if (attributes.status === 1 || attributes.status === 0) {
+                                                // add request sender as friend of request receiver
+                                                if (attributes.status === 1) {
+                                                    addFriend(sender.id, receiver.id, res)
+                                                        .then(function() {
+                                                            res.status(200).json(request);
+                                                        });
+                                                }
+                                            }
+                                        } else {
+                                            res.status(400).send({
+                                                err: "Fail to update the friend_request"
+                                            });
+                                        }
+                                    }, function(e) {
+                                        res.status(400).send({
+                                            err: e
+                                        });
+                                    })
+                                } else {
+                                    res.status(404).send({
+                                        err: "Request does not exist"
+                                    });
+                                }
+                            });
+                    }
+                } else {
+                    res.status(404).send({
+                        err: "Sender does not exist"
+                    });
+                }
+            });
+        } else {
+            res.status(404).send({
+                err: "Sender does not exist"
+            });
+        }
+    });
 });
 
 
 /******************************************************
  *           		Search A User
  ******************************************************/
-router.post('/search-user', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "..."
-	 * }
- 	 */
-	var body = _.pick(req.body, 'userName');
-	db.user.findOne({where: {userName: body.userName}})
-		.then(function (user) {
-			if (user){
-				res.status(200).send({userName: user.userName});
-			}
-			else {
-				res.status(404).send({err: "User Not Exist"});
-			}
-		});
+router.post('/search-user', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "..."
+     * }
+     */
+    var body = _.pick(req.body, 'userName');
+    db.user.findOne({
+            where: {
+                userName: body.userName
+            }
+        })
+        .then(function(user) {
+            if (user) {
+                res.status(200).send({
+                    userName: user.userName
+                });
+            } else {
+                res.status(404).send({
+                    err: "User Not Exist"
+                });
+            }
+        });
 });
 
 
@@ -538,91 +651,262 @@ router.post('/search-user', middleware.requireAuthentication,function (req, res)
  *           		Find Friends
  ******************************************************/
 // find friends in same class by country, hobby, language
-router.post('/find-friends', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * 		"course": "...",
-	 * 		"professor": "...",
-	 * 		"preference" : {
-	 * 			"nationality": "...",
-	 * 			"hobby": "...",
-	 * 			"language": "..."
-	 * 		}
-	 *
-	 * }
-	 */
-	var body = _.pick(req.body, 'userName','course', 'professor', 'preference');
-	var preference = body.preference;
-	var filter = {};
-	var otherStudent_Ids = [];
+router.post('/find-friends', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * 		"course": "...",
+     * 		"professor": "...",
+     * 		"preference" : {
+     * 			"nationality": "...",
+     * 			"hobby": "...",
+     * 			"language": "..."
+     * 		}
+     *
+     * }
+     */
+    var body = _.pick(req.body, 'userName', 'course', 'professor', 'preference');
+    var preference = body.preference;
+    var filter = {};
+    var otherStudent_Ids = [];
 
-	if (preference.hasOwnProperty('nationality')) {
-		filter.nationality = preference.nationality;
-	}
-	if (preference.hasOwnProperty('hobby')){
-		filter.hobby = preference.hobby;
-	}
-	if (preference.hasOwnProperty('language')){
-		filter.language = preference.language;
-	}
+    if (preference.hasOwnProperty('nationality')) {
+        filter.nationality = preference.nationality;
+    }
+    if (preference.hasOwnProperty('hobby')) {
+        filter.hobby = preference.hobby;
+    }
+    if (preference.hasOwnProperty('language')) {
+        filter.language = preference.language;
+    }
 
-	db.course.findOne({where: {name: body.course}}).then(function (course) {
-		if (course){
-			db.professor.findOne({where: {name: body.professor}}).then(function (professor){
-				if (professor){
-					// get students from course
-					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
-						.then(function(c_u){
-							c_u.getStudents().then(function(students){
-								if (students){
-									// exclude user himself
-									findAndRemove(students, "userName", body.userName);
-									students.map(function (student) {
-										otherStudent_Ids.push(student.id);
-									});
+    db.course.findOne({
+        where: {
+            name: body.course
+        }
+    }).then(function(course) {
+        if (course) {
+            db.professor.findOne({
+                where: {
+                    name: body.professor
+                }
+            }).then(function(professor) {
+                if (professor) {
+                    // get students from course
+                    db.course_professor.findOne({
+                            where: {
+                                course_id: course.id,
+                                professor_id: professor.id
+                            }
+                        })
+                        .then(function(c_u) {
+                            c_u.getStudents().then(function(students) {
+                                if (students) {
+                                    // exclude user himself
+                                    findAndRemove(students, "userName", body.userName);
+                                    students.map(function(student) {
+                                        otherStudent_Ids.push(student.id);
+                                    });
 
-									db.user.findAll({where: {id: {$in: otherStudent_Ids}}})
-										.then(function (users) {
-											if (users){
-												filterByPreference(otherStudent_Ids, preference, res);
-											}
-										});
-									//res.send(students);
-								}
-								else {
-									res.status(404).send({err: "No stduents joined this course"});
-								}
-							});
-						});
-				}
-				else {
-					res.status(404).send({err: "Professor Not Found"});
-				}
-			})
-		}
-		else {
-			res.status(404).send({err: "Course Not Found"});
-		}
-	});
+                                    db.user.findAll({
+                                            where: {
+                                                id: {
+                                                    $in: otherStudent_Ids
+                                                }
+                                            }
+                                        })
+                                        .then(function(users) {
+                                            if (users) {
+                                                filterByPreference(otherStudent_Ids, preference, res);
+                                            }
+                                        });
+                                    //res.send(students);
+                                } else {
+                                    res.status(404).send({
+                                        err: "No stduents joined this course"
+                                    });
+                                }
+                            });
+                        });
+                } else {
+                    res.status(404).send({
+                        err: "Professor Not Found"
+                    });
+                }
+            })
+        } else {
+            res.status(404).send({
+                err: "Course Not Found"
+            });
+        }
+    });
 
 
 });
 
+
+
+/******************************************************
+ *           Get Groups of the current user has joined
+ ******************************************************/
+router.get('/get-groups', middleware.requireAuthentication, function(req, res) {
+
+
+    db.user.findOne({
+        where: {
+            id: req.user.get('id')
+        }
+    }).then(function(user) {
+        if (user) {
+            user.getGroup().then(function(friends) {
+                res.status(200).json(friends);
+            });
+        } else {
+            res.status(404).send({
+                err: "The user doesn't exist"
+            });
+        }
+    });
+});
+
+/******************************************************
+ *           Create Groups
+ ******************************************************/
+router.post('/create-group', middleware.requireAuthentication, function(req, res) {
+    /**
+	* JSON Format:
+		{ "groupName" : "....",
+		  "members":[
+	      {"userName":"..."},
+	      {"userName":"..."},
+	      {"userName":"..."}...
+	     ]
+	 	}
+	*/
+
+    var body = _.pick(req.body, 'groupName', 'members');
+    //Create the group in the database
+    db.group.create({
+        groupName: body.groupName
+    }).then(function(group) {
+        console.log("success");
+        //add the user
+        db.user.findOne({
+            where: {
+                id: req.user.get('id')
+            }
+        }).then(function(user) {
+            if (user) {
+                group.addGroupMembers(user);
+                res.status(200).send();
+            } else {
+                res.status(404).send({
+                    err: "Invalid userName"
+                });
+            }
+        });
+        //add other memebers
+        for (var i = 0; i < body.members.length; i++) {
+
+            db.user.findOne({
+                where: {
+                    userName: body.members[i].userName
+                }
+            }).then(function(user) {
+                if (user) {
+                    group.addGroupMembers(user);
+                    res.status(200).send();
+                } else {
+                    res.status(404).send({
+                        err: "Invalid userName"
+                    });
+                }
+            });
+
+        }
+    }, function(e) {
+
+        res.status(400).send({
+            err: e
+        });
+    });
+
+
+
+});
 //TODO
 /******************************************************
- *           Get Groups
+ *           Leave a Group
  ******************************************************/
 
- //TODO
- /******************************************************
-  *           Create Groups
-  ******************************************************/
+//TODO
+/******************************************************
+ *           Get all memeber names in a Group
+ ******************************************************/
+// GET /get-members?groupName=name
+router.get('/get-members', middleware.requireAuthentication, function(req, res) {
+    var query = req.query;
+    var groupName;
+    if (query.hasOwnProperty('groupName') && query.groupName.length > 0) {
+        groupName = query.groupName;
+    }
+    db.group.findOne({
+        where: {
+            groupName: groupName
+        }
+    }).then(function(group) {
+        var groupMembers = [];
+        //group found
+        //return all memebers in the group
+        db.group_users.findAll({
+            where: {
+                group_id: group.id
+            }
+        }).then(function(groups) {
+            var groupMembers = [];
+            for (var i = 0; i < groups.length; i++) {
+                var userId = groups[i].user_id;
+                //TODO find the user and add to the list
+                db.user.findOne({
+                    where: {
+                        id: userId
+                    }
+                }).then(function(user) {
+                    //add the user to the result;
+                    console.log("****" + user.userName);
+                    var name = user.userName + "";
+                    groupMembers.push(name);
+                    console.log(groupMembers + "@@@@");
+                    if(groupMembers.length==groups.length){
+                        var result = {people:groupMembers};
+                        res.status(200).json(result);
+                    }
 
-  //TODO
-  /******************************************************
-   *           Leave a Group
-   ******************************************************/
+                }, function(e) {
+                    //no such user
+                });
+            }
+
+        }, function(e) {
+            //group found but notbody is in there
+            //TODO: delete the group
+            db.todo.destroy({
+                where: {
+                    id: group.id
+                }
+            }).then(function(g) {
+
+            });
+            res.status(404).json(e);
+        });
+        // }),
+        // function(e) {
+        //     //group not found by name
+        //     res.status(404).json(e);
+        // });
+
+    });
+});
 
 /**
  * Remove one element from array
@@ -630,13 +914,13 @@ router.post('/find-friends', middleware.requireAuthentication,function (req, res
  * @param property
  * @param value
  */
-var findAndRemove = function (array, property, value) {
-	array.forEach(function (result, index) {
-		if (result[property] === value){
-			// remove from array
-			array.splice(index, 1);
-		}
-	});
+var findAndRemove = function(array, property, value) {
+    array.forEach(function(result, index) {
+        if (result[property] === value) {
+            // remove from array
+            array.splice(index, 1);
+        }
+    });
 };
 
 
@@ -647,48 +931,42 @@ var findAndRemove = function (array, property, value) {
  * @param res
  * @returns {Promise}
  */
-var filterByPreference = function (student_ids, preference, res) {
-	return new Promise(function (resolve, reject) {
-		var byNation = false;
-		var byHobby = false;
-		var byLanguage = false;
-		if (preference.nationality !== ""){
-			byNation = true;
-		}
-		if (preference.hobby !== ""){
-			byHobby = true;
-		}
-		if (preference.language !== ""){
-			byLanguage = true;
-		}
-		var possible_friends = [];
-		if (byNation === true && byHobby === true && byLanguage === true){
-			// ALL required
-			filterByNHL(res, student_ids, preference, possible_friends);
-		}
-		else if(byNation === true && byHobby === true){
-			filterByNationAndHobby(res, student_ids, preference, possible_friends);
-		}
-		else if(byNation === true && byLanguage === true){
-			filterByNationAndLanguage(res, student_ids, preference, possible_friends);
-		}
-		else if (byHobby === true && byLanguage === true){
-			filterByHobbyAndLanguage(res, student_ids, preference, possible_friends);
-		}
-		else if (byNation === true){
-			// ONLY by NATION
-			filterByNation(res, student_ids, preference, possible_friends);
-		}
-		else if (byHobby === true){
-			// ONLY by HOBBY
-			filterByHobby(res, student_ids, preference, possible_friends);
-		}
-		else {
-			//ONLY by LANGUAGE
-			filterByLanguage(res, student_ids, preference, possible_friends);
-		}
+var filterByPreference = function(student_ids, preference, res) {
+    return new Promise(function(resolve, reject) {
+        var byNation = false;
+        var byHobby = false;
+        var byLanguage = false;
+        if (preference.nationality !== "") {
+            byNation = true;
+        }
+        if (preference.hobby !== "") {
+            byHobby = true;
+        }
+        if (preference.language !== "") {
+            byLanguage = true;
+        }
+        var possible_friends = [];
+        if (byNation === true && byHobby === true && byLanguage === true) {
+            // ALL required
+            filterByNHL(res, student_ids, preference, possible_friends);
+        } else if (byNation === true && byHobby === true) {
+            filterByNationAndHobby(res, student_ids, preference, possible_friends);
+        } else if (byNation === true && byLanguage === true) {
+            filterByNationAndLanguage(res, student_ids, preference, possible_friends);
+        } else if (byHobby === true && byLanguage === true) {
+            filterByHobbyAndLanguage(res, student_ids, preference, possible_friends);
+        } else if (byNation === true) {
+            // ONLY by NATION
+            filterByNation(res, student_ids, preference, possible_friends);
+        } else if (byHobby === true) {
+            // ONLY by HOBBY
+            filterByHobby(res, student_ids, preference, possible_friends);
+        } else {
+            //ONLY by LANGUAGE
+            filterByLanguage(res, student_ids, preference, possible_friends);
+        }
 
-	});
+    });
 };
 
 /**
@@ -698,40 +976,49 @@ var filterByPreference = function (student_ids, preference, res) {
  * @param preference
  * @param possible_friends
  */
-var filterByNHL = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByNHL = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids},
-								nationality: preference.nationality
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by language
-									getProfileByHL(profiles, preference, profileByNHL)
-										.then(function () {
-											getUsers(profileByNHL, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject from same country and with same hobby found"});
-			}
-		});
+var filterByNHL = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByNHL = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    },
+                                    nationality: preference.nationality
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by language
+                                    getProfileByHL(profiles, preference, profileByNHL)
+                                        .then(function() {
+                                            getUsers(profileByNHL, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject from same country and with same hobby found"
+                });
+            }
+        });
 };
 
 /**
@@ -741,40 +1028,49 @@ var filterByNHL = function (res, student_ids, preference, possible_friends) {
  * @param preference
  * @param possible_friends
  */
-var filterByNationAndHobby = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByNH = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids},
-								nationality: preference.nationality
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by language
-									getProfileByHobby(profiles, preference.hobby, profileByNH)
-										.then(function () {
-											getUsers(profileByNH, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject from same country and with same hobby found"});
-			}
-		});
+var filterByNationAndHobby = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByNH = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    },
+                                    nationality: preference.nationality
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by language
+                                    getProfileByHobby(profiles, preference.hobby, profileByNH)
+                                        .then(function() {
+                                            getUsers(profileByNH, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject from same country and with same hobby found"
+                });
+            }
+        });
 };
 
 /**
@@ -784,40 +1080,49 @@ var filterByNationAndHobby = function (res, student_ids, preference, possible_fr
  * @param preference
  * @param possible_friends
  */
-var filterByNationAndLanguage = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByNL = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids},
-								nationality: preference.nationality
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by language
-									getProfileByLanguage(profiles, preference.language, profileByNL)
-										.then(function () {
-											getUsers(profileByNL, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject from same country and same language speaking found"});
-			}
-		});
+var filterByNationAndLanguage = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByNL = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    },
+                                    nationality: preference.nationality
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by language
+                                    getProfileByLanguage(profiles, preference.language, profileByNL)
+                                        .then(function() {
+                                            getUsers(profileByNL, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject from same country and same language speaking found"
+                });
+            }
+        });
 };
 
 /**
@@ -827,39 +1132,48 @@ var filterByNationAndLanguage = function (res, student_ids, preference, possible
  * @param preference
  * @param possible_friends
  */
-var filterByHobbyAndLanguage = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByHL = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids}
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by language and hobby
-									getProfileByHL(profiles, preference, profileByHL)
-										.then(function () {
-											getUsers(profileByHL, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject with same hobby and same language speaking found"});
-			}
-		});
+var filterByHobbyAndLanguage = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByHL = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    }
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by language and hobby
+                                    getProfileByHL(profiles, preference, profileByHL)
+                                        .then(function() {
+                                            getUsers(profileByHL, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject with same hobby and same language speaking found"
+                });
+            }
+        });
 };
 
 /**
@@ -869,39 +1183,48 @@ var filterByHobbyAndLanguage = function (res, student_ids, preference, possible_
  * @param preference
  * @param possible_friends
  */
-var filterByLanguage = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByLanguage = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids}
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by language
-									getProfileByLanguage(profiles, preference.language, profileByLanguage)
-										.then(function () {
-											getUsers(profileByLanguage, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject with same language speaking found"});
-			}
-		});
+var filterByLanguage = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByLanguage = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    }
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by language
+                                    getProfileByLanguage(profiles, preference.language, profileByLanguage)
+                                        .then(function() {
+                                            getUsers(profileByLanguage, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject with same language speaking found"
+                });
+            }
+        });
 };
 
 /**
@@ -911,39 +1234,48 @@ var filterByLanguage = function (res, student_ids, preference, possible_friends)
  * @param preference
  * @param possible_friends
  */
-var filterByHobby = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	var profileByHobby = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// get all the profiles first
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids}
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									// filter by hobby
-									getProfileByHobby(profiles, preference.hobby, profileByHobby)
-										.then(function () {
-											getUsers(profileByHobby, possible_friends)
-												.then(function () {
-													res.status(200).send(possible_friends);
-												});
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject with same hobby found"});
-			}
-		});
+var filterByHobby = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    var profileByHobby = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // get all the profiles first
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    }
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    // filter by hobby
+                                    getProfileByHobby(profiles, preference.hobby, profileByHobby)
+                                        .then(function() {
+                                            getUsers(profileByHobby, possible_friends)
+                                                .then(function() {
+                                                    res.status(200).send(possible_friends);
+                                                });
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject with same hobby found"
+                });
+            }
+        });
 };
 
 /**
@@ -953,35 +1285,44 @@ var filterByHobby = function (res, student_ids, preference, possible_friends) {
  * @param preference
  * @param possible_friends
  */
-var filterByNation = function (res, student_ids, preference, possible_friends) {
-	var profile_ids = [];
-	db.user.findAll({where: {id: {$in : student_ids}}})
-		.then(function (students) {
-			if (students) {
-				// get all the corresponding profile ids
-				getProfileIds(students, profile_ids)
-					.then(function () {
-						// filter by nation in profile
-						db.profile.findAll({
-							where: {
-								id: {$in: profile_ids},
-								nationality: preference.nationality
-							}
-						})
-							.then(function (profiles) {
-								if (profiles) {
-									getUsers(profiles, possible_friends)
-										.then(function () {
-											res.status(200).send(possible_friends);
-										});
-								}
-							});
-					});
-			}
-			else {
-				res.status(404).send({res: "No Subject from same country found"});
-			}
-		});
+var filterByNation = function(res, student_ids, preference, possible_friends) {
+    var profile_ids = [];
+    db.user.findAll({
+            where: {
+                id: {
+                    $in: student_ids
+                }
+            }
+        })
+        .then(function(students) {
+            if (students) {
+                // get all the corresponding profile ids
+                getProfileIds(students, profile_ids)
+                    .then(function() {
+                        // filter by nation in profile
+                        db.profile.findAll({
+                                where: {
+                                    id: {
+                                        $in: profile_ids
+                                    },
+                                    nationality: preference.nationality
+                                }
+                            })
+                            .then(function(profiles) {
+                                if (profiles) {
+                                    getUsers(profiles, possible_friends)
+                                        .then(function() {
+                                            res.status(200).send(possible_friends);
+                                        });
+                                }
+                            });
+                    });
+            } else {
+                res.status(404).send({
+                    res: "No Subject from same country found"
+                });
+            }
+        });
 };
 
 
@@ -992,57 +1333,57 @@ var filterByNation = function (res, student_ids, preference, possible_friends) {
  * @param profileByHL
  * @returns {Promise}
  */
-var getProfileByHL = function (profiles, preference, profileByHL) {
-	return new Promise(function (resolve, reject) {
-		var count = 0;
-		var len = profiles.length;
-		var sameLanguage = false;
-		var sameHobby = false;
-		var cmpL = false;
-		var cmpH = false;
-		profiles.map(function (profile) {
-			profile.getLanguages().then(function (languages) {
-				if (languages){
-					profile.getHobbies().then(function (hobbies) {
-						if (hobbies){
-							// reset flags
-							sameHobby = false;
-							sameLanguage = false;
-							cmpL = false;
-							cmpH = false;
-							count++;
-							languages.map(function (language) {
-								if (language.name === preference.language){
-									sameLanguage = true;
-								}
-								cmpL = true;
-								resolve();
-							});
-							hobbies.map(function (hobby) {
-								if (hobby.name === preference.hobby){
-									sameHobby = true;
-								}
-								cmpH = true;
-								resolve();
-							});
-							if (sameHobby === true && sameLanguage === true){
-								profileByHL.push(profile);
-							}
-						}
-						if (cmpH === true && cmpL === true){
-							resolve();
-						}
-					});
-				}
-				if (cmpH === true && cmpL === true){
-					resolve();
-				}
-			});
-		});
-		if (count === len){
-			resolve();
-		}
-	});
+var getProfileByHL = function(profiles, preference, profileByHL) {
+    return new Promise(function(resolve, reject) {
+        var count = 0;
+        var len = profiles.length;
+        var sameLanguage = false;
+        var sameHobby = false;
+        var cmpL = false;
+        var cmpH = false;
+        profiles.map(function(profile) {
+            profile.getLanguages().then(function(languages) {
+                if (languages) {
+                    profile.getHobbies().then(function(hobbies) {
+                        if (hobbies) {
+                            // reset flags
+                            sameHobby = false;
+                            sameLanguage = false;
+                            cmpL = false;
+                            cmpH = false;
+                            count++;
+                            languages.map(function(language) {
+                                if (language.name === preference.language) {
+                                    sameLanguage = true;
+                                }
+                                cmpL = true;
+                                resolve();
+                            });
+                            hobbies.map(function(hobby) {
+                                if (hobby.name === preference.hobby) {
+                                    sameHobby = true;
+                                }
+                                cmpH = true;
+                                resolve();
+                            });
+                            if (sameHobby === true && sameLanguage === true) {
+                                profileByHL.push(profile);
+                            }
+                        }
+                        if (cmpH === true && cmpL === true) {
+                            resolve();
+                        }
+                    });
+                }
+                if (cmpH === true && cmpL === true) {
+                    resolve();
+                }
+            });
+        });
+        if (count === len) {
+            resolve();
+        }
+    });
 };
 
 /**
@@ -1052,29 +1393,29 @@ var getProfileByHL = function (profiles, preference, profileByHL) {
  * @param profileByLanguage
  * @returns {Promise}
  */
-var getProfileByLanguage = function (profiles, language, profileByLanguage) {
-	return new Promise(function (resolve, reject) {
-		var count = 0;
-		var len = profiles.length;
-		profiles.map(function (profile) {
-			profile.getLanguages().then(function (languages) {
-				if (languages){
-					count++;
-					languages.map(function (l) {
-						if (l.name === language){
-							// find a matched one
-							profileByLanguage.push(profile);
-						}
-						resolve();
-					});
-					resolve();
-				}
-			});
-		});
-		if (count === len){
-			resolve();
-		}
-	});
+var getProfileByLanguage = function(profiles, language, profileByLanguage) {
+    return new Promise(function(resolve, reject) {
+        var count = 0;
+        var len = profiles.length;
+        profiles.map(function(profile) {
+            profile.getLanguages().then(function(languages) {
+                if (languages) {
+                    count++;
+                    languages.map(function(l) {
+                        if (l.name === language) {
+                            // find a matched one
+                            profileByLanguage.push(profile);
+                        }
+                        resolve();
+                    });
+                    resolve();
+                }
+            });
+        });
+        if (count === len) {
+            resolve();
+        }
+    });
 };
 
 /**
@@ -1084,29 +1425,29 @@ var getProfileByLanguage = function (profiles, language, profileByLanguage) {
  * @param profileByHobby
  * @returns {Promise}
  */
-var getProfileByHobby = function (profiles, hobby, profileByHobby) {
-	return new Promise(function (resolve, reject) {
-		var count = 0;
-		var len = profiles.length;
-		profiles.map(function (profile) {
-			profile.getHobbies().then(function (hobbies) {
-				if (hobbies){
-					count++;
-					hobbies.map(function (h) {
-						if (h.name === hobby){
-							// find a matched one
-							profileByHobby.push(profile);
-						}
-						resolve();
-					});
-					resolve();
-				}
-			});
-		});
-		if (count === len){
-			resolve();
-		}
-	});
+var getProfileByHobby = function(profiles, hobby, profileByHobby) {
+    return new Promise(function(resolve, reject) {
+        var count = 0;
+        var len = profiles.length;
+        profiles.map(function(profile) {
+            profile.getHobbies().then(function(hobbies) {
+                if (hobbies) {
+                    count++;
+                    hobbies.map(function(h) {
+                        if (h.name === hobby) {
+                            // find a matched one
+                            profileByHobby.push(profile);
+                        }
+                        resolve();
+                    });
+                    resolve();
+                }
+            });
+        });
+        if (count === len) {
+            resolve();
+        }
+    });
 };
 
 
@@ -1116,24 +1457,24 @@ var getProfileByHobby = function (profiles, hobby, profileByHobby) {
  * @param profile_ids
  * @returns {Promise}
  */
-var getProfileIds = function (students, profile_ids) {
-	return new Promise(function (resolve, reject) {
-		var count = 0;
-		var len = students.length;
-		students.map(function (student) {
-			student.getProfile().then(function (profile) {
-				if (profile){
-					count++;
-					profile_ids.push(profile.id);
-					resolve();
-				}
+var getProfileIds = function(students, profile_ids) {
+    return new Promise(function(resolve, reject) {
+        var count = 0;
+        var len = students.length;
+        students.map(function(student) {
+            student.getProfile().then(function(profile) {
+                if (profile) {
+                    count++;
+                    profile_ids.push(profile.id);
+                    resolve();
+                }
 
-			})
-		});
-		if (count === len){
-			resolve();
-		}
-	});
+            })
+        });
+        if (count === len) {
+            resolve();
+        }
+    });
 };
 
 /**
@@ -1141,23 +1482,23 @@ var getProfileIds = function (students, profile_ids) {
  * @param profiles
  * @param possibleFriends
  */
-var getUsers = function (profiles, possibleFriends) {
-	return new Promise(function (resolve, reject) {
-		var count = 0;
-		var len = profiles.length;
-		profiles.map(function (profile) {
-			profile.getUser().then(function (user) {
-				if (user){
-					count++;
-					possibleFriends.push(user);
-					resolve();
-				}
-			})
-		});
-		if (count === len){
-			resolve();
-		}
-	});
+var getUsers = function(profiles, possibleFriends) {
+    return new Promise(function(resolve, reject) {
+        var count = 0;
+        var len = profiles.length;
+        profiles.map(function(profile) {
+            profile.getUser().then(function(user) {
+                if (user) {
+                    count++;
+                    possibleFriends.push(user);
+                    resolve();
+                }
+            })
+        });
+        if (count === len) {
+            resolve();
+        }
+    });
 };
 
 /**
@@ -1167,32 +1508,34 @@ var getUsers = function (profiles, possibleFriends) {
  * @param receiver_id
  * @param res to send back info to frontend
  */
-var addFriend = function (sender_id, receiver_id, res) {
-	return new Promise(function (resolve, reject) {
-		db.user.findById(sender_id).then(function (sender) {
-			if (sender){
-				db.user.findById(receiver_id).then(function (receiver) {
-					if (receiver){
-						receiver.addFriend(sender).then(function (success) {
-							if (success){
-								sender.addFriend(receiver).then(function (success) {
-									if (success){
-										resolve();
-									}
-								});
-							}
-						});
-					}
-					else {
-						res.status(404).send({err: "Receiver Not Found"});
-					}
-				})
-			}
-			else {
-				res.status(404).send({err: "Sender Not Found"});
-			}
-		});
-	});
+var addFriend = function(sender_id, receiver_id, res) {
+    return new Promise(function(resolve, reject) {
+        db.user.findById(sender_id).then(function(sender) {
+            if (sender) {
+                db.user.findById(receiver_id).then(function(receiver) {
+                    if (receiver) {
+                        receiver.addFriend(sender).then(function(success) {
+                            if (success) {
+                                sender.addFriend(receiver).then(function(success) {
+                                    if (success) {
+                                        resolve();
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        res.status(404).send({
+                            err: "Receiver Not Found"
+                        });
+                    }
+                })
+            } else {
+                res.status(404).send({
+                    err: "Sender Not Found"
+                });
+            }
+        });
+    });
 };
 
 module.exports = router;
