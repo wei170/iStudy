@@ -259,13 +259,26 @@ router.post('/send-friend-request', middleware.requireAuthentication, function(r
                             err: "One can not send friend invitation to oneself"
                         });
                     } else {
-                        db.friend_request.create({
-                            sender_id: sender.id,
-                            receiver_id: receiver.id
-                        });
-                        res.status(200).send({
-                            res: "Sent Friend Request Successfully"
-                        });
+                    	// check if the request already existed
+						db.friend_request.findOne({where:
+							{
+								sender_id: sender.id,
+								receiver_id: receiver.id
+							}
+						}).then(function (request) {
+							if (request){
+								res.status(400).send({err: "You are not allowed to send duplicate request"});
+							}
+							else {
+								db.friend_request.create({
+									sender_id: sender.id,
+									receiver_id: receiver.id
+								});
+								res.status(200).send({
+									res: "Sent Friend Request Successfully"
+								});
+							}
+						});
                     }
                 } else {
                     res.status(404).send({
