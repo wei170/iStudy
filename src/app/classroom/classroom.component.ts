@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef } from '@angular/core';
 
 import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService } from '../_services/index';
 import { Select2Module } from 'ng2-select2';
+declare var jQuery: any;
 
 @Component({
     selector: '[classroom]',
@@ -42,6 +43,7 @@ export class Classroom implements OnInit {
     ) {}
 
     ngOnInit() {
+        // jQuery('chatContent').load(this.)
         this.getEnrolledClasses();
         this.getAllChoices();
     }

@@ -15038,73 +15038,25 @@ exports.AuthenticationService = AuthenticationService;
 /***/ },
 
 /***/ "./src/app/_services/chat.service.ts":
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 var ChatService = (function () {
-    function ChatService() {
-        /* tslint:disable */
-        this.todayConversations = [{
-                name: 'Chris Gray',
-                status: 'success',
-                lastMessage: 'Hey! What\'s up? So many times since we',
-                image: 'assets/img/people/a2.jpg',
-                messages: [{
-                        text: 'Hey! What\'s up?'
-                    }, {
-                        text: 'Are you there?'
-                    }, {
-                        text: 'Let me know when you come back.'
-                    }, {
-                        text: 'I am here!',
-                        fromMe: true
-                    }]
-            }, {
-                name: 'Jamey Brownlow',
-                status: 'gray-light',
-                lastMessage: 'Good news coming tonight. Seems they agreed to proceed',
-                image: 'assets/img/avatar.png'
-            }, {
-                name: 'Livia Walsh',
-                status: 'danger',
-                lastMessage: 'Check out my latest email plz!',
-                image: 'assets/img/people/a1.jpg'
-            }, {
-                name: 'Jaron Fitzroy',
-                status: 'gray-light',
-                lastMessage: 'What about summer break?',
-                image: 'assets/img/avatar.png'
-            }, {
-                name: 'Mike Lewis',
-                status: 'success',
-                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
-                image: 'assets/img/people/a4.jpg'
-            }];
-        this.lastWeekConversations = [{
-                name: 'Freda Edison',
-                status: 'gray-light',
-                lastMessage: 'Hey what\'s up? Me and Monica going for a lunch somewhere. Wanna join?',
-                image: 'assets/img/people/a6.jpg'
-            }, {
-                name: 'Livia Walsh',
-                status: 'success',
-                lastMessage: 'Check out my latest email plz!',
-                image: 'assets/img/people/a5.jpg'
-            }, {
-                name: 'Jaron Fitzroy',
-                status: 'warning',
-                lastMessage: 'What about summer break?',
-                image: 'assets/img/people/a3.jpg'
-            }, {
-                name: 'Mike Lewis',
-                status: 'gray-light',
-                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
-                image: 'assets/img/avatar.png'
-            }];
-        /* tslint:enable */
+    function ChatService(http) {
+        this.http = http;
     }
+    ChatService.prototype.create = function (url) {
+        return this.http.get(url).map(function (response) { return response; });
+    };
+    ChatService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], ChatService);
     return ChatService;
+    var _a;
 }());
 exports.ChatService = ChatService;
 
@@ -15458,8 +15410,8 @@ var PopupService = (function () {
             .showClose(true)
             .title('User Profile')
             .body('<h4>' + userName + '</h4>' +
-            '<p>' + this.profile.extra.language + '</p>' +
-            '<p>' + this.profile.extra.hobby + '</p>' +
+            '<p>' + this.profile.extra.language[0].name + '</p>' +
+            '<p>' + this.profile.extra.hobby[0].name + '</p>' +
             '<p>' + this.profile.profile.major + '</p>' +
             '<p>' + this.profile.profile.birthday + '</p>' +
             '<p>' + this.profile.profile.nationality + '</p>' +
