@@ -23,7 +23,7 @@
 					<div class="col-md-5 col-xs-12 text-xs-center">
 						<div class="post-user post-user-profile">
 							<span class="thumb-xlg">
-								<img class="img-circle" src="assets/img/people/a5.jpg" alt="...">
+								<img class="img-circle" src="assets/img/avatar.png" alt="...">
 							</span>
 							<h5 class="fw-normal"><span class="fw-semi-bold">{{currentUser.userName}}</span></h5>
 							<p>UI/UX designer</p>
@@ -87,7 +87,7 @@
 				</div>
 			</header>
 			<div class="widget-body">
-				<form class="form-horizontal" role="form">
+				<form class="form-horizontal" role="form" (ngSubmit)="editProfile">
 					<fieldset>
 						<legend><strong>Profile</strong> form</legend>
 
@@ -277,7 +277,7 @@
 				<div class="list-group list-group-lg">
 					<div class="list-group-item" href="#" *ngFor="let friend of friendList">
 						<span class="thumb-sm pull-xs-left mr">
-							<a href="#"><img alt="..." class="img-circle" src="assets/img/people/a1.jpg" (click)="pop(friend.userName)"></a>
+							<a href="#"><img alt="..." class="img-circle" src="assets/img/avatar.png" (click)="pop(friend.userName)"></a>
 						</span>
 						<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName)">Unfollow</button></span>						
 						<h6 class="no-margin" (click)="pop(friend.userName)"><a href="#">{{friend.userName}}</a></h6>

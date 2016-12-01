@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, ElementRef, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../app.config';
-import { FriendService } from '../../_services/index'
+import { UserService, PopupService } from '../../_services/index'
 declare var jQuery: any;
 
 @Component({
@@ -16,13 +16,16 @@ export class Navbar implements OnInit {
   router: Router;
 
   private numOfNotifications: Number;
+  private searchName: string = "";
 
   private currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   constructor(
     el: ElementRef, 
     config: AppConfig, 
-    router: Router
+    router: Router,
+    private userService: UserService,
+    private popupService: PopupService
   ) {
     this.$el = jQuery(el.nativeElement);
     this.config = config.getConfig();
@@ -37,8 +40,16 @@ export class Navbar implements OnInit {
     this.toggleChatEvent.emit(null);
   }
 
-  onDashboardSearch(f): void {
-    this.router.navigate(['/app', 'extra', 'search'], { queryParams: { search: f.value.search } });
+  onDashboardSearch(): void {
+    // search a user in the entire Purdue user db
+    this.userService.searchUser(this.searchName).subscribe(
+      data => {
+          this.popupService.popUser(this.searchName);
+      },
+      error => {
+          this.popupService.popError("Error",JSON.parse(error._body).err);
+      }
+    );  
   }
 
   ngOnInit(): void {

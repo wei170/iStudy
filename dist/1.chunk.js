@@ -3014,10 +3014,10 @@ var CourseService = (function () {
     };
     //
     // getCoursesDetails(courseId: string) {
-    //     var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
-    //     var midUrl = '%20and%20Term/TermId%20eq%20';
-    //     var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
-    //     var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+    //     let filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+    //     let midUrl = '%20and%20Term/TermId%20eq%20';
+    //     let expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+    //     let detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
     //     return this.http.get(detailedUrl)
     //         .map((res: Response) => res.json());
     // }
@@ -3302,6 +3302,17 @@ var PopupService = (function () {
             .body('<p>' + message + '</p>')
             .okBtn('Yes')
             .cancelBtn('No')
+            .open()
+            .then(function (dialog) { return dialog.result; }) // dialog has more properties,lets just return the promise for a result. 
+        ;
+    };
+    PopupService.prototype.popError = function (title, message) {
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title(title)
+            .body('<h4>Oops: ' + message + '</h4>')
+            .okBtn('Gotchu')
             .open();
     };
     PopupService = __decorate([
@@ -3368,7 +3379,6 @@ var ProfileService = (function () {
             "language": profile.extra.language,
             "hobby": profile.extra.hobby
         };
-        console.log(body);
         return this.http.post(url, body, {
             headers: headers
         })
@@ -3453,6 +3463,15 @@ var UserService = (function () {
     }
     UserService.prototype.create = function (user) {
         return this.http.post('/users/', user).map(function (response) { return response.json(); });
+    };
+    /************** Search a user in the entire school ******************/
+    UserService.prototype.searchUser = function (name) {
+        // name is the user BE searched
+        var url = 'users/search-user';
+        var body = { "userName": name };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
     };
     UserService = __decorate([
         core_1.Injectable(), 

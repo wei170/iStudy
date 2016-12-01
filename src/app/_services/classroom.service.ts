@@ -16,10 +16,10 @@ export class ClassroomService {
 	 * 	}
 	 */
     getUserCourseList() {
-        var url = '/course/get-class-list';
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        var body = { "userName": userName };
-       return this.http.post(url, body, { headers: this.headers }) .map((res: Response) => res.json());
+        let url = '/course/get-class-list';
+        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        let body = { "userName": userName };
+       return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
     /**
@@ -30,10 +30,10 @@ export class ClassroomService {
 	 * }
 	 */
     getAllStudents(courseName: string, professor: string) {
-        var url = '/course/get-class-list';
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        var body = { "course": courseName, "professor": professor };
-       return this.http.post(url, body, { headers: this.headers }) .map((res: Response) => res.json());
+        let url = '/course/get-class-list';
+        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        let body = { "course": courseName, "professor": professor };
+       return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
     /**
@@ -48,6 +48,6 @@ export class ClassroomService {
         let url = '/course/leave';
         let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         let body = { "course": course, "professor": professor, "userName": userName};
-       return this.http.post(url, body, { headers: this.headers }) .map((res: Response) => res.json());
+       return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 }

@@ -111,7 +111,6 @@ export class Profile implements OnInit {
     /**************** Method-kind *****************/
     /* Edit Profile */
     editProfile() {
-        console.log(this.myProfile);
         this.profileService.editProfile(this.currentUser.userName, this.myProfile)
         .subscribe (
             data => {

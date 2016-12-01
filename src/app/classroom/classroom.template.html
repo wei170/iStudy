@@ -12,7 +12,7 @@
 					Classmates
 				</h4>
 				<div class="widget-controls">
-					<a class="" data-original-title="Reload" data-widgster="load" href="#" title=""><i class="fa fa-refresh"></i></a>
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" (click)="getEnrolledClasses()" title=""><i class="fa fa-refresh"></i></a>
 					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
 					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
 					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>
@@ -54,7 +54,7 @@
 
 					<md-list>
 						<md-list-item *ngFor="let student of studentList">
-							<img md-list-avatar (click)="popInfo(student.userName)" src="assets/img/people/a5.jpg" alt="...">
+							<img md-list-avatar (click)="popInfo(student.userName)" src="assets/img/avatar.png" alt="...">
 							<span class="pull-xs-right"><button class="btn btn-primary" (click)="sendRequest(student.userName)">Friend</button></span>						
 							<h3 md-line><a (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
 							<p md-line>
@@ -78,7 +78,7 @@
 					Chat Rooms
 				</h4>
 				<div class="widget-controls">
-					<a class="" data-original-title="Reload" data-widgster="load" href="#" title=""><i class="fa fa-refresh"></i></a>
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" (click)="getEnrolledClasses()" title=""><i class="fa fa-refresh"></i></a>
 					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
 					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
 					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>

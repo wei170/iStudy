@@ -120,17 +120,20 @@ export class Classroom implements OnInit {
 
     leaveClass(room: any) {
         this.popupService.popConfirm("Leave Class", "Are you sure to leave the class, "+ this.currentUser.userName + "?")
-        .catch(res => console.log("There is an error before the user make the choice"))
+        .catch(res => console.log("You make a brilliant choice!"))
         .then(res =>  {
-            this.classroomService.leaveClass(room.course, room.professor).subscribe(
-                data => {
-                    this.alertService.success("Sucessfully leave the class, peace!");
-                },
-                error => {
-                    this.alertService.error(error);
-                }
-            )
-        })
-        .catch(res => console.log("Bless you can make it! Keep it!"));
+            if (res) {
+                this.classroomService.leaveClass(room.course, room.professor).subscribe(
+                    data => {
+                        this.alertService.success("Sucessfully leave the class, peace!");
+                        this.getEnrolledClasses();
+                    },
+                    error => {
+                        console.log(error);
+                        this.alertService.error(error);
+                    }
+                )
+            }
+        });
     }
 }

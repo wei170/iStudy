@@ -29,7 +29,7 @@ export class PopupService {
                             '<p>'+ data.profile.birthday +'</p>'+
                             '<p>'+ data.profile.nationality +'</p>'+
                             '<p>'+ data.profile.gender +'</p>'+
-                            '<p>'+ data.profile.visibility +'</p>'            
+                            '<p>'+ data.profile.visibility +'</p>'          
                         )
                         .open();
                 } else {
@@ -54,6 +54,20 @@ export class PopupService {
             .body('<p>'+ message + '</p>')
             .okBtn('Yes')
             .cancelBtn('No')
+            .open()
+            .then(dialog => dialog.result) // dialog has more properties,lets just return the promise for a result. 
+            ;
+    }
+
+    popError(title: string, message: string) {
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title(title)
+            .body(
+                '<h4>Oops: '+ message +'</h4>'
+            )
+            .okBtn('Gotchu')
             .open();
     }
 }

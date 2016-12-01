@@ -13,9 +13,9 @@ export class ProfileService {
 	 * }
      */
     getProfile(hostName: string, requester: string) {
-        var profileUrl = '/profile';
-        var body = { "hostName": hostName, "requester": requester};
-        var headers = new Headers();
+        let profileUrl = '/profile';
+        let body = { "hostName": hostName, "requester": requester};
+        let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(profileUrl, body, {
             headers: headers
@@ -34,10 +34,10 @@ export class ProfileService {
 	 * }
 	 */
     editProfile(userName: string, profile: any) {
-        var url = '/profile/update';
-        var headers = new Headers();
+        let url = '/profile/update';
+        let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        var body = {
+        let body = {
             "userName": userName,
             "major": profile.profile.major,
             "visibility": profile.profile.visibility,
@@ -47,7 +47,6 @@ export class ProfileService {
             "language": profile.extra.language,
             "hobby": profile.extra.hobby
         };
-        console.log(body);
         return this.http.post(url, body, {
             headers: headers
         })
@@ -55,25 +54,25 @@ export class ProfileService {
     }
 
     getAllLanguages() {
-        var url = '/profile/languages';
-        var headers = new Headers();
+        let url = '/profile/languages';
+        let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.get(url, {headers: headers}).map((res: Response) => res.json());
     }
 
     getAllHobbies() {
-        var url = '/profile/hobbies';
-        var headers = new Headers();
+        let url = '/profile/hobbies';
+        let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.get(url, {headers: headers}).map((res: Response) => res.json());
     }
 
     getAllMajors() {
-        var apiUrl = 'http://api.purdue.io/odata';
-        var termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
-        var filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
-        var abbrOrder = ')))&$orderby=Abbreviation%20asc';
-        var detailedUrl = apiUrl + filterUrl + termId + abbrOrder;
+        let apiUrl = 'http://api.purdue.io/odata';
+        let termId = 'c543a529-fed4-4fd0-b185-bd403106b4ea';
+        let filterUrl = '/Subjects/?$filter=(Courses/any(c:%20c/Classes/any(cc:%20cc/Term/TermId%20eq%20';
+        let abbrOrder = ')))&$orderby=Abbreviation%20asc';
+        let detailedUrl = apiUrl + filterUrl + termId + abbrOrder;
         return this.http.get(detailedUrl).map((res: Response) => res.json());
     }
 }

@@ -45,6 +45,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
   ],
   providers: [
     ProfileService,
+    UserService,
     FriendService,
     AlertService,
     AuthGuard,

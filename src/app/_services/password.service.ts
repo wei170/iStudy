@@ -7,8 +7,8 @@ export class PasswordService {
     constructor(private http: Http) { }
 
     verificationCheck(model: any) {
-        var url = '/users/checkcode';
-        var body = {
+        let url = '/users/checkcode';
+        let body = {
             "email": model.email,
             "verificationcode": model.verificationcode
         };
@@ -17,8 +17,8 @@ export class PasswordService {
     }
 
     forgotPassword(model: any) {
-        var url = '/users/reset?email=' + model.email;
-        var body = {
+        let url = '/users/reset?email=' + model.email;
+        let body = {
             "email": model.email
         };
 
@@ -28,8 +28,8 @@ export class PasswordService {
 
 
     resetPassword(model: any) {
-        var url = '/users/newpassword';
-        var body = {
+        let url = '/users/newpassword';
+        let body = {
             "email": model.email,
             "newpassword": model.newpassword
         };

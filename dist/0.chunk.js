@@ -15169,10 +15169,10 @@ var CourseService = (function () {
     };
     //
     // getCoursesDetails(courseId: string) {
-    //     var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
-    //     var midUrl = '%20and%20Term/TermId%20eq%20';
-    //     var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
-    //     var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+    //     let filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+    //     let midUrl = '%20and%20Term/TermId%20eq%20';
+    //     let expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+    //     let detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
     //     return this.http.get(detailedUrl)
     //         .map((res: Response) => res.json());
     // }
@@ -15457,6 +15457,17 @@ var PopupService = (function () {
             .body('<p>' + message + '</p>')
             .okBtn('Yes')
             .cancelBtn('No')
+            .open()
+            .then(function (dialog) { return dialog.result; }) // dialog has more properties,lets just return the promise for a result. 
+        ;
+    };
+    PopupService.prototype.popError = function (title, message) {
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title(title)
+            .body('<h4>Oops: ' + message + '</h4>')
+            .okBtn('Gotchu')
             .open();
     };
     PopupService = __decorate([
@@ -15523,7 +15534,6 @@ var ProfileService = (function () {
             "language": profile.extra.language,
             "hobby": profile.extra.hobby
         };
-        console.log(body);
         return this.http.post(url, body, {
             headers: headers
         })
@@ -15608,6 +15618,15 @@ var UserService = (function () {
     }
     UserService.prototype.create = function (user) {
         return this.http.post('/users/', user).map(function (response) { return response.json(); });
+    };
+    /************** Search a user in the entire school ******************/
+    UserService.prototype.searchUser = function (name) {
+        // name is the user BE searched
+        var url = 'users/search-user';
+        var body = { "userName": name };
+        var headers = new http_1.Headers();
+        headers.append('Auth', localStorage.getItem('token'));
+        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
     };
     UserService = __decorate([
         core_1.Injectable(), 
@@ -16107,6 +16126,7 @@ var LayoutModule = (function () {
             ],
             providers: [
                 index_1.ProfileService,
+                index_1.UserService,
                 index_1.FriendService,
                 index_1.AlertService,
                 index_2.AuthGuard,
@@ -16172,10 +16192,14 @@ module.exports = "<span defaultOverlayTarget></span>\r\n<nav sidebar id=\"sideba
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var app_config_1 = __webpack_require__("./src/app/app.config.ts");
+var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var Navbar = (function () {
-    function Navbar(el, config, router) {
+    function Navbar(el, config, router, userService, popupService) {
+        this.userService = userService;
+        this.popupService = popupService;
         this.toggleSidebarEvent = new core_1.EventEmitter();
         this.toggleChatEvent = new core_1.EventEmitter();
+        this.searchName = "";
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.$el = jQuery(el.nativeElement);
         this.config = config.getConfig();
@@ -16187,8 +16211,14 @@ var Navbar = (function () {
     Navbar.prototype.toggleChat = function () {
         this.toggleChatEvent.emit(null);
     };
-    Navbar.prototype.onDashboardSearch = function (f) {
-        this.router.navigate(['/app', 'extra', 'search'], { queryParams: { search: f.value.search } });
+    Navbar.prototype.onDashboardSearch = function () {
+        var _this = this;
+        // search a user in the entire Purdue user db
+        this.userService.searchUser(this.searchName).subscribe(function (data) {
+            _this.popupService.popUser(_this.searchName);
+        }, function (error) {
+            _this.popupService.popError("Error", JSON.parse(error._body).err);
+        });
     };
     Navbar.prototype.ngOnInit = function () {
         setTimeout(function () {
@@ -16228,10 +16258,10 @@ var Navbar = (function () {
             selector: '[navbar]',
             template: __webpack_require__("./src/app/layout/navbar/navbar.template.html")
         }), 
-        __metadata('design:paramtypes', [(typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object])
+        __metadata('design:paramtypes', [(typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object, (typeof (_f = typeof index_1.UserService !== 'undefined' && index_1.UserService) === 'function' && _f) || Object, (typeof (_g = typeof index_1.PopupService !== 'undefined' && index_1.PopupService) === 'function' && _g) || Object])
     ], Navbar);
     return Navbar;
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 exports.Navbar = Navbar;
 
@@ -16242,7 +16272,7 @@ exports.Navbar = Navbar;
 /***/ "./src/app/layout/navbar/navbar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch(f)\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" ngModel type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\n                </span>\n          &nbsp;\n          <strong>{{currentUser.userName}}</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\" *ngIf=\"numOfNotifications != 0\">\n                    {{numOfNotifications}}\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications (numOfNotifications)=\"updateNotificationsNum($event)\" class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch()\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" [(ngModel)]=\"searchName\" type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>\n\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\n                </span>\n          &nbsp;\n          <strong>{{currentUser.userName}}</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\" *ngIf=\"numOfNotifications != 0\">\n                    {{numOfNotifications}}\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications (numOfNotifications)=\"updateNotificationsNum($event)\" class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
 
 /***/ },
 

@@ -42,22 +42,23 @@
   <!-- this part is hidden for xs screens -->
   <div class="collapse navbar-collapse">
     <!-- search-results form! link it to your search-results server -->
-    <form class="navbar-form pull-xs-left" role="search" #f="ngForm" (ngSubmit)="onDashboardSearch(f)">
+    <form class="navbar-form pull-xs-left" role="search" #f="ngForm" (ngSubmit)="onDashboardSearch()">
       <div class="form-group">
         <div class="input-group input-group-no-border">
           <span class="input-group-addon">
               <i class="fa fa-search"></i>
           </span>
-          <input class="form-control" name="search" ngModel type="text" placeholder="Search Dashboard">
+          <input class="form-control" name="search" [(ngModel)]="searchName" type="text" placeholder="Search Dashboard">
         </div>
       </div>
     </form>
+
     <ul class="nav navbar-nav pull-xs-right" (click)="$event.preventDefault()">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle dropdown-toggle-notifications"
            id="notifications-dropdown-toggle" data-toggle="dropdown">
                 <span class="thumb-sm avatar pull-xs-left">
-                    <img class="img-circle" src="assets/img/people/a5.jpg" alt="...">
+                    <img class="img-circle" src="assets/img/avatar.png" alt="...">
                 </span>
           &nbsp;
           <strong>{{currentUser.userName}}</strong>&nbsp;

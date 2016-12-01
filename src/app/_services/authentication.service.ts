@@ -6,8 +6,8 @@ export class AuthenticationService {
     constructor(private http: Http) { }
 
     login(email: string, password: string) {
-        var url = 'users/login';
-        var body = {"email": email, "password": password};
+        let url = 'users/login';
+        let body = {"email": email, "password": password};
         return this.http.post(url, body)
         .map((response: Response) => {
             if(response.status < 200 || response.status >= 300) {
