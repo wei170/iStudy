@@ -271,7 +271,7 @@ router.post('/delete-friend', middleware.requireAuthentication,function (req, re
 										if (friend){
 											deleteEachOther(user, friend)
 												.then(function () {
-													res.status(200).send("Deleted Friend Successfully!");
+													res.status(200).send({res: "Deleted Friend Successfully!"});
 												})
 										}
 										else {
