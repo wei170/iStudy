@@ -7,7 +7,7 @@ var db = {};
 var sequelize;
 
 // set debug as 1 to init db every time server restarts otherwise set debug as 0
-var debug = 0;
+var debug = 1;
 
 /*****************************************************
  * 				Connect to DB
@@ -35,6 +35,7 @@ db.profile = sequelize.import(__dirname + '/models/Profile');
 db.language = sequelize.import(__dirname + '/models/Language');
 db.hobby = sequelize.import(__dirname + '/models/Hobby');
 db.comment = sequelize.import(__dirname + '/models/Comment');
+db.group = sequelize.import(__dirname + '/models/Group');
 
 // a course is defined by a course id and professor id
 db.course_professor = sequelize.import(__dirname + '/models/CourseProfessor');
@@ -45,6 +46,7 @@ db.user_friends = sequelize.import(__dirname + '/models/UserFriend');
 // students in a course
 db.course_student = sequelize.import(__dirname + '/models/CourseStudent');
 
+db.group_users = sequelize.import(__dirname + '/models/GroupUser');
 /*****************************************************
  * 				Config Relationships
  *****************************************************/
@@ -104,6 +106,17 @@ db.friend_request.belongsTo(db.user, {
 });
 db.friend_request.belongsTo(db.user, {
     as: 'sender'
+});
+
+//one user may belong to many groups
+//one group has many users
+db.group.belongsToMany(db.user, {
+    as: 'groupMembers',
+    through: db.group_users
+});
+db.user.belongsToMany(db.group, {
+    as: 'group',
+    through: db.group_users
 });
 
 
