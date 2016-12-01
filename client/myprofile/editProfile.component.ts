@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ProfileService, AlertService } from '../_services/index';
-import { MyProfileComponent } from './index';
-
 
 @Component({
     moduleId: module.id,
@@ -11,22 +9,62 @@ import { MyProfileComponent } from './index';
 })
 
 export class EditProfileComponent implements OnInit{
-    model: any = {};
-    currentUser: any = {};
-    profile: any = {};
+    private currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    myProfile: {
+        extra: {
+            language: {
+                name: string;
+            }[];
+            hobby: {
+                name: string;
+            }[];
+        },
+        profile: {
+            major: string;
+            birthday: string;
+            nationality: string;
+            gender: string;
+            visibility: boolean;
+        }
+    } = {
+        "extra": {
+            "language": [{
+                "name": ""
+            }],
+            "hobby": [{
+                "name": ""
+            }]
+        },
+        "profile": {
+            "major": "Unknown",
+            "birthday": "",
+            "nationality": "Unknown",
+            "gender": "Unknown",
+            "visibility": true
+        }
+}
+
+    private languages: any[];
+    private hobbies: any[];
+    private majors: any[];
 
     constructor(
         private router: Router,
         private profileService: ProfileService,
         private alertService: AlertService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.profileService.getProfile(this.model)
+        this.fetchProfile();
+        this.getAllChoices();
+    }
+
+    fetchProfile() {
+        this.profileService.getProfile(this.currentUser.userName)
         .subscribe(
             data => {
-                this.profile = data;
+                this.myProfile = data;
             },
             err => {
                 this.alertService.error(err);
@@ -35,17 +73,36 @@ export class EditProfileComponent implements OnInit{
     }
 
     editProfile() {
-        this.profileService.editProfile(this.model)
-            .subscribe (
-                data => {
-                    // successfully edit the profile
-                    this.alertService.success('Successfully edit the profile');
-                    this.router.navigate(['/dashboard/myprofile']);
-                },
-                err => {
-                    this.alertService.error(err.message);
-                }
-            );
+        console.log(this.myProfile);
+        this.profileService.editProfile(this.currentUser.userName, this.myProfile)
+        .subscribe (
+            data => {
+                // successfully edit the profile
+                this.alertService.success('Successfully edit the profile');
+                this.router.navigate(['/dashboard/myprofile']);
+            },
+            err => {
+                this.alertService.error(err.message);
+            }
+        );
+    }
+
+    getAllChoices() {
+        this.profileService.getAllLanguages().subscribe(
+            data => {
+                this.languages = data;
+            }
+        );
+        this.profileService.getAllHobbies().subscribe(
+            data => {
+                this.hobbies = data;
+            }
+        );
+        this.profileService.getAllMajors().subscribe(
+            data => {
+                this.majors = data.value;
+            }
+        );
     }
 
     private visibilities = [

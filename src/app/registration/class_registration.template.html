@@ -1,0 +1,48 @@
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">YOU ARE HERE</li>
+	<li class="active breadcrumb-item">Registration</li>
+</ol>
+<h1 class="page-title">Registration</h1>
+
+<div class="row">
+	<div class="col-lg-4">
+		<form role="form" (ngSubmit)="f.form.valid && searchCourse()" #f="ngForm" novalidate>
+			<div *ngIf="step === 0">
+				<label>Select Course Major</label>
+				<select class="form-control form-group" style="max-width: 100px" [(ngModel)]="model.majorInfo" name="majorInfo" required>
+					<option *ngFor="let major of majors" [ngValue]="major">
+					{{major.Abbreviation}}
+					</option>
+				</select>
+			</div>
+
+			<div *ngIf="step >= 1"  style="width:100%">
+				<ng-table [config]="config"
+					(tableChanged)="onChangeTable(config)"
+					(cellClicked)="onCellClick($event)"
+					[rows]="rows" [columns]="columns">
+				</ng-table>
+				<pagination *ngIf="config.paging"
+					class="pagination-sm"
+					[(ngModel)]="page" name="page"
+					[totalItems]="length"
+					[itemsPerPage]="itemsPerPage"
+					[maxSize]="maxSize"
+					[boundaryLinks]="true"
+					[rotate]="false"
+					(pageChanged)="onChangeTable(config, $event)"
+					(numPages)="numPages = $event">
+				</pagination>
+				<pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>
+			</div>
+			<div class = "form-group">
+				<button *ngIf="step < 2" [disabled]="loading" class="btn btn-primary">Submit</button>
+				<a *ngIf="step <= 2 && step > 0" (click)="back()">Back</a>
+			</div>
+		</form>
+	</div>
+	<div class="col-lg-8">
+		<!-- your page content -->
+		<courseDetails [sections]="sections" [courseName]="courseName" *ngIf="step === 2"></courseDetails>
+	</div>
+</div>

@@ -21,31 +21,47 @@
                             </div>
                             <div class="form-group">
                                 <label>Major: </label>
-                                <input class="form-control" placeholder="{{profile.major}}" [(ngModel)]="model.major" name="major">
+                                <select class="form-control" [(ngModel)]="myProfile.profile.major" name="major">
+                                    <option *ngFor="let major of majors" [value]="major.Abbreviation">
+                                        {{major.Abbreviation}}
+                                    </option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Language: </label>
-                                <input class="form-control" placeholder="{{profile.language}}" [(ngModel)]="model.language" name="language">
+                                <select class="form-control" [(ngModel)]="myProfile.extra.language[0].name" name="language">
+                                    <option *ngFor="let lan of languages" [value]="lan.name">
+                                        {{lan.name}}
+                                    </option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Birthday: </label>
-                                <input class="form-control" placeholder="{{profile.birthday}}" [(ngModel)]="model.birthday" type="date" name="birthday">
+                                <input class="form-control" [(ngModel)]="myProfile.profile.birthday" type="date" name="birthday">
+                            </div>
+                            <div class="form-group">
+                                <label>Gender: </label>
+                                <input class="form-control" [(ngModel)]="myProfile.profile.gender" type="text" name="gender">
                             </div>
                             <div class="form-group">
                                 <label>Hobby: </label>
-                                <input class="form-control" placeholder="{{profile.hobby}}" [(ngModel)]="model.hobby" name="major">
+                                <select class="form-control" [(ngModel)]="myProfile.extra.hobby[0].name" name="hobby">
+                                    <option *ngFor="let hobby of hobbies" [value]="hobby.name">
+                                        {{hobby.name}}
+                                    </option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Visibility: </label>
-                                <select class="form-control" [(ngModel)]="model.visibility" name="visibility">
-                                    <option *ngFor="let vis of visibilities" [selected]="vis.value === true" [value]="vis.value">
+                                <select class="form-control" [(ngModel)]="myProfile.profile.visibility" name="visibility">
+                                    <option *ngFor="let vis of visibilities" [value]="vis.value">
                                         {{vis.display}}
                                     </option>
                                 </select>
                             </div>
 
                             <div class = "form-group">
-                                <button class="btn btn-primary">Done</button>
+                                <button class="btn btn-primary" (click)="editProfile()">Done</button>
                             </div>
                         </form>
                     </div>

@@ -1,0 +1,102 @@
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">YOU ARE HERE</li>
+	<li class="active breadcrumb-item">Classroom</li>
+</ol>
+<h1 class="page-title">Classroom</h1>
+
+<div class="row">
+	<div class="col-lg-6 widget-container ui-sortable">
+		<section class="widget" widget="">
+			<header class="ui-sortable-handle">
+				<h4>
+					Classmates
+				</h4>
+				<div class="widget-controls">
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" title=""><i class="fa fa-refresh"></i></a>
+					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
+					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>
+					<a data-original-title="Restore" data-widgster="restore" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-resize-small"></i></a>
+					<a data-original-title="Close" data-widgster="close" href="#" title=""><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</header>
+			<br>
+			<div class="clearfix">
+				<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist">
+					<li class="nav-item" *ngFor="let room of userClasses">
+						<a (click)="update(room)" data-toggle="tab" class="nav-link" href="#{{room.course}}" id="home-tab" role="tab">{{room.course}}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content mb-lg" id="myTabContent">
+				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}" role="tabpanel">
+					<h4>Numbers Of Classmates: {{numOfStudents}}</h4>
+					<div class="form-group">
+
+						<h6>Search Friends By</h6>
+						<label><input class="form-control" placeholder="Nationality:"[(ngModel)]="preference.nationality" type="text" name="nationality"></label>
+
+						<div class="ui sub header">Language</div>
+						<select class="ui fluid normal dropdown" [(ngModel)]="preference.language" name="language" >
+							<option *ngFor="let language of languages" [ngValue]="language.name">{{language.name}}</option>
+						</select>
+
+						<div class="ui sub header">Hobby</div>
+						<select class="ui fluid normal dropdown" [(ngModel)]="preference.hobby" name="hobby">
+							<option *ngFor="let hobby of hobbies" [ngValue]="hobby.name">{{hobby.name}}</option>                    
+						</select>
+					</div>
+					<div class = "form-group">
+
+						<button (click)="filterStudents(room)" >Search</button>
+
+					</div>
+
+					<md-list>
+						<md-list-item *ngFor="let student of studentList">
+							<img md-list-avatar (click)="sendRequest(student.userName)" src="assets/img/people/a5.jpg" alt="...">
+							<span class="pull-xs-right"><button class="btn btn-primary" (click)="sendRequest(student.userName)">Friend</button></span>						
+							<h3 md-line><a (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
+							<p md-line>
+								<span> {{student.email}} </span>
+							</p>
+						</md-list-item>
+					</md-list>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="col-lg-6 widget-container ui-sortable">
+		<section class="widget" widget="">
+			<header class="ui-sortable-handle">
+				<h4>
+					Chat Rooms
+				</h4>
+				<div class="widget-controls">
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" title=""><i class="fa fa-refresh"></i></a>
+					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
+					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>
+					<a data-original-title="Restore" data-widgster="restore" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-resize-small"></i></a>
+					<a data-original-title="Close" data-widgster="close" href="#" title=""><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</header>
+			<br>
+			<div class="clearfix">
+				<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist">
+					<li class="nav-item" *ngFor="let room of userClasses">
+						<a class="nav-link" data-toggle="tab" href="#{{room.course}}chat" id="home-tab" role="tab">{{room.course}}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content mb-lg" id="myTabContent">
+				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}chat" role="tabpanel">
+					<h4>{{room.course}} ChatRoom</h4>
+					<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>
+					<div class="chatContent"></div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

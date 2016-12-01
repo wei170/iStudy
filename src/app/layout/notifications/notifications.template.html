@@ -1,0 +1,42 @@
+<section class="card notifications">
+  <header class="card-header">
+    <div class="text-xs-center mb-sm">
+      <strong>You have 13 notifications</strong>
+    </div>
+    <div class="btn-group btn-group-sm btn-group-justified" id="notifications-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active" notification-load>
+        <!-- ajax-load plugin in action. setting data-ajax-load & data-ajax-target is the
+             only requirement for async reloading -->
+        Notifications
+      </label>
+      <label class="btn btn-secondary" notification-load>
+        Messages
+      </label>
+      <label class="btn btn-secondary" notification-load>
+        Progress
+      </label>
+    </div>
+  </header>
+  <!-- notification list with .thin-scroll which styles scrollbar for webkit -->
+  <div id="notifications-list" class="list-group thin-scroll">
+    <div class="list-group-item">
+      <p class="no-margin overflow-hidden"  *ngFor="let req of friendRequests">
+        <a href="#" (click)="popInfo(req.userName)">{{req.userName}}</a> sent you a friend request
+        &nbsp;&nbsp;<br/>
+        <button class="btn btn-xs btn-success col-lg-4" (click)="accept(req)">Accept</button>
+        <button class="btn btn-xs btn-danger col-lg-4" (click)="decline(req)">Deny</button>
+        <time class="help-block no-margin">
+          12:18 AM
+        </time>
+      </p>
+    </div>
+  </div>
+  <footer class="card-footer text-sm">
+    <button class="btn btn-xs btn-link pull-xs-right btn-notifications-reload" (click)="updateMessages()">
+      <!-- Put reload here -->
+      <i class="fa fa-refresh"></i>
+    </button>
+    <!-- Put local time here -->
+    <span class="fs-mini">Synced at: 21 Apr 2014 18:36</span>
+  </footer>
+</section>

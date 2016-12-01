@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DashboardComponent } from '../dashboard/dashboard.component';
 import { CourseService, AlertService } from '../_services/index';
 
 @Component({
@@ -15,9 +14,8 @@ export class SearchCourseComponent implements OnInit{
     private majors: any[] = [];
     private courses: any[] = [];
     private sections: any[] = [];
-    private major: any;
-    private number: any;
-    private professorInfo: any;
+
+    private courseName: string;
 
     constructor(
         private alertService: AlertService,
@@ -52,17 +50,12 @@ export class SearchCourseComponent implements OnInit{
                 }
             )
         } else if (this.step === 1) {
-            this.courseService.getCoursesDetails(this.model.courseInfo.CourseId).subscribe (
+            this.courseName = this.model.majorInfo.Abbreviation + this.model.courseInfo.Number;
+            console.log(this.courseName);
+            this.courseService.getCourseDetails(this.courseName).subscribe (
                 data => {
                     this.step = 2;
-                    this.sections = []; // empty it
-                    for (var i = 0; i < data.value.length; i++) {
-                        for (var j = 0; j < data.value[i].Sections.length; j++) {
-                            if (data.value[i].Sections[j].Type === "Lecture") {
-                                this.sections.push(data.value[i].Sections[j]);
-                            }
-                        }
-                    }
+                    this.sections = data;
                 },
                 error => {
                     this.alertService.error(error.err);

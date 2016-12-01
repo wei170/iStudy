@@ -9,9 +9,14 @@ import { CourseService, AlertService } from '../_services/index';
 })
 
 export class CourseDetailsComponent {
-    @Input() major: string;
-    @Input() courseNumber: string;
-    private courseName = this.major + this.courseNumber;
+    @Input() courseName: string;
+    private rmp: {
+        rating: number,
+        comments: {}[]
+    } = {
+        "rating" : 0,
+        "comments" : []
+    }
 
     constructor(
         private courseService: CourseService,
@@ -30,4 +35,11 @@ export class CourseDetailsComponent {
         )
     }
 
+    getRMP(professor: string) {
+        this.courseService.getRMP(this.courseName, professor).subscribe(
+            data => {
+                this.rmp = data
+            }
+        );
+    }
 }
