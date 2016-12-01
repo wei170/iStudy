@@ -166,9 +166,15 @@ router.post('/leave', middleware.requireAuthentication, function (req, res) {
 										// remove the user from the course
 										db.course_student.findOne({where: {user_id: user.id, course_professor_id: c_u.id}})
 											.then(function (item) {
-												item.destroy().then(function () {
-													res.status(200).send("Leave the course successfully!");
-												});
+												if (item){
+													item.destroy().then(function () {
+														res.status(200).send({res: "Leave the course successfully!"});
+													});
+												}
+												else {
+													res.status(404).send({err: "User is not in that course"});
+												}
+
 											});
 									}
 									else {
