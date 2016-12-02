@@ -259,26 +259,27 @@ router.post('/send-friend-request', middleware.requireAuthentication, function(r
                             err: "One can not send friend invitation to oneself"
                         });
                     } else {
-                    	// check if the request already existed
-						db.friend_request.findOne({where:
-							{
-								sender_id: sender.id,
-								receiver_id: receiver.id
-							}
-						}).then(function (request) {
-							if (request){
-								res.status(400).send({err: "You are not allowed to send duplicate request"});
-							}
-							else {
-								db.friend_request.create({
-									sender_id: sender.id,
-									receiver_id: receiver.id
-								});
-								res.status(200).send({
-									res: "Sent Friend Request Successfully"
-								});
-							}
-						});
+                        // check if the request already existed
+                        db.friend_request.findOne({
+                            where: {
+                                sender_id: sender.id,
+                                receiver_id: receiver.id
+                            }
+                        }).then(function(request) {
+                            if (request) {
+                                res.status(400).send({
+                                    err: "You are not allowed to send duplicate request"
+                                });
+                            } else {
+                                db.friend_request.create({
+                                    sender_id: sender.id,
+                                    receiver_id: receiver.id
+                                });
+                                res.status(200).send({
+                                    res: "Sent Friend Request Successfully"
+                                });
+                            }
+                        });
                     }
                 } else {
                     res.status(404).send({
@@ -298,48 +299,61 @@ router.post('/send-friend-request', middleware.requireAuthentication, function(r
 /******************************************************
  *           		Delete A Friend
  ******************************************************/
-router.post('/delete-friend', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"userName": "...",
-	 * 		"friendName": "..."
-	 * }
-	 */
-	var body = _.pick(req.body, 'userName', 'friendName');
-	db.user.findOne({where: {userName: body.userName}})
-		.then(function(user){
-			if (user){
-				var result = [];
-				result.isFriend = false;
-				user.getFriends().then(function (friends) {
-					checkIfIsFriend(friends, body.friendName, result)
-						.then(function () {
-							if (result.isFriend == true){
-								// two are friends of each other
-								db.user.findOne({where: {userName: body.friendName}})
-									.then(function (friend) {
-										if (friend){
-											deleteEachOther(user, friend)
-												.then(function () {
-													res.status(200).send({res: "Deleted Friend Successfully!"});
-												})
-										}
-										else {
-											res.status(404).send({err: "Friend Not Found"});
-										}
-									})
-							}
-							else {
-								res.status(400).send({err: "Two are not friends"});
-							}
-						})
+router.post('/delete-friend', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"userName": "...",
+     * 		"friendName": "..."
+     * }
+     */
+    var body = _.pick(req.body, 'userName', 'friendName');
+    db.user.findOne({
+            where: {
+                userName: body.userName
+            }
+        })
+        .then(function(user) {
+            if (user) {
+                var result = [];
+                result.isFriend = false;
+                user.getFriends().then(function(friends) {
+                    checkIfIsFriend(friends, body.friendName, result)
+                        .then(function() {
+                            if (result.isFriend == true) {
+                                // two are friends of each other
+                                db.user.findOne({
+                                        where: {
+                                            userName: body.friendName
+                                        }
+                                    })
+                                    .then(function(friend) {
+                                        if (friend) {
+                                            deleteEachOther(user, friend)
+                                                .then(function() {
+                                                    res.status(200).send({
+                                                        res: "Deleted Friend Successfully!"
+                                                    });
+                                                })
+                                        } else {
+                                            res.status(404).send({
+                                                err: "Friend Not Found"
+                                            });
+                                        }
+                                    })
+                            } else {
+                                res.status(400).send({
+                                    err: "Two are not friends"
+                                });
+                            }
+                        })
 
-				})
-			}
-			else {
-				res.status(404).send({err: "User Not Exist"});
-			}
-		});
+                })
+            } else {
+                res.status(404).send({
+                    err: "User Not Exist"
+                });
+            }
+        });
 });
 
 /**
@@ -539,67 +553,88 @@ router.post('/get-friend-requests', middleware.requireAuthentication, function(r
 /******************************************************
  *           Accept Or Decline Request
  ******************************************************/
-router.post('/invitation-accept-or-not', middleware.requireAuthentication,function (req, res){
-	/**
-	 * JSON Format: {
-	 * 		"sender": "...",
-	 * 		"receiver": "..."
-	 * 		"status_code": "..."
-	 * }
-	 */
-	var attributes = {};
-	var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
-	if (body.hasOwnProperty('status_code')){
-		attributes.status = body.status_code;
-	}
-	db.user.findOne({where: {userName: body.receiver}}).then(function (receiver){
-		if (receiver){
-			db.user.findOne({where: {userName: body.sender}}).then(function (sender){
-				if (sender){
-					if (sender.id === receiver.id){
-						res.status(400).send({err: "Not a valid request"});
-					}
-					else {
-						db.friend_request.findOne({where: {sender_id: sender.id, receiver_id: receiver.id}})
-							.then(function (request) {
-								if (request){
-									request.updateAttributes(attributes).then(function (request) {
-										if (request){
-											if (attributes.status === 1 || attributes.status === 0){
-												// add request sender as friend of request receiver
-												if (attributes.status === 1){
-													addFriend(sender.id, receiver.id, res)
-														.then(function () {
-															res.status(200).json(request);
-														});
-												}
-											}
-											else {
-												res.status(200).send({res: "Declined the invitation"});
-											}
-										}
-										else {
-											res.status(400).send({err: "Fail to update the friend_request"});
-										}
-									}, function (e) {
-										res.status(400).send({err: e});
-									})
-								}
-								else {
-									res.status(404).send({err: "Request does not exist"});
-								}
-							});
-					}
-				}
-				else {
-					res.status(404).send({err: "Sender does not exist"});
-				}
-			});
-		}
-		else {
-			res.status(404).send({err: "Sender does not exist"});
-		}
-	});
+router.post('/invitation-accept-or-not', middleware.requireAuthentication, function(req, res) {
+    /**
+     * JSON Format: {
+     * 		"sender": "...",
+     * 		"receiver": "..."
+     * 		"status_code": "..."
+     * }
+     */
+    var attributes = {};
+    var body = _.pick(req.body, 'sender', 'receiver', 'status_code');
+    if (body.hasOwnProperty('status_code')) {
+        attributes.status = body.status_code;
+    }
+    db.user.findOne({
+        where: {
+            userName: body.receiver
+        }
+    }).then(function(receiver) {
+        if (receiver) {
+            db.user.findOne({
+                where: {
+                    userName: body.sender
+                }
+            }).then(function(sender) {
+                if (sender) {
+                    if (sender.id === receiver.id) {
+                        res.status(400).send({
+                            err: "Not a valid request"
+                        });
+                    } else {
+                        db.friend_request.findOne({
+                                where: {
+                                    sender_id: sender.id,
+                                    receiver_id: receiver.id
+                                }
+                            })
+                            .then(function(request) {
+                                if (request) {
+                                    request.updateAttributes(attributes).then(function(request) {
+                                        if (request) {
+                                            if (attributes.status === 1 || attributes.status === 0) {
+                                                // add request sender as friend of request receiver
+                                                if (attributes.status === 1) {
+                                                    addFriend(sender.id, receiver.id, res)
+                                                        .then(function() {
+                                                            res.status(200).json(request);
+                                                        });
+                                                }
+                                            } else {
+                                                res.status(200).send({
+                                                    res: "Declined the invitation"
+                                                });
+                                            }
+                                        } else {
+                                            res.status(400).send({
+                                                err: "Fail to update the friend_request"
+                                            });
+                                        }
+                                    }, function(e) {
+                                        res.status(400).send({
+                                            err: e
+                                        });
+                                    })
+                                } else {
+                                    res.status(404).send({
+                                        err: "Request does not exist"
+                                    });
+                                }
+                            });
+                    }
+                } else {
+                    res.status(404).send({
+                        err: "Sender does not exist"
+                    });
+                }
+            });
+        } else {
+            res.status(404).send({
+                err: "Sender does not exist"
+            });
+        }
+    });
 });
 
 
@@ -718,7 +753,7 @@ router.post('/find-friends', middleware.requireAuthentication, function(req, res
                         err: "Professor Not Found"
                     });
                 }
-            })
+            });
         } else {
             res.status(404).send({
                 err: "Course Not Found"
@@ -759,15 +794,15 @@ router.get('/get-groups', middleware.requireAuthentication, function(req, res) {
  ******************************************************/
 router.post('/create-group', middleware.requireAuthentication, function(req, res) {
     /**
-	* JSON Format:
-		{ "groupName" : "....",
-		  "members":[
-	      {"userName":"..."},
-	      {"userName":"..."},
-	      {"userName":"..."}...
-	     ]
-	 	}
-	*/
+ 	* JSON Format:
+ 		{ "groupName" : "....",
+ 		  "members":[
+ 	      {"userName":"..."},
+ 	      {"userName":"..."},
+ 	      {"userName":"..."}...
+ 	     ]
+ 	 	}
+ 	*/
 
     var body = _.pick(req.body, 'groupName', 'members');
     //Create the group in the database
@@ -823,8 +858,37 @@ router.post('/create-group', middleware.requireAuthentication, function(req, res
 /******************************************************
  *           Leave a Group
  ******************************************************/
+//DELETE /leave-group?groupName=name
+router.delete('/leave-group', middleware.requireAuthentication, function(req, res) {
+    var query = req.query;
+    var groupName;
+    if (query.hasOwnProperty('groupName') && query.groupName.length > 0) {
+        groupName = query.groupName;
+    }
+    db.group.findOne({
+        where: {
+            groupName: groupName
+        }
+    }).then(function(group) {
+        db.user.findOne({
+            where: {
+                id: req.user.get('id')
+            }
+        }).then(function(user) {
+            if (user) {
+                group.removeGroupMember(user);
+                res.status(200).send();
+            } else {
+                res.status(404).send({
+                    err: "The user doesn't exist"
+                });
+            }
+        });
+    }, function(e) {
 
-//TODO
+    });
+
+});
 /******************************************************
  *           Get all memeber names in a Group
  ******************************************************/
@@ -862,8 +926,10 @@ router.get('/get-members', middleware.requireAuthentication, function(req, res) 
                     var name = user.userName + "";
                     groupMembers.push(name);
                     console.log(groupMembers + "@@@@");
-                    if(groupMembers.length==groups.length){
-                        var result = {people:groupMembers};
+                    if (groupMembers.length == groups.length) {
+                        var result = {
+                            people: groupMembers
+                        };
                         res.status(200).json(result);
                     }
 
