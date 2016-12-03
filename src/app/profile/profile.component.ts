@@ -135,7 +135,8 @@ export class Profile implements OnInit {
     unFollow (victim: string) {
         this.friendService.unFriend(this.currentUser.userName, victim).subscribe(
             data => {
-                this.alertService.successWT("Unfollow", "Successfully unfollow" + victim);                
+                this.alertService.successWT("Unfollow", "Successfully unfollow" + victim);
+                this.fetchFriendList();                
             },
             err => {
                 console.log(err);

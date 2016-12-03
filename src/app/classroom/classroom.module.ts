@@ -5,9 +5,10 @@ import { RouterModule } from '@angular/router';
 import { Select2Module } from 'ng2-select2';
 
 import { Classroom } from './classroom.component';
+import { Chat } from './chat/chat.component'
 
 import { MaterialModule } from '@angular/material';
-import { ClassroomService, CourseService, PopupService } from '../_services/index';
+import { ClassroomService, CourseService, PopupService, ChatService } from '../_services/index';
 
 export const routes = [
   {path: '', component: Classroom, pathMatch: 'full'}
@@ -16,7 +17,8 @@ export const routes = [
 @NgModule({
   declarations: [
     // Components / Directives/ Pipes
-    Classroom
+    Classroom,
+    Chat
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ export const routes = [
   providers: [
     ClassroomService, 
     CourseService,
-    PopupService
+    PopupService,
+    ChatService
   ]
 })
 export default class FormModule {

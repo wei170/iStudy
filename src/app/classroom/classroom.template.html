@@ -96,9 +96,8 @@
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}chat" role="tabpanel">
-					<h4>{{room.course}} ChatRoom</h4>
-					<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>
-					<div class="chatContent"></div>
+					<!--<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>-->
+					<chat [roomName]="room.course">Loading Chatroom...</chat>
 				</div>
 			</div>
 		</section>

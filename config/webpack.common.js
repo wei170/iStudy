@@ -235,6 +235,7 @@ module.exports = function(options) {
         /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
         helpers.root('src') // location of your src
       ),
+      new ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
 
       /*
        * Plugin: CopyWebpackPlugin

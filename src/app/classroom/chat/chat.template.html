@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-lg-6">
+            <h1 class="text-center">{{roomName}}</h1>
+
+            <ul class="list-group" id="chat-{{roomName}}">
+                <!-- Messages end up here! -->
+            </ul>
+
+            <form id="message-{{roomName}}" (ngSubmit)="sendMessage()" #chatForm="ngForm">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="message" [(ngModel)]="message" class="form-control"/>
+                        <span class="input-group-addon">
+                            <i (click)="sendMessage()" class="glyphicon glyphicon-comment"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

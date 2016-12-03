@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
-import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService } from '../_services/index';
+import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService, ChatService } from '../_services/index';
 import { Select2Module } from 'ng2-select2';
 declare var jQuery: any;
 
@@ -8,6 +8,7 @@ declare var jQuery: any;
     selector: '[classroom]',
     moduleId: module.id,
     templateUrl: './classroom.template.html',
+    styleUrls: ['./classroom.style.css'],
     encapsulation: ViewEncapsulation.None
 })
 
@@ -40,12 +41,22 @@ export class Classroom implements OnInit {
         private courseService: CourseService,
         private friendService: FriendService,
         private popupService: PopupService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
-        // jQuery('chatContent').load(this.)
         this.getEnrolledClasses();
         this.getAllChoices();
+    }
+
+    ngAfterViewInit() {
+        jQuery(window).resize(function() {
+            jQuery('.widget').height(jQuery(window).height() - 270);
+        });
+
+        jQuery(window).trigger('resize');
+
+        jQuery('.widget').css({overflow: 'auto'});
     }
 
     getEnrolledClasses() {
@@ -94,9 +105,9 @@ export class Classroom implements OnInit {
         );
     }
 
-    chat(room: any) {
-        this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + room.course;
-    }
+    // chat(room: any) {
+    //     this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + room.course;
+    // }
 
     update(room: any) {
         this.getAllStudents(room);
@@ -136,4 +147,5 @@ export class Classroom implements OnInit {
             }
         });
     }
+
 }
