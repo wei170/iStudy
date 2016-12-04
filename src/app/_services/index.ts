@@ -9,3 +9,4 @@ export * from './friend.service';
 export * from './classroom.service';
 export * from './popup.service';
 export * from './chat.service';
+export * from './group.service';

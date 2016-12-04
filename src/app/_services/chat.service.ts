@@ -10,10 +10,10 @@ export class ChatService {
     private socket: any;
     constructor() {
         // need to fix if server changed
-        this.socket = io()
     }
 
     connect(room: string) {
+        this.socket = new io()
         this.socket.emit('joinRoom', {
             name: this.name,
             room: room
@@ -32,10 +32,14 @@ export class ChatService {
         });
     }
 
-    sendMessage(message: string) {
+    sendMessage(room, message: string) {
         this.socket.emit('message', {
             name: this.name,
             text: message
         })
+    }
+
+    disconnect() {
+        this.socket.disconnect();
     }
 }

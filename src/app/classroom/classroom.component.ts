@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit, OnDestroy } from '@angular/core';
 
-import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService, ChatService } from '../_services/index';
-import { Select2Module } from 'ng2-select2';
+import { ClassroomService, CourseService, AlertService, FriendService, ProfileService, PopupService, ChatService, GroupService } from '../_services/index';
 declare var jQuery: any;
 
 @Component({
@@ -17,13 +16,11 @@ export class Classroom implements OnInit {
         name: string;
         active: boolean;
     }];
-    private chatUrl: string;
     private currentUser = JSON.parse(localStorage.getItem('currentUser'));
     private studentList: [{ }];
     private numOfStudents: number;
 
     private languages: any[] = [];
-    // private majors: any[] = [];
     private hobbies: any[] = [];
     private preference: {
         nationality: string;
@@ -34,19 +31,25 @@ export class Classroom implements OnInit {
         "hobby": "",
         "language": ""
     }
+
+    private groupList: any[] = [];
+    private toGroup: boolean = false;
+
     constructor(
         private classroomService: ClassroomService,
         private profileService: ProfileService,
         private alertService: AlertService,
         private courseService: CourseService,
         private friendService: FriendService,
-        private popupService: PopupService
+        private popupService: PopupService,
+        private groupService: GroupService
     ) {
     }
 
     ngOnInit() {
         this.getEnrolledClasses();
         this.getAllChoices();
+        this.getGroups();
     }
 
     ngAfterViewInit() {
@@ -105,10 +108,6 @@ export class Classroom implements OnInit {
         );
     }
 
-    // chat(room: any) {
-    //     this.chatUrl = "/chat.html?name=" + this.currentUser.userName + "&room=" + room.course;
-    // }
-
     update(room: any) {
         this.getAllStudents(room);
         this.getNumOfStudents(room);
@@ -148,4 +147,21 @@ export class Classroom implements OnInit {
         });
     }
 
+    /***************** To make a group ******************/
+    createGroup() {
+        // this.groupService()
+        this.toGroup = false;
+    }
+
+    /*********** Get All Group The User Are In **********/
+    getGroups() {
+        this.groupService.getGroups().subscribe(
+            data => {
+                this.groupList = data;
+            },
+            error => {
+                this.alertService.error("There is an error when getting your group list.");
+            }
+        );
+    }
 }

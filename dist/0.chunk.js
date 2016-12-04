@@ -19990,18 +19990,6 @@ Observable_1.Observable.prototype.debounceTime = debounceTime_1.debounceTime;
 
 /***/ },
 
-/***/ "./node_modules/rxjs/add/operator/filter.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var Observable_1 = __webpack_require__("./node_modules/rxjs/Observable.js");
-var filter_1 = __webpack_require__("./node_modules/rxjs/operator/filter.js");
-Observable_1.Observable.prototype.filter = filter_1.filter;
-//# sourceMappingURL=filter.js.map
-
-/***/ },
-
 /***/ "./node_modules/rxjs/add/operator/toArray.js":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20288,106 +20276,6 @@ function dispatchNext(subscriber) {
     subscriber.debouncedNext();
 }
 //# sourceMappingURL=debounceTime.js.map
-
-/***/ },
-
-/***/ "./node_modules/rxjs/operator/filter.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Subscriber_1 = __webpack_require__("./node_modules/rxjs/Subscriber.js");
-/**
- * Filter items emitted by the source Observable by only emitting those that
- * satisfy a specified predicate.
- *
- * <span class="informal">Like
- * [Array.prototype.filter()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter),
- * it only emits a value from the source if it passes a criterion function.</span>
- *
- * <img src="./img/filter.png" width="100%">
- *
- * Similar to the well-known `Array.prototype.filter` method, this operator
- * takes values from the source Observable, passes them through a `predicate`
- * function and only emits those values that yielded `true`.
- *
- * @example <caption>Emit only click events whose target was a DIV element</caption>
- * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var clicksOnDivs = clicks.filter(ev => ev.target.tagName === 'DIV');
- * clicksOnDivs.subscribe(x => console.log(x));
- *
- * @see {@link distinct}
- * @see {@link distinctKey}
- * @see {@link distinctUntilChanged}
- * @see {@link distinctUntilKeyChanged}
- * @see {@link ignoreElements}
- * @see {@link partition}
- * @see {@link skip}
- *
- * @param {function(value: T, index: number): boolean} predicate A function that
- * evaluates each value emitted by the source Observable. If it returns `true`,
- * the value is emitted, if `false` the value is not passed to the output
- * Observable. The `index` parameter is the number `i` for the i-th source
- * emission that has happened since the subscription, starting from the number
- * `0`.
- * @param {any} [thisArg] An optional argument to determine the value of `this`
- * in the `predicate` function.
- * @return {Observable} An Observable of values from the source that were
- * allowed by the `predicate` function.
- * @method filter
- * @owner Observable
- */
-function filter(predicate, thisArg) {
-    return this.lift(new FilterOperator(predicate, thisArg));
-}
-exports.filter = filter;
-var FilterOperator = (function () {
-    function FilterOperator(predicate, thisArg) {
-        this.predicate = predicate;
-        this.thisArg = thisArg;
-    }
-    FilterOperator.prototype.call = function (subscriber, source) {
-        return source._subscribe(new FilterSubscriber(subscriber, this.predicate, this.thisArg));
-    };
-    return FilterOperator;
-}());
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-var FilterSubscriber = (function (_super) {
-    __extends(FilterSubscriber, _super);
-    function FilterSubscriber(destination, predicate, thisArg) {
-        _super.call(this, destination);
-        this.predicate = predicate;
-        this.thisArg = thisArg;
-        this.count = 0;
-        this.predicate = predicate;
-    }
-    // the try catch block below is left specifically for
-    // optimization and perf reasons. a tryCatcher is not necessary here.
-    FilterSubscriber.prototype._next = function (value) {
-        var result;
-        try {
-            result = this.predicate.call(this.thisArg, value, this.count++);
-        }
-        catch (err) {
-            this.destination.error(err);
-            return;
-        }
-        if (result) {
-            this.destination.next(value);
-        }
-    };
-    return FilterSubscriber;
-}(Subscriber_1.Subscriber));
-//# sourceMappingURL=filter.js.map
 
 /***/ },
 
@@ -23840,9 +23728,9 @@ var ChatService = (function () {
     function ChatService() {
         this.name = JSON.parse(localStorage.getItem('currentUser')).userName;
         // need to fix if server changed
-        this.socket = io();
     }
     ChatService.prototype.connect = function (room) {
+        this.socket = new io();
         this.socket.emit('joinRoom', {
             name: this.name,
             room: room
@@ -23858,11 +23746,14 @@ var ChatService = (function () {
             $messages.append($message);
         });
     };
-    ChatService.prototype.sendMessage = function (message) {
+    ChatService.prototype.sendMessage = function (room, message) {
         this.socket.emit('message', {
             name: this.name,
             text: message
         });
+    };
+    ChatService.prototype.disconnect = function () {
+        this.socket.disconnect();
     };
     ChatService = __decorate([
         core_1.Injectable(), 
@@ -24130,6 +24021,56 @@ exports.FriendService = FriendService;
 
 /***/ },
 
+/***/ "./src/app/_services/group.service.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+var GroupService = (function () {
+    function GroupService(http) {
+        this.http = http;
+        this.headers = new http_1.Headers();
+        this.headers.append('Auth', localStorage.getItem('token'));
+    }
+    /************** Create a group ***************/
+    /**
+    * JSON Format:
+        {
+            "groupName" : "....",
+            "members":[
+                {"userName":"..."},
+                {"userName":"..."},
+                {"userName":"..."}...
+            ]
+        }
+    */
+    GroupService.prototype.createGroup = function (groupName, members) {
+        var url = 'users/create-group';
+        var body = {
+            "groupName": groupName,
+            "members": members
+        };
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    /****************** Get groups *****************/
+    GroupService.prototype.getGroups = function () {
+        var url = 'users/get-groups';
+        return this.http.get(url, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
+    GroupService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], GroupService);
+    return GroupService;
+    var _a;
+}());
+exports.GroupService = GroupService;
+
+
+/***/ },
+
 /***/ "./src/app/_services/index.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -24149,6 +24090,7 @@ __export(__webpack_require__("./src/app/_services/friend.service.ts"));
 __export(__webpack_require__("./src/app/_services/classroom.service.ts"));
 __export(__webpack_require__("./src/app/_services/popup.service.ts"));
 __export(__webpack_require__("./src/app/_services/chat.service.ts"));
+__export(__webpack_require__("./src/app/_services/group.service.ts"));
 
 
 /***/ },
@@ -24959,21 +24901,21 @@ var index_1 = __webpack_require__("./src/app/_guards/index.ts");
 var routes = [
     { path: '', canActivate: [index_1.AuthGuard], component: layout_component_1.Layout, children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', loadChildren: function () { return __webpack_require__.e/* System.import */(12).then(__webpack_require__.bind(null, "./src/app/dashboard/dashboard.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'inbox', loadChildren: function () { return __webpack_require__.e/* System.import */(14).then(__webpack_require__.bind(null, "./src/app/inbox/inbox.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'dashboard', loadChildren: function () { return __webpack_require__.e/* System.import */(11).then(__webpack_require__.bind(null, "./src/app/dashboard/dashboard.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'inbox', loadChildren: function () { return __webpack_require__.e/* System.import */(13).then(__webpack_require__.bind(null, "./src/app/inbox/inbox.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'charts', loadChildren: function () { return __webpack_require__.e/* System.import */(4).then(__webpack_require__.bind(null, "./src/app/charts/charts.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'profile', loadChildren: function () { return __webpack_require__.e/* System.import */(16).then(__webpack_require__.bind(null, "./src/app/profile/profile.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'forms', loadChildren: function () { return __webpack_require__.e/* System.import */(7).then(__webpack_require__.bind(null, "./src/app/forms/forms.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'ui', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/ui-elements/ui-elements.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'extra', loadChildren: function () { return __webpack_require__.e/* System.import */(6).then(__webpack_require__.bind(null, "./src/app/extra/extra.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'tables', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/tables/tables.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'maps', loadChildren: function () { return __webpack_require__.e/* System.import */(11).then(__webpack_require__.bind(null, "./src/app/maps/maps.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'grid', loadChildren: function () { return __webpack_require__.e/* System.import */(15).then(__webpack_require__.bind(null, "./src/app/grid/grid.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'forms', loadChildren: function () { return __webpack_require__.e/* System.import */(6).then(__webpack_require__.bind(null, "./src/app/forms/forms.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'ui', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/ui-elements/ui-elements.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'extra', loadChildren: function () { return __webpack_require__.e/* System.import */(5).then(__webpack_require__.bind(null, "./src/app/extra/extra.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'tables', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/tables/tables.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'maps', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/maps/maps.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'grid', loadChildren: function () { return __webpack_require__.e/* System.import */(14).then(__webpack_require__.bind(null, "./src/app/grid/grid.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'charts', loadChildren: function () { return __webpack_require__.e/* System.import */(4/* duplicate */).then(__webpack_require__.bind(null, "./src/app/charts/charts.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'widgets', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/widgets/widgets.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'widgets', loadChildren: function () { return __webpack_require__.e/* System.import */(7).then(__webpack_require__.bind(null, "./src/app/widgets/widgets.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             // iStudy
-            { path: 'registration', loadChildren: function () { return __webpack_require__.e/* System.import */(13).then(__webpack_require__.bind(null, "./src/app/registration/registration.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'classroom', loadChildren: function () { return __webpack_require__.e/* System.import */(5).then(__webpack_require__.bind(null, "./src/app/classroom/classroom.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } }
+            { path: 'registration', loadChildren: function () { return __webpack_require__.e/* System.import */(12).then(__webpack_require__.bind(null, "./src/app/registration/registration.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'classroom', loadChildren: function () { return __webpack_require__.e/* System.import */(15).then(__webpack_require__.bind(null, "./src/app/classroom/classroom.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } }
         ] }
 ];
 exports.ROUTES = router_1.RouterModule.forChild(routes);

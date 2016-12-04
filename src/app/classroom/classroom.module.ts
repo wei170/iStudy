@@ -8,7 +8,7 @@ import { Classroom } from './classroom.component';
 import { Chat } from './chat/chat.component'
 
 import { MaterialModule } from '@angular/material';
-import { ClassroomService, CourseService, PopupService, ChatService } from '../_services/index';
+import { ClassroomService, CourseService, PopupService, ChatService, GroupService } from '../_services/index';
 
 export const routes = [
   {path: '', component: Classroom, pathMatch: 'full'}
@@ -31,7 +31,8 @@ export const routes = [
     ClassroomService, 
     CourseService,
     PopupService,
-    ChatService
+    ChatService,
+    GroupService
   ]
 })
 export default class FormModule {

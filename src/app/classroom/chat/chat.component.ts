@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, OnDestroy } from '@angular/core';
 
 import { ChatService } from '../../_services/index';
 
@@ -17,13 +17,17 @@ export class Chat implements OnInit {
     }
 
     ngOnInit() {
-        this.connet();
+        this.connect();
         this.getMessage();
     }
 
-    connet() { this.chatService.connect(this.roomName); }
+    ngOnDestroy() {
+        this.chatService.disconnect();
+    }
+
+    connect() { this.chatService.connect(this.roomName); }
 
     getMessage() { this.chatService.getMessage(this.roomName); }
 
-    sendMessage() { this.chatService.sendMessage(this.message); }
+    sendMessage() { this.chatService.sendMessage(this.roomName, this.message); }
 }

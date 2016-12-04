@@ -30,40 +30,56 @@
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}" role="tabpanel">
-					<h4>Numbers Of Classmates: {{numOfStudents}}</h4>
-					<div class="form-group">
+					<form>
+						<h4>Numbers Of Classmates: {{numOfStudents}}</h4>
+						<div class="form-group">
 
-						<h6>Search Friends By</h6>
-						<label><input class="form-control" placeholder="Nationality:"[(ngModel)]="preference.nationality" type="text" name="nationality"></label>
+							<h6>Search Friends By</h6>
+							<label><input class="form-control" placeholder="Nationality:"[(ngModel)]="preference.nationality" type="text" name="nationality"></label>
 
-						<div class="ui sub header">Language</div>
-						<select class="ui fluid normal dropdown" [(ngModel)]="preference.language" name="language" >
-							<option *ngFor="let language of languages" [ngValue]="language.name">{{language.name}}</option>
-						</select>
+							<div class="ui sub header">Language</div>
+							<select class="ui fluid normal dropdown" [(ngModel)]="preference.language" name="language" >
+								<option *ngFor="let language of languages" [ngValue]="language.name">{{language.name}}</option>
+							</select>
 
-						<div class="ui sub header">Hobby</div>
-						<select class="ui fluid normal dropdown" [(ngModel)]="preference.hobby" name="hobby">
-							<option *ngFor="let hobby of hobbies" [ngValue]="hobby.name">{{hobby.name}}</option>                    
-						</select>
-					</div>
-					<div class = "form-group">
-
-						<button (click)="filterStudents(room)" >Search</button>
-
-					</div>
-
-					<md-list>
-						<md-list-item *ngFor="let student of studentList">
-							<img md-list-avatar (click)="popInfo(student.userName)" src="assets/img/avatar.png" alt="...">
-							<span class="pull-xs-right"><button class="btn btn-primary" (click)="sendRequest(student.userName)">Friend</button></span>						
-							<h3 md-line><a (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
-							<p md-line>
-								<span> {{student.email}} </span>
-							</p>
-						</md-list-item>
-					</md-list>
+							<div class="ui sub header">Hobby</div>
+							<select class="ui fluid normal dropdown" [(ngModel)]="preference.hobby" name="hobby">
+								<option *ngFor="let hobby of hobbies" [ngValue]="hobby.name">{{hobby.name}}</option>                    
+							</select>
+						</div>
+						<div class = "form-group">
+							<button class="btn btn-default" (click)="filterStudents(room)" type="submit">Search</button>
+							<button *ngIf="!toGroup" class="btn btn-primary pull-xs-right" (click)="toGroup = true">Create Group</button>
+							<button *ngIf="toGroup" class="btn btn-primary pull-xs-right" (click)="toGroup = false">Cancel</button>
+						</div>
+					</form>
 					<br>
-					<div class="offset-md-4 offset-xs-4 col-md-4 col-xs-4">
+					<form (ngSubmit)="createGroup()" #groupForm="ngForm">
+						<div class="form-group">
+							<md-list>
+								<md-list-item *ngFor="let student of studentList">
+									<img md-list-avatar (click)="popInfo(student.userName)" src="assets/img/avatar.png" alt="...">
+									<span class="pull-xs-right"><button class="btn btn-default" (click)="sendRequest(student.userName)">Add</button></span>
+									<h3 md-line><a href="javascript:void(0)" (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
+									<p md-line>
+										<span> {{student.email}} </span>
+									</p>
+									<md-checkbox align="end" *ngIf="toGroup" [(ngModel)]="student.selected" name="selectStudent"></md-checkbox>
+								</md-list-item>
+							</md-list>
+						</div>
+						<div class="form-group" *ngIf="toGroup">
+							<label for="name">
+								<input type="text" class="form-control" placeholder="Group Name*" name="name" ngModel #name="ngModel" required>
+								<div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+									Group name is required
+								</div>
+							</label>
+							<button class="btn btn-primary pull-xs-right" type="submit" [disabled]="!groupForm.form.valid">Create</button>
+						</div>
+					</form>
+					<br>
+					<div class="offset-md-4 offset-xs-4">
 						<button class="btn btn-danger" (click)="leaveClass(room)">Leave Class</button>
 					</div>
 				</div>
@@ -92,12 +108,24 @@
 					<li class="nav-item" *ngFor="let room of userClasses">
 						<a class="nav-link" data-toggle="tab" href="#{{room.course}}chat" id="home-tab" role="tab">{{room.course}}</a>
 					</li>
+					<li class="nav-item dropdown">
+						<a aria-expanded="true" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
+							Groups <b class="caret"></b>
+						</a>
+						<div class="dropdown-menu">
+							<a aria-controls="dropdown1" aria-expanded="false" class="dropdown-item" data-toggle="tab" *ngFor="let group of groupList" href="#{{group.groupName}}chat" id="dropdown1-tab" role="tab">{{group.groupName}}</a>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}chat" role="tabpanel">
 					<!--<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>-->
-					<chat [roomName]="room.course">Loading Chatroom...</chat>
+					<chat class="col-lg-12" [roomName]="room.course">Loading Chatroom...</chat>
+				</div>
+				<div class="tab-pane clearfix" *ngFor="let group of groupList" id="{{group.groupName}}chat" role="tabpanel">
+					<!--<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>-->
+					<chat class="col-lg-12" [roomName]="group.groupName">Loading Chatroom...</chat>
 				</div>
 			</div>
 		</section>

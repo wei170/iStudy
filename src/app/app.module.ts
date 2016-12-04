@@ -19,6 +19,7 @@ import { ErrorComponent } from './error/error.component';
 
 // iStudy
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { MaterialModule } from '@angular/material';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -47,6 +48,7 @@ type StoreType = {
     FormsModule,
     HttpModule,
     SimpleNotificationsModule,
+    MaterialModule.forRoot()
     RouterModule.forRoot(ROUTES, { useHash: true })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
