@@ -107,21 +107,21 @@
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Language</label>
 							<div class="col-md-7 ">
-								<span class="help-block" *ngFor="let language of myProfile.extra.language"></span>
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New language">
+								<span class="help-block" *ngFor="let language of myProfile.extra.language">{{language.name}}</span>
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New language" [(ngModel)]="newlanguage.name" name="language">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Hobby</label>
 							<div class="col-md-7 ">
-								<span id="helpBlock" class="help-block" *ngFor="let hobby of myProfile.extra.hobby"></span>
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New hobby">
+								<span id="helpBlock" class="help-block" *ngFor="let hobby of myProfile.extra.hobby">{{hobby.name}}</span>
+								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New hobby" [(ngModel)]="newhobby.name" name="hobby">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Birthday</label>
 							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="YY-MM-DD {{myProfile.profile.birthday}}" [(ngModel)]="myProfile.profile.birthday" name="birthday">
+								<input type="date" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="yyyy-MM-dd {{myProfile.profile.birthday}}" [(ngModel)]="myProfile.profile.birthday" name="birthday">
 							</div>
 						</div>
 						<div class="form-group row">

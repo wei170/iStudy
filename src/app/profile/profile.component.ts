@@ -16,18 +16,21 @@ export class Profile implements OnInit {
     private hobbies: any[];
     private majors: any[];
 
+    newlanguage: any = {};
+    newhobby: any= {};
+
     myProfile: {
         extra: {
             language: {
               name: string;
             }[];
             hobby: {
-              name: Date;
+              name: string;
             }[];
         },
         profile: {
             major: string;
-            birthday: string;
+            birthday: Date;
             nationality: string;
             gender: string;
             visibility: boolean;
@@ -39,7 +42,7 @@ export class Profile implements OnInit {
         },
         "profile": {
             "major": "Unknown",
-            "birthday": "",
+            "birthday": new Date(),
             "nationality": "Unknown",
             "gender": "Unknown",
             "visibility": true,
@@ -111,12 +114,15 @@ export class Profile implements OnInit {
     /**************** Method-kind *****************/
     /* Edit Profile */
     editProfile() {
+        if (this.newlanguage.name) this.myProfile.extra.language.push(this.newlanguage);
+        if (this.newhobby.name) this.myProfile.extra.hobby.push(this.newhobby);
         this.profileService.editProfile(this.currentUser.userName, this.myProfile)
         .subscribe (
             data => {
                 // successfully edit the profile
                 this.toEdit = false;
                 this.alertService.success('Successfully edit the profile');
+                this.fetchProfile();
             },
             error => {
                 this.alertService.error(JSON.parse(error._body).err);
