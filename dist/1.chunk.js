@@ -11931,6 +11931,11 @@ var GroupService = (function () {
         var url = 'users/get-groups';
         return this.http.get(url, { headers: this.headers }).map(function (res) { return res.json(); });
     };
+    /***************** Leave a group *****************/
+    GroupService.prototype.leaveGroup = function (name) {
+        var url = 'users/leave-group?groupName=' + name;
+        return this.http.delete(url, { headers: this.headers }).map(function (res) { return res.json(); });
+    };
     GroupService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
@@ -12364,7 +12369,7 @@ var Login = (function () {
         this.loading = true;
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(function (data) {
-            _this.router.navigate(['/app/dashboard']);
+            _this.router.navigate(['/app/']);
         }, function (error) {
             _this.alertService.error("There is an error of your email or your password!");
             _this.loading = false;

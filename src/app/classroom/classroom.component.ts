@@ -54,7 +54,7 @@ export class Classroom implements OnInit {
 
     ngAfterViewInit() {
         jQuery(window).resize(function() {
-            jQuery('.widget').height(jQuery(window).height() - 270);
+            jQuery('.widget').height(jQuery(window).height() - 250);
         });
 
         jQuery(window).trigger('resize');
@@ -119,7 +119,7 @@ export class Classroom implements OnInit {
                 this.alertService.success("Sent Request To " + reciever);
             },
             error => {
-                this.alertService.error("Cannot add yourself!");
+                this.alertService.error(JSON.parse(error._body));
             }
         );
     }

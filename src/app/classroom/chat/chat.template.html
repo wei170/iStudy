@@ -1,7 +1,9 @@
 <div class="container">
     <div class="row">
         <div>
-            <h3 class="text-center">{{roomName}} Random Chat</h3>
+            <h3 class="text-center">{{roomName}} chat
+                <button *ngIf="type === 2" class="btn btn-xs btn-link pull-xs-right"><i class="glyphicon glyphicon-off" (click)="leaveGroup(roomName)"></i></button>
+            </h3>
 
             <ul class="list-group" id="chat-{{roomName}}">
                 <!-- Messages end up here! -->

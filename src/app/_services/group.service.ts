@@ -36,4 +36,10 @@ export class GroupService {
         let url = 'users/get-groups';
         return this.http.get(url, { headers: this.headers }).map((res: Response) => res.json());
     }
+
+    /***************** Leave a group *****************/
+    leaveGroup(name: string) {
+        let url = 'users/leave-group?groupName=' + name;
+        return this.http.delete(url, { headers: this.headers }).map((res: Response) => res.json());
+    }
 }

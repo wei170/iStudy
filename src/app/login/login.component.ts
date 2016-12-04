@@ -31,7 +31,7 @@ export class Login implements OnInit {
       this.authenticationService.login(this.model.email, this.model.password)
           .subscribe(
               data => {
-                  this.router.navigate(['/app/dashboard']);
+                  this.router.navigate(['/app/']);
               },
               error => {
                 this.alertService.error("There is an error of your email or your password!");
