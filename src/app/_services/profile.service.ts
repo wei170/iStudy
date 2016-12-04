@@ -31,6 +31,7 @@ export class ProfileService {
 	 * 		"birthday": "...",
 	 *		"hobby": "...",
 	 * 		"visibility": "..."
+     *      "nationality": "..."
 	 * }
 	 */
     editProfile(userName: string, profile: any) {
@@ -45,7 +46,8 @@ export class ProfileService {
             "gender": profile.profile.gender,
             "nation": profile.profile.nationality,
             "language": profile.extra.language,
-            "hobby": profile.extra.hobby
+            "hobby": profile.extra.hobby,
+            "nationality": profile.profile.nationality
         };
         return this.http.post(url, body, {
             headers: headers

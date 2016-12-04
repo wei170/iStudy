@@ -35,6 +35,8 @@ export class Classroom implements OnInit {
     private groupList: any[] = [];
     private toGroup: boolean = false;
 
+    private memberList: Array<any> = [];
+
     constructor(
         private classroomService: ClassroomService,
         private profileService: ProfileService,
@@ -150,7 +152,12 @@ export class Classroom implements OnInit {
     /***************** To make a group ******************/
     createGroup() {
         // this.groupService()
-        this.toGroup = false;
+        // for (let s in this.studentList) {
+        //     if (s.selected) {
+
+        //     }
+        // }
+        // this.toGroup = false;
     }
 
     /*********** Get All Group The User Are In **********/

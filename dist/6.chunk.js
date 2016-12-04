@@ -219,6 +219,7 @@ var Classroom = (function () {
         };
         this.groupList = [];
         this.toGroup = false;
+        this.memberList = [];
     }
     Classroom.prototype.ngOnInit = function () {
         this.getEnrolledClasses();
@@ -300,7 +301,11 @@ var Classroom = (function () {
     /***************** To make a group ******************/
     Classroom.prototype.createGroup = function () {
         // this.groupService()
-        this.toGroup = false;
+        // for (let s in this.studentList) {
+        //     if (s.selected) {
+        //     }
+        // }
+        // this.toGroup = false;
     };
     /*********** Get All Group The User Are In **********/
     Classroom.prototype.getGroups = function () {

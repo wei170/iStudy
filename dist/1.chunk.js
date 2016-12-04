@@ -12141,6 +12141,7 @@ var ProfileService = (function () {
      * 		"birthday": "...",
      *		"hobby": "...",
      * 		"visibility": "..."
+     *      "nationality": "..."
      * }
      */
     ProfileService.prototype.editProfile = function (userName, profile) {
@@ -12155,7 +12156,8 @@ var ProfileService = (function () {
             "gender": profile.profile.gender,
             "nation": profile.profile.nationality,
             "language": profile.extra.language,
-            "hobby": profile.extra.hobby
+            "hobby": profile.extra.hobby,
+            "nationality": profile.profile.nationality
         };
         return this.http.post(url, body, {
             headers: headers
