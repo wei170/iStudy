@@ -30,7 +30,7 @@ export class Profile implements OnInit {
         },
         profile: {
             major: string;
-            birthday: Date;
+            birthday: string;
             nationality: string;
             gender: string;
             visibility: boolean;
@@ -42,7 +42,7 @@ export class Profile implements OnInit {
         },
         "profile": {
             "major": "Unknown",
-            "birthday": new Date(),
+            "birthday": "",
             "nationality": "Unknown",
             "gender": "Unknown",
             "visibility": true,

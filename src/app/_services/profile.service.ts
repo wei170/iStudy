@@ -14,13 +14,19 @@ export class ProfileService {
      */
     getProfile(hostName: string, requester: string) {
         let profileUrl = '/profile';
-        let body = { "hostName": hostName, "requester": requester};
+        let body = { "hostName": hostName, "requester": requester };
         let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post(profileUrl, body, {
             headers: headers
-        })
-        .map((res: Response) => res.json());
+        }).map(
+            (res: Response) => {
+                if (res.profile.birthday && res.profile.birthday != "") {
+                    res.profile.birthday = res.profile.birthday.substring(0, 10);
+                }
+                return res;
+            }
+            );
     }
 
     /**
@@ -52,21 +58,21 @@ export class ProfileService {
         return this.http.post(url, body, {
             headers: headers
         })
-        .map((res: Response) => res.json());
+            .map((res: Response) => res.json());
     }
 
     getAllLanguages() {
         let url = '/profile/languages';
         let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        return this.http.get(url, {headers: headers}).map((res: Response) => res.json());
+        return this.http.get(url, { headers: headers }).map((res: Response) => res.json());
     }
 
     getAllHobbies() {
         let url = '/profile/hobbies';
         let headers = new Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        return this.http.get(url, {headers: headers}).map((res: Response) => res.json());
+        return this.http.get(url, { headers: headers }).map((res: Response) => res.json());
     }
 
     getAllMajors() {

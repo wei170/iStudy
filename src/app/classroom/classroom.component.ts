@@ -33,8 +33,8 @@ export class Classroom implements OnInit {
     }
 
     private groupList: any[] = [];
+    private groupName: string;
     private toGroup: boolean = false;
-
     private memberList: Array<any> = [];
 
     constructor(
@@ -49,9 +49,9 @@ export class Classroom implements OnInit {
     }
 
     ngOnInit() {
-        this.getEnrolledClasses();
         this.getAllChoices();
         this.getGroups();
+        this.getEnrolledClasses();
     }
 
     ngAfterViewInit() {
@@ -121,7 +121,7 @@ export class Classroom implements OnInit {
                 this.alertService.success("Sent Request To " + reciever);
             },
             error => {
-                this.alertService.error(JSON.parse(error._body));
+                this.alertService.error(JSON.parse(error._body).err);
             }
         );
     }
@@ -151,13 +151,19 @@ export class Classroom implements OnInit {
 
     /***************** To make a group ******************/
     createGroup() {
-        // this.groupService()
-        // for (let s in this.studentList) {
-        //     if (s.selected) {
-
-        //     }
-        // }
-        // this.toGroup = false;
+        this.studentList.filter(_ => _.selected).forEach(_ => this.memberList.push({"userName": _.userName});
+        console.log(this.memberList);
+        this.groupService.createGroup(this.groupName, this.memberList).subscribe(
+            data => {
+                this.alertService.success("Sucessfully create a group!");
+            },
+            error => {
+                this.alertService.error(JSON.parse(error._body).err.errors[0].message);
+            }
+        );
+        this.toGroup = false;
+        this.memberList = [];
+        this.groupName = "";
     }
 
     /*********** Get All Group The User Are In **********/

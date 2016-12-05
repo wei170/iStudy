@@ -16,6 +16,15 @@ export class PopupService {
         // this.profile = {};
         this.profileService.getProfile(hostName,  JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
             data => {
+                let languages: string = "";
+                let hobbies: string = "";
+                for (let lan of data.extra.language) {
+                    console.log(lan);
+                    languages += lan.name;
+                }
+                for (let hob of data.extra.hobby) {
+                    hobbies += hob.name;
+                }
                 if (data.profile) {
                     this.modal.alert()
                         .size('lg')
@@ -23,13 +32,13 @@ export class PopupService {
                         .title('User Public Profile')
                         .body(
                             '<h4>'+hostName+'</h4>'+
-                            '<p>'+ data.extra.language + '</p>'+
-                            '<p>'+ data.extra.hobby +'</p>'+
-                            '<p>'+ data.profile.major +'</p>'+
-                            '<p>'+ data.profile.birthday +'</p>'+
-                            '<p>'+ data.profile.nationality +'</p>'+
-                            '<p>'+ data.profile.gender +'</p>'+
-                            '<p>'+ data.profile.visibility +'</p>'          
+                            '<p> <strong>Language:</strong>&nbsp;'+ languages + '</p>'+
+                            '<p> <strong>Hobby:</strong>&nbsp;'+ hobbies +'</p>'+
+                            '<p> <strong>Majory:</strong>&nbsp;'+ data.profile.major +'</p>'+
+                            '<p> <strong>Birthday:</strong>&nbsp;'+ data.profile.birthday +'</p>'+
+                            '<p> <strong>Nationality:</strong>&nbsp;'+ data.profile.nationality +'</p>'+
+                            '<p> <strong>Gender:</strong>&nbsp;'+ data.profile.gender +'</p>'+
+                            '<p> <strong>Visibility:</strong>&nbsp;'+ data.profile.visibility +'</p>'          
                         )
                         .open();
                 } else {
