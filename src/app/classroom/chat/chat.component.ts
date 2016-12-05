@@ -13,6 +13,7 @@ export class Chat implements OnInit {
     @Input() roomName: string;
     @Input() type: number; // 1: class Rnadom chat; 2: group chat
     message: any;
+    private memberList: any[] = [];
 
     constructor(
         private chatService: ChatService,
@@ -23,6 +24,7 @@ export class Chat implements OnInit {
     ngOnInit() {
         this.connect();
         this.getMessage();
+        this.getMembers();
     }
 
     ngOnDestroy() {
@@ -33,14 +35,31 @@ export class Chat implements OnInit {
 
     getMessage() { this.chatService.getMessage(this.roomName); }
 
-    sendMessage() { this.chatService.sendMessage(this.roomName, this.message); }
+    sendMessage() { 
+        this.chatService.sendMessage(this.roomName, this.message); 
+        this.message = "";
+    }
 
     /************** Leave a group ***************/
-    leaveGroup(groupname: string) {
-        this.groupService.leaveGroup(groupname).subscribe(
+    leaveGroup() {
+        this.groupService.leaveGroup(this.roomName).subscribe(
             data => {
-                this.alertService.success("Sucessfully leave " + groupname + " .");
+                this.alertService.success("Sucessfully leave " + this.roomName + " .");
             }
         );
+    }
+
+    /************** Get memberlist ***************/
+    getMembers() {
+        if (this.type === 2) {
+            this.groupService.getMembers(this.roomName).subscribe(
+                data => {
+                    this.memberList = data.people;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+        }
     }
 }

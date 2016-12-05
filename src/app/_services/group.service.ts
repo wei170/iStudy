@@ -28,7 +28,7 @@ export class GroupService {
             "groupName": groupName,
             "members": members
         };
-        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
+        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res);
     }
 
     /****************** Get groups *****************/
@@ -41,5 +41,11 @@ export class GroupService {
     leaveGroup(name: string) {
         let url = 'users/leave-group?groupName=' + name;
         return this.http.delete(url, { headers: this.headers }).map((res: Response) => res);
+    }
+
+    /************** Get Members ***************/
+    getMembers(groupname: string) {
+        let url = 'users/get-members?groupName=' + groupname;
+        return this.http.get(url, { headers: this.headers }).map((res: Response) => res.json());
     }
 }

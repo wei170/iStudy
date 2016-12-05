@@ -145,23 +145,39 @@ var Chat = (function () {
         this.chatService = chatService;
         this.groupService = groupService;
         this.alertService = alertService;
+        this.memberList = [];
     }
     Chat.prototype.ngOnInit = function () {
         this.connect();
         this.getMessage();
+        this.getMembers();
     };
     Chat.prototype.ngOnDestroy = function () {
         this.chatService.disconnect();
     };
     Chat.prototype.connect = function () { this.chatService.connect(this.roomName); };
     Chat.prototype.getMessage = function () { this.chatService.getMessage(this.roomName); };
-    Chat.prototype.sendMessage = function () { this.chatService.sendMessage(this.roomName, this.message); };
+    Chat.prototype.sendMessage = function () {
+        this.chatService.sendMessage(this.roomName, this.message);
+        this.message = "";
+    };
     /************** Leave a group ***************/
-    Chat.prototype.leaveGroup = function (groupname) {
+    Chat.prototype.leaveGroup = function () {
         var _this = this;
-        this.groupService.leaveGroup(groupname).subscribe(function (data) {
-            _this.alertService.success("Sucessfully leave " + groupname + " .");
+        this.groupService.leaveGroup(this.roomName).subscribe(function (data) {
+            _this.alertService.success("Sucessfully leave " + _this.roomName + " .");
         });
+    };
+    /************** Get memberlist ***************/
+    Chat.prototype.getMembers = function () {
+        var _this = this;
+        if (this.type === 2) {
+            this.groupService.getMembers(this.roomName).subscribe(function (data) {
+                _this.memberList = data.people;
+            }, function (error) {
+                console.log(error);
+            });
+        }
     };
     __decorate([
         core_1.Input(), 
@@ -191,7 +207,7 @@ exports.Chat = Chat;
 /***/ "./src/app/classroom/chat/chat.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div>\n            <h3 class=\"text-center\">{{roomName}} chat\n                <button *ngIf=\"type === 2\" class=\"btn btn-xs btn-link pull-xs-right\" (click)=\"leaveGroup(roomName)\"><i class=\"glyphicon glyphicon-off\"></i></button>\n            </h3>\n\n            <ul class=\"list-group\" id=\"chat-{{roomName}}\">\n                <!-- Messages end up here! -->\n            </ul>\n\n            <form id=\"message-{{roomName}}\" (ngSubmit)=\"sendMessage()\" #chatForm=\"ngForm\">\n                <div class=\"form-group\">\n                    <div class=\"input-group\">\n                        <input type=\"text\" name=\"message\" [(ngModel)]=\"message\" class=\"form-control\"/>\n                        <span class=\"input-group-addon\">\n                            <i (click)=\"sendMessage()\" class=\"glyphicon glyphicon-comment\"></i>\n                        </span>\n                    </div>\n                </div>\n            </form>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-lg-10 col-md-10 col-sm-9\">\n            <h3 class=\"text-center\">{{roomName}} chat\n                <button *ngIf=\"type === 2\" class=\"btn btn-xs btn-link pull-xs-right\" (click)=\"leaveGroup()\"><i class=\"glyphicon glyphicon-off\"></i></button>\n            </h3>\n\n            <ul class=\"list-group\" id=\"chat-{{roomName}}\">\n                <!-- Messages end up here! -->\n            </ul>\n\n            <form id=\"message-{{roomName}}\" (ngSubmit)=\"sendMessage()\" #chatForm=\"ngForm\">\n                <div class=\"form-group\">\n                    <div class=\"input-group\">\n                        <input type=\"text\" name=\"message\" [(ngModel)]=\"message\" class=\"form-control\"/>\n                        <button class=\"input-group-addon\">\n                            <i (click)=\"sendMessage()\" class=\"glyphicon glyphicon-comment\"></i>\n                        </button>\n                    </div>\n                </div>\n            </form>\n        </div>\n\n        <div class=\"col-lg-2 col-md-2 col-sm-3\" *ngIf=\"type === 2\">\n            <ul>\n                <li *ngFor=\"let mem of memberList\">{{mem}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
 
 /***/ },
 
@@ -304,9 +320,9 @@ var Classroom = (function () {
     Classroom.prototype.createGroup = function () {
         var _this = this;
         this.studentList.filter(function (_) { return _.selected; }).forEach(function (_) { return _this.memberList.push({ "userName": _.userName }); });
-        console.log(this.memberList);
         this.groupService.createGroup(this.groupName, this.memberList).subscribe(function (data) {
             _this.alertService.success("Sucessfully create a group!");
+            _this.getGroups();
         }, function (error) {
             _this.alertService.error(JSON.parse(error._body).err.errors[0].message);
         });

@@ -24052,7 +24052,7 @@ var GroupService = (function () {
             "groupName": groupName,
             "members": members
         };
-        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
+        return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res; });
     };
     /****************** Get groups *****************/
     GroupService.prototype.getGroups = function () {
@@ -24063,6 +24063,11 @@ var GroupService = (function () {
     GroupService.prototype.leaveGroup = function (name) {
         var url = 'users/leave-group?groupName=' + name;
         return this.http.delete(url, { headers: this.headers }).map(function (res) { return res; });
+    };
+    /************** Get Members ***************/
+    GroupService.prototype.getMembers = function (groupname) {
+        var url = 'users/get-members?groupName=' + groupname;
+        return this.http.get(url, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     GroupService = __decorate([
         core_1.Injectable(), 

@@ -152,10 +152,10 @@ export class Classroom implements OnInit {
     /***************** To make a group ******************/
     createGroup() {
         this.studentList.filter(_ => _.selected).forEach(_ => this.memberList.push({"userName": _.userName});
-        console.log(this.memberList);
         this.groupService.createGroup(this.groupName, this.memberList).subscribe(
             data => {
                 this.alertService.success("Sucessfully create a group!");
+                this.getGroups();
             },
             error => {
                 this.alertService.error(JSON.parse(error._body).err.errors[0].message);

@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
-        <div>
+        <div class="col-lg-10 col-md-10 col-sm-9">
             <h3 class="text-center">{{roomName}} chat
-                <button *ngIf="type === 2" class="btn btn-xs btn-link pull-xs-right" (click)="leaveGroup(roomName)"><i class="glyphicon glyphicon-off"></i></button>
+                <button *ngIf="type === 2" class="btn btn-xs btn-link pull-xs-right" (click)="leaveGroup()"><i class="glyphicon glyphicon-off"></i></button>
             </h3>
 
             <ul class="list-group" id="chat-{{roomName}}">
@@ -13,12 +13,18 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input type="text" name="message" [(ngModel)]="message" class="form-control"/>
-                        <span class="input-group-addon">
+                        <button class="input-group-addon">
                             <i (click)="sendMessage()" class="glyphicon glyphicon-comment"></i>
-                        </span>
+                        </button>
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-3" *ngIf="type === 2">
+            <ul>
+                <li *ngFor="let mem of memberList">{{mem}}</li>
+            </ul>
         </div>
     </div>
 </div>
