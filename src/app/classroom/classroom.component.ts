@@ -32,7 +32,7 @@ export class Classroom implements OnInit {
         "language": ""
     }
 
-    private groupList: any[] = [];
+    private groupList: Array<any> = [];
     private groupName: string;
     private toGroup: boolean = false;
     private memberList: Array<any> = [];

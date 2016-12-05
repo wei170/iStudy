@@ -11934,7 +11934,7 @@ var GroupService = (function () {
     /***************** Leave a group *****************/
     GroupService.prototype.leaveGroup = function (name) {
         var url = 'users/leave-group?groupName=' + name;
-        return this.http.delete(url, { headers: this.headers }).map(function (res) { return res.json(); });
+        return this.http.delete(url, { headers: this.headers }).map(function (res) { return res; });
     };
     GroupService = __decorate([
         core_1.Injectable(), 
@@ -12142,6 +12142,7 @@ var ProfileService = (function () {
         return this.http.post(profileUrl, body, {
             headers: headers
         }).map(function (res) {
+            res = res.json();
             if (res.profile.birthday && res.profile.birthday != "") {
                 res.profile.birthday = res.profile.birthday.substring(0, 10);
             }

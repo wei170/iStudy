@@ -37,7 +37,10 @@ export class Chat implements OnInit {
 
     /************** Leave a group ***************/
     leaveGroup(groupname: string) {
-        this.groupService.leaveGroup(groupname);
-        this.alertService.success("Sucessfully leave " + groupname + " .");
+        this.groupService.leaveGroup(groupname).subscribe(
+            data => {
+                this.alertService.success("Sucessfully leave " + groupname + " .");
+            }
+        );
     }
 }

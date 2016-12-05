@@ -94,7 +94,7 @@
 					Chat Rooms
 				</h4>
 				<div class="widget-controls">
-					<a class="" data-original-title="Reload" data-widgster="load" href="#" (click)="getEnrolledClasses() && getGroups()" title=""><i class="fa fa-refresh"></i></a>
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" (click)="getEnrolledClasses()" title=""><i class="fa fa-refresh"></i></a>
 					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
 					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
 					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>
@@ -108,14 +108,6 @@
 					<li class="nav-item" *ngFor="let room of userClasses">
 						<a class="nav-link" data-toggle="tab" href="#{{room.course}}chat" id="home-tab" role="tab">{{room.course}}</a>
 					</li>
-					<li class="nav-item dropdown pull-xs-right">
-						<a aria-expanded="true" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-							Groups <b class="caret"></b>
-						</a>
-						<div class="dropdown-menu">
-							<a aria-expanded="false" class="dropdown-item" data-toggle="tab" *ngFor="let group of groupList" href="#{{group.groupName}}chat" id="dropdown-tab" role="tab">{{group.groupName}}</a>
-						</div>
-					</li>
 				</ul>
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
@@ -123,6 +115,33 @@
 					<!--<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>-->
 					<chat class="col-lg-12" [type]="1" [roomName]="room.course">Loading Chatroom...</chat>
 				</div>
+			</div>
+		</section>
+	</div>
+	<div class="col-lg-6 widget-container ui-sortable">
+		<section class="widget" widget="">
+			<header class="ui-sortable-handle">
+				<h4>
+					Group Chat
+				</h4>
+				<div class="widget-controls">
+					<a class="" data-original-title="Reload" data-widgster="load" href="#" (click)="getGroups()" title=""><i class="fa fa-refresh"></i></a>
+					<a data-original-title="Expand" data-widgster="expand" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a class="" data-original-title="Collapse" data-widgster="collapse" href="#" title=""><i class="glyphicon glyphicon-chevron-down"></i></a>
+					<a class="" data-original-title="Full Screen" data-widgster="fullscreen" href="#" title=""><i class="glyphicon glyphicon-fullscreen"></i></a>
+					<a data-original-title="Restore" data-widgster="restore" href="#" style="display: none;" title=""><i class="glyphicon glyphicon-resize-small"></i></a>
+					<a data-original-title="Close" data-widgster="close" href="#" title=""><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</header>
+			<br>
+			<div class="clearfix">
+				<ul class="nav nav-tabs pull-xs-left" id="myTab" role="tablist">
+					<li class="nav-item" *ngFor="let group of groupList">
+						<a class="nav-link" data-toggle="tab" href="#{{group.groupName}}chat" id="home-tab" role="tab">{{group.groupName}}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let group of groupList" id="{{group.groupName}}chat" role="tabpanel">
 					<!--<button (click)="chat(room)"><a href="{{chatUrl}}">Chat Room</a></button>-->
 					<chat class="col-lg-12" [type]="2" [roomName]="group.groupName">Loading Chatroom...</chat>
