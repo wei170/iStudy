@@ -11613,11 +11613,6 @@ var ChatService = (function () {
         var _this = this;
         this.socket.on('message', function (message) {
             var momentTimestamp = moment.utc(message.timestamp);
-            // let $messages = jQuery('#chat-'+ room);
-            // let $message = jQuery('<li class="list-group-item"></li>');
-            // $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
-            // $message.append('<p>' + message.text + '</p>');
-            // $messages.append($message);
             _this.messageList.push({
                 "name": message.name,
                 "time": momentTimestamp.local().format('h:mm:ss a'),

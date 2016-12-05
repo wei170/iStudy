@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { ChatService } from './chat.service';
+import { ChatService, FriendService } from '../../_services/index';
 declare var jQuery: any;
 declare var Hammer: any;
 
@@ -10,19 +10,24 @@ declare var Hammer: any;
 export class ChatSidebar implements OnInit {
   conversations: ChatService;
   newMessage: string = '';
-  activeConversation: any;
   chatMessageOpened: boolean = false;
+  friendList: any[];
+  activeFriendName: string;
   $el: any;
 
-  constructor(el: ElementRef) {
+  constructor(el: ElementRef, private friendService: FriendService) {
     this.conversations = new ChatService();
-
+    this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
+      data => { 
+        this.friendList = data;
+      }
+    );
     this.$el = jQuery(el.nativeElement);
-    this.activeConversation = this.conversations.todayConversations[0];
+    this.activeFriendName = "";
   }
 
-  openConversation(conversation): void {
-    this.activeConversation = conversation;
+  openConversation(f): void {
+    this.activeFriendName = f.userName;
     this.chatMessageOpened = true;
   }
 

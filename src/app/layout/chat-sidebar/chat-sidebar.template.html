@@ -13,31 +13,17 @@
   <div class="chat-sidebar-contacts chat-sidebar-panel" [ngClass]="{'open': !chatMessageOpened}">
     <h5 class="sidebar-nav-title">Today</h5>
     <div class="list-group chat-sidebar-user-group">
-      <a *ngFor="let conversation of conversations.todayConversations | SearchPipe : searchText"
-         (click)="deactivateLink($event); openConversation(conversation)"
+      <!--| SearchPipe : searchText-->
+      <a *ngFor="let f of friendList"
+         (click)="deactivateLink($event); openConversation(f)"
          class="list-group-item">
-        <i class="fa fa-circle text-{{conversation.status}} pull-right"></i>
+        <i class="fa fa-circle text-success pull-right"></i>
           <span class="thumb-sm pull-left mr">
-              <img class="img-circle" src="{{conversation.image}}" alt="...">
+              <img class="img-circle" src="assets/img/avatar.png" alt="...">
           </span>
-        <h6 class="message-sender">{{conversation.name}}</h6>
-        <p class="message-preview">{{conversation.lastMessage}}</p>
+        <h6 class="message-sender">{{f.userName}}</h6>
+        <p class="message-preview">Test</p>
       </a>
     </div>
-
-    <h5 class="sidebar-nav-title">Last Week</h5>
-    <div class="list-group chat-sidebar-user-group">
-      <a *ngFor="let conversation of conversations.lastWeekConversations | SearchPipe : searchText"
-         (click)="deactivateLink($event); openConversation(conversation)"
-         class="list-group-item">
-        <i class="fa fa-circle text-{{conversation.status}} pull-right"></i>
-          <span class="thumb-sm pull-left mr">
-              <img class="img-circle" src="{{conversation.image}}" alt="...">
-          </span>
-        <h6 class="message-sender">{{conversation.name}}</h6>
-        <p class="message-preview">{{conversation.lastMessage}}</p>
-      </a>
-    </div>
-  </div>
-  <div chat-message [searchMessage]="searchText" [conversation]="activeConversation" [open]="chatMessageOpened" (chatMessageClosed)="chatMessageOpened = false"></div>
+  <div chat-message [roomName]="activeFriendName" [open]="chatMessageOpened" (chatMessageClosed)="chatMessageOpened = false"></div>
 </div>

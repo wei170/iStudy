@@ -23741,11 +23741,6 @@ var ChatService = (function () {
         var _this = this;
         this.socket.on('message', function (message) {
             var momentTimestamp = moment.utc(message.timestamp);
-            // let $messages = jQuery('#chat-'+ room);
-            // let $message = jQuery('<li class="list-group-item"></li>');
-            // $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
-            // $message.append('<p>' + message.text + '</p>');
-            // $messages.append($message);
             _this.messageList.push({
                 "name": message.name,
                 "time": momentTimestamp.local().format('h:mm:ss a'),
@@ -24426,28 +24421,33 @@ exports.UserService = UserService;
 "use strict";
 "use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var ChatMessage = (function () {
     function ChatMessage() {
         this.chatMessageClosed = new core_1.EventEmitter();
         this.newMessage = '';
+        this.userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        this.memberList = [];
+        this.chatService = new index_1.ChatService();
     }
     ChatMessage.prototype.closeChatArea = function () {
         this.open = false;
         this.chatMessageClosed.emit('');
     };
-    ChatMessage.prototype.addMessage = function (message) {
-        if (this.newMessage) {
-            (this.conversation.messages || (this.conversation.messages = [])).push({
-                text: this.newMessage,
-                fromMe: true
-            });
-        }
-        this.newMessage = '';
+    ChatMessage.prototype.ngOnInit = function () {
+        this.connect();
+        this.getMessage();
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object)
-    ], ChatMessage.prototype, "conversation", void 0);
+    ChatMessage.prototype.ngOnDestroy = function () {
+        this.chatService.disconnect();
+    };
+    ChatMessage.prototype.connect = function () { this.chatService.connect(this.roomName); };
+    ChatMessage.prototype.getMessage = function () { this.chatService.getMessage(this.roomName); };
+    ChatMessage.prototype.sendMessage = function () {
+        console.log(this.newMessage);
+        this.chatService.sendMessage(this.roomName, this.newMessage);
+        this.newMessage = "";
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
@@ -24455,7 +24455,7 @@ var ChatMessage = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)
-    ], ChatMessage.prototype, "searchMessage", void 0);
+    ], ChatMessage.prototype, "roomName", void 0);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
@@ -24477,7 +24477,7 @@ exports.ChatMessage = ChatMessage;
 /***/ "./src/app/layout/chat-sidebar/chat-message/chat-message.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"chat-sidebar-chat chat-sidebar-panel\" [ngClass]=\"{'open': open}\">\r\n  <h6 class=\"title\">\r\n    <a (click)=\"closeChatArea()\">\r\n      <i class=\"fa fa-angle-left mr-xs\"></i>\r\n      {{conversation.name}}\r\n    </a>\r\n  </h6>\r\n  <ul class=\"message-list\" >\r\n    <li *ngFor=\"let message of conversation.messages | SearchPipe : searchMessage\" class=\"message\" [ngClass]=\"{'from-me': message.fromMe}\">\r\n      <span class=\"thumb-sm\">\r\n          <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\r\n      </span>\r\n      <div class=\"message-body\">{{message.text}}</div>\r\n    </li>\r\n  </ul>\r\n</div>\r\n<footer class=\"chat-sidebar-footer form-group\" [ngClass]=\"{'open': open}\">\r\n  <input class=\"form-control input-dark fs-mini\"\r\n         [(ngModel)]=\"newMessage\" (keyup.enter)=\"addMessage()\"\r\n         type=\"text\" placeholder=\"Type your message\">\r\n</footer>\r\n"
+module.exports = "<div class=\"chat-sidebar-chat chat-sidebar-panel\" [ngClass]=\"{'open': open}\">\r\n  <h6 class=\"title\">\r\n    <a (click)=\"closeChatArea()\">\r\n      <i class=\"fa fa-angle-left mr-xs\"></i>\r\n      {{roomName}}\r\n    </a>\r\n  </h6>\r\n  <ul class=\"message-list\" >\r\n    <!--| SearchPipe : searchMessage-->\r\n    <li *ngFor=\"let message of chatService.messageList\" class=\"message\" [ngClass]=\"{'from-me': message.name === userName}\">\r\n      <span class=\"thumb-sm\">\r\n          <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\r\n      </span>\r\n      <div class=\"message-body\">{{message.message}}</div>\r\n    </li>\r\n  </ul>\r\n</div>\r\n<footer class=\"chat-sidebar-footer form-group\" [ngClass]=\"{'open': open}\">\r\n  <input class=\"form-control input-dark fs-mini\"\r\n         [(ngModel)]=\"newMessage\" (keyup.enter)=\"sendMessage()\"\r\n         type=\"text\" placeholder=\"Type your message\">\r\n</footer>\r\n"
 
 /***/ },
 
@@ -24487,17 +24487,22 @@ module.exports = "<div class=\"chat-sidebar-chat chat-sidebar-panel\" [ngClass]=
 "use strict";
 /* WEBPACK VAR INJECTION */(function(jQuery, Hammer) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var chat_service_1 = __webpack_require__("./src/app/layout/chat-sidebar/chat.service.ts");
+var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var ChatSidebar = (function () {
-    function ChatSidebar(el) {
+    function ChatSidebar(el, friendService) {
+        var _this = this;
+        this.friendService = friendService;
         this.newMessage = '';
         this.chatMessageOpened = false;
-        this.conversations = new chat_service_1.ChatService();
+        this.conversations = new index_1.ChatService();
+        this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+            _this.friendList = data;
+        });
         this.$el = jQuery(el.nativeElement);
-        this.activeConversation = this.conversations.todayConversations[0];
+        this.activeFriendName = "";
     }
-    ChatSidebar.prototype.openConversation = function (conversation) {
-        this.activeConversation = conversation;
+    ChatSidebar.prototype.openConversation = function (f) {
+        this.activeFriendName = f.userName;
         this.chatMessageOpened = true;
     };
     ChatSidebar.prototype.deactivateLink = function (e) {
@@ -24545,10 +24550,10 @@ var ChatSidebar = (function () {
             selector: '[chat-sidebar]',
             template: __webpack_require__("./src/app/layout/chat-sidebar/chat-sidebar.template.html")
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof index_1.FriendService !== 'undefined' && index_1.FriendService) === 'function' && _b) || Object])
     ], ChatSidebar);
     return ChatSidebar;
-    var _a;
+    var _a, _b;
 }());
 exports.ChatSidebar = ChatSidebar;
 
@@ -24559,81 +24564,7 @@ exports.ChatSidebar = ChatSidebar;
 /***/ "./src/app/layout/chat-sidebar/chat-sidebar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"chat-sidebar-content\">\r\n  <header class=\"chat-sidebar-header\">\r\n    <h4 class=\"chat-sidebar-title\">Contacts</h4>\r\n    <div class=\"form-group no-margin\">\r\n      <div class=\"input-group input-group-dark\">\r\n        <input class=\"form-control fs-mini\" [(ngModel)]=\"searchText\" type=\"text\" placeholder=\"Search...\">\r\n          <span class=\"input-group-addon\">\r\n            <i class=\"fa fa-search\"></i>\r\n          </span>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"chat-sidebar-contacts chat-sidebar-panel\" [ngClass]=\"{'open': !chatMessageOpened}\">\r\n    <h5 class=\"sidebar-nav-title\">Today</h5>\r\n    <div class=\"list-group chat-sidebar-user-group\">\r\n      <a *ngFor=\"let conversation of conversations.todayConversations | SearchPipe : searchText\"\r\n         (click)=\"deactivateLink($event); openConversation(conversation)\"\r\n         class=\"list-group-item\">\r\n        <i class=\"fa fa-circle text-{{conversation.status}} pull-right\"></i>\r\n          <span class=\"thumb-sm pull-left mr\">\r\n              <img class=\"img-circle\" src=\"{{conversation.image}}\" alt=\"...\">\r\n          </span>\r\n        <h6 class=\"message-sender\">{{conversation.name}}</h6>\r\n        <p class=\"message-preview\">{{conversation.lastMessage}}</p>\r\n      </a>\r\n    </div>\r\n\r\n    <h5 class=\"sidebar-nav-title\">Last Week</h5>\r\n    <div class=\"list-group chat-sidebar-user-group\">\r\n      <a *ngFor=\"let conversation of conversations.lastWeekConversations | SearchPipe : searchText\"\r\n         (click)=\"deactivateLink($event); openConversation(conversation)\"\r\n         class=\"list-group-item\">\r\n        <i class=\"fa fa-circle text-{{conversation.status}} pull-right\"></i>\r\n          <span class=\"thumb-sm pull-left mr\">\r\n              <img class=\"img-circle\" src=\"{{conversation.image}}\" alt=\"...\">\r\n          </span>\r\n        <h6 class=\"message-sender\">{{conversation.name}}</h6>\r\n        <p class=\"message-preview\">{{conversation.lastMessage}}</p>\r\n      </a>\r\n    </div>\r\n  </div>\r\n  <div chat-message [searchMessage]=\"searchText\" [conversation]=\"activeConversation\" [open]=\"chatMessageOpened\" (chatMessageClosed)=\"chatMessageOpened = false\"></div>\r\n</div>\r\n"
-
-/***/ },
-
-/***/ "./src/app/layout/chat-sidebar/chat.service.ts":
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-var ChatService = (function () {
-    function ChatService() {
-        /* tslint:disable */
-        this.todayConversations = [{
-                name: 'Chris Gray',
-                status: 'success',
-                lastMessage: 'Hey! What\'s up? So many times since we',
-                image: 'assets/img/people/a2.jpg',
-                messages: [{
-                        text: 'Hey! What\'s up?'
-                    }, {
-                        text: 'Are you there?'
-                    }, {
-                        text: 'Let me know when you come back.'
-                    }, {
-                        text: 'I am here!',
-                        fromMe: true
-                    }]
-            }, {
-                name: 'Jamey Brownlow',
-                status: 'gray-light',
-                lastMessage: 'Good news coming tonight. Seems they agreed to proceed',
-                image: 'assets/img/avatar.png'
-            }, {
-                name: 'Livia Walsh',
-                status: 'danger',
-                lastMessage: 'Check out my latest email plz!',
-                image: 'assets/img/people/a1.jpg'
-            }, {
-                name: 'Jaron Fitzroy',
-                status: 'gray-light',
-                lastMessage: 'What about summer break?',
-                image: 'assets/img/avatar.png'
-            }, {
-                name: 'Mike Lewis',
-                status: 'success',
-                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
-                image: 'assets/img/people/a4.jpg'
-            }];
-        this.lastWeekConversations = [{
-                name: 'Freda Edison',
-                status: 'gray-light',
-                lastMessage: 'Hey what\'s up? Me and Monica going for a lunch somewhere. Wanna join?',
-                image: 'assets/img/people/a6.jpg'
-            }, {
-                name: 'Livia Walsh',
-                status: 'success',
-                lastMessage: 'Check out my latest email plz!',
-                image: 'assets/img/people/a5.jpg'
-            }, {
-                name: 'Jaron Fitzroy',
-                status: 'warning',
-                lastMessage: 'What about summer break?',
-                image: 'assets/img/people/a3.jpg'
-            }, {
-                name: 'Mike Lewis',
-                status: 'gray-light',
-                lastMessage: 'Just ain\'t sure about the weekend now. 90% I\'ll make it.',
-                image: 'assets/img/avatar.png'
-            }];
-        /* tslint:enable */
-    }
-    return ChatService;
-}());
-exports.ChatService = ChatService;
-
+module.exports = "<div class=\"chat-sidebar-content\">\r\n  <header class=\"chat-sidebar-header\">\r\n    <h4 class=\"chat-sidebar-title\">Contacts</h4>\r\n    <div class=\"form-group no-margin\">\r\n      <div class=\"input-group input-group-dark\">\r\n        <input class=\"form-control fs-mini\" [(ngModel)]=\"searchText\" type=\"text\" placeholder=\"Search...\">\r\n          <span class=\"input-group-addon\">\r\n            <i class=\"fa fa-search\"></i>\r\n          </span>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"chat-sidebar-contacts chat-sidebar-panel\" [ngClass]=\"{'open': !chatMessageOpened}\">\r\n    <h5 class=\"sidebar-nav-title\">Today</h5>\r\n    <div class=\"list-group chat-sidebar-user-group\">\r\n      <!--| SearchPipe : searchText-->\r\n      <a *ngFor=\"let f of friendList\"\r\n         (click)=\"deactivateLink($event); openConversation(f)\"\r\n         class=\"list-group-item\">\r\n        <i class=\"fa fa-circle text-success pull-right\"></i>\r\n          <span class=\"thumb-sm pull-left mr\">\r\n              <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\r\n          </span>\r\n        <h6 class=\"message-sender\">{{f.userName}}</h6>\r\n        <p class=\"message-preview\">Test</p>\r\n      </a>\r\n    </div>\r\n  <div chat-message [roomName]=\"activeFriendName\" [open]=\"chatMessageOpened\" (chatMessageClosed)=\"chatMessageOpened = false\"></div>\r\n</div>\r\n"
 
 /***/ },
 
