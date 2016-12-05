@@ -4,28 +4,27 @@
   </header>
   <div class="sidebar-status hidden-md-up">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="thumb-sm avatar pull-xs-right">
-        <img class="img-circle" src="assets/img/people/a5.jpg" alt="...">
+      <span class="thumb-sm avatar pull-xs-right">
+        <img class="img-circle" src="assets/img/avatar.png" alt="...">
               </span>
       <!-- .circle is a pretty cool way to add a bit of beauty to raw data.
            should be used with bg-* and text-* classes for colors -->
-              <span class="circle bg-warning fw-bold text-gray-dark">
-                  13
-              </span>
-      &nbsp;
-      Philip <strong>Smith</strong>
+      <span class="circle bg-warning fw-bold text-gray-dark" *ngIf="numOfNotifications != 0">
+                  {{numOfNotifications}}
+              </span> &nbsp;
+      <strong>{{currentUser.userName}}</strong>&nbsp;
       <b class="caret"></b>
     </a>
+    <div notifications (numOfNotifications)="updateNotificationsNum($event)" class="dropdown-menu dropdown-menu-right animated animated-fast fadeInUp"></div>
     <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->
   </div>
   <!-- main notification links are placed inside of .sidebar-nav -->
   <ul class="sidebar-nav">
-     <li>
+    <li>
       <a [routerLink]=" ['profile'] ">
-          <span class="icon">
+        <span class="icon">
             <i class="glyphicon glyphicon-user"></i>
-          </span>
-        Profile
+          </span> Profile
       </a>
     </li>
     <!--<li>
@@ -43,11 +42,10 @@
     </li>-->
     <li>
       <a [routerLink]=" ['inbox'] ">
-          <span class="icon">
+        <span class="icon">
             <i class="fa fa-envelope"></i>
-          </span>
-        Email
-          <span class="tag tag-danger">
+          </span> Email
+        <span class="tag tag-danger">
             9
           </span>
       </a>
@@ -60,22 +58,20 @@
         Charts
       </a>
     </li>-->
-     <li>
+    <li>
       <a [routerLink]=" ['registration'] ">
-          <span class="icon">
+        <span class="icon">
             <i class="fa fa-institution"></i>
-          </span>
-        Registration
+          </span> Registration
       </a>
     </li>
-     <li>
+    <li>
       <a [routerLink]=" ['classroom'] ">
-          <span class="icon">
+        <span class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 48 60" enable-background="new 0 0 48 48" xml:space="preserve"><g><g><g><ellipse fill="#818181" cx="9.5" cy="27.3" rx="2.8" ry="2.8"/></g><g><path fill="#818181" d="M9.5,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C16.1,33.4,13.1,30.4,9.5,30.4z"/></g></g><g><g><ellipse fill="#818181" cx="24.2" cy="27.3" rx="2.8" ry="2.8"/></g><g><path fill="#818181" d="M24.2,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.8,33.4,27.9,30.4,24.2,30.4z"/></g></g><g><g><ellipse fill="#818181" cx="24" cy="11.7" rx="2.8" ry="2.8"/></g><g><path fill="#818181" d="M24,14.9c-3.6,0-6.6,2.9-6.6,6.6h13.2C30.6,17.8,27.6,14.9,24,14.9z"/></g></g><g><g><ellipse fill="#818181" cx="39" cy="27.3" rx="2.8" ry="2.8"/></g><g><path fill="#818181" d="M39,30.4c-3.6,0-6.6,2.9-6.6,6.6h13.2C45.6,33.4,42.6,30.4,39,30.4z"/></g></g><g><rect x="1" y="41" fill="#818181" width="46" height="2.1"/></g><g><polygon fill="#818181" points="17.4,14.2 15.2,14.2 15.2,18.5 12.3,14.2 1.6,14.2 1.6,4.9 17.4,4.9   "/></g></g><text x="0" y="63" fill="#818181" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by Creative Stall</text><text x="0" y="68" fill="#818181" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text></svg>
-          </span>
-        Classroom
+          </span> Classroom
       </a>
-    </li>      
+    </li>
   </ul>
   <!-- every .sidebar-nav may have a title -->
   <h5 class="sidebar-nav-title">Personal Files <a class="action-link" href="#"><i class="glyphicon glyphicon-refresh"></i></a></h5>

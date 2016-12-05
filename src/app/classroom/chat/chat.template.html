@@ -7,6 +7,10 @@
 
             <ul class="list-group" id="chat-{{roomName}}">
                 <!-- Messages end up here! -->
+                <li class="list-group-item" *ngFor="let mes of chatService.messageList">
+                    <p><strong>{{mes.name}} </strong> {{mes.time}}</p>
+                    <p>{{mes.message}}</p>
+                </li>
             </ul>
 
             <form id="message-{{roomName}}" (ngSubmit)="sendMessage()" #chatForm="ngForm">

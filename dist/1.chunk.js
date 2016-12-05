@@ -11592,13 +11592,14 @@ exports.AuthenticationService = AuthenticationService;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var io = __webpack_require__("./node_modules/socket.io-client/lib/index.js");
 var moment = __webpack_require__("./src/assets/public/javascripts/moment.js");
 var ChatService = (function () {
     function ChatService() {
         this.name = JSON.parse(localStorage.getItem('currentUser')).userName;
+        this.messageList = [];
         // need to fix if server changed
     }
     ChatService.prototype.connect = function (room) {
@@ -11609,13 +11610,19 @@ var ChatService = (function () {
         });
     };
     ChatService.prototype.getMessage = function (room) {
+        var _this = this;
         this.socket.on('message', function (message) {
             var momentTimestamp = moment.utc(message.timestamp);
-            var $messages = jQuery('#chat-' + room);
-            var $message = jQuery('<li class="list-group-item"></li>');
-            $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
-            $message.append('<p>' + message.text + '</p>');
-            $messages.append($message);
+            // let $messages = jQuery('#chat-'+ room);
+            // let $message = jQuery('<li class="list-group-item"></li>');
+            // $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
+            // $message.append('<p>' + message.text + '</p>');
+            // $messages.append($message);
+            _this.messageList.push({
+                "name": message.name,
+                "time": momentTimestamp.local().format('h:mm:ss a'),
+                "message": message.text
+            });
         });
     };
     ChatService.prototype.sendMessage = function (room, message) {
@@ -11635,7 +11642,6 @@ var ChatService = (function () {
 }());
 exports.ChatService = ChatService;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 

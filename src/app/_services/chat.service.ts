@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output } from '@angular/core';
 import * as io from 'socket.io-client';
 import * as moment from '../../assets/public/javascripts/moment.js';
 declare var jQuery: any;
@@ -8,6 +8,7 @@ export class ChatService {
     private name: string = JSON.parse(localStorage.getItem('currentUser')).userName;
     private chatAnchor: string;
     private socket: any;
+    messageList: Array<any> = [];
     constructor() {
         // need to fix if server changed
     }
@@ -21,14 +22,20 @@ export class ChatService {
     }
 
     getMessage(room: string) {
-        this.socket.on('message', function (message) {
+        this.socket.on('message', (message) => {
             let momentTimestamp = moment.utc(message.timestamp);
-            let $messages = jQuery('#chat-'+ room);
-            let $message = jQuery('<li class="list-group-item"></li>');
+            // let $messages = jQuery('#chat-'+ room);
+            // let $message = jQuery('<li class="list-group-item"></li>');
 
-            $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
-            $message.append('<p>' + message.text + '</p>');
-            $messages.append($message);
+            // $message.append('<p><strong>' + message.name + ' ' + momentTimestamp.local().format('h:mm:ss a') + '</strong></p>');
+            // $message.append('<p>' + message.text + '</p>');
+            // $messages.append($message);
+
+            this.messageList.push({
+                "name": message.name,
+                "time": momentTimestamp.local().format('h:mm:ss a'),
+                "message": message.text
+            });
         });
     }
 

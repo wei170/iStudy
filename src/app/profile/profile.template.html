@@ -4,8 +4,8 @@
 </ol>
 <h1 class="page-title">User - <span class="fw-semi-bold">Profile</span></h1>
 <div grid>
-<div class="row profile" grid-demo>
-	<div class="col-lg-6 col-xs-12">
+	<div class="row profile" grid-demo>
+		<!--<div class="col-lg-6 col-xs-12">
 		<section class="widget">
 			<div class="widget-body">
 				<div class="widget-top-overflow text-white">
@@ -69,95 +69,99 @@
 				</div>
 			</div>
 		</section>
-	</div>
+	</div>-->
 
-	<div class="col-lg-6 widget-container ui-sortable">
-		<section class="widget" widget>
-			<header class="ui-sortable-handle">
-				<h6>
-					Personal Profile
-				</h6>
-				<div class="widget-controls">
-					<a data-widgster="load" href="#" title="" data-original-title="Reload" class=""><i class="fa fa-refresh"></i></a>
-					<a data-widgster="expand" href="#" title="" style="display: none;" data-original-title="Expand"><i class="glyphicon glyphicon-chevron-up"></i></a>
-					<a data-widgster="collapse" href="#" title="" data-original-title="Collapse" class=""><i class="glyphicon glyphicon-chevron-down"></i></a>
-					<a data-widgster="fullscreen" href="#" title="" data-original-title="Full Screen" class=""><i class="glyphicon glyphicon-fullscreen"></i></a>
-					<a data-widgster="restore" href="#" title="" style="display: none;" data-original-title="Restore"><i class="glyphicon glyphicon-resize-small"></i></a>
-					<a data-widgster="close" href="#" title="" data-original-title="Close"><i class="glyphicon glyphicon-remove"></i></a>
-				</div>
-			</header>
-			<div class="widget-body">
-				<form class="form-horizontal" role="form" (ngSubmit)="editProfile">
-					<fieldset>
-						<legend><strong>Profile</strong> form</legend>
+		<div class="col-lg-6 widget-container ui-sortable">
+			<section class="widget" widget>
+				<header class="ui-sortable-handle">
+					<h6>
+						Personal Profile
+					</h6>
+					<div class="widget-controls">
+						<a data-widgster="load" href="#" title="" data-original-title="Reload" class=""><i class="fa fa-refresh"></i></a>
+						<a data-widgster="expand" href="#" title="" style="display: none;" data-original-title="Expand"><i class="glyphicon glyphicon-chevron-up"></i></a>
+						<a data-widgster="collapse" href="#" title="" data-original-title="Collapse" class=""><i class="glyphicon glyphicon-chevron-down"></i></a>
+						<a data-widgster="fullscreen" href="#" title="" data-original-title="Full Screen" class=""><i class="glyphicon glyphicon-fullscreen"></i></a>
+						<a data-widgster="restore" href="#" title="" style="display: none;" data-original-title="Restore"><i class="glyphicon glyphicon-resize-small"></i></a>
+						<a data-widgster="close" href="#" title="" data-original-title="Close"><i class="glyphicon glyphicon-remove"></i></a>
+					</div>
+				</header>
+				<div class="widget-body">
+					<form class="form-horizontal" role="form" (ngSubmit)="editProfile">
+						<fieldset>
+							<legend><strong>{{currentUser.userName}}</strong>'s form</legend>
 
-						<div class="form-group row">
-							<label class="col-md-4  col-form-label text-md-right" for="simple-select">Major</label>
-							<div class="col-md-7 ">
-								<select class="form-control" id="simple-select"
-									 [(ngModel)]="myProfile.profile.major" 
-									 [disabled]="!toEdit" name="major">
+							<div class="form-group row">
+								<label class="col-md-4  col-form-label text-md-right" for="simple-select">Major</label>
+								<div class="col-md-7 ">
+									<select class="form-control" id="simple-select" [(ngModel)]="myProfile.profile.major" [disabled]="!toEdit" name="major">
 									<option *ngFor="let major of majors" [value]="major.Abbreviation">
 									{{major.Abbreviation}}
 									</option>
 								</select>
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Language</label>
-							<div class="col-md-7 ">
-								<span class="help-block" *ngFor="let language of myProfile.extra.language">{{language.name}}</span>
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New language" [(ngModel)]="newlanguage.name" name="language">
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Language</label>
+								<div class="col-md-7 ">
+									<span class="help-block" *ngFor="let language of myProfile.extra.language">{{language.name}}</span>
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New language" [(ngModel)]="newlanguage.name"
+										name="language">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Hobby</label>
+								<div class="col-md-7 ">
+									<span id="helpBlock" class="help-block" *ngFor="let hobby of myProfile.extra.hobby">{{hobby.name}}</span>
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New hobby" [(ngModel)]="newhobby.name"
+										name="hobby">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Birthday</label>
+								<div class="col-md-7 ">
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="yyyy-MM-dd {{myProfile.profile.birthday}}"
+										[(ngModel)]="myProfile.profile.birthday" name="birthday">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Gender</label>
+								<div class="col-md-7 ">
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.gender}}"
+										[(ngModel)]="myProfile.profile.gender" name="gender">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Nationality</label>
+								<div class="col-md-7 ">
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.nationality}}"
+										[(ngModel)]="myProfile.profile.nationality" name="nationality">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="normal-field" class="col-md-4  col-form-label text-md-right">Visibility</label>
+								<div class="col-md-7 ">
+									<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.visibility}}"
+										[(ngModel)]="myProfile.profile.visibility" name="visibility">
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<div class="row">
+								<div class="offset-md-4 col-md-7 ">
+									<button type="submit" *ngIf="toEdit === false" class="btn btn-primary" (click)="edit()">Edit Profile</button>
+									<button type="submit" *ngIf="toEdit === true" class="btn btn-primary" (click)="editProfile()">Save Changes</button>
+									<button type="button" *ngIf="toEdit === true" class="btn btn-inverse" (click)="cancelEdit()">Cancel</button>
+								</div>
 							</div>
 						</div>
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Hobby</label>
-							<div class="col-md-7 ">
-								<span id="helpBlock" class="help-block" *ngFor="let hobby of myProfile.extra.hobby">{{hobby.name}}</span>
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="New hobby" [(ngModel)]="newhobby.name" name="hobby">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Birthday</label>
-							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="yyyy-MM-dd {{myProfile.profile.birthday}}" [(ngModel)]="myProfile.profile.birthday" name="birthday">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Gender</label>
-							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.gender}}" [(ngModel)]="myProfile.profile.gender" name="gender">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Nationality</label>
-							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.nationality}}" [(ngModel)]="myProfile.profile.nationality" name="nationality">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="normal-field" class="col-md-4  col-form-label text-md-right">Visibility</label>
-							<div class="col-md-7 ">
-								<input type="text" id="normal-field" [disabled]="!toEdit" class="form-control" placeholder="{{myProfile.profile.visibility}}" [(ngModel)]="myProfile.profile.visibility" name="visibility">
-							</div>
-						</div>
-					</fieldset>
-					<div class="form-actions">
-						<div class="row">
-							<div class="offset-md-4 col-md-7 ">
-								<button type="submit" *ngIf="toEdit === false" class="btn btn-primary" (click)="edit()">Edit Profile</button>
-								<button type="submit" *ngIf="toEdit === true" class="btn btn-primary" (click)="editProfile()">Save Changes</button>
-								<button type="button" *ngIf="toEdit === true" class="btn btn-inverse" (click)="cancelEdit()">Cancel</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</section>
-	</div>
+					</form>
+				</div>
+			</section>
+		</div>
 
-	<div class="col-lg-6 widget-container ui-sortable">
+		<!--<div class="col-lg-6 widget-container ui-sortable">
 		<section class="widget" widget>
 			<header class="ui-sortable-handle">
 				<h6>
@@ -256,37 +260,37 @@
 				</div>
 			</form>
 		</section>
-	</div>
+	</div>-->
 
-	<div class="col-lg-6 widget-container ui-sortable">
-		<section class="widget" widget>
-			<header class="ui-sortable-handle">
-				<h6>
-					Friends
-				</h6>
-				<div class="widget-controls">
-					<a data-widgster="load" href="#" title="" (click)="fetchFriendList()" data-original-title="Reload" class=""><i class="fa fa-refresh"></i></a>
-					<a data-widgster="expand" href="#" title="" style="display: none;" data-original-title="Expand"><i class="glyphicon glyphicon-chevron-up"></i></a>
-					<a data-widgster="collapse" href="#" title="" data-original-title="Collapse" class=""><i class="glyphicon glyphicon-chevron-down"></i></a>
-					<a data-widgster="fullscreen" href="#" title="" data-original-title="Full Screen" class=""><i class="glyphicon glyphicon-fullscreen"></i></a>
-					<a data-widgster="restore" href="#" title="" style="display: none;" data-original-title="Restore"><i class="glyphicon glyphicon-resize-small"></i></a>
-					<a data-widgster="close" href="#" title="" data-original-title="Close"><i class="glyphicon glyphicon-remove"></i></a>
-				</div>
-			</header>
-			<div class="widget-body no-padding">
-				<div class="list-group list-group-lg">
-					<div class="list-group-item" href="#" *ngFor="let friend of friendList">
-						<span class="thumb-sm pull-xs-left mr">
+		<div class="col-lg-6 widget-container ui-sortable">
+			<section class="widget" widget>
+				<header class="ui-sortable-handle">
+					<h6>
+						Friends
+					</h6>
+					<div class="widget-controls">
+						<a data-widgster="load" href="#" title="" (click)="fetchFriendList()" data-original-title="Reload" class=""><i class="fa fa-refresh"></i></a>
+						<a data-widgster="expand" href="#" title="" style="display: none;" data-original-title="Expand"><i class="glyphicon glyphicon-chevron-up"></i></a>
+						<a data-widgster="collapse" href="#" title="" data-original-title="Collapse" class=""><i class="glyphicon glyphicon-chevron-down"></i></a>
+						<a data-widgster="fullscreen" href="#" title="" data-original-title="Full Screen" class=""><i class="glyphicon glyphicon-fullscreen"></i></a>
+						<a data-widgster="restore" href="#" title="" style="display: none;" data-original-title="Restore"><i class="glyphicon glyphicon-resize-small"></i></a>
+						<a data-widgster="close" href="#" title="" data-original-title="Close"><i class="glyphicon glyphicon-remove"></i></a>
+					</div>
+				</header>
+				<div class="widget-body no-padding">
+					<div class="list-group list-group-lg">
+						<div class="list-group-item" href="#" *ngFor="let friend of friendList">
+							<span class="thumb-sm pull-xs-left mr">
 							<a href="#"><img alt="..." class="img-circle" src="assets/img/avatar.png" (click)="pop(friend.userName)"></a>
 						</span>
-						<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName)">Unfollow</button></span>						
-						<h6 class="no-margin" (click)="pop(friend.userName)"><a href="#">{{friend.userName}}</a></h6>
-						<small class="text-muted">{{friend.email}}</small>
+							<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName)">Unfollow</button></span>
+							<h6 class="no-margin" (click)="pop(friend.userName)"><a href="#">{{friend.userName}}</a></h6>
+							<small class="text-muted">{{friend.email}}</small>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
-	</div>
+			</section>
+		</div>
 
-</div>
+	</div>
 </div>

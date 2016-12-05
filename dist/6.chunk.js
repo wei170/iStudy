@@ -141,11 +141,11 @@ exports.Select2Component = Select2Component;
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var Chat = (function () {
-    function Chat(chatService, groupService, alertService) {
-        this.chatService = chatService;
+    function Chat(groupService, alertService) {
         this.groupService = groupService;
         this.alertService = alertService;
         this.memberList = [];
+        this.chatService = new index_1.ChatService();
     }
     Chat.prototype.ngOnInit = function () {
         this.connect();
@@ -194,10 +194,10 @@ var Chat = (function () {
             template: __webpack_require__("./src/app/classroom/chat/chat.template.html"),
             encapsulation: core_1.ViewEncapsulation.None
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.ChatService !== 'undefined' && index_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof index_1.GroupService !== 'undefined' && index_1.GroupService) === 'function' && _b) || Object, (typeof (_c = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.GroupService !== 'undefined' && index_1.GroupService) === 'function' && _a) || Object, (typeof (_b = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _b) || Object])
     ], Chat);
     return Chat;
-    var _a, _b, _c;
+    var _a, _b;
 }());
 exports.Chat = Chat;
 
@@ -207,7 +207,7 @@ exports.Chat = Chat;
 /***/ "./src/app/classroom/chat/chat.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-lg-10 col-md-10 col-sm-9\">\n            <h3 class=\"text-center\">{{roomName}} chat\n                <button *ngIf=\"type === 2\" class=\"btn btn-xs btn-link pull-xs-right\" (click)=\"leaveGroup()\"><i class=\"glyphicon glyphicon-off\"></i></button>\n            </h3>\n\n            <ul class=\"list-group\" id=\"chat-{{roomName}}\">\n                <!-- Messages end up here! -->\n            </ul>\n\n            <form id=\"message-{{roomName}}\" (ngSubmit)=\"sendMessage()\" #chatForm=\"ngForm\">\n                <div class=\"form-group\">\n                    <div class=\"input-group\">\n                        <input type=\"text\" name=\"message\" [(ngModel)]=\"message\" class=\"form-control\"/>\n                        <button class=\"input-group-addon\">\n                            <i (click)=\"sendMessage()\" class=\"glyphicon glyphicon-comment\"></i>\n                        </button>\n                    </div>\n                </div>\n            </form>\n        </div>\n\n        <div class=\"col-lg-2 col-md-2 col-sm-3\" *ngIf=\"type === 2\">\n            <ul>\n                <li *ngFor=\"let mem of memberList\">{{mem}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-lg-10 col-md-10 col-sm-9\">\n            <h3 class=\"text-center\">{{roomName}} chat\n                <button *ngIf=\"type === 2\" class=\"btn btn-xs btn-link pull-xs-right\" (click)=\"leaveGroup()\"><i class=\"glyphicon glyphicon-off\"></i></button>\n            </h3>\n\n            <ul class=\"list-group\" id=\"chat-{{roomName}}\">\n                <!-- Messages end up here! -->\n                <li class=\"list-group-item\" *ngFor=\"let mes of chatService.messageList\">\n                    <p><strong>{{mes.name}} </strong> {{mes.time}}</p>\n                    <p>{{mes.message}}</p>\n                </li>\n            </ul>\n\n            <form id=\"message-{{roomName}}\" (ngSubmit)=\"sendMessage()\" #chatForm=\"ngForm\">\n                <div class=\"form-group\">\n                    <div class=\"input-group\">\n                        <input type=\"text\" name=\"message\" [(ngModel)]=\"message\" class=\"form-control\"/>\n                        <button class=\"input-group-addon\">\n                            <i (click)=\"sendMessage()\" class=\"glyphicon glyphicon-comment\"></i>\n                        </button>\n                    </div>\n                </div>\n            </form>\n        </div>\n\n        <div class=\"col-lg-2 col-md-2 col-sm-3\" *ngIf=\"type === 2\">\n            <ul>\n                <li *ngFor=\"let mem of memberList\">{{mem}}</li>\n            </ul>\n        </div>\n    </div>\n</div>"
 
 /***/ },
 

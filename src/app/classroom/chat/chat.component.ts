@@ -14,12 +14,14 @@ export class Chat implements OnInit {
     @Input() type: number; // 1: class Rnadom chat; 2: group chat
     message: any;
     private memberList: any[] = [];
+    private chatService: any;
 
     constructor(
-        private chatService: ChatService,
         private groupService: GroupService,
         private alertService: AlertService
-    ) {}
+    ) {
+        this.chatService = new ChatService();
+    }
 
     ngOnInit() {
         this.connect();

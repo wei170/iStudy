@@ -66,4 +66,11 @@ export class Sidebar implements OnInit {
       }
     });
   }
+
+  // iStudy
+  private numOfNotifications: Number;
+  private currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  updateNotificationsNum(num: Number) {
+    this.numOfNotifications = num;
+  }
 }
