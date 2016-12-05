@@ -17,17 +17,12 @@ export class ChatSidebar implements OnInit {
 
   constructor(el: ElementRef, private friendService: FriendService) {
     this.conversations = new ChatService();
-    this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
-      data => { 
-        this.friendList = data;
-      }
-    );
     this.$el = jQuery(el.nativeElement);
-    this.activeFriendName = "";
   }
 
   openConversation(f): void {
     this.activeFriendName = f.userName;
+            console.log(this.activeFriendName);
     this.chatMessageOpened = true;
   }
 
@@ -69,6 +64,13 @@ export class ChatSidebar implements OnInit {
   }
 
   ngOnInit(): void {
+    this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
+      data => { 
+        this.friendList = data;
+        this.activeFriendName = this.friendList[0].userName;
+      }
+    );
+
     jQuery('layout').addClass('chat-sidebar-container');
 
     if ('ontouchstart' in window) {
@@ -78,5 +80,4 @@ export class ChatSidebar implements OnInit {
     jQuery(window).on('sn:resize', this.initChatSidebarScroll.bind(this));
     this.initChatSidebarScroll();
   }
-
 }

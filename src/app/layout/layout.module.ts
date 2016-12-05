@@ -17,7 +17,7 @@ import { NotificationLoad } from './notifications/notifications-load.directive';
 import { Notifications } from './notifications/notifications.component';
 
 // iStudy
-import { ProfileService, UserService, FriendService, AlertService, PopupService } from '../_services/index';
+import { ProfileService, UserService, FriendService, AlertService, PopupService, ChatService } from '../_services/index';
 import { AuthGuard } from '../_guards/index'
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
@@ -49,7 +49,8 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     FriendService,
     AlertService,
     AuthGuard,
-    PopupService
+    PopupService,
+    ChatService
 
     // Other dev npm files
   ]

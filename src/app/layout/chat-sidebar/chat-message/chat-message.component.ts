@@ -10,7 +10,8 @@ export class ChatMessage {
   @Input() open: boolean;
   @Input() roomName: string;
   @Output() chatMessageClosed = new EventEmitter();
-  newMessage: string = '';
+  private privateRoom: string;
+  private newMessage: string = '';
   private userName: string = JSON.parse(localStorage.getItem('currentUser')).userName;
 
   closeChatArea(): void {
@@ -24,25 +25,33 @@ export class ChatMessage {
 
   constructor(
   ) {
+  }
+
+  ngOnChanges() {
+    this.privateRoom = this.roomName > this.userName ? this.userName+" & "+this.roomName : this.roomName+" & "+this.userName;
+      console.log(this.roomName);
+    console.log(this.privateRoom);
     this.chatService = new ChatService();
+    this.connect();
+    this.getMessage();
   }
 
   ngOnInit() {
-    this.connect();
-    this.getMessage();
   }
 
   ngOnDestroy() {
     this.chatService.disconnect();
   }
 
-  connect() { this.chatService.connect(this.roomName); }
+  connect() {
+    this.chatService.connect(this.privateRoom); 
+  }
 
-  getMessage() { this.chatService.getMessage(this.roomName); }
+  getMessage() { this.chatService.getMessage(this.privateRoom); }
 
   sendMessage() {
     console.log(this.newMessage);
-    this.chatService.sendMessage(this.roomName, this.newMessage);
+    this.chatService.sendMessage(this.privateRoom, this.newMessage);
     this.newMessage = "";
   }
 

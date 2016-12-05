@@ -23739,13 +23739,14 @@ var ChatService = (function () {
     };
     ChatService.prototype.getMessage = function (room) {
         var _this = this;
-        this.socket.on('message', function (message) {
+        return this.socket.on('message', function (message) {
             var momentTimestamp = moment.utc(message.timestamp);
             _this.messageList.push({
                 "name": message.name,
                 "time": momentTimestamp.local().format('h:mm:ss a'),
                 "message": message.text
             });
+            return _this.messageList;
         });
     };
     ChatService.prototype.sendMessage = function (room, message) {
@@ -24428,24 +24429,31 @@ var ChatMessage = (function () {
         this.newMessage = '';
         this.userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         this.memberList = [];
-        this.chatService = new index_1.ChatService();
     }
     ChatMessage.prototype.closeChatArea = function () {
         this.open = false;
         this.chatMessageClosed.emit('');
     };
-    ChatMessage.prototype.ngOnInit = function () {
+    ChatMessage.prototype.ngOnChanges = function () {
+        this.privateRoom = this.roomName > this.userName ? this.userName + " & " + this.roomName : this.roomName + " & " + this.userName;
+        console.log(this.roomName);
+        console.log(this.privateRoom);
+        this.chatService = new index_1.ChatService();
         this.connect();
         this.getMessage();
+    };
+    ChatMessage.prototype.ngOnInit = function () {
     };
     ChatMessage.prototype.ngOnDestroy = function () {
         this.chatService.disconnect();
     };
-    ChatMessage.prototype.connect = function () { this.chatService.connect(this.roomName); };
-    ChatMessage.prototype.getMessage = function () { this.chatService.getMessage(this.roomName); };
+    ChatMessage.prototype.connect = function () {
+        this.chatService.connect(this.privateRoom);
+    };
+    ChatMessage.prototype.getMessage = function () { this.chatService.getMessage(this.privateRoom); };
     ChatMessage.prototype.sendMessage = function () {
         console.log(this.newMessage);
-        this.chatService.sendMessage(this.roomName, this.newMessage);
+        this.chatService.sendMessage(this.privateRoom, this.newMessage);
         this.newMessage = "";
     };
     __decorate([
@@ -24490,19 +24498,15 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var ChatSidebar = (function () {
     function ChatSidebar(el, friendService) {
-        var _this = this;
         this.friendService = friendService;
         this.newMessage = '';
         this.chatMessageOpened = false;
         this.conversations = new index_1.ChatService();
-        this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
-            _this.friendList = data;
-        });
         this.$el = jQuery(el.nativeElement);
-        this.activeFriendName = "";
     }
     ChatSidebar.prototype.openConversation = function (f) {
         this.activeFriendName = f.userName;
+        console.log(this.activeFriendName);
         this.chatMessageOpened = true;
     };
     ChatSidebar.prototype.deactivateLink = function (e) {
@@ -24538,6 +24542,11 @@ var ChatSidebar = (function () {
         });
     };
     ChatSidebar.prototype.ngOnInit = function () {
+        var _this = this;
+        this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+            _this.friendList = data;
+            _this.activeFriendName = _this.friendList[0].userName;
+        });
         jQuery('layout').addClass('chat-sidebar-container');
         if ('ontouchstart' in window) {
             this.enableSwipeCollapsing();
@@ -24564,7 +24573,7 @@ exports.ChatSidebar = ChatSidebar;
 /***/ "./src/app/layout/chat-sidebar/chat-sidebar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"chat-sidebar-content\">\r\n  <header class=\"chat-sidebar-header\">\r\n    <h4 class=\"chat-sidebar-title\">Contacts</h4>\r\n    <div class=\"form-group no-margin\">\r\n      <div class=\"input-group input-group-dark\">\r\n        <input class=\"form-control fs-mini\" [(ngModel)]=\"searchText\" type=\"text\" placeholder=\"Search...\">\r\n          <span class=\"input-group-addon\">\r\n            <i class=\"fa fa-search\"></i>\r\n          </span>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"chat-sidebar-contacts chat-sidebar-panel\" [ngClass]=\"{'open': !chatMessageOpened}\">\r\n    <h5 class=\"sidebar-nav-title\">Today</h5>\r\n    <div class=\"list-group chat-sidebar-user-group\">\r\n      <!--| SearchPipe : searchText-->\r\n      <a *ngFor=\"let f of friendList\"\r\n         (click)=\"deactivateLink($event); openConversation(f)\"\r\n         class=\"list-group-item\">\r\n        <i class=\"fa fa-circle text-success pull-right\"></i>\r\n          <span class=\"thumb-sm pull-left mr\">\r\n              <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\r\n          </span>\r\n        <h6 class=\"message-sender\">{{f.userName}}</h6>\r\n        <p class=\"message-preview\">Test</p>\r\n      </a>\r\n    </div>\r\n  <div chat-message [roomName]=\"activeFriendName\" [open]=\"chatMessageOpened\" (chatMessageClosed)=\"chatMessageOpened = false\"></div>\r\n</div>\r\n"
+module.exports = "<div class=\"chat-sidebar-content\">\r\n  <header class=\"chat-sidebar-header\">\r\n    <h4 class=\"chat-sidebar-title\">Contacts</h4>\r\n    <div class=\"form-group no-margin\">\r\n      <div class=\"input-group input-group-dark\">\r\n        <input class=\"form-control fs-mini\" [(ngModel)]=\"searchText\" type=\"text\" placeholder=\"Search...\">\r\n          <span class=\"input-group-addon\">\r\n            <i class=\"fa fa-search\"></i>\r\n          </span>\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"chat-sidebar-contacts chat-sidebar-panel\" [ngClass]=\"{'open': !chatMessageOpened}\">\r\n    <h5 class=\"sidebar-nav-title\">Today</h5>\r\n    <div class=\"list-group chat-sidebar-user-group\">\r\n      <!--| SearchPipe : searchText-->\r\n      <a *ngFor=\"let f of friendList\"\r\n         (click)=\"deactivateLink($event); openConversation(f)\"\r\n         class=\"list-group-item\">\r\n        <i class=\"fa fa-circle text-success pull-right\"></i>\r\n          <span class=\"thumb-sm pull-left mr\">\r\n              <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\r\n          </span>\r\n        <h6 class=\"message-sender\">{{f.userName}}</h6>\r\n        <p class=\"message-preview\">Test</p>\r\n      </a>\r\n    </div>\r\n  </div>\r\n  <div chat-message [roomName]=\"activeFriendName\" [open]=\"chatMessageOpened\" (chatMessageClosed)=\"chatMessageOpened = false\"></div>\r\n</div>\r\n"
 
 /***/ },
 
@@ -24841,7 +24850,8 @@ var LayoutModule = (function () {
                 index_1.FriendService,
                 index_1.AlertService,
                 index_2.AuthGuard,
-                index_1.PopupService
+                index_1.PopupService,
+                index_1.ChatService
             ]
         }), 
         __metadata('design:paramtypes', [])
@@ -24983,7 +24993,7 @@ exports.Navbar = Navbar;
 /***/ "./src/app/layout/navbar/navbar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch()\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" [(ngModel)]=\"searchName\" type=\"text\" placeholder=\"Search Your Classmates\">\n        </div>\n      </div>\n    </form>\n\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\n                </span>\n          &nbsp;\n          <strong>{{currentUser.userName}}</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\" *ngIf=\"numOfNotifications != 0\">\n                    {{numOfNotifications}}\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications (numOfNotifications)=\"updateNotificationsNum($event)\" class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server -->\n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch()\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" [(ngModel)]=\"searchName\" type=\"text\" placeholder=\"Search Your Classmates\">\n        </div>\n      </div>\n    </form>\n\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"assets/img/avatar.png\" alt=\"...\">\n                </span>\n          &nbsp;\n          <strong>{{currentUser.userName}}</strong>&nbsp;\n                <span class=\"circle bg-warning fw-bold\" *ngIf=\"numOfNotifications != 0\">\n                    {{numOfNotifications}}\n                </span>\n          <b class=\"caret\"></b>\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications (numOfNotifications)=\"updateNotificationsNum($event)\" class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/login'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/avatar.png\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              iStudy Group\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of iStudy App <br> built with <strong class=\"text-danger\">Angular 2.0 + Node.js Final Release</strong> </p>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</div>\n"
 
 /***/ },
 

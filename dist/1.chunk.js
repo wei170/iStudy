@@ -11611,13 +11611,14 @@ var ChatService = (function () {
     };
     ChatService.prototype.getMessage = function (room) {
         var _this = this;
-        this.socket.on('message', function (message) {
+        return this.socket.on('message', function (message) {
             var momentTimestamp = moment.utc(message.timestamp);
             _this.messageList.push({
                 "name": message.name,
                 "time": momentTimestamp.local().format('h:mm:ss a'),
                 "message": message.text
             });
+            return _this.messageList;
         });
     };
     ChatService.prototype.sendMessage = function (room, message) {

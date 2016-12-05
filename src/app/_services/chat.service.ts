@@ -22,13 +22,14 @@ export class ChatService {
     }
 
     getMessage(room: string) {
-        this.socket.on('message', (message) => {
+        return this.socket.on('message', (message) => {
             let momentTimestamp = moment.utc(message.timestamp);
             this.messageList.push({
                 "name": message.name,
                 "time": momentTimestamp.local().format('h:mm:ss a'),
                 "message": message.text
             });
+            return this.messageList;
         });
     }
 
