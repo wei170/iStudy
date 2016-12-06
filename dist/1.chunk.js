@@ -96520,11 +96520,11 @@ var PopupService = (function () {
                 var hobbies = "";
                 for (var _i = 0, _a = data.extra.language; _i < _a.length; _i++) {
                     var lan = _a[_i];
-                    languages += lan.name;
+                    languages += ' ' + lan.name;
                 }
                 for (var _b = 0, _c = data.extra.hobby; _b < _c.length; _b++) {
                     var hob = _c[_b];
-                    hobbies += hob.name;
+                    hobbies += ' ' + hob.name;
                 }
                 _this.modal.alert()
                     .size('lg')
