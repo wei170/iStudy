@@ -20,10 +20,10 @@ export class PopupService {
                     let languages: string = "";
                     let hobbies: string = "";
                     for (let lan of data.extra.language) {
-                        languages += lan.name;
+                        languages += ' '+lan.name;
                     }
                     for (let hob of data.extra.hobby) {
-                        hobbies += hob.name;
+                        hobbies += ' '+hob.name;
                     }
                     this.modal.alert()
                         .size('lg')
