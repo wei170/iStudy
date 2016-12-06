@@ -16,16 +16,15 @@ export class PopupService {
         // this.profile = {};
         this.profileService.getProfile(hostName,  JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
             data => {
-                let languages: string = "";
-                let hobbies: string = "";
-                for (let lan of data.extra.language) {
-                    console.log(lan);
-                    languages += lan.name;
-                }
-                for (let hob of data.extra.hobby) {
-                    hobbies += hob.name;
-                }
                 if (data.profile) {
+                    let languages: string = "";
+                    let hobbies: string = "";
+                    for (let lan of data.extra.language) {
+                        languages += lan.name;
+                    }
+                    for (let hob of data.extra.hobby) {
+                        hobbies += hob.name;
+                    }
                     this.modal.alert()
                         .size('lg')
                         .showClose(true)

@@ -12053,18 +12053,17 @@ var PopupService = (function () {
         var _this = this;
         // this.profile = {};
         this.profileService.getProfile(hostName, JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
-            var languages = "";
-            var hobbies = "";
-            for (var _i = 0, _a = data.extra.language; _i < _a.length; _i++) {
-                var lan = _a[_i];
-                console.log(lan);
-                languages += lan.name;
-            }
-            for (var _b = 0, _c = data.extra.hobby; _b < _c.length; _b++) {
-                var hob = _c[_b];
-                hobbies += hob.name;
-            }
             if (data.profile) {
+                var languages = "";
+                var hobbies = "";
+                for (var _i = 0, _a = data.extra.language; _i < _a.length; _i++) {
+                    var lan = _a[_i];
+                    languages += lan.name;
+                }
+                for (var _b = 0, _c = data.extra.hobby; _b < _c.length; _b++) {
+                    var hob = _c[_b];
+                    hobbies += hob.name;
+                }
                 _this.modal.alert()
                     .size('lg')
                     .showClose(true)
@@ -12150,7 +12149,7 @@ var ProfileService = (function () {
             headers: headers
         }).map(function (res) {
             res = res.json();
-            if (res.profile.birthday && res.profile.birthday != "") {
+            if (res.profile && res.profile.birthday && res.profile.birthday != "") {
                 res.profile.birthday = res.profile.birthday.substring(0, 10);
             }
             return res;

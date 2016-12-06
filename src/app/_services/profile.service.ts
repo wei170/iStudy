@@ -22,7 +22,7 @@ export class ProfileService {
         }).map(
             (res: Response) => {
                 res = res.json();
-                if (res.profile.birthday && res.profile.birthday != "") {
+                if (res.profile && res.profile.birthday && res.profile.birthday != "") {
                     res.profile.birthday = res.profile.birthday.substring(0, 10);
                 }
                 return res;
