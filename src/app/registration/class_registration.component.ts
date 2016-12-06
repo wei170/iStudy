@@ -53,17 +53,33 @@ export class ClassRegistration implements OnInit {
 			)
 		} else if (this.step >= 1) {
 			this.courseName = this.model.majorInfo.Abbreviation + this.model.courseInfo.Number;
-			this.courseService.getCourseDetails(this.courseName).subscribe (
-				data => {
+			this.courseService.getCoursesDetailsFromPurdue(this.model.courseInfo.CourseId).subscribe(
+				(data: any) => {
+					this.sections = [];
 					this.step = 2;
-					this.sections = data;
-					this.length = data.length;
-					this.onChangeTable(this.config);
-				},
-				error => {
-					this.alertService.error(error.err);
+					for (let course of data) {
+						for (let sections of course.Sections) {
+							if (sections.Type === "Lecture") {
+								for (let section of sections.Meetings) {
+									this.sections.push(section);
+								}
+							}
+						}
+					}
+					console.log(this.sections);
 				}
-			)
+			);
+			// this.courseService.getCourseDetails(this.courseName).subscribe (
+			// 	data => {
+			// 		this.step = 2;
+			// 		this.sections = data;
+			// 		this.length = data.length;
+			// 		this.onChangeTable(this.config);
+			// 	},
+			// 	error => {
+			// 		this.alertService.error(error.err);
+			// 	}
+			// )
 		}
 	}
 

@@ -108333,15 +108333,15 @@ var CourseService = (function () {
         var detailedUrl = this.apiUrl + filterUrl + this.termId + major + order;
         return this.http.get(detailedUrl).map(function (res) { return res.json(); });
     };
-    //
-    // getCoursesDetails(courseId: string) {
-    //     let filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
-    //     let midUrl = '%20and%20Term/TermId%20eq%20';
-    //     let expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
-    //     let detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
-    //     return this.http.get(detailedUrl)
-    //         .map((res: Response) => res.json());
-    // }
+    CourseService.prototype.getCoursesDetailsFromPurdue = function (courseId) {
+        var filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+        var midUrl = '%20and%20Term/TermId%20eq%20';
+        var expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+        var detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+        return this.http.get(detailedUrl).map(function (res) {
+            return res.json().value;
+        });
+    };
     /**************************************************
      * 				Classrooms
      **************************************************/
@@ -108353,13 +108353,25 @@ var CourseService = (function () {
     * 	"professor": "...",
     * 	"userName": "..."
     * }
+    *  Get course-id (insert new class)
+    /**
+    * JSON Format:
+    * {
+    * 	"course": "...",
+    * 	"professor": "..."
+    * }
     */
     CourseService.prototype.joinClass = function (courseName, professor, userName) {
+        var _this = this;
         var url = '/course/join';
         var body = { "course": courseName, "professor": professor, "userName": userName };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
-        return this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+        return this.http.post('/course/get-course-id', { "course": courseName, "professor": professor }, { headers: headers }).map(function (Res) {
+            var res = _this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
+            console.log(res);
+            return res;
+        });
     };
     CourseService.prototype.getCourseDetails = function (courseName) {
         var url = '/course';

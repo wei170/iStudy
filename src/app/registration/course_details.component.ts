@@ -39,7 +39,11 @@ export class CourseDetailsComponent {
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         this.courseService.joinClass(this.courseName, professor, userName).subscribe(
             data => {
-                this.alertService.success("Sucessfully join the class!");
+                data.subscribe(
+                    data => {
+                        this.alertService.success("Sucessfully join the class!")
+                    }
+                );
             },
             err => {
                 this.alertService.error(err);

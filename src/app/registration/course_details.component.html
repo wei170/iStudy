@@ -2,15 +2,17 @@
 
     <h3>Sections</h3>         
 	<div class="row panel-group event">
-		<div class="offset-lg-0 col-lg-4 offset-md-0 col-md-6 offset-xs-1 col-xs-10" *ngFor="let section of sections; let i = index">
+		<div class="offset-lg-0 col-lg-6 offset-md-0 col-md-6 offset-xs-1 col-xs-10" *ngFor="let section of sections; let i = index">
 			<div class="panel panel-section">
 				<div class="panel-heading">
 					Section {{i+1}}
 				</div>
 				<div class="panel-body">
-					<p>Professor: {{section.name}} </p>
-					<button class = "btn btn-primary" (click)="joinClass(section.name)"> Join this class</button>
-					<button class="btn btn-secondary"  (click)="getRMP(section.name)" data-toggle="modal" data-target="#myModal1">
+					<p>Professor: {{section.Instructors[0].Name}} </p>
+					<p>Time: {{section.DaysOfWeek}}</p>
+					<p>Duration: {{section.Duration}}</p>
+					<button class = "btn btn-primary" (click)="joinClass(section.Instructors[0].Name)"> Join this class</button>
+					<button class="btn btn-secondary"  (click)="getRMP(section.Instructors[0].Name)" data-toggle="modal" data-target="#myModal1">
 						Prof. Rate
 					</button>
 					<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">

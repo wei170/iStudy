@@ -27,15 +27,16 @@ export class CourseService {
         let detailedUrl = this.apiUrl + filterUrl + this.termId + major + order;
         return this.http.get(detailedUrl).map((res: Response) => res.json());
     }
-    //
-    // getCoursesDetails(courseId: string) {
-    //     let filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
-    //     let midUrl = '%20and%20Term/TermId%20eq%20';
-    //     let expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
-    //     let detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
-    //     return this.http.get(detailedUrl)
-    //         .map((res: Response) => res.json());
-    // }
+    
+    getCoursesDetailsFromPurdue(courseId: string) {
+        let filterUrl = '/Classes?$filter=Course/CourseId%20eq%20';
+        let midUrl = '%20and%20Term/TermId%20eq%20';
+        let expand = '&$expand=Term,Sections($expand=Meetings($expand=Instructors,Room($expand=Building)))';
+        let detailedUrl = this.apiUrl + filterUrl + courseId + midUrl + this.termId + expand;
+        return this.http.get(detailedUrl).map((res: Response) => {
+            return res.json().value;
+        });
+    }
 
     /**************************************************
      * 				Classrooms
@@ -48,14 +49,24 @@ export class CourseService {
      * 	"professor": "...",
      * 	"userName": "..."
      * }
+     *  Get course-id (insert new class)
+     /**
+	 * JSON Format:
+	 * {
+	 * 	"course": "...",
+	 * 	"professor": "..."
+	 * }
      */
      joinClass(courseName: string, professor: string, userName: string) {
          let url = '/course/join';
          let body = { "course" : courseName, "professor": professor, "userName": userName};
          let headers = new Headers();
          headers.append('Auth', localStorage.getItem('token'));
-        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
-
+         return this.http.post('/course/get-course-id', {"course": courseName, "professor": professor}, { headers: headers}).map((Res: Response) => {
+             let res = this.http.post(url, body, { headers: headers }).map((res: Response) => res.json());
+             console.log(res);
+             return res;
+         })
      }
      getCourseDetails(courseName: string) {
          let url = '/course';
@@ -70,7 +81,7 @@ export class CourseService {
          let body = { "course" : courseName, "professor": professor};
          let headers = new Headers();
          headers.append('Auth', localStorage.getItem('token'));
-        return this.http.post(url, body, { headers: headers }) .map((res: Response) => res.json());
+        return this.http.post(url, body, { headers: headers }).map((res: Response) => res.json());
      }
 
      getNumOfStudents(courseName: string, professor: string) {
