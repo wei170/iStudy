@@ -69,7 +69,7 @@ router.post('/get-course-id', middleware.requireAuthentication, function(req, re
 					db.course_professor.findOne({where: {course_id: course.id, professor_id: professor.id}})
 						.then(function (aCourse) {
 							if (aCourse){
-								res.send({course_id: aCourse.id});
+								res.status(200).send({course_id: aCourse.id});
 							}
 							else {
 								res.status(404).send({err: "No Such Course"});
@@ -77,12 +77,38 @@ router.post('/get-course-id', middleware.requireAuthentication, function(req, re
 						})
 				}
 				else {
-					res.status(404).send({err: "Professor Not Found :("});
+					// insert new Professor and linked the professor with the existed course
+					db.professor.create({name: body.professor}).then(function (n_p) {
+						course.addProfessor(n_p).then(function () {
+							res.status(200).send({res: "Insert New Course to DB"});
+						})
+					});
+					//res.status(404).send({err: "Professor Not Found :("});
 				}
 			});
 		}
 		else {
-			res.status(404).send({err: "Course Not Found :("});
+			// insert new Course
+			db.course.create({name: body.course}).then(function (n_c) {
+				// check if professor existed
+				db.professor.findOne({where: {name: body.professor}}).then(function (professor) {
+					if (professor){
+						// linked the new course with existed professor
+						n_c.addProfessor(professor).then(function () {
+							res.status(200).send({res: "Insert New Course to DB"});
+						});
+					}
+					else {
+						// insert new professor and linked the new course with the new professor
+						db.professor.create({name: body.professor}).then(function (n_p) {
+							n_c.addProfessor(n_p).then(function () {
+								res.status(200).send({res: "Insert New Course to DB"});
+							});
+						})
+					}
+				});
+			});
+			//res.status(404).send({err: "Course Not Found :("});
 		}
 	})
 });
