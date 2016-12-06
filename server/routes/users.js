@@ -764,8 +764,6 @@ router.post('/find-friends', middleware.requireAuthentication, function(req, res
 
 });
 
-
-
 /******************************************************
  *           Get Groups of the current user has joined
  ******************************************************/

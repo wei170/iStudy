@@ -179,6 +179,8 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 */
 	var body = _.pick(req.body, 'userName', 'major', 'nationality', 'birthday', 'gender','visibility', 'language', 'hobby');
     var attributes = {};
+    var valid_language = false;
+    var valid_hobby = false;
 
     if (body.hasOwnProperty('major')) {
         attributes.major = body.major;
@@ -220,8 +222,8 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 								});
 								db.language.findAll({where: {name: {$in: language_list}}})
 									.then(function (languages) {
-										if (languages){
-
+										if (languages.length > 0){
+											valid_language = true;
 											profile.setLanguages(languages).then(function () {
 												if (body.hobby !== ""){
 													// update HOBBY
@@ -232,7 +234,8 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 
 													db.hobby.findAll({where: {name: {$in: hobby_list}}})
 														.then(function (hobbies) {
-															if (hobbies){
+															if (hobbies.length > 0){
+																valid_hobby = true;
 																profile.setHobbies(hobbies);
 															}
 															else {
@@ -240,7 +243,9 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 															}
 														});
 												}
-												res.status(200).send({res: "Profile Updated Successfully"});
+												if (valid_hobby && valid_language){
+													res.status(200).send({res: "Profile Updated Successfully"});
+												}
 										});
 
 

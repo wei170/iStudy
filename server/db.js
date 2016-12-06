@@ -132,6 +132,8 @@ console.log('Friend_Request associations:', Object.keys(db.friend_request.associ
 console.log('Comment associations:', Object.keys(db.comment.associations));
 console.log('User_Friends associations: ', Object.keys(db.user_friends.associations));
 console.log('Course_Student associations: ', Object.keys(db.course_student.associations));
+console.log('Group associations: ', Object.keys(db.group.associations));
+console.log('Group_Users associations: ', Object.keys(db.group_users.associations));
 
 db.sequelize = sequelize;
 
