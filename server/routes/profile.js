@@ -179,8 +179,6 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 	 */
 	var body = _.pick(req.body, 'userName', 'major', 'nationality', 'birthday', 'gender','visibility', 'language', 'hobby');
     var attributes = {};
-    var valid_language = false;
-    var valid_hobby = false;
 
     if (body.hasOwnProperty('major')) {
         attributes.major = body.major;
@@ -223,9 +221,8 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 								db.language.findAll({where: {name: {$in: language_list}}})
 									.then(function (languages) {
 										if (languages.length > 0){
-											valid_language = true;
 											profile.setLanguages(languages).then(function () {
-												if (body.hobby !== ""){
+												if (body.hobby !== "") {
 													// update HOBBY
 													var hobby_list = [];
 													body.hobby.map(function (hobby) {
@@ -234,17 +231,15 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 
 													db.hobby.findAll({where: {name: {$in: hobby_list}}})
 														.then(function (hobbies) {
-															if (hobbies.length > 0){
-																valid_hobby = true;
-																profile.setHobbies(hobbies);
+															if (hobbies.length > 0) {
+																profile.setHobbies(hobbies).then(function () {
+																	res.status(200).send({res: "Profile Updated Successfully"});
+																});
 															}
 															else {
 																res.status(404).send({err: "Hobbies Not Found"});
 															}
 														});
-												}
-												if (valid_hobby && valid_language){
-													res.status(200).send({res: "Profile Updated Successfully"});
 												}
 										});
 
