@@ -75,7 +75,7 @@
 									Group name is required
 								</div>
 							</label>
-							<button class="btn btn-primary pull-xs-right" type="submit" [disabled]="!groupForm.form.valid">Invite</button>
+							<button class="btn btn-primary pull-xs-right" (click)="createGroup()" [disabled]="!groupForm.form.valid">Invite</button>
 						</div>
 					</form>
 					<br>

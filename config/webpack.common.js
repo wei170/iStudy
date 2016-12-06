@@ -330,7 +330,10 @@ module.exports = function(options) {
       process: true,
       module: true,
       clearImmediate: false,
-      setImmediate: false
+      setImmediate: false,
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty'
     }
 
   };

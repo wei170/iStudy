@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CourseService, AlertService } from '../_services/index';
+import * as RMPApi from 'rmp-api';
+
 
 @Component({
     moduleId: module.id,
@@ -11,14 +13,23 @@ import { CourseService, AlertService } from '../_services/index';
 
 export class CourseDetailsComponent {
     @Input() courseName: string;
-    private rmp: {
-        rating: number,
-        comments: {}[]
-    } = {
-        "rating" : 0,
-        "comments" : []
-    }
-
+    private rmp: any;
+    //     fname: string,
+    //     lname: string,
+    //     quality: string,
+    //     easiness: string,
+    //     help: string,
+    //     grade: string,
+    //     comments: any[]
+    // } = {
+    //     "fname": "",
+    //     "lname": "",
+    //     "quality": "0",
+    //     "easiness": "0",
+    //     "help": "0",
+    //     "grade": "0",
+    //     comments: [],
+    // }
     constructor(
         private courseService: CourseService,
         private alertService: AlertService
@@ -36,11 +47,24 @@ export class CourseDetailsComponent {
         )
     }
 
-    getRMP(professor: string) {
-        this.courseService.getRMP(this.courseName, professor).subscribe(
-            data => {
-                this.rmp = data
+    getRMP(name: string) {
+        let callback = function(professor) {
+            if (professor === null) {
+                console.log("No professor found.");
+                return;
             }
-        );
+            
+            console.log("Name: " + professor.fname + " " + professor.lname);
+            console.log("University: "+ professor.university);
+            console.log("Quality: " + professor.quality);
+            console.log("Easiness: " + professor.easiness);
+            console.log("Helpfulness: " + professor.help);
+            console.log("Average Grade: " + professor.grade);
+            console.log("Chili: " + professor.chili);
+            console.log("URL: " + professor.url);
+            console.log("First comment: " + professor.comments[0]);
+        };
+
+        console.log(RMPApi.get("Dunsmore", callback));
     }
 }
