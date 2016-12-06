@@ -30,7 +30,7 @@
 			</div>
 			<div class="tab-content mb-lg" id="myTabContent">
 				<div class="tab-pane clearfix" *ngFor="let room of userClasses" id="{{room.course}}" role="tabpanel">
-					<form>
+					<div>
 						<h4>Numbers Of Classmates: {{numOfStudents}}</h4>
 						<div class="form-group">
 
@@ -48,13 +48,13 @@
 							</select>
 						</div>
 						<div class = "form-group">
-							<button class="btn btn-default" (click)="filterStudents(room)" type="submit">Search</button>
+							<button class="btn btn-default" (click)="filterStudents(room)" >Search</button>
 							<button *ngIf="!toGroup" class="btn btn-primary pull-xs-right" (click)="toGroup = true">Create Group</button>
 							<button *ngIf="toGroup" class="btn btn-primary pull-xs-right" (click)="toGroup = false">Cancel</button>
 						</div>
-					</form>
+					</div>
 					<br>
-					<form (ngSubmit)="createGroup()" #groupForm="ngForm">
+					<form #groupForm="ngForm">
 						<div class="form-group">
 							<md-list>
 								<md-list-item *ngFor="let student of studentList">

@@ -5,7 +5,7 @@
 <h1 class="page-title">Registration</h1>
 
 <div class="row">
-	<div class="col-lg-4">
+	<div class="col-md-4 col-xs-12">
 		<form role="form" (ngSubmit)="f.form.valid && searchCourse()" #f="ngForm" novalidate>
 			<div *ngIf="step === 0">
 				<label>Select Course Major</label>
@@ -41,7 +41,7 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-lg-8">
+	<div class="col-md-8 col-xs-12">
 		<!-- your page content -->
 		<courseDetails [sections]="sections" [courseName]="courseName" *ngIf="step === 2"></courseDetails>
 	</div>
