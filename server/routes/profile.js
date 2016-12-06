@@ -220,7 +220,7 @@ router.post('/update', middleware.requireAuthentication, function(req, res) {
 								});
 								db.language.findAll({where: {name: {$in: language_list}}})
 									.then(function (languages) {
-										if (languages){
+										if (languages.length > 0){
 
 											profile.setLanguages(languages).then(function () {
 												if (body.hobby !== ""){
