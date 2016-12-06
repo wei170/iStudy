@@ -13,6 +13,7 @@ var seedLanguages = require('../models/seedLanguages');
 var seedHobbies = require('../models/seedHobbies');
 var seedComments = require('../models/seedComments');
 var seedCourseComment = require('../models/seedCourseComment');
+var seedProfile = require('../models/seedProfile');
 var Promise = require('bluebird');
 var router = express.Router();
 
@@ -88,6 +89,16 @@ router.post('/link_course_rating', function(req, res) {
         .then(res.status(200).send({
             res: "Added Rating Successfully"
         }));
+});
+
+/**************************************************
+ * 				 Update User Profile
+ **************************************************/
+router.post('/update_profile', function (req, res) {
+   updateProfile(res)
+	   .then(res.status(200).send({
+	   		res: "Updated Seed Profile Successfully"
+	   }));
 });
 
 // ___  __/___  ________________  /___(_)____________
@@ -430,6 +441,57 @@ var linkCourseAndComments = function(res) {
             });
         });
     });
+};
+
+
+/**
+ * update seed user's profile
+ * @param res
+ */
+var updateProfile = function (res) {
+    return new Promise(function (resolve, reject) {
+    	var len = seedProfile.length;
+    	var count = 0;
+        seedProfile.map(function (P) {
+            var userName = P.userName;
+            var profile = P.profile;
+            db.user.findOne({where: {userName: userName}}).then(function (user) {
+				user.getProfile().then(function (p) {
+					p.updateAttributes(profile).then(function (u_p) {
+						var language_list = [];
+						profile.language.map(function (language) {
+							language_list.push(language.name);
+						});
+						db.language.findAll({where: {name: {$in: language_list}}})
+							.then(function (languages) {
+								if (languages.length > 0){
+									// update language
+									u_p.setLanguages(languages).then(function () {
+										var hobby_list = [];
+										profile.hobby.map(function (hobby) {
+											hobby_list.push(hobby.name);
+										});
+										db.hobby.findAll({where: {name: {$in: hobby_list}}})
+											.then(function (hobbies) {
+												if (hobbies.length > 0){
+													// update hobby
+													u_p.setHobbies(hobbies).then(function () {
+														count++;
+													});
+												}
+											});
+									});
+								}
+							});
+
+					});
+				});
+			});
+		});
+		if (count == len){
+        	resolve();
+		}
+	})
 };
 
 module.exports = router;
