@@ -28,9 +28,8 @@ export class PopupService {
                     this.modal.alert()
                         .size('lg')
                         .showClose(true)
-                        .title('User Public Profile')
+                        .titleHtml('<h4 class="modal-title"><strong>'+hostName+'</strong>\'s Public Profile' + '</h4>')
                         .body(
-                            '<h4>'+hostName+'</h4>'+
                             '<p> <strong>Language:</strong>&nbsp;'+ languages + '</p>'+
                             '<p> <strong>Hobby:</strong>&nbsp;'+ hobbies +'</p>'+
                             '<p> <strong>Majory:</strong>&nbsp;'+ data.profile.major +'</p>'+
@@ -44,9 +43,9 @@ export class PopupService {
                     this.modal.alert()
                         .size('lg')
                         .showClose(true)
-                        .title('User Private Profile')
+                        .titleHtml('<h4 class="modal-title"><strong>'+hostName+'</strong>\'s Private Profile' + '</h4>')
                         .body(
-                            '<h4>'+hostName+'</h4>'+ '<br><section>' + 
+                            '<section>' + 
                             '<p>'+ '<strong>Nationality:</strong>&nbsp;' + data.nationality + '</p>'+
                             '<p>'+ '<strong>Gender:</strong>&nbsp;&nbsp;' + data.gender +'</p>' + '</section>'
                         )
@@ -68,14 +67,19 @@ export class PopupService {
     }
 
     popError(title: string, message: string) {
-        this.modal.alert()
-            .size('lg')
+        return this.modal.alert()
+            .size('md')
             .showClose(true)
-            .title(title)
+            .titleHtml('<h4>' + title + '</h4>')
             .body(
-                '<h4>Oops: '+ message +'</h4>'
+                '<p>Oops: '+ message +'</p>'
             )
             .okBtn('Gotchu')
             .open();
+    }
+
+    /****** Need to config body and title yourself and open yourself *****/
+    generalPop(title: string, message: string) {
+        return this.modal.alert().size('lg').titleHtml(title).body(message).showClose(true).open();
     }
 }

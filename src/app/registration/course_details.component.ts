@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CourseService, AlertService } from '../_services/index';
+import { CourseService, AlertService, PopupService } from '../_services/index';
 import * as RMPApi from 'rmp-api';
 
 
@@ -13,27 +13,35 @@ import * as RMPApi from 'rmp-api';
 
 export class CourseDetailsComponent {
     @Input() courseName: string;
-    private rmp: any;
-    //     fname: string,
-    //     lname: string,
-    //     quality: string,
-    //     easiness: string,
-    //     help: string,
-    //     grade: string,
-    //     comments: any[]
-    // } = {
-    //     "fname": "",
-    //     "lname": "",
-    //     "quality": "0",
-    //     "easiness": "0",
-    //     "help": "0",
-    //     "grade": "0",
-    //     comments: [],
-    // }
+    private purdueRMP: any;
+    private rmp: {
+        fname: string,
+        lname: string,
+        quality: string,
+        easiness: string,
+        help: string,
+        grade: string,
+        url: string,
+        university: string
+        comments: any[]
+    } = {
+        "fname": "",
+        "lname": "",
+        "quality": "0",
+        "easiness": "0",
+        "help": "0",
+        "grade": "0",
+        "url": "",
+        "university": "",
+        comments: [],
+    }
     constructor(
         private courseService: CourseService,
-        private alertService: AlertService
-    ) {}
+        private alertService: AlertService,
+        private popup: PopupService
+    ) {
+        this.purdueRMP = RMPApi("Purdue University")("West Lafayette");
+    }
 
     joinClass(professor: string) {
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
@@ -52,23 +60,20 @@ export class CourseDetailsComponent {
     }
 
     getRMP(name: string) {
-        let callback = function(professor) {
+        let fullName = name.split(" ");
+        name = fullName[0]+" "+fullName[fullName.length-1];
+        this.purdueRMP.get(name, (professor) => {
             if (professor === null) {
-                console.log("No professor found.");
+                this.popup.generalPop('<h4 class="modal-title">Sorry :(</h4>', '<p>Professor Not Found!</p>')
                 return;
             }
             
-            console.log("Name: " + professor.fname + " " + professor.lname);
-            console.log("University: "+ professor.university);
-            console.log("Quality: " + professor.quality);
-            console.log("Easiness: " + professor.easiness);
-            console.log("Helpfulness: " + professor.help);
-            console.log("Average Grade: " + professor.grade);
-            console.log("Chili: " + professor.chili);
-            console.log("URL: " + professor.url);
-            console.log("First comment: " + professor.comments[0]);
-        };
-
-        console.log(RMPApi.get("Dunsmore", callback));
+            this.rmp = professor;
+            this.popup.generalPop(
+                '<h4 class="modal-title"><strong>' + this.rmp.fname+ " " + this.rmp.lname + '</strong><br>from '+ this.rmp.university + '</h4>', 
+                '<p>Quality: '+this.rmp.quality+'</p><p>Easiness: ' + this.rmp.easiness + '</p><p>Helpfulness: ' + this.rmp.help + 
+                '</p><p>Average Grade: ' + this.rmp.grade + '</p>' + 'First comment: ' + this.rmp.comments[0]+ '</p>' + 
+                '<a href="' + this.rmp.url + '">Go to ' + this.rmp.lname + '\'s RateMyProfessor page!</a><p>');
+        });
     }
 }

@@ -474,7 +474,6 @@ var ClassRegistration = (function () {
                         }
                     }
                 }
-                console.log(_this.sections);
             });
         }
     };
@@ -591,7 +590,7 @@ module.exports = "<ol class=\"breadcrumb\">\n\t<li class=\"breadcrumb-item\">YOU
 /***/ "./src/app/registration/course_details.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<section class=\"widget\"> \n\n    <h3>Sections</h3>         \n\t<div class=\"row panel-group event\">\n\t\t<div class=\"offset-lg-0 col-lg-6 offset-md-0 col-md-6 offset-xs-1 col-xs-10\" *ngFor=\"let section of sections; let i = index\">\n\t\t\t<div class=\"panel panel-section\">\n\t\t\t\t<div class=\"panel-heading\">\n\t\t\t\t\tSection {{i+1}}\n\t\t\t\t</div>\n\t\t\t\t<div class=\"panel-body\">\n\t\t\t\t\t<p>Professor: {{section.Instructors[0].Name}} </p>\n\t\t\t\t\t<p>Time: {{section.DaysOfWeek}}</p>\n\t\t\t\t\t<p>Duration: {{section.Duration}}</p>\n\t\t\t\t\t<button class = \"btn btn-primary\" (click)=\"joinClass(section.Instructors[0].Name)\"> Join this class</button>\n\t\t\t\t\t<button class=\"btn btn-secondary\"  (click)=\"getRMP(section.Instructors[0].Name)\" data-toggle=\"modal\" data-target=\"#myModal1\">\n\t\t\t\t\t\tProf. Rate\n\t\t\t\t\t</button>\n\t\t\t\t\t<div class=\"modal fade\" id=\"myModal1\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel1\" aria-hidden=\"true\">\n\t\t\t\t\t\t<div class=\"modal-dialog\">\n\t\t\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n\t\t\t\t\t\t\t\t\t<!--<h4 class=\"modal-title\" id=\"myModalLabel1\"><strong>{{rmp.fname}} {{rmp.lname}}</strong> from {{rmp.university}}</h4>\n\t\t\t\t\t\t\t\t\t<span class=\"pull-left\">Quality: {{rmp.quality}}</span><span class=\"pull-right\">Easiness: {{rmp.easiness}}</span>\n\t\t\t\t\t\t\t\t\t<span class=\"pull-left\">Helpfulness: {{rmp.help}}</span><span class=\"pull-right\">Average Grade: {{rmp.grade}}</span>\n\t\t\t\t\t\t\t\t\t<a href=\"{{rmp.url}}\">Go to {{rmp.lname}}'s RateMyProfessor page!</a>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\tFirst comment: {{rmp.comments[0]}}\n\t\t\t\t\t\t\t\t\t</p>-->\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div >\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n    <h3>Course Description</h3>\n\t<div class=\"event\">\n\t\t<footer>\n\t\t\t<p>There's no description about the this course yet :(</p>\n\t\t</footer>\n\t</div>\n\n    <!--<h3>Comments</h3>\n\t<section class=\"event\">\n\t\t<h5 class=\"event-heading\"><a href=\"#\">Jessica Smith</a> <small>@jess</small></h5>\n\t\t<p class=\"text-muted\">February 22, 2014 at 01:59 PM</p>\n\t\t<p class=\"fs-mini\">\n\t\tCheck out this awesome photo I made in Italy last summer. Seems it was lost somewhere deep inside\n\t\tmy brand new HDD 40TB. Thanks god I found it!\n\t\t</p>\n\t\t<footer>\n\t\t\t<div class=\"clearfix\">\n\t\t\t\t<ul class=\"post-links mt-sm pull-left\">\n\t\t\t\t\t<li><a href=\"#\">1 hour</a></li>\n\t\t\t\t\t<li><a href=\"#\"><span class=\"text-danger\"><i class=\"fa fa-heart-o\"></i> Like</span></a></li>\n\t\t\t\t\t<li><a href=\"#\">Comment</a></li>\n\t\t\t\t</ul>\n\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\">\n\t\t\t\t\t\t<img class=\"img-circle\" src=\"assets/img/people/a1.jpg\">\n\t\t\t\t\t</a>\n\t\t\t\t</span>\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\"><img class=\"img-circle\" src=\"assets/img/people/a5.jpg\"></a>\n\t\t\t\t</span>\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\"><img class=\"img-circle\" src=\"assets/img/people/a3.jpg\"></a>\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t\t<ul class=\"post-comments mt-sm\">\n\t\t\t\t<li>\n\t\t\t\t\t<span class=\"thumb-xs avatar pull-left mr-sm\">\n\t\t\t\t\t\t<img alt=\"...\" class=\"img-circle\" src=\"assets/img/people/a1.jpg\">\n\t\t\t\t\t</span>\n\t\t\t\t\t<div class=\"comment-body\">\n\t\t\t\t\t\t<h6 class=\"author fs-sm fw-semi-bold\">Ignacio Abad <small>6 mins ago</small></h6>\n\t\t\t\t\t\t<p>Hey, have you heard anything about that?</p>\n\t\t\t\t\t</div>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<span class=\"thumb-xs avatar pull-left mr-sm\">\n\t\t\t\t\t\t<img alt=\"...\" class=\"img-circle\" src=\"assets/img/avatar.png\">\n\t\t\t\t\t</span>\n\t\t\t\t\t<div class=\"comment-body\">\n\t\t\t\t\t\t<input class=\"form-control form-control-sm\" placeholder=\"Write your comment...\" type=\"text\">\n\t\t\t\t\t</div>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</footer>\n\t</section>\n\n\t<form action=\"#\" class=\"mt ng-untouched ng-pristine ng-valid\">\n\t\t<div class=\"form-group mb-0\">\n\t\t\t<label class=\"sr-only\" for=\"new-event\">New event</label>\n\t\t\t<textarea class=\"form-control\" id=\"new-event\" placeholder=\"Post something...\" rows=\"3\"></textarea>\n\t\t</div>\n\t\t<div class=\"btn-toolbar\">\n\t\t\t<div class=\"btn-group\">\n\t\t\t\t<a class=\"btn btn-sm btn-gray\" href=\"#\">\n\t\t\t\t\t<i class=\"fa fa-camera fa-lg\"></i>\n\t\t\t\t</a>\n\t\t\t\t<a class=\"btn btn-sm btn-gray\" href=\"#\">\n\t\t\t\t\t<i class=\"fa fa-map-marker fa-lg\"></i>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t\t<button class=\"btn btn-danger btn-sm pull-right\" type=\"submit\">Post</button>\n\t\t</div>\n\t</form>-->\n\n</section>\n"
+module.exports = "<section class=\"widget\"> \n\n    <h3>Sections</h3>         \n\t<div class=\"row panel-group event\">\n\t\t<div class=\"offset-lg-0 col-lg-6 offset-md-0 col-md-6 offset-xs-1 col-xs-10\" *ngFor=\"let section of sections; let i = index\">\n\t\t\t<div class=\"panel panel-section\">\n\t\t\t\t<div class=\"panel-heading\">\n\t\t\t\t\tSection {{i+1}}\n\t\t\t\t</div>\n\t\t\t\t<div class=\"panel-body\">\n\t\t\t\t\t<p>Professor: {{section.Instructors[0].Name}} </p>\n\t\t\t\t\t<p>Time: {{section.DaysOfWeek}}</p>\n\t\t\t\t\t<p>Duration: {{section.Duration}}</p>\n\t\t\t\t\t<button class = \"btn btn-primary\" (click)=\"joinClass(section.Instructors[0].Name)\"> Join this class</button>\n\t\t\t\t\t<button class=\"btn btn-secondary\"  (click)=\"getRMP(section.Instructors[0].Name)\" data-toggle=\"modal\" data-target=\"#myModal1\">\n\t\t\t\t\t\tProf. Rate\n\t\t\t\t\t</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n    <h3>Course Description</h3>\n\t<div class=\"event\">\n\t\t<footer>\n\t\t\t<p>There's no description about the this course yet :(</p>\n\t\t</footer>\n\t</div>\n\n    <!--<h3>Comments</h3>\n\t<section class=\"event\">\n\t\t<h5 class=\"event-heading\"><a href=\"#\">Jessica Smith</a> <small>@jess</small></h5>\n\t\t<p class=\"text-muted\">February 22, 2014 at 01:59 PM</p>\n\t\t<p class=\"fs-mini\">\n\t\tCheck out this awesome photo I made in Italy last summer. Seems it was lost somewhere deep inside\n\t\tmy brand new HDD 40TB. Thanks god I found it!\n\t\t</p>\n\t\t<footer>\n\t\t\t<div class=\"clearfix\">\n\t\t\t\t<ul class=\"post-links mt-sm pull-left\">\n\t\t\t\t\t<li><a href=\"#\">1 hour</a></li>\n\t\t\t\t\t<li><a href=\"#\"><span class=\"text-danger\"><i class=\"fa fa-heart-o\"></i> Like</span></a></li>\n\t\t\t\t\t<li><a href=\"#\">Comment</a></li>\n\t\t\t\t</ul>\n\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\">\n\t\t\t\t\t\t<img class=\"img-circle\" src=\"assets/img/people/a1.jpg\">\n\t\t\t\t\t</a>\n\t\t\t\t</span>\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\"><img class=\"img-circle\" src=\"assets/img/people/a5.jpg\"></a>\n\t\t\t\t</span>\n\t\t\t\t<span class=\"thumb thumb-sm pull-right\">\n\t\t\t\t\t<a href=\"#\"><img class=\"img-circle\" src=\"assets/img/people/a3.jpg\"></a>\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t\t<ul class=\"post-comments mt-sm\">\n\t\t\t\t<li>\n\t\t\t\t\t<span class=\"thumb-xs avatar pull-left mr-sm\">\n\t\t\t\t\t\t<img alt=\"...\" class=\"img-circle\" src=\"assets/img/people/a1.jpg\">\n\t\t\t\t\t</span>\n\t\t\t\t\t<div class=\"comment-body\">\n\t\t\t\t\t\t<h6 class=\"author fs-sm fw-semi-bold\">Ignacio Abad <small>6 mins ago</small></h6>\n\t\t\t\t\t\t<p>Hey, have you heard anything about that?</p>\n\t\t\t\t\t</div>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<span class=\"thumb-xs avatar pull-left mr-sm\">\n\t\t\t\t\t\t<img alt=\"...\" class=\"img-circle\" src=\"assets/img/avatar.png\">\n\t\t\t\t\t</span>\n\t\t\t\t\t<div class=\"comment-body\">\n\t\t\t\t\t\t<input class=\"form-control form-control-sm\" placeholder=\"Write your comment...\" type=\"text\">\n\t\t\t\t\t</div>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</footer>\n\t</section>\n\n\t<form action=\"#\" class=\"mt ng-untouched ng-pristine ng-valid\">\n\t\t<div class=\"form-group mb-0\">\n\t\t\t<label class=\"sr-only\" for=\"new-event\">New event</label>\n\t\t\t<textarea class=\"form-control\" id=\"new-event\" placeholder=\"Post something...\" rows=\"3\"></textarea>\n\t\t</div>\n\t\t<div class=\"btn-toolbar\">\n\t\t\t<div class=\"btn-group\">\n\t\t\t\t<a class=\"btn btn-sm btn-gray\" href=\"#\">\n\t\t\t\t\t<i class=\"fa fa-camera fa-lg\"></i>\n\t\t\t\t</a>\n\t\t\t\t<a class=\"btn btn-sm btn-gray\" href=\"#\">\n\t\t\t\t\t<i class=\"fa fa-map-marker fa-lg\"></i>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t\t<button class=\"btn btn-danger btn-sm pull-right\" type=\"submit\">Post</button>\n\t\t</div>\n\t</form>-->\n\n</section>\n"
 
 /***/ },
 
@@ -604,25 +603,22 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var RMPApi = __webpack_require__("./node_modules/rmp-api/dist/rmp-api.js");
 var CourseDetailsComponent = (function () {
-    //     fname: string,
-    //     lname: string,
-    //     quality: string,
-    //     easiness: string,
-    //     help: string,
-    //     grade: string,
-    //     comments: any[]
-    // } = {
-    //     "fname": "",
-    //     "lname": "",
-    //     "quality": "0",
-    //     "easiness": "0",
-    //     "help": "0",
-    //     "grade": "0",
-    //     comments: [],
-    // }
-    function CourseDetailsComponent(courseService, alertService) {
+    function CourseDetailsComponent(courseService, alertService, popup) {
         this.courseService = courseService;
         this.alertService = alertService;
+        this.popup = popup;
+        this.rmp = {
+            "fname": "",
+            "lname": "",
+            "quality": "0",
+            "easiness": "0",
+            "help": "0",
+            "grade": "0",
+            "url": "",
+            "university": "",
+            comments: [],
+        };
+        this.purdueRMP = RMPApi("Purdue University")("West Lafayette");
     }
     CourseDetailsComponent.prototype.joinClass = function (professor) {
         var _this = this;
@@ -636,22 +632,19 @@ var CourseDetailsComponent = (function () {
         });
     };
     CourseDetailsComponent.prototype.getRMP = function (name) {
-        var callback = function (professor) {
+        var _this = this;
+        var fullName = name.split(" ");
+        name = fullName[0] + " " + fullName[fullName.length - 1];
+        this.purdueRMP.get(name, function (professor) {
             if (professor === null) {
-                console.log("No professor found.");
+                _this.popup.generalPop('<h4 class="modal-title">Sorry :(</h4>', '<p>Professor Not Found!</p>');
                 return;
             }
-            console.log("Name: " + professor.fname + " " + professor.lname);
-            console.log("University: " + professor.university);
-            console.log("Quality: " + professor.quality);
-            console.log("Easiness: " + professor.easiness);
-            console.log("Helpfulness: " + professor.help);
-            console.log("Average Grade: " + professor.grade);
-            console.log("Chili: " + professor.chili);
-            console.log("URL: " + professor.url);
-            console.log("First comment: " + professor.comments[0]);
-        };
-        console.log(RMPApi.get("Dunsmore", callback));
+            _this.rmp = professor;
+            _this.popup.generalPop('<h4 class="modal-title"><strong>' + _this.rmp.fname + " " + _this.rmp.lname + '</strong><br>from ' + _this.rmp.university + '</h4>', '<p>Quality: ' + _this.rmp.quality + '</p><p>Easiness: ' + _this.rmp.easiness + '</p><p>Helpfulness: ' + _this.rmp.help +
+                '</p><p>Average Grade: ' + _this.rmp.grade + '</p>' + 'First comment: ' + _this.rmp.comments[0] + '</p>' +
+                '<a href="' + _this.rmp.url + '">Go to ' + _this.rmp.lname + '\'s RateMyProfessor page!</a><p>');
+        });
     };
     __decorate([
         core_1.Input(), 
@@ -665,10 +658,10 @@ var CourseDetailsComponent = (function () {
             styles: [__webpack_require__("./src/app/profile/profile.style.scss"), __webpack_require__("./src/app/registration/course_details.style.css")],
             inputs: ['sections']
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.CourseService !== 'undefined' && index_1.CourseService) === 'function' && _a) || Object, (typeof (_b = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.CourseService !== 'undefined' && index_1.CourseService) === 'function' && _a) || Object, (typeof (_b = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _b) || Object, (typeof (_c = typeof index_1.PopupService !== 'undefined' && index_1.PopupService) === 'function' && _c) || Object])
     ], CourseDetailsComponent);
     return CourseDetailsComponent;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 exports.CourseDetailsComponent = CourseDetailsComponent;
 
@@ -718,7 +711,8 @@ var RegistrationModule = (function () {
                 router_1.RouterModule.forChild(exports.routes),
             ],
             providers: [
-                index_1.CourseService
+                index_1.CourseService,
+                index_1.PopupService
             ]
         }), 
         __metadata('design:paramtypes', [])

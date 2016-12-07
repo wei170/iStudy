@@ -96241,7 +96241,6 @@ var CourseService = (function () {
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post('/course/get-course-id', { "course": courseName, "professor": professor }, { headers: headers }).map(function (Res) {
             var res = _this.http.post(url, body, { headers: headers }).map(function (res) { return res.json(); });
-            console.log(res);
             return res;
         });
     };
@@ -96541,9 +96540,8 @@ var PopupService = (function () {
                 _this.modal.alert()
                     .size('lg')
                     .showClose(true)
-                    .title('User Public Profile')
-                    .body('<h4>' + hostName + '</h4>' +
-                    '<p> <strong>Language:</strong>&nbsp;' + languages + '</p>' +
+                    .titleHtml('<h4 class="modal-title"><strong>' + hostName + '</strong>\'s Public Profile' + '</h4>')
+                    .body('<p> <strong>Language:</strong>&nbsp;' + languages + '</p>' +
                     '<p> <strong>Hobby:</strong>&nbsp;' + hobbies + '</p>' +
                     '<p> <strong>Majory:</strong>&nbsp;' + data.profile.major + '</p>' +
                     '<p> <strong>Birthday:</strong>&nbsp;' + data.profile.birthday + '</p>' +
@@ -96556,8 +96554,8 @@ var PopupService = (function () {
                 _this.modal.alert()
                     .size('lg')
                     .showClose(true)
-                    .title('User Private Profile')
-                    .body('<h4>' + hostName + '</h4>' + '<br><section>' +
+                    .titleHtml('<h4 class="modal-title"><strong>' + hostName + '</strong>\'s Private Profile' + '</h4>')
+                    .body('<section>' +
                     '<p>' + '<strong>Nationality:</strong>&nbsp;' + data.nationality + '</p>' +
                     '<p>' + '<strong>Gender:</strong>&nbsp;&nbsp;' + data.gender + '</p>' + '</section>')
                     .open();
@@ -96576,13 +96574,17 @@ var PopupService = (function () {
         ;
     };
     PopupService.prototype.popError = function (title, message) {
-        this.modal.alert()
-            .size('lg')
+        return this.modal.alert()
+            .size('md')
             .showClose(true)
-            .title(title)
-            .body('<h4>Oops: ' + message + '</h4>')
+            .titleHtml('<h4>' + title + '</h4>')
+            .body('<p>Oops: ' + message + '</p>')
             .okBtn('Gotchu')
             .open();
+    };
+    /****** Need to config body and title yourself and open yourself *****/
+    PopupService.prototype.generalPop = function (title, message) {
+        return this.modal.alert().size('lg').titleHtml(title).body(message).showClose(true).open();
     };
     PopupService = __decorate([
         core_1.Injectable(), 

@@ -64,7 +64,6 @@ export class CourseService {
          headers.append('Auth', localStorage.getItem('token'));
          return this.http.post('/course/get-course-id', {"course": courseName, "professor": professor}, { headers: headers}).map((Res: Response) => {
              let res = this.http.post(url, body, { headers: headers }).map((res: Response) => res.json());
-             console.log(res);
              return res;
          })
      }

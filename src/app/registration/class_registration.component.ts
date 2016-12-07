@@ -66,20 +66,8 @@ export class ClassRegistration implements OnInit {
 							}
 						}
 					}
-					console.log(this.sections);
 				}
 			);
-			// this.courseService.getCourseDetails(this.courseName).subscribe (
-			// 	data => {
-			// 		this.step = 2;
-			// 		this.sections = data;
-			// 		this.length = data.length;
-			// 		this.onChangeTable(this.config);
-			// 	},
-			// 	error => {
-			// 		this.alertService.error(error.err);
-			// 	}
-			// )
 		}
 	}
 
