@@ -44,3 +44,4 @@ database/*.sqlite
 .DS_Store
 semantic
 semantic.json
+.vscode/

@@ -149,7 +149,7 @@
 						</fieldset>
 						<div class="form-actions">
 							<div class="row">
-								<div class="offset-md-4 offset-sm-4 offset-xs-4 offset-lg-4">
+								<div style="display: block;margin:0 auto;">
 									<button type="submit" *ngIf="toEdit === false" class="btn btn-primary" (click)="edit()">Edit Profile</button>
 									<button type="submit" *ngIf="toEdit === true" class="btn btn-primary" (click)="editProfile()">Save Changes</button>
 									<button type="button" *ngIf="toEdit === true" class="btn btn-inverse" (click)="cancelEdit()">Cancel</button>

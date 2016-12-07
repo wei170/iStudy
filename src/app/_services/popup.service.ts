@@ -2,19 +2,22 @@ import { Injectable } from '@angular/core';
 import { Overlay } from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
-import { ProfileService } from './index'
+import { ProfileService, FriendService, AlertService } from './index'
 
 @Injectable()
 export class PopupService {
     private profile: any = {};
     constructor(
         private modal: Modal,
-        private profileService: ProfileService
+        private profileService: ProfileService,
+        private friendService: FriendService,
+        private alertService: AlertService
     ){}
 
     popUser(hostName: string) {
         // this.profile = {};
-        this.profileService.getProfile(hostName,  JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
+        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        this.profileService.getProfile(hostName, userName).subscribe(
             data => {
                 if (data.profile) {
                     let languages: string = "";
@@ -25,7 +28,7 @@ export class PopupService {
                     for (let hob of data.extra.hobby) {
                         hobbies += ' '+hob.name;
                     }
-                    this.modal.alert()
+                    this.modal.confirm()
                         .size('lg')
                         .showClose(true)
                         .titleHtml('<h4 class="modal-title"><strong>'+hostName+'</strong>\'s Public Profile' + '</h4>')
@@ -36,10 +39,23 @@ export class PopupService {
                             '<p> <strong>Birthday:</strong>&nbsp;'+ data.profile.birthday +'</p>'+
                             '<p> <strong>Nationality:</strong>&nbsp;'+ data.profile.nationality +'</p>'+
                             '<p> <strong>Gender:</strong>&nbsp;'+ data.profile.gender +'</p>'+
-                            '<p> <strong>Visibility:</strong>&nbsp;'+ data.profile.visibility +'</p>'          
+                            '<p> <strong>Visibility:</strong>&nbsp;'+ data.profile.visibility +'</p>'
                         )
-                        .open();
-                } else {
+                        .okBtn('Add Friend')
+                        .cancelBtn('Cancel')
+                        .open()
+                        .then(dialog => dialog.result)
+                        .catch(res => console.log("Cancel"))
+                        .then(
+                            res => {
+                                if (res) {
+                                    this.friendService.sendFriendReq(userName, hostName).subscribe(
+                                        data => this.alertService.success(data.res),
+                                        error => this.alertService.error(JSON.parse(error._body).err)
+                                )}
+                            }
+                        );
+                    } else {
                     this.modal.alert()
                         .size('lg')
                         .showClose(true)

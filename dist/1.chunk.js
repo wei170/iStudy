@@ -96517,15 +96517,18 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var bootstrap_1 = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/index.js");
 var index_1 = __webpack_require__("./src/app/_services/index.ts");
 var PopupService = (function () {
-    function PopupService(modal, profileService) {
+    function PopupService(modal, profileService, friendService, alertService) {
         this.modal = modal;
         this.profileService = profileService;
+        this.friendService = friendService;
+        this.alertService = alertService;
         this.profile = {};
     }
     PopupService.prototype.popUser = function (hostName) {
         var _this = this;
         // this.profile = {};
-        this.profileService.getProfile(hostName, JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
+        this.profileService.getProfile(hostName, userName).subscribe(function (data) {
             if (data.profile) {
                 var languages = "";
                 var hobbies = "";
@@ -96537,7 +96540,7 @@ var PopupService = (function () {
                     var hob = _c[_b];
                     hobbies += ' ' + hob.name;
                 }
-                _this.modal.alert()
+                _this.modal.confirm()
                     .size('lg')
                     .showClose(true)
                     .titleHtml('<h4 class="modal-title"><strong>' + hostName + '</strong>\'s Public Profile' + '</h4>')
@@ -96548,7 +96551,16 @@ var PopupService = (function () {
                     '<p> <strong>Nationality:</strong>&nbsp;' + data.profile.nationality + '</p>' +
                     '<p> <strong>Gender:</strong>&nbsp;' + data.profile.gender + '</p>' +
                     '<p> <strong>Visibility:</strong>&nbsp;' + data.profile.visibility + '</p>')
-                    .open();
+                    .okBtn('Add Friend')
+                    .cancelBtn('Cancel')
+                    .open()
+                    .then(function (dialog) { return dialog.result; })
+                    .catch(function (res) { return console.log("Cancel"); })
+                    .then(function (res) {
+                    if (res) {
+                        _this.friendService.sendFriendReq(userName, hostName).subscribe(function (data) { return _this.alertService.success(data.res); }, function (error) { return _this.alertService.error(JSON.parse(error._body).err); });
+                    }
+                });
             }
             else {
                 _this.modal.alert()
@@ -96588,10 +96600,10 @@ var PopupService = (function () {
     };
     PopupService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof bootstrap_1.Modal !== 'undefined' && bootstrap_1.Modal) === 'function' && _a) || Object, (typeof (_b = typeof index_1.ProfileService !== 'undefined' && index_1.ProfileService) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof bootstrap_1.Modal !== 'undefined' && bootstrap_1.Modal) === 'function' && _a) || Object, (typeof (_b = typeof index_1.ProfileService !== 'undefined' && index_1.ProfileService) === 'function' && _b) || Object, (typeof (_c = typeof index_1.FriendService !== 'undefined' && index_1.FriendService) === 'function' && _c) || Object, (typeof (_d = typeof index_1.AlertService !== 'undefined' && index_1.AlertService) === 'function' && _d) || Object])
     ], PopupService);
     return PopupService;
-    var _a, _b;
+    var _a, _b, _c, _d;
 }());
 exports.PopupService = PopupService;
 
