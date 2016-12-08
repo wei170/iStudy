@@ -61,10 +61,7 @@ var MdButtonToggleGroup = (function () {
         this._selected = null;
         /** Whether the button toggle group is initialized or not. */
         this._isInitialized = false;
-        /**
-         * The method to be called in order to update ngModel.
-         * Now `ngModel` binding is not supported in multiple selection mode.
-         */
+        /** The method to be called in order to update ngModel. */
         this._controlValueAccessorChangeFn = function (value) { };
         /** onTouch function registered via registerOnTouch (ControlValueAccessor). */
         this.onTouched = function () { };
@@ -100,7 +97,7 @@ var MdButtonToggleGroup = (function () {
             return this._disabled;
         },
         set: function (value) {
-            this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value);
+            this._disabled = (value != null && value !== false) ? true : null;
         },
         enumerable: true,
         configurable: true
@@ -204,7 +201,8 @@ var MdButtonToggleGroup = (function () {
         __metadata('design:type', String)
     ], MdButtonToggleGroup.prototype, "name", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
         __metadata('design:type', Boolean)
     ], MdButtonToggleGroup.prototype, "disabled", null);
     __decorate([
@@ -222,13 +220,12 @@ var MdButtonToggleGroup = (function () {
             host: {
                 'role': 'radiogroup',
             },
-            exportAs: 'mdButtonToggleGroup',
         }), 
         __metadata('design:paramtypes', [])
     ], MdButtonToggleGroup);
     return MdButtonToggleGroup;
 }());
-/** Multiple selection button-toggle group. `ngModel` is not supported in this mode. */
+/** Multiple selection button-toggle group. */
 var MdButtonToggleGroupMultiple = (function () {
     function MdButtonToggleGroupMultiple() {
         /** Disables all toggles in the group. */
@@ -251,7 +248,6 @@ var MdButtonToggleGroupMultiple = (function () {
     MdButtonToggleGroupMultiple = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
             selector: 'md-button-toggle-group[multiple]',
-            exportAs: 'mdButtonToggleGroup',
         }), 
         __metadata('design:paramtypes', [])
     ], MdButtonToggleGroupMultiple);
@@ -426,12 +422,12 @@ var MdButtonToggle = (function () {
     MdButtonToggle = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-button-toggle',
             template: "<label [attr.for]=\"inputId\" class=\"md-button-toggle-label\"> <input #input class=\"md-button-toggle-input md-visually-hidden\" [type]=\"_type\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" (change)=\"_onInputChange($event)\" (click)=\"_onInputClick($event)\"> <div class=\"md-button-toggle-label-content\"> <ng-content></ng-content> </div> </label> ",
-            styles: ["md-button-toggle-group { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); position: relative; display: inline-flex; border-radius: 2px; cursor: pointer; white-space: nowrap; } .md-button-toggle-disabled .md-button-toggle-label-content { cursor: default; } md-button-toggle { white-space: nowrap; } .md-button-toggle-label-content { display: inline-block; line-height: 36px; padding: 0 16px; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-button-toggle-label-content > * { vertical-align: middle; } /*# sourceMappingURL=button-toggle.css.map */ "],
+            styles: ["md-button-toggle-group { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); position: relative; display: inline-flex; border-radius: 3px; cursor: pointer; white-space: nowrap; } .md-button-toggle-disabled .md-button-toggle-label-content { cursor: default; } md-button-toggle { white-space: nowrap; } .md-button-toggle-label-content { display: inline-block; line-height: 36px; padding: 0 16px; cursor: pointer; } .md-button-toggle-label-content > * { vertical-align: middle; } /*# sourceMappingURL=button-toggle.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }),
         __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()),
         __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [MdButtonToggleGroup, MdButtonToggleGroupMultiple, __WEBPACK_IMPORTED_MODULE_3__core__["B" /* MdUniqueSelectionDispatcher */]])
+        __metadata('design:paramtypes', [MdButtonToggleGroup, MdButtonToggleGroupMultiple, __WEBPACK_IMPORTED_MODULE_3__core__["z" /* MdUniqueSelectionDispatcher */]])
     ], MdButtonToggle);
     return MdButtonToggle;
 }());
@@ -441,7 +437,7 @@ var MdButtonToggleModule = (function () {
     MdButtonToggleModule.forRoot = function () {
         return {
             ngModule: MdButtonToggleModule,
-            providers: [__WEBPACK_IMPORTED_MODULE_3__core__["B" /* MdUniqueSelectionDispatcher */]]
+            providers: [__WEBPACK_IMPORTED_MODULE_3__core__["z" /* MdUniqueSelectionDispatcher */]]
         };
     };
     MdButtonToggleModule = __decorate([
@@ -516,21 +512,8 @@ var MdButton = (function () {
         /** Whether a mousedown has occurred on this element in the last 100ms. */
         this._isMouseDown = false;
         /** Whether the ripple effect on click should be disabled. */
-        this._disableRipple = false;
-        this._disabled = false;
+        this.disableRipple = false;
     }
-    Object.defineProperty(MdButton.prototype, "disableRipple", {
-        get: function () { return this._disableRipple; },
-        set: function (v) { this._disableRipple = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["H" /* coerceBooleanProperty */])(v); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdButton.prototype, "disabled", {
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MdButton.prototype, "color", {
         get: function () {
             return this._color;
@@ -579,17 +562,14 @@ var MdButton = (function () {
             el.hasAttribute('md-fab') ||
             el.hasAttribute('md-mini-fab');
     };
-    MdButton.prototype._isRippleDisabled = function () {
-        return this.disableRipple || this.disabled;
+    MdButton.prototype.isRippleEnabled = function () {
+        return !this.disableRipple;
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], MdButton.prototype, "disableRipple", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], MdButton.prototype, "disabled", null);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdButton.prototype, "disableRipple", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
@@ -598,14 +578,13 @@ var MdButton = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'button[md-button], button[md-raised-button], button[md-icon-button], ' +
                 'button[md-fab], button[md-mini-fab]',
             host: {
-                '[disabled]': 'disabled',
                 '[class.md-button-focus]': '_isKeyboardFocused',
                 '(mousedown)': '_setMousedown()',
                 '(focus)': '_setKeyboardFocus()',
                 '(blur)': '_removeKeyboardFocus()',
             },
-            template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-button-ripple\" [class.md-button-ripple-round]=\"isRoundButton()\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-color]=\"isRoundButton() ? 'rgba(255, 255, 255, 0.2)' : ''\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> ",
-            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button]::after, .md-button-focus[md-fab]::after, .md-button-focus[md-mini-fab]::after, .md-button-focus[md-button]::after, .md-button-focus[md-icon-button]::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover::after, [md-icon-button]:hover::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover::after, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover::after { background-color: transparent; } [md-fab] { min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { min-width: 0; padding: 0; width: 40px; height: 40px; line-height: 24px; border-radius: 50%; } [md-icon-button] .md-button-wrapper > * { line-height: 24px; vertical-align: middle; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
+            template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> ",
+            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 3px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button]::after, .md-button-focus[md-fab]::after, .md-button-focus[md-mini-fab]::after, .md-button-focus[md-button]::after, .md-button-focus[md-icon-button]::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover::after, [md-icon-button]:hover::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover::after, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover::after { background-color: transparent; } [md-fab] { min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; } [md-fab] i, [md-fab] md-icon { padding: 16px 0; } [md-mini-fab] { min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; } [md-icon-button] { min-width: 0; padding: 0; width: 40px; height: 40px; line-height: 24px; border-radius: 50%; } [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
         }), 
@@ -617,6 +596,7 @@ var MdAnchor = (function (_super) {
     __extends(MdAnchor, _super);
     function MdAnchor(elementRef, renderer) {
         _super.call(this, elementRef, renderer);
+        this._disabled = null;
     }
     Object.defineProperty(MdAnchor.prototype, "tabIndex", {
         get: function () {
@@ -628,6 +608,15 @@ var MdAnchor = (function (_super) {
     Object.defineProperty(MdAnchor.prototype, "isAriaDisabled", {
         get: function () {
             return this.disabled ? 'true' : 'false';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MdAnchor.prototype, "disabled", {
+        get: function () { return this._disabled; },
+        set: function (value) {
+            // The presence of *any* disabled value makes the component disabled, *except* for false.
+            this._disabled = (value != null && value != false) ? true : null;
         },
         enumerable: true,
         configurable: true
@@ -647,19 +636,23 @@ var MdAnchor = (function (_super) {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.aria-disabled'), 
         __metadata('design:type', String)
     ], MdAnchor.prototype, "isAriaDisabled", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.disabled'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('disabled'), 
+        __metadata('design:type', Object)
+    ], MdAnchor.prototype, "disabled", null);
     MdAnchor = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'a[md-button], a[md-raised-button], a[md-icon-button], a[md-fab], a[md-mini-fab]',
-            inputs: ['color', 'disabled', 'disableRipple'],
+            inputs: ['color'],
             host: {
-                '[attr.disabled]': 'disabled',
                 '[class.md-button-focus]': '_isKeyboardFocused',
                 '(mousedown)': '_setMousedown()',
                 '(focus)': '_setKeyboardFocus()',
                 '(blur)': '_removeKeyboardFocus()',
                 '(click)': '_haltDisabledEvents($event)',
             },
-            template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-button-ripple\" [class.md-button-ripple-round]=\"isRoundButton()\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-color]=\"isRoundButton() ? 'rgba(255, 255, 255, 0.2)' : ''\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> ",
-            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button]::after, .md-button-focus[md-fab]::after, .md-button-focus[md-mini-fab]::after, .md-button-focus[md-button]::after, .md-button-focus[md-icon-button]::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover::after, [md-icon-button]:hover::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover::after, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover::after { background-color: transparent; } [md-fab] { min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { min-width: 0; padding: 0; width: 40px; height: 40px; line-height: 24px; border-radius: 50%; } [md-icon-button] .md-button-wrapper > * { line-height: 24px; vertical-align: middle; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
+            template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> ",
+            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 3px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button]::after, .md-button-focus[md-fab]::after, .md-button-focus[md-mini-fab]::after, .md-button-focus[md-button]::after, .md-button-focus[md-icon-button]::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover::after, [md-icon-button]:hover::after { position: absolute; top: 0; left: 0; bottom: 0; right: 0; content: ''; background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover::after, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover::after { background-color: transparent; } [md-fab] { min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; } [md-fab] i, [md-fab] md-icon { padding: 16px 0; } [md-mini-fab] { min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; } [md-icon-button] { min-width: 0; padding: 0; width: 40px; height: 40px; line-height: 24px; border-radius: 50%; } [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]])
@@ -937,10 +930,8 @@ var MdCardModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_coersion_boolean_property__ = __webpack_require__("./node_modules/@angular/material/core/coersion/boolean-property.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MD_CHECKBOX_CONTROL_VALUE_ACCESSOR; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return TransitionCheckState; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdCheckboxChange; });
@@ -958,8 +949,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 /**
  * Monotonically increasing integer used to auto-generate unique ids for checkbox components.
  */
@@ -969,7 +958,7 @@ var nextId = 0;
  * to support [(ngModel)].
  */
 var MD_CHECKBOX_CONTROL_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["NG_VALUE_ACCESSOR"],
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NG_VALUE_ACCESSOR"],
     useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return MdCheckbox; }),
     multi: true
 };
@@ -1016,8 +1005,15 @@ var MdCheckbox = (function () {
         this.ariaLabelledby = null;
         /** A unique id for the checkbox. If one is not supplied, it is auto-generated. */
         this.id = "md-checkbox-" + ++nextId;
+        /** Whether the checkbox is required or not. */
+        this.required = false;
         /** Whether or not the checkbox should come before or after the label. */
         this.align = 'start';
+        /**
+         * Whether the checkbox is disabled. When the checkbox is disabled it cannot be interacted with.
+         * The correct ARIA attributes are applied to denote this to assistive technology.
+         */
+        this.disabled = false;
         /**
          * The tabindex attribute for the checkbox. Note that when the checkbox is disabled, the attribute
          * on the host element will be removed. It will be placed back when the checkbox is re-enabled.
@@ -1035,36 +1031,12 @@ var MdCheckbox = (function () {
         this._indeterminate = false;
         this._controlValueAccessorChangeFn = function (value) { };
         this.hasFocus = false;
-        this.color = 'accent';
     }
-    Object.defineProperty(MdCheckbox.prototype, "disableRipple", {
-        get: function () { return this._disableRipple; },
-        set: function (value) { this._disableRipple = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core_coersion_boolean_property__["a" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MdCheckbox.prototype, "inputId", {
         /** ID to be applied to the `input` element */
         get: function () {
             return "input-" + this.id;
         },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdCheckbox.prototype, "required", {
-        /** Whether the checkbox is required or not. */
-        get: function () { return this._required; },
-        set: function (value) { this._required = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core_coersion_boolean_property__["a" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdCheckbox.prototype, "disabled", {
-        /**
-         * Whether the checkbox is disabled. When the checkbox is disabled it cannot be interacted with.
-         * The correct ARIA attributes are applied to denote this to assistive technology.
-         */
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core_coersion_boolean_property__["a" /* coerceBooleanProperty */])(value); },
         enumerable: true,
         configurable: true
     });
@@ -1111,30 +1083,6 @@ var MdCheckbox = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MdCheckbox.prototype, "color", {
-        /** Sets the color of the checkbox */
-        get: function () {
-            return this._color;
-        },
-        set: function (value) {
-            this._updateColor(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MdCheckbox.prototype._updateColor = function (newColor) {
-        this._setElementColor(this._color, false);
-        this._setElementColor(newColor, true);
-        this._color = newColor;
-    };
-    MdCheckbox.prototype._setElementColor = function (color, isAdd) {
-        if (color != null && color != '') {
-            this._renderer.setElementClass(this._elementRef.nativeElement, "md-" + color, isAdd);
-        }
-    };
-    MdCheckbox.prototype._isRippleDisabled = function () {
-        return this.disableRipple || this.disabled;
-    };
     /**
      * Implemented as part of ControlValueAccessor.
      * TODO: internal
@@ -1249,9 +1197,6 @@ var MdCheckbox = (function () {
         }
         return "md-checkbox-anim-" + animSuffix;
     };
-    MdCheckbox.prototype.getHostElement = function () {
-        return this._elementRef.nativeElement;
-    };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-label'), 
         __metadata('design:type', String)
@@ -1265,13 +1210,10 @@ var MdCheckbox = (function () {
         __metadata('design:type', String)
     ], MdCheckbox.prototype, "id", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["F" /* BooleanFieldValue */])(), 
         __metadata('design:type', Boolean)
-    ], MdCheckbox.prototype, "disableRipple", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdCheckbox.prototype, "required", null);
+    ], MdCheckbox.prototype, "required", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Object)
@@ -1279,7 +1221,7 @@ var MdCheckbox = (function () {
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Boolean)
-    ], MdCheckbox.prototype, "disabled", null);
+    ], MdCheckbox.prototype, "disabled", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Number)
@@ -1300,14 +1242,10 @@ var MdCheckbox = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Object)
     ], MdCheckbox.prototype, "indeterminate", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', String)
-    ], MdCheckbox.prototype, "color", null);
     MdCheckbox = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-checkbox',
-            template: "<label class=\"md-checkbox-layout\"> <div class=\"md-checkbox-inner-container\"> <input class=\"md-checkbox-input md-visually-hidden\" type=\"checkbox\" [id]=\"inputId\" [required]=\"required\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" [tabIndex]=\"tabindex\" [indeterminate]=\"indeterminate\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (focus)=\"_onInputFocus()\" (blur)=\"_onInputBlur()\" (change)=\"_onInteractionEvent($event)\" (click)=\"_onInputClick($event)\"> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-checkbox-ripple\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-centered]=\"true\" [md-ripple-speed-factor]=\"0.3\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> <div class=\"md-checkbox-frame\"></div> <div class=\"md-checkbox-background\"> <svg version=\"1.1\" class=\"md-checkbox-checkmark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" xml:space=\"preserve\"> <path class=\"md-checkbox-checkmark-path\" fill=\"none\" stroke=\"white\" d=\"M4.1,12.7 9,17.6 20.3,6.3\"/> </svg> <!-- Element for rendering the indeterminate state checkbox. --> <div class=\"md-checkbox-mixedmark\"></div> </div> </div> <span class=\"md-checkbox-label\"> <ng-content></ng-content> </span> </label> ",
-            styles: ["@keyframes md-checkbox-fade-in-background { 0% { opacity: 0; } 50% { opacity: 1; } } @keyframes md-checkbox-fade-out-background { 0%, 50% { opacity: 1; } 100% { opacity: 0; } } @keyframes md-checkbox-unchecked-checked-checkmark-path { 0%, 50% { stroke-dashoffset: 22.91026; } 50% { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); } 100% { stroke-dashoffset: 0; } } @keyframes md-checkbox-unchecked-indeterminate-mixedmark { 0%, 68.2% { transform: scaleX(0); } 68.2% { animation-timing-function: cubic-bezier(0, 0, 0, 1); } 100% { transform: scaleX(1); } } @keyframes md-checkbox-checked-unchecked-checkmark-path { from { animation-timing-function: cubic-bezier(0.4, 0, 1, 1); stroke-dashoffset: 0; } to { stroke-dashoffset: -22.91026; } } @keyframes md-checkbox-checked-indeterminate-checkmark { from { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); opacity: 1; transform: rotate(0deg); } to { opacity: 0; transform: rotate(45deg); } } @keyframes md-checkbox-indeterminate-checked-checkmark { from { animation-timing-function: cubic-bezier(0.14, 0, 0, 1); opacity: 0; transform: rotate(45deg); } to { opacity: 1; transform: rotate(360deg); } } @keyframes md-checkbox-checked-indeterminate-mixedmark { from { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); opacity: 0; transform: rotate(-45deg); } to { opacity: 1; transform: rotate(0deg); } } @keyframes md-checkbox-indeterminate-checked-mixedmark { from { animation-timing-function: cubic-bezier(0.14, 0, 0, 1); opacity: 1; transform: rotate(0deg); } to { opacity: 0; transform: rotate(315deg); } } @keyframes md-checkbox-indeterminate-unchecked-mixedmark { 0% { animation-timing-function: linear; opacity: 1; transform: scaleX(1); } 32.8%, 100% { opacity: 0; transform: scaleX(0); } } .md-checkbox-frame, .md-checkbox-background, .md-checkbox-checkmark { bottom: 0; left: 0; position: absolute; right: 0; top: 0; } .md-checkbox-checkmark, .md-checkbox-mixedmark { width: calc(100% - 4px); } .md-checkbox-frame, .md-checkbox-background { border-radius: 2px; box-sizing: border-box; pointer-events: none; } md-checkbox { cursor: pointer; transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } .md-checkbox-layout { cursor: inherit; align-items: baseline; vertical-align: middle; display: inline-flex; } .md-checkbox-inner-container { display: inline-block; height: 20px; line-height: 0; margin: auto; margin-right: 8px; order: 0; position: relative; vertical-align: middle; white-space: nowrap; width: 20px; flex-shrink: 0; } [dir='rtl'] .md-checkbox-inner-container { margin-left: 8px; margin-right: auto; } .md-checkbox-layout .md-checkbox-label { line-height: 24px; } .md-checkbox-frame { background-color: transparent; border: 2px solid; transition: border-color 90ms cubic-bezier(0, 0, 0.2, 0.1); will-change: border-color; } .md-checkbox-background { align-items: center; display: inline-flex; justify-content: center; transition: background-color 90ms cubic-bezier(0, 0, 0.2, 0.1), opacity 90ms cubic-bezier(0, 0, 0.2, 0.1); will-change: background-color, opacity; } .md-checkbox-checkmark { width: 100%; } .md-checkbox-checkmark-path { stroke-dashoffset: 22.91026; stroke-dasharray: 22.91026; stroke-width: 2.66667px; } .md-checkbox-mixedmark { height: 2px; opacity: 0; transform: scaleX(0) rotate(0deg); } .md-checkbox-align-end .md-checkbox-inner-container { order: 1; margin-left: 8px; margin-right: auto; } [dir='rtl'] .md-checkbox-align-end .md-checkbox-inner-container { margin-left: auto; margin-right: 8px; } .md-checkbox-checked .md-checkbox-checkmark { opacity: 1; } .md-checkbox-checked .md-checkbox-checkmark-path { stroke-dashoffset: 0; } .md-checkbox-checked .md-checkbox-mixedmark { transform: scaleX(1) rotate(-45deg); } .md-checkbox-indeterminate .md-checkbox-checkmark { opacity: 0; transform: rotate(45deg); } .md-checkbox-indeterminate .md-checkbox-checkmark-path { stroke-dashoffset: 0; } .md-checkbox-indeterminate .md-checkbox-mixedmark { opacity: 1; transform: scaleX(1) rotate(0deg); } .md-checkbox-unchecked .md-checkbox-background { background-color: transparent; } .md-checkbox-disabled { cursor: default; } .md-checkbox-anim-unchecked-checked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-in-background; } .md-checkbox-anim-unchecked-checked .md-checkbox-checkmark-path { animation: 180ms linear 0ms md-checkbox-unchecked-checked-checkmark-path; } .md-checkbox-anim-unchecked-indeterminate .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-in-background; } .md-checkbox-anim-unchecked-indeterminate .md-checkbox-mixedmark { animation: 90ms linear 0ms md-checkbox-unchecked-indeterminate-mixedmark; } .md-checkbox-anim-checked-unchecked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-out-background; } .md-checkbox-anim-checked-unchecked .md-checkbox-checkmark-path { animation: 90ms linear 0ms md-checkbox-checked-unchecked-checkmark-path; } .md-checkbox-anim-checked-indeterminate .md-checkbox-checkmark { animation: 90ms linear 0ms md-checkbox-checked-indeterminate-checkmark; } .md-checkbox-anim-checked-indeterminate .md-checkbox-mixedmark { animation: 90ms linear 0ms md-checkbox-checked-indeterminate-mixedmark; } .md-checkbox-anim-indeterminate-checked .md-checkbox-checkmark { animation: 500ms linear 0ms md-checkbox-indeterminate-checked-checkmark; } .md-checkbox-anim-indeterminate-checked .md-checkbox-mixedmark { animation: 500ms linear 0ms md-checkbox-indeterminate-checked-mixedmark; } .md-checkbox-anim-indeterminate-unchecked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-out-background; } .md-checkbox-anim-indeterminate-unchecked .md-checkbox-mixedmark { animation: 300ms linear 0ms md-checkbox-indeterminate-unchecked-mixedmark; } .md-checkbox-input { bottom: 0; left: 50%; } .md-checkbox-ripple { position: absolute; left: -15px; top: -15px; right: -15px; bottom: -15px; border-radius: 50%; z-index: 1; pointer-events: none; } /*# sourceMappingURL=checkbox.css.map */ "],
+            template: "<label class=\"md-checkbox-layout\"> <div class=\"md-checkbox-inner-container\"> <input class=\"md-checkbox-input md-visually-hidden\" type=\"checkbox\" [id]=\"inputId\" [required]=\"required\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" [tabIndex]=\"tabindex\" [indeterminate]=\"indeterminate\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (focus)=\"_onInputFocus()\" (blur)=\"_onInputBlur()\" (change)=\"_onInteractionEvent($event)\" (click)=\"_onInputClick($event)\"> <div class=\"md-ink-ripple\"></div> <div class=\"md-checkbox-frame\"></div> <div class=\"md-checkbox-background\"> <svg version=\"1.1\" class=\"md-checkbox-checkmark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" xml:space=\"preserve\"> <path class=\"md-checkbox-checkmark-path\" fill=\"none\" stroke=\"white\" d=\"M4.1,12.7 9,17.6 20.3,6.3\"/> </svg> <!-- Element for rendering the indeterminate state checkbox. --> <div class=\"md-checkbox-mixedmark\"></div> </div> </div> <span class=\"md-checkbox-label\"> <ng-content></ng-content> </span> </label> ",
+            styles: ["@keyframes md-checkbox-fade-in-background { 0% { opacity: 0; } 50% { opacity: 1; } } @keyframes md-checkbox-fade-out-background { 0%, 50% { opacity: 1; } 100% { opacity: 0; } } @keyframes md-checkbox-unchecked-checked-checkmark-path { 0%, 50% { stroke-dashoffset: 22.91026; } 50% { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); } 100% { stroke-dashoffset: 0; } } @keyframes md-checkbox-unchecked-indeterminate-mixedmark { 0%, 68.2% { transform: scaleX(0); } 68.2% { animation-timing-function: cubic-bezier(0, 0, 0, 1); } 100% { transform: scaleX(1); } } @keyframes md-checkbox-checked-unchecked-checkmark-path { from { animation-timing-function: cubic-bezier(0.4, 0, 1, 1); stroke-dashoffset: 0; } to { stroke-dashoffset: -22.91026; } } @keyframes md-checkbox-checked-indeterminate-checkmark { from { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); opacity: 1; transform: rotate(0deg); } to { opacity: 0; transform: rotate(45deg); } } @keyframes md-checkbox-indeterminate-checked-checkmark { from { animation-timing-function: cubic-bezier(0.14, 0, 0, 1); opacity: 0; transform: rotate(45deg); } to { opacity: 1; transform: rotate(360deg); } } @keyframes md-checkbox-checked-indeterminate-mixedmark { from { animation-timing-function: cubic-bezier(0, 0, 0.2, 0.1); opacity: 0; transform: rotate(-45deg); } to { opacity: 1; transform: rotate(0deg); } } @keyframes md-checkbox-indeterminate-checked-mixedmark { from { animation-timing-function: cubic-bezier(0.14, 0, 0, 1); opacity: 1; transform: rotate(0deg); } to { opacity: 0; transform: rotate(315deg); } } @keyframes md-checkbox-indeterminate-unchecked-mixedmark { 0% { animation-timing-function: linear; opacity: 1; transform: scaleX(1); } 32.8%, 100% { opacity: 0; transform: scaleX(0); } } .md-checkbox-frame, .md-checkbox-background, .md-checkbox-checkmark { bottom: 0; left: 0; position: absolute; right: 0; top: 0; } .md-checkbox-checkmark, .md-checkbox-mixedmark { width: calc(100% - 4px); } .md-checkbox-frame, .md-checkbox-background { border-radius: 2px; box-sizing: border-box; pointer-events: none; } md-checkbox { cursor: pointer; } .md-checkbox-layout { cursor: inherit; align-items: baseline; display: inline-flex; } .md-checkbox-inner-container { display: inline-block; height: 20px; line-height: 0; margin: auto; margin-right: 8px; order: 0; position: relative; vertical-align: middle; white-space: nowrap; width: 20px; } [dir='rtl'] .md-checkbox-inner-container { margin-left: 8px; margin-right: auto; } .md-checkbox-layout .md-checkbox-label { line-height: 24px; } .md-checkbox-frame { background-color: transparent; border: 2px solid; transition: border-color 90ms cubic-bezier(0, 0, 0.2, 0.1); will-change: border-color; } .md-checkbox-background { align-items: center; display: inline-flex; justify-content: center; transition: background-color 90ms cubic-bezier(0, 0, 0.2, 0.1), opacity 90ms cubic-bezier(0, 0, 0.2, 0.1); will-change: background-color, opacity; } .md-checkbox-checkmark { width: 100%; } .md-checkbox-checkmark-path { stroke-dashoffset: 22.91026; stroke-dasharray: 22.91026; stroke-width: 2.66667px; } .md-checkbox-mixedmark { height: 2px; opacity: 0; transform: scaleX(0) rotate(0deg); } .md-checkbox-align-end .md-checkbox-inner-container { order: 1; margin-left: 8px; margin-right: auto; } [dir='rtl'] .md-checkbox-align-end .md-checkbox-inner-container { margin-left: auto; margin-right: 8px; } .md-checkbox-checked .md-checkbox-checkmark { opacity: 1; } .md-checkbox-checked .md-checkbox-checkmark-path { stroke-dashoffset: 0; } .md-checkbox-checked .md-checkbox-mixedmark { transform: scaleX(1) rotate(-45deg); } .md-checkbox-indeterminate .md-checkbox-checkmark { opacity: 0; transform: rotate(45deg); } .md-checkbox-indeterminate .md-checkbox-checkmark-path { stroke-dashoffset: 0; } .md-checkbox-indeterminate .md-checkbox-mixedmark { opacity: 1; transform: scaleX(1) rotate(0deg); } .md-checkbox-unchecked .md-checkbox-background { background-color: transparent; } .md-checkbox-disabled { cursor: default; } .md-checkbox-anim-unchecked-checked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-in-background; } .md-checkbox-anim-unchecked-checked .md-checkbox-checkmark-path { animation: 180ms linear 0ms md-checkbox-unchecked-checked-checkmark-path; } .md-checkbox-anim-unchecked-indeterminate .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-in-background; } .md-checkbox-anim-unchecked-indeterminate .md-checkbox-mixedmark { animation: 90ms linear 0ms md-checkbox-unchecked-indeterminate-mixedmark; } .md-checkbox-anim-checked-unchecked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-out-background; } .md-checkbox-anim-checked-unchecked .md-checkbox-checkmark-path { animation: 90ms linear 0ms md-checkbox-checked-unchecked-checkmark-path; } .md-checkbox-anim-checked-indeterminate .md-checkbox-checkmark { animation: 90ms linear 0ms md-checkbox-checked-indeterminate-checkmark; } .md-checkbox-anim-checked-indeterminate .md-checkbox-mixedmark { animation: 90ms linear 0ms md-checkbox-checked-indeterminate-mixedmark; } .md-checkbox-anim-indeterminate-checked .md-checkbox-checkmark { animation: 500ms linear 0ms md-checkbox-indeterminate-checked-checkmark; } .md-checkbox-anim-indeterminate-checked .md-checkbox-mixedmark { animation: 500ms linear 0ms md-checkbox-indeterminate-checked-mixedmark; } .md-checkbox-anim-indeterminate-unchecked .md-checkbox-background { animation: 180ms linear 0ms md-checkbox-fade-out-background; } .md-checkbox-anim-indeterminate-unchecked .md-checkbox-mixedmark { animation: 300ms linear 0ms md-checkbox-indeterminate-unchecked-mixedmark; } .md-checkbox-input { bottom: 0; left: 50%; } .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } .md-checkbox-focused .md-ink-ripple { opacity: 1; } .md-checkbox-disabled .md-ink-ripple { background-color: #000; } /*# sourceMappingURL=checkbox.css.map */ "],
             host: {
                 '[class.md-checkbox-indeterminate]': 'indeterminate',
                 '[class.md-checkbox-checked]': 'checked',
@@ -1334,7 +1272,6 @@ var MdCheckboxModule = (function () {
     };
     MdCheckboxModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_4__core__["u" /* MdRippleModule */]],
             exports: [MdCheckbox],
             declarations: [MdCheckbox],
         }), 
@@ -1411,39 +1348,9 @@ var MdCheckboxModule = (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "M", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["M"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "N", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["N"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "O", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["O"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "P", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["P"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "Q", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["Q"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "R", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["R"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "S", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["S"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "T", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["T"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "U", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["U"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "V", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["V"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "W", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["W"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "X", function() { return __WEBPACK_IMPORTED_MODULE_0__core_index__["X"]; });
 
 
 //# sourceMappingURL=core.js.map
-
-
-/***/ },
-
-/***/ "./node_modules/@angular/material/core/a11y/fake-mousedown.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = isFakeMousedownFromScreenReader;
-/**
- * Screenreaders will often fire fake mousedown events when a focusable element
- * is activated using the keyboard. We can typically distinguish between these faked
- * mousedown events and real mousedown events using the "buttons" property. While
- * real mousedowns will indicate the mouse button that was pressed (e.g. "1" for
- * the left mouse button), faked mousedowns will usually set the property value to 0.
- */
-function isFakeMousedownFromScreenReader(event) {
-    return event.buttons === 0;
-}
-
-//# sourceMappingURL=fake-mousedown.js.map
 
 
 /***/ },
@@ -1478,15 +1385,15 @@ var FocusTrap = (function () {
     function FocusTrap(_checker) {
         this._checker = _checker;
     }
-    /** Focuses the first tabbable element within the focus trap region. */
-    FocusTrap.prototype.focusFirstTabbableElement = function () {
+    /** Wrap focus from the end of the trapped region to the beginning. */
+    FocusTrap.prototype.wrapFocus = function () {
         var redirectToElement = this._getFirstTabbableElement(this.trappedContent.nativeElement);
         if (redirectToElement) {
             redirectToElement.focus();
         }
     };
-    /** Focuses the last tabbable element within the focus trap region. */
-    FocusTrap.prototype.focusLastTabbableElement = function () {
+    /** Wrap focus from the beginning of the trapped region to the end. */
+    FocusTrap.prototype.reverseWrapFocus = function () {
         var redirectToElement = this._getLastTabbableElement(this.trappedContent.nativeElement);
         if (redirectToElement) {
             redirectToElement.focus();
@@ -1528,7 +1435,7 @@ var FocusTrap = (function () {
     FocusTrap = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'focus-trap',
             // TODO(jelbourn): move this to a separate file.
-            template: "\n  <div tabindex=\"0\" (focus)=\"focusLastTabbableElement()\"></div>\n  <div #trappedContent><ng-content></ng-content></div>\n  <div tabindex=\"0\" (focus)=\"focusFirstTabbableElement()\"></div>",
+            template: "\n  <div tabindex=\"0\" (focus)=\"reverseWrapFocus()\"></div>\n  <div #trappedContent><ng-content></ng-content></div>\n  <div tabindex=\"0\" (focus)=\"wrapFocus()\"></div>",
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_1__interactivity_checker__["a" /* InteractivityChecker */]])
@@ -1541,70 +1448,11 @@ var FocusTrap = (function () {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/core/a11y/index.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__focus_trap__ = __webpack_require__("./node_modules/@angular/material/core/a11y/focus-trap.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__live_announcer__ = __webpack_require__("./node_modules/@angular/material/core/a11y/live-announcer.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interactivity_checker__ = __webpack_require__("./node_modules/@angular/material/core/a11y/interactivity-checker.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return A11Y_PROVIDERS; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return A11yModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var A11Y_PROVIDERS = [__WEBPACK_IMPORTED_MODULE_2__live_announcer__["a" /* MdLiveAnnouncer */], __WEBPACK_IMPORTED_MODULE_3__interactivity_checker__["a" /* InteractivityChecker */]];
-var A11yModule = (function () {
-    function A11yModule() {
-    }
-    A11yModule.forRoot = function () {
-        return {
-            ngModule: A11yModule,
-            providers: A11Y_PROVIDERS,
-        };
-    };
-    A11yModule = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            declarations: [__WEBPACK_IMPORTED_MODULE_1__focus_trap__["a" /* FocusTrap */]],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__focus_trap__["a" /* FocusTrap */]],
-        }), 
-        __metadata('design:paramtypes', [])
-    ], A11yModule);
-    return A11yModule;
-}());
-
-//# sourceMappingURL=index.js.map
-
-
-/***/ },
-
 /***/ "./node_modules/@angular/material/core/a11y/interactivity-checker.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return InteractivityChecker; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
 /**
  * Utility for checking the interactivity of an element, such as whether is is focusable or
  * tabbable.
@@ -1659,10 +1507,6 @@ var InteractivityChecker = (function () {
         // Again, naive approach that does not capture many edge cases and browser quirks.
         return isPotentiallyFocusable(element) && !this.isDisabled(element) && this.isVisible(element);
     };
-    InteractivityChecker = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(), 
-        __metadata('design:paramtypes', [])
-    ], InteractivityChecker);
     return InteractivityChecker;
 }());
 /** Gets whether an element's  */
@@ -1721,93 +1565,6 @@ function isPotentiallyFocusable(element) {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/core/a11y/list-key-manager.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__("./node_modules/@angular/material/core/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ListKeyManager; });
-
-
-/**
- * This class manages keyboard events for selectable lists. If you pass it a query list
- * of focusable items, it will focus the correct item when arrow events occur.
- */
-var ListKeyManager = (function () {
-    function ListKeyManager(_items) {
-        this._items = _items;
-        this._tabOut = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
-    }
-    Object.defineProperty(ListKeyManager.prototype, "tabOut", {
-        /**
-         * Observable that emits any time the TAB key is pressed, so components can react
-         * when focus is shifted off of the list.
-         */
-        get: function () {
-            return this._tabOut.asObservable();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ListKeyManager.prototype, "focusedItemIndex", {
-        get: function () {
-            return this._focusedItemIndex;
-        },
-        set: function (value) {
-            this._focusedItemIndex = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ListKeyManager.prototype.onKeydown = function (event) {
-        if (event.keyCode === __WEBPACK_IMPORTED_MODULE_0__core__["N" /* DOWN_ARROW */]) {
-            this._focusNextItem();
-        }
-        else if (event.keyCode === __WEBPACK_IMPORTED_MODULE_0__core__["M" /* UP_ARROW */]) {
-            this._focusPreviousItem();
-        }
-        else if (event.keyCode === __WEBPACK_IMPORTED_MODULE_0__core__["S" /* TAB */]) {
-            this._tabOut.next(null);
-        }
-    };
-    ListKeyManager.prototype._focusNextItem = function () {
-        var items = this._items.toArray();
-        this._updateFocusedItemIndex(1, items);
-        items[this._focusedItemIndex].focus();
-    };
-    ListKeyManager.prototype._focusPreviousItem = function () {
-        var items = this._items.toArray();
-        this._updateFocusedItemIndex(-1, items);
-        items[this._focusedItemIndex].focus();
-    };
-    /**
-     * This method sets focus to the correct item, given a list of items and the delta
-     * between the currently focused item and the new item to be focused. It will
-     * continue to move down the list until it finds an item that is not disabled, and it will wrap
-     * if it encounters either end of the list.
-     *
-     * @param delta the desired change in focus index
-     */
-    ListKeyManager.prototype._updateFocusedItemIndex = function (delta, items) {
-        // when focus would leave menu, wrap to beginning or end
-        this._focusedItemIndex =
-            (this._focusedItemIndex + delta + items.length) % items.length;
-        // skip all disabled menu items recursively until an active one
-        // is reached or the menu closes for overreaching bounds
-        while (items[this._focusedItemIndex].disabled) {
-            this._updateFocusedItemIndex(delta, items);
-        }
-    };
-    return ListKeyManager;
-}());
-
-//# sourceMappingURL=list-key-manager.js.map
-
-
-/***/ },
-
 /***/ "./node_modules/@angular/material/core/a11y/live-announcer.js":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1853,12 +1610,6 @@ var MdLiveAnnouncer = (function () {
         // (using JAWS 17 at time of this writing).
         setTimeout(function () { return _this._liveElement.textContent = message; }, 100);
     };
-    /** Removes the aria-live element from the DOM. */
-    MdLiveAnnouncer.prototype._removeLiveElement = function () {
-        if (this._liveElement && this._liveElement.parentNode) {
-            this._liveElement.parentNode.removeChild(this._liveElement);
-        }
-    };
     MdLiveAnnouncer.prototype._createLiveElement = function () {
         var liveEl = document.createElement('div');
         liveEl.classList.add('md-visually-hidden');
@@ -1881,134 +1632,41 @@ var MdLiveAnnouncer = (function () {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/core/animation/animation.js":
+/***/ "./node_modules/@angular/material/core/annotations/field-value.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AnimationCurves; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return AnimationDurations; });
-var AnimationCurves = (function () {
-    function AnimationCurves() {
-    }
-    AnimationCurves.STANDARD_CURVE = 'cubic-bezier(0.4,0.0,0.2,1)';
-    AnimationCurves.DECELERATION_CURVE = 'cubic-bezier(0.0,0.0,0.2,1)';
-    AnimationCurves.ACCELERATION_CURVE = 'cubic-bezier(0.4,0.0,1,1)';
-    AnimationCurves.SHARP_CURVE = 'cubic-bezier(0.4,0.0,0.6,1)';
-    return AnimationCurves;
-}());
-;
-var AnimationDurations = (function () {
-    function AnimationDurations() {
-    }
-    AnimationDurations.COMPLEX = '375ms';
-    AnimationDurations.ENTERING = '225ms';
-    AnimationDurations.EXITING = '195ms';
-    return AnimationDurations;
-}());
-;
-
-//# sourceMappingURL=animation.js.map
-
-
-/***/ },
-
-/***/ "./node_modules/@angular/material/core/coersion/boolean-property.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = coerceBooleanProperty;
-/** Coerces a data-bound value (typically a string) to a boolean. */
-function coerceBooleanProperty(value) {
-    return value != null && "" + value !== 'false';
-}
-
-//# sourceMappingURL=boolean-property.js.map
-
-
-/***/ },
-
-/***/ "./node_modules/@angular/material/core/coersion/number-property.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = coerceNumberProperty;
-/** Coerces a data-bound value (typically a string) to a number. */
-function coerceNumberProperty(value, fallbackValue) {
-    if (fallbackValue === void 0) { fallbackValue = 0; }
-    // parseFloat(value) handles most of the cases we're interested in (it treats null, empty string,
-    // and other non-number values as NaN, where Number just uses 0) but it considers the string
-    // '123hello' to be a valid number. Therefore we also check if Number(value) is NaN.
-    return isNaN(parseFloat(value)) || isNaN(Number(value)) ? fallbackValue : Number(value);
-}
-
-//# sourceMappingURL=number-property.js.map
-
-
-/***/ },
-
-/***/ "./node_modules/@angular/material/core/compatibility/style-compatibility.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ELEMENTS_SELECTOR; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return StyleCompatibility; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return StyleCompatibilityModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-/** Selector that matches all elements that may have style collisions with material1. */
-var ELEMENTS_SELECTOR = "\n  md-card,\n  md-card-actions,\n  md-card-content,\n  md-card-footer,\n  md-card-header,\n  md-card-subtitle,\n  md-card-title,\n  md-card-title-group,\n  md-checkbox,\n  md-dialog-container,\n  md-divider,\n  md-grid-list,\n  md-grid-tile,\n  md-grid-tile-footer,\n  md-grid-tile-header,\n  md-hint,\n  md-icon,\n  md-ink-bar,\n  md-input,\n  md-list,\n  md-list-item,\n  md-menu,\n  md-nav-list,\n  md-option,\n  md-placeholder,\n  md-progress-bar,\n  md-progress-circle,\n  md-radio-button,\n  md-radio-group,\n  md-select,\n  md-sidenav,\n  md-slider,\n  md-spinner,\n  md-tab,\n  md-toolbar\n";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return booleanFieldValueFactory; });
 /**
- * Directive to apply to all material2 components that use the same element name as a
- * component in material2. It does two things:
- * 1) Adds the css class "md2" to the host element so that material1 can use this class with a
- *    :not() in order to avoid affecting material2 elements.
- * 2) Adds a css class to the element that is identical to the element's tag. E.g., the element
- *    `<md-card>` would be given a css class `md-card`. This is done so that material2 can style
- *    only these classes instead of defining element rules that would affect material1 components.
- */
-var StyleCompatibility = (function () {
-    function StyleCompatibility(renderer, elementRef) {
-        var element = elementRef.nativeElement;
-        renderer.setElementClass(element, 'md2', true);
-        renderer.setElementClass(element, element.nodeName.toLowerCase(), true);
-    }
-    StyleCompatibility = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
-            selector: ELEMENTS_SELECTOR,
-        }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
-    ], StyleCompatibility);
-    return StyleCompatibility;
-}());
-var StyleCompatibilityModule = (function () {
-    function StyleCompatibilityModule() {
-    }
-    StyleCompatibilityModule.forRoot = function () {
-        return {
-            ngModule: StyleCompatibilityModule,
-            providers: [],
-        };
-    };
-    StyleCompatibilityModule = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            declarations: [StyleCompatibility],
-            exports: [StyleCompatibility],
-        }), 
-        __metadata('design:paramtypes', [])
-    ], StyleCompatibilityModule);
-    return StyleCompatibilityModule;
-}());
+ * Annotation Factory that allows HTML style boolean attributes. For example,
+ * a field declared like this:
 
-//# sourceMappingURL=style-compatibility.js.map
+ * @Directive({ selector: 'component' }) class MyComponent {
+ *   @Input() @BooleanFieldValueFactory() myField: boolean;
+ * }
+ *
+ * You could set it up this way:
+ *   <component myField>
+ * or:
+ *   <component myField="">
+ * @deprecated
+ */
+function booleanFieldValueFactory() {
+    return function booleanFieldValueMetadata(target, key) {
+        var defaultValue = target[key];
+        var localKey = "__md_private_symbol_" + key;
+        target[localKey] = defaultValue;
+        Object.defineProperty(target, key, {
+            get: function () { return this[localKey]; },
+            set: function (value) {
+                this[localKey] = value != null && "" + value !== 'false';
+            }
+        });
+    };
+}
+
+
+//# sourceMappingURL=field-value.js.map
 
 
 /***/ },
@@ -2075,78 +1733,64 @@ var MdUniqueSelectionDispatcher = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__ = __webpack_require__("./node_modules/@angular/material/core/ripple/ripple.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal-directives.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay-directives.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__a11y_index__ = __webpack_require__("./node_modules/@angular/material/core/a11y/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__overlay_overlay__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__portal_portal__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__portal_dom_portal_host__ = __webpack_require__("./node_modules/@angular/material/core/portal/dom-portal-host.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__a11y_live_announcer__ = __webpack_require__("./node_modules/@angular/material/core/a11y/live-announcer.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__portal_portal__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__portal_dom_portal_host__ = __webpack_require__("./node_modules/@angular/material/core/portal/dom-portal-host.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__overlay_overlay__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__overlay_overlay_container__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay-container.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__overlay_overlay_ref__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay-ref.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__overlay_overlay_state__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay-state.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__overlay_position_connected_position_strategy__ = __webpack_require__("./node_modules/@angular/material/core/overlay/position/connected-position-strategy.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__overlay_position_connected_position__ = __webpack_require__("./node_modules/@angular/material/core/overlay/position/connected-position.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__gestures_MdGestureConfig__ = __webpack_require__("./node_modules/@angular/material/core/gestures/MdGestureConfig.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__a11y_live_announcer__ = __webpack_require__("./node_modules/@angular/material/core/a11y/live-announcer.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__a11y_focus_trap__ = __webpack_require__("./node_modules/@angular/material/core/a11y/focus-trap.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__a11y_interactivity_checker__ = __webpack_require__("./node_modules/@angular/material/core/a11y/interactivity-checker.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__a11y_fake_mousedown__ = __webpack_require__("./node_modules/@angular/material/core/a11y/fake-mousedown.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__coordination_unique_selection_dispatcher__ = __webpack_require__("./node_modules/@angular/material/core/coordination/unique-selection-dispatcher.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__style_apply_transform__ = __webpack_require__("./node_modules/@angular/material/core/style/apply-transform.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__errors_error__ = __webpack_require__("./node_modules/@angular/material/core/errors/error.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__ = __webpack_require__("./node_modules/@angular/material/core/keyboard/keycodes.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__compatibility_style_compatibility__ = __webpack_require__("./node_modules/@angular/material/core/compatibility/style-compatibility.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__animation_animation__ = __webpack_require__("./node_modules/@angular/material/core/animation/animation.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__coersion_boolean_property__ = __webpack_require__("./node_modules/@angular/material/core/coersion/boolean-property.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__coersion_number_property__ = __webpack_require__("./node_modules/@angular/material/core/coersion/number-property.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "J", function() { return MdCoreModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__a11y_focus_trap__ = __webpack_require__("./node_modules/@angular/material/core/a11y/focus-trap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__a11y_interactivity_checker__ = __webpack_require__("./node_modules/@angular/material/core/a11y/interactivity-checker.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__coordination_unique_selection_dispatcher__ = __webpack_require__("./node_modules/@angular/material/core/coordination/unique-selection-dispatcher.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__style_apply_transform__ = __webpack_require__("./node_modules/@angular/material/core/style/apply-transform.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__errors_error__ = __webpack_require__("./node_modules/@angular/material/core/errors/error.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__annotations_field_value__ = __webpack_require__("./node_modules/@angular/material/core/annotations/field-value.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__ = __webpack_require__("./node_modules/@angular/material/core/keyboard/keycodes.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "G", function() { return MdCoreModule; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_8__portal_portal__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_8__portal_portal__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_8__portal_portal__["d"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "f", function() { return __WEBPACK_IMPORTED_MODULE_8__portal_portal__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_7__portal_portal__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_7__portal_portal__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_7__portal_portal__["d"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "f", function() { return __WEBPACK_IMPORTED_MODULE_7__portal_portal__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "g", function() { return __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "h", function() { return __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["c"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "i", function() { return __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "j", function() { return __WEBPACK_IMPORTED_MODULE_9__portal_dom_portal_host__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "k", function() { return __WEBPACK_IMPORTED_MODULE_7__overlay_overlay__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "l", function() { return __WEBPACK_IMPORTED_MODULE_7__overlay_overlay__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "j", function() { return __WEBPACK_IMPORTED_MODULE_8__portal_dom_portal_host__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "k", function() { return __WEBPACK_IMPORTED_MODULE_9__overlay_overlay__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "l", function() { return __WEBPACK_IMPORTED_MODULE_9__overlay_overlay__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "m", function() { return __WEBPACK_IMPORTED_MODULE_10__overlay_overlay_container__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "n", function() { return __WEBPACK_IMPORTED_MODULE_11__overlay_overlay_ref__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "o", function() { return __WEBPACK_IMPORTED_MODULE_12__overlay_overlay_state__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "p", function() { return __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "q", function() { return __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "r", function() { return __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "K", function() { return __WEBPACK_IMPORTED_MODULE_13__overlay_position_connected_position_strategy__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "L", function() { return __WEBPACK_IMPORTED_MODULE_14__overlay_position_connected_position__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "q", function() { return __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "r", function() { return __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "H", function() { return __WEBPACK_IMPORTED_MODULE_13__overlay_position_connected_position_strategy__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "I", function() { return __WEBPACK_IMPORTED_MODULE_14__overlay_position_connected_position__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "s", function() { return __WEBPACK_IMPORTED_MODULE_15__gestures_MdGestureConfig__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "t", function() { return __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "u", function() { return __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "v", function() { return __WEBPACK_IMPORTED_MODULE_16__a11y_live_announcer__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "w", function() { return __WEBPACK_IMPORTED_MODULE_16__a11y_live_announcer__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "x", function() { return __WEBPACK_IMPORTED_MODULE_17__a11y_focus_trap__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "y", function() { return __WEBPACK_IMPORTED_MODULE_18__a11y_interactivity_checker__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "z", function() { return __WEBPACK_IMPORTED_MODULE_19__a11y_fake_mousedown__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "A", function() { return __WEBPACK_IMPORTED_MODULE_6__a11y_index__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "B", function() { return __WEBPACK_IMPORTED_MODULE_20__coordination_unique_selection_dispatcher__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "C", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "D", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "E", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "F", function() { return __WEBPACK_IMPORTED_MODULE_21__style_apply_transform__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "G", function() { return __WEBPACK_IMPORTED_MODULE_22__errors_error__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "M", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "N", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "O", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "P", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "Q", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["e"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "R", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["f"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "S", function() { return __WEBPACK_IMPORTED_MODULE_23__keyboard_keycodes__["g"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "T", function() { return __WEBPACK_IMPORTED_MODULE_24__compatibility_style_compatibility__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "U", function() { return __WEBPACK_IMPORTED_MODULE_24__compatibility_style_compatibility__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "V", function() { return __WEBPACK_IMPORTED_MODULE_24__compatibility_style_compatibility__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "W", function() { return __WEBPACK_IMPORTED_MODULE_25__animation_animation__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "X", function() { return __WEBPACK_IMPORTED_MODULE_25__animation_animation__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "H", function() { return __WEBPACK_IMPORTED_MODULE_26__coersion_boolean_property__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "I", function() { return __WEBPACK_IMPORTED_MODULE_27__coersion_number_property__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "v", function() { return __WEBPACK_IMPORTED_MODULE_6__a11y_live_announcer__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "w", function() { return __WEBPACK_IMPORTED_MODULE_6__a11y_live_announcer__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "x", function() { return __WEBPACK_IMPORTED_MODULE_16__a11y_focus_trap__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "y", function() { return __WEBPACK_IMPORTED_MODULE_17__a11y_interactivity_checker__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "z", function() { return __WEBPACK_IMPORTED_MODULE_18__coordination_unique_selection_dispatcher__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "A", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "B", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "C", function() { return __WEBPACK_IMPORTED_MODULE_1__line_line__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "D", function() { return __WEBPACK_IMPORTED_MODULE_19__style_apply_transform__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "E", function() { return __WEBPACK_IMPORTED_MODULE_20__errors_error__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "F", function() { return __WEBPACK_IMPORTED_MODULE_21__annotations_field_value__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "J", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "K", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "L", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "M", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "N", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["e"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "O", function() { return __WEBPACK_IMPORTED_MODULE_22__keyboard_keycodes__["f"]; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2156,7 +1800,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -2188,20 +1831,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 // Style
 
 // Error
 
+// Annotations.
+
 // Misc
 // Keybindings
-
-
-// Animation
-
-// Coersion
-
 
 var MdCoreModule = (function () {
     function MdCoreModule() {
@@ -2209,13 +1846,13 @@ var MdCoreModule = (function () {
     MdCoreModule.forRoot = function () {
         return {
             ngModule: MdCoreModule,
-            providers: [__WEBPACK_IMPORTED_MODULE_6__a11y_index__["a" /* A11Y_PROVIDERS */], __WEBPACK_IMPORTED_MODULE_7__overlay_overlay__["b" /* OVERLAY_PROVIDERS */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_6__a11y_live_announcer__["a" /* MdLiveAnnouncer */]]
         };
     };
     MdCoreModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__line_line__["a" /* MdLineModule */], __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["b" /* RtlModule */], __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["a" /* MdRippleModule */], __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["a" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_6__a11y_index__["b" /* A11yModule */]],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__line_line__["a" /* MdLineModule */], __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["b" /* RtlModule */], __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["a" /* MdRippleModule */], __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["a" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_6__a11y_index__["b" /* A11yModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__line_line__["a" /* MdLineModule */], __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["a" /* RtlModule */], __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["a" /* MdRippleModule */], __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["a" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a" /* OverlayModule */]],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__line_line__["a" /* MdLineModule */], __WEBPACK_IMPORTED_MODULE_2__rtl_dir__["a" /* RtlModule */], __WEBPACK_IMPORTED_MODULE_3__ripple_ripple__["a" /* MdRippleModule */], __WEBPACK_IMPORTED_MODULE_4__portal_portal_directives__["a" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_5__overlay_overlay_directives__["a" /* OverlayModule */]],
         }), 
         __metadata('design:paramtypes', [])
     ], MdCoreModule);
@@ -2285,6 +1922,11 @@ var MdGestureConfig = (function (_super) {
         _super.apply(this, arguments);
         /* List of new event names to add to the gesture support list */
         this.events = [
+            'drag',
+            'dragstart',
+            'dragend',
+            'dragright',
+            'dragleft',
             'longpress',
             'slide',
             'slidestart',
@@ -2314,11 +1956,12 @@ var MdGestureConfig = (function (_super) {
         // Notice that a HammerJS recognizer can only depend on one other recognizer once.
         // Otherwise the previous `recognizeWith` will be dropped.
         var slide = this._createRecognizer(pan, { event: 'slide', threshold: 0 }, swipe);
+        var drag = this._createRecognizer(slide, { event: 'drag', threshold: 6 }, swipe);
         var longpress = this._createRecognizer(press, { event: 'longpress', time: 500 });
         // Overwrite the default `pan` event to use the swipe event.
         pan.recognizeWith(swipe);
         // Add customized gestures to Hammer manager
-        mc.add([swipe, press, pan, slide, longpress]);
+        mc.add([swipe, press, pan, drag, slide, longpress]);
         return mc;
     };
     /** Creates a new recognizer, without affecting the default recognizers of HammerJS */
@@ -2391,15 +2034,6 @@ var MdGestureConfig = (function (_super) {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "M", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["M"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "N", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["N"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "O", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["O"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "P", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["P"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "Q", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["Q"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "R", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["R"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "S", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["S"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "T", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["T"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "U", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["U"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "V", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["V"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "W", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["W"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "X", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["X"]; });
 
 
 //# sourceMappingURL=index.js.map
@@ -2416,8 +2050,7 @@ var MdGestureConfig = (function (_super) {
 /* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return RIGHT_ARROW; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return LEFT_ARROW; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return ENTER; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "f", function() { return SPACE; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "g", function() { return TAB; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "f", function() { return TAB; });
 // Due to a bug in the ChromeDriver, Angular 2 keyboard events are not triggered by `sendKeys`
 // during E2E tests when using dot notation such as `(keydown.rightArrow)`. To get around this,
 // we are temporarily using a single (keydown) handler.
@@ -2427,7 +2060,6 @@ var DOWN_ARROW = 40;
 var RIGHT_ARROW = 39;
 var LEFT_ARROW = 37;
 var ENTER = 13;
-var SPACE = 32;
 var TAB = 9;
 
 //# sourceMappingURL=keycodes.js.map
@@ -2484,14 +2116,10 @@ var MdLineSetter = (function () {
         if (count === 2 || count === 3) {
             this._setClass("md-" + count + "-line", true);
         }
-        else if (count > 3) {
-            this._setClass("md-multi-line", true);
-        }
     };
     MdLineSetter.prototype._resetClasses = function () {
         this._setClass('md-2-line', false);
         this._setClass('md-3-line', false);
-        this._setClass('md-multi-line', false);
     };
     MdLineSetter.prototype._setClass = function (className, bool) {
         this._renderer.setElementClass(this._element.nativeElement, className, bool);
@@ -2568,7 +2196,6 @@ var OverlayContainer = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__overlay_state__ = __webpack_require__("./node_modules/@angular/material/core/overlay/overlay-state.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__position_connected_position__ = __webpack_require__("./node_modules/@angular/material/core/overlay/position/connected-position.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__portal_portal_directives__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal-directives.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__rtl_dir__ = __webpack_require__("./node_modules/@angular/material/core/rtl/dir.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return OverlayOrigin; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return ConnectedOverlayDirective; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return OverlayModule; });
@@ -2581,10 +2208,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
 
 
 
@@ -2625,42 +2248,10 @@ var OverlayOrigin = (function () {
  */
 var ConnectedOverlayDirective = (function () {
     // TODO(jelbourn): inputs for size, scroll behavior, animation, etc.
-    function ConnectedOverlayDirective(_overlay, templateRef, viewContainerRef, _dir) {
+    function ConnectedOverlayDirective(_overlay, templateRef, viewContainerRef) {
         this._overlay = _overlay;
-        this._dir = _dir;
-        this._open = false;
-        this._hasBackdrop = false;
-        /** The offset in pixels for the overlay connection point on the x-axis */
-        this.offsetX = 0;
-        /** The offset in pixels for the overlay connection point on the y-axis */
-        this.offsetY = 0;
-        /** Event emitted when the backdrop is clicked. */
-        this.backdropClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this._templatePortal = new __WEBPACK_IMPORTED_MODULE_2__portal_portal__["a" /* TemplatePortal */](templateRef, viewContainerRef);
     }
-    Object.defineProperty(ConnectedOverlayDirective.prototype, "hasBackdrop", {
-        /** Whether or not the overlay should attach a backdrop. */
-        get: function () {
-            return this._hasBackdrop;
-        },
-        // TODO: move the boolean coercion logic to a shared function in core
-        set: function (value) {
-            this._hasBackdrop = value != null && "" + value !== 'false';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ConnectedOverlayDirective.prototype, "open", {
-        get: function () {
-            return this._open;
-        },
-        set: function (value) {
-            value ? this._attachOverlay() : this._detachOverlay();
-            this._open = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ConnectedOverlayDirective.prototype, "overlayRef", {
         get: function () {
             return this._overlayRef;
@@ -2668,85 +2259,28 @@ var ConnectedOverlayDirective = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ConnectedOverlayDirective.prototype, "dir", {
-        get: function () {
-            return this._dir ? this._dir.value : 'ltr';
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /** TODO: internal */
+    ConnectedOverlayDirective.prototype.ngOnInit = function () {
+        this._createOverlay();
+    };
     /** TODO: internal */
     ConnectedOverlayDirective.prototype.ngOnDestroy = function () {
         this._destroyOverlay();
     };
-    /** Creates an overlay */
+    /** Creates an overlay and attaches this directive's template to it. */
     ConnectedOverlayDirective.prototype._createOverlay = function () {
         if (!this.positions || !this.positions.length) {
             this.positions = defaultPositionList;
         }
-        this._overlayRef = this._overlay.create(this._buildConfig());
-    };
-    /** Builds the overlay config based on the directive's inputs */
-    ConnectedOverlayDirective.prototype._buildConfig = function () {
         var overlayConfig = new __WEBPACK_IMPORTED_MODULE_3__overlay_state__["a" /* OverlayState */]();
-        if (this.width || this.width === 0) {
-            overlayConfig.width = this.width;
-        }
-        if (this.height || this.height === 0) {
-            overlayConfig.height = this.height;
-        }
-        overlayConfig.hasBackdrop = this.hasBackdrop;
-        if (this.backdropClass) {
-            overlayConfig.backdropClass = this.backdropClass;
-        }
-        overlayConfig.positionStrategy = this._createPositionStrategy();
-        overlayConfig.direction = this.dir;
-        return overlayConfig;
-    };
-    /** Returns the position strategy of the overlay to be set on the overlay config */
-    ConnectedOverlayDirective.prototype._createPositionStrategy = function () {
-        var pos = this.positions[0];
-        var originPoint = { originX: pos.originX, originY: pos.originY };
-        var overlayPoint = { overlayX: pos.overlayX, overlayY: pos.overlayY };
-        return this._overlay.position()
-            .connectedTo(this.origin.elementRef, originPoint, overlayPoint)
-            .withDirection(this.dir)
-            .withOffsetX(this.offsetX)
-            .withOffsetY(this.offsetY);
-    };
-    /** Attaches the overlay and subscribes to backdrop clicks if backdrop exists */
-    ConnectedOverlayDirective.prototype._attachOverlay = function () {
-        var _this = this;
-        if (!this._overlayRef) {
-            this._createOverlay();
-        }
-        if (!this._overlayRef.hasAttached()) {
-            this._overlayRef.attach(this._templatePortal);
-        }
-        if (this.hasBackdrop) {
-            this._backdropSubscription = this._overlayRef.backdropClick().subscribe(function () {
-                _this.backdropClick.emit();
-            });
-        }
-    };
-    /** Detaches the overlay and unsubscribes to backdrop clicks if backdrop exists */
-    ConnectedOverlayDirective.prototype._detachOverlay = function () {
-        if (this._overlayRef) {
-            this._overlayRef.detach();
-        }
-        if (this._backdropSubscription) {
-            this._backdropSubscription.unsubscribe();
-            this._backdropSubscription = null;
-        }
+        overlayConfig.positionStrategy =
+            this._overlay.position().connectedTo(this.origin.elementRef, { originX: this.positions[0].overlayX, originY: this.positions[0].originY }, { overlayX: this.positions[0].overlayX, overlayY: this.positions[0].overlayY });
+        this._overlayRef = this._overlay.create(overlayConfig);
+        this._overlayRef.attach(this._templatePortal);
     };
     /** Destroys the overlay created by this directive. */
     ConnectedOverlayDirective.prototype._destroyOverlay = function () {
-        if (this._overlayRef) {
-            this._overlayRef.dispose();
-        }
-        if (this._backdropSubscription) {
-            this._backdropSubscription.unsubscribe();
-        }
+        this._overlayRef.dispose();
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
@@ -2756,45 +2290,11 @@ var ConnectedOverlayDirective = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Array)
     ], ConnectedOverlayDirective.prototype, "positions", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Number)
-    ], ConnectedOverlayDirective.prototype, "offsetX", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Number)
-    ], ConnectedOverlayDirective.prototype, "offsetY", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], ConnectedOverlayDirective.prototype, "width", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], ConnectedOverlayDirective.prototype, "height", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', String)
-    ], ConnectedOverlayDirective.prototype, "backdropClass", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], ConnectedOverlayDirective.prototype, "hasBackdrop", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], ConnectedOverlayDirective.prototype, "open", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
-        __metadata('design:type', Object)
-    ], ConnectedOverlayDirective.prototype, "backdropClick", void 0);
     ConnectedOverlayDirective = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
-            selector: '[connected-overlay]',
-            exportAs: 'connectedOverlay'
-        }),
-        __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_1__overlay__["a" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], __WEBPACK_IMPORTED_MODULE_6__rtl_dir__["a" /* Dir */]])
+            selector: '[connected-overlay]'
+        }), 
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_1__overlay__["a" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]])
     ], ConnectedOverlayDirective);
     return ConnectedOverlayDirective;
 }());
@@ -2848,8 +2348,6 @@ var OverlayRef = (function () {
             this._attachBackdrop();
         }
         var attachResult = this._portalHost.attach(portal);
-        this.updateSize();
-        this.updateDirection();
         this.updatePosition();
         return attachResult;
     };
@@ -2877,25 +2375,11 @@ var OverlayRef = (function () {
             this._state.positionStrategy.apply(this._pane);
         }
     };
-    /** Updates the text direction of the overlay panel. **/
-    OverlayRef.prototype.updateDirection = function () {
-        this._pane.setAttribute('dir', this._state.direction);
-    };
-    /** Updates the size of the overlay based on the overlay config. */
-    OverlayRef.prototype.updateSize = function () {
-        if (this._state.width || this._state.width === 0) {
-            this._pane.style.width = formatCssUnit(this._state.width);
-        }
-        if (this._state.height || this._state.height === 0) {
-            this._pane.style.height = formatCssUnit(this._state.height);
-        }
-    };
     /** Attaches a backdrop for this overlay. */
     OverlayRef.prototype._attachBackdrop = function () {
         var _this = this;
         this._backdropElement = document.createElement('div');
         this._backdropElement.classList.add('md-overlay-backdrop');
-        this._backdropElement.classList.add(this._state.backdropClass);
         this._pane.parentElement.appendChild(this._backdropElement);
         // Forward backdrop clicks such that the consumer of the overlay can perform whatever
         // action desired when such a click occurs (usually closing the overlay).
@@ -2913,7 +2397,6 @@ var OverlayRef = (function () {
         var backdropToDetach = this._backdropElement;
         if (backdropToDetach) {
             backdropToDetach.classList.remove('md-overlay-backdrop-showing');
-            backdropToDetach.classList.remove(this._state.backdropClass);
             backdropToDetach.addEventListener('transitionend', function () {
                 backdropToDetach.parentNode.removeChild(backdropToDetach);
                 // It is possible that a new portal has been attached to this overlay since we started
@@ -2927,9 +2410,6 @@ var OverlayRef = (function () {
     };
     return OverlayRef;
 }());
-function formatCssUnit(value) {
-    return typeof value === 'string' ? value : value + "px";
-}
 
 //# sourceMappingURL=overlay-ref.js.map
 
@@ -2949,10 +2429,6 @@ var OverlayState = (function () {
     function OverlayState() {
         /** Whether the overlay has a backdrop. */
         this.hasBackdrop = false;
-        /** Custom class to add to the backdrop **/
-        this.backdropClass = 'md-overlay-dark-backdrop';
-        /** The direction of the text in the overlay panel. */
-        this.direction = 'ltr';
     }
     return OverlayState;
 }());
@@ -3004,12 +2480,10 @@ var defaultState = new __WEBPACK_IMPORTED_MODULE_1__overlay_state__["a" /* Overl
  * An overlay *is* a PortalHost, so any kind of Portal can be loaded into one.
  */
 var Overlay = (function () {
-    function Overlay(_overlayContainer, _componentFactoryResolver, _positionBuilder, _appRef, _injector) {
+    function Overlay(_overlayContainer, _componentFactoryResolver, _positionBuilder) {
         this._overlayContainer = _overlayContainer;
         this._componentFactoryResolver = _componentFactoryResolver;
         this._positionBuilder = _positionBuilder;
-        this._appRef = _appRef;
-        this._injector = _injector;
     }
     /**
      * Creates an overlay.
@@ -3044,7 +2518,7 @@ var Overlay = (function () {
      * @returns A portal host for the given DOM element.
      */
     Overlay.prototype._createPortalHost = function (pane) {
-        return new __WEBPACK_IMPORTED_MODULE_2__portal_dom_portal_host__["a" /* DomPortalHost */](pane, this._componentFactoryResolver, this._appRef, this._injector);
+        return new __WEBPACK_IMPORTED_MODULE_2__portal_dom_portal_host__["a" /* DomPortalHost */](pane, this._componentFactoryResolver);
     };
     /**
      * Creates an OverlayRef for an overlay in the given DOM element.
@@ -3057,7 +2531,7 @@ var Overlay = (function () {
     };
     Overlay = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_6__overlay_container__["a" /* OverlayContainer */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"], __WEBPACK_IMPORTED_MODULE_4__position_overlay_position_builder__["a" /* OverlayPositionBuilder */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ApplicationRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_6__overlay_container__["a" /* OverlayContainer */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"], __WEBPACK_IMPORTED_MODULE_4__position_overlay_position_builder__["a" /* OverlayPositionBuilder */]])
     ], Overlay);
     return Overlay;
 }());
@@ -3085,7 +2559,7 @@ var OVERLAY_PROVIDERS = [
 
 /**
  * A strategy for positioning overlays. Using this strategy, an overlay is given an
- * implicit position relative some origin element. The relative position is defined in terms of
+ * implict position relative some origin element. The relative position is defined in terms of
  * a point on the origin element that is connected to a point on the overlay element. For example,
  * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
  * of the overlay.
@@ -3096,24 +2570,14 @@ var ConnectedPositionStrategy = (function () {
         this._originPos = _originPos;
         this._overlayPos = _overlayPos;
         this._viewportRuler = _viewportRuler;
-        this._dir = 'ltr';
-        /** The offset in pixels for the overlay connection point on the x-axis */
-        this._offsetX = 0;
-        /** The offset in pixels for the overlay connection point on the y-axis */
-        this._offsetY = 0;
+        // TODO(jelbourn): set RTL to the actual value from the app.
+        /** Whether the we're dealing with an RTL context */
+        this._isRtl = false;
         /** Ordered list of preferred positions, from most to least desirable. */
         this._preferredPositions = [];
         this._origin = this._connectedTo.nativeElement;
         this.withFallbackPosition(_originPos, _overlayPos);
     }
-    Object.defineProperty(ConnectedPositionStrategy.prototype, "_isRtl", {
-        /** Whether the we're dealing with an RTL context */
-        get: function () {
-            return this._dir === 'rtl';
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ConnectedPositionStrategy.prototype, "positions", {
         get: function () {
             return this._preferredPositions;
@@ -3156,21 +2620,6 @@ var ConnectedPositionStrategy = (function () {
     };
     ConnectedPositionStrategy.prototype.withFallbackPosition = function (originPos, overlayPos) {
         this._preferredPositions.push(new __WEBPACK_IMPORTED_MODULE_1__connected_position__["a" /* ConnectionPositionPair */](originPos, overlayPos));
-        return this;
-    };
-    /** Sets the layout direction so the overlay's position can be adjusted to match. */
-    ConnectedPositionStrategy.prototype.withDirection = function (dir) {
-        this._dir = dir;
-        return this;
-    };
-    /** Sets an offset for the overlay's connection point on the x-axis */
-    ConnectedPositionStrategy.prototype.withOffsetX = function (offset) {
-        this._offsetX = offset;
-        return this;
-    };
-    /** Sets an offset for the overlay's connection point on the y-axis */
-    ConnectedPositionStrategy.prototype.withOffsetY = function (offset) {
-        this._offsetY = offset;
         return this;
     };
     /**
@@ -3225,11 +2674,8 @@ var ConnectedPositionStrategy = (function () {
         if (pos.overlayX == 'center') {
             overlayStartX = -overlayRect.width / 2;
         }
-        else if (pos.overlayX === 'start') {
-            overlayStartX = this._isRtl ? -overlayRect.width : 0;
-        }
         else {
-            overlayStartX = this._isRtl ? 0 : -overlayRect.width;
+            overlayStartX = pos.overlayX == 'start' ? 0 : -overlayRect.width;
         }
         var overlayStartY;
         if (pos.overlayY == 'center') {
@@ -3239,8 +2685,8 @@ var ConnectedPositionStrategy = (function () {
             overlayStartY = pos.overlayY == 'top' ? 0 : -overlayRect.height;
         }
         return {
-            x: originPoint.x + overlayStartX + this._offsetX,
-            y: originPoint.y + overlayStartY + this._offsetY
+            x: originPoint.x + overlayStartX,
+            y: originPoint.y + overlayStartY
         };
     };
     /**
@@ -3262,8 +2708,9 @@ var ConnectedPositionStrategy = (function () {
      * @param overlayPoint
      */
     ConnectedPositionStrategy.prototype._setElementPosition = function (element, overlayPoint) {
-        var x = overlayPoint.x;
-        var y = overlayPoint.y;
+        var scrollPos = this._viewportRuler.getViewportScrollPosition();
+        var x = overlayPoint.x + scrollPos.left;
+        var y = overlayPoint.y + scrollPos.top;
         // TODO(jelbourn): we don't want to always overwrite the transform property here,
         // because it will need to be used for animations.
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__style_apply_transform__["a" /* applyCssTransform */])(element, "translateX(" + x + "px) translateY(" + y + "px)");
@@ -3542,12 +2989,14 @@ var ViewportRuler = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__portal__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__portal_errors__ = __webpack_require__("./node_modules/@angular/material/core/portal/portal-errors.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DomPortalHost; });
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+
 
 /**
  * A PortalHost for attaching portals to an arbitrary DOM element outside of the Angular
@@ -3557,52 +3006,22 @@ var __extends = (this && this.__extends) || function (d, b) {
  */
 var DomPortalHost = (function (_super) {
     __extends(DomPortalHost, _super);
-    function DomPortalHost(_hostDomElement, _componentFactoryResolver, _appRef, _defaultInjector) {
+    function DomPortalHost(_hostDomElement, _componentFactoryResolver) {
         _super.call(this);
         this._hostDomElement = _hostDomElement;
         this._componentFactoryResolver = _componentFactoryResolver;
-        this._appRef = _appRef;
-        this._defaultInjector = _defaultInjector;
     }
     /** Attach the given ComponentPortal to DOM element using the ComponentFactoryResolver. */
     DomPortalHost.prototype.attachComponentPortal = function (portal) {
-        var _this = this;
+        if (portal.viewContainerRef == null) {
+            throw new __WEBPACK_IMPORTED_MODULE_1__portal_errors__["g" /* MdComponentPortalAttachedToDomWithoutOriginError */]();
+        }
         var componentFactory = this._componentFactoryResolver.resolveComponentFactory(portal.component);
-        var componentRef;
-        // If the portal specifies a ViewContainerRef, we will use that as the attachment point
-        // for the component (in terms of Angular's component tree, not rendering).
-        // When the ViewContainerRef is missing, we use the factory to create the component directly
-        // and then manually attach the ChangeDetector for that component to the application (which
-        // happens automatically when using a ViewContainer).
-        if (portal.viewContainerRef) {
-            componentRef = portal.viewContainerRef.createComponent(componentFactory, portal.viewContainerRef.length, portal.injector || portal.viewContainerRef.parentInjector);
-            this.setDisposeFn(function () { return componentRef.destroy(); });
-        }
-        else {
-            componentRef = componentFactory.create(portal.injector || this._defaultInjector);
-            // When creating a component outside of a ViewContainer, we need to manually register
-            // its ChangeDetector with the application. This API is unfortunately not yet published
-            // in Angular core. The change detector must also be deregistered when the component
-            // is destroyed to prevent memory leaks.
-            //
-            // See https://github.com/angular/angular/pull/12674
-            var changeDetectorRef_1 = componentRef.changeDetectorRef;
-            this._appRef.registerChangeDetector(changeDetectorRef_1);
-            this.setDisposeFn(function () {
-                _this._appRef.unregisterChangeDetector(changeDetectorRef_1);
-                // Normally the ViewContainer will remove the component's nodes from the DOM.
-                // Without a ViewContainer, we need to manually remove the nodes.
-                var componentRootNode = _this._getComponentRootNode(componentRef);
-                if (componentRootNode.parentNode) {
-                    componentRootNode.parentNode.removeChild(componentRootNode);
-                }
-                componentRef.destroy();
-            });
-        }
-        // At this point the component has been instantiated, so we move it to the location in the DOM
-        // where we want it to be rendered.
-        this._hostDomElement.appendChild(this._getComponentRootNode(componentRef));
-        return componentRef;
+        var ref = portal.viewContainerRef.createComponent(componentFactory, portal.viewContainerRef.length, portal.injector || portal.viewContainerRef.parentInjector);
+        var hostView = ref.hostView;
+        this._hostDomElement.appendChild(hostView.rootNodes[0]);
+        this.setDisposeFn(function () { return ref.destroy(); });
+        return ref;
     };
     DomPortalHost.prototype.attachTemplatePortal = function (portal) {
         var _this = this;
@@ -3623,10 +3042,6 @@ var DomPortalHost = (function (_super) {
         if (this._hostDomElement.parentNode != null) {
             this._hostDomElement.parentNode.removeChild(this._hostDomElement);
         }
-    };
-    /** Gets the root HTMLElement for an instantiated component. */
-    DomPortalHost.prototype._getComponentRootNode = function (componentRef) {
-        return componentRef.hostView.rootNodes[0];
     };
     return DomPortalHost;
 }(__WEBPACK_IMPORTED_MODULE_0__portal__["b" /* BasePortalHost */]));
@@ -3708,10 +3123,7 @@ var PortalHostDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    PortalHostDirective.prototype.ngOnDestroy = function () {
-        this.dispose();
-    };
-    /** Attach the given ComponentPortal to this PortalHost using the ComponentFactoryResolver. */
+    /** Attach the given ComponentPortal to this PortlHost using the ComponentFactoryResolver. */
     PortalHostDirective.prototype.attachComponentPortal = function (portal) {
         portal.setAttachedHost(this);
         // If the portal specifies an origin, use that as the logical location of the component
@@ -3781,6 +3193,7 @@ var PortalModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors_error__ = __webpack_require__("./node_modules/@angular/material/core/errors/error.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "g", function() { return MdComponentPortalAttachedToDomWithoutOriginError; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdNullPortalError; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MdPortalAlreadyAttachedError; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return MdPortalHostAlreadyDisposedError; });
@@ -3793,6 +3206,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 
+/** Exception thrown when a ComponentPortal is attached to a DomPortalHost without an origin. */
+var MdComponentPortalAttachedToDomWithoutOriginError = (function (_super) {
+    __extends(MdComponentPortalAttachedToDomWithoutOriginError, _super);
+    function MdComponentPortalAttachedToDomWithoutOriginError() {
+        _super.call(this, 'A ComponentPortal must have an origin set when attached to a DomPortalHost ' +
+            'because the DOM element is not part of the Angular application context.');
+    }
+    return MdComponentPortalAttachedToDomWithoutOriginError;
+}(__WEBPACK_IMPORTED_MODULE_0__errors_error__["a" /* MdError */]));
 /** Exception thrown when attempting to attach a null portal to a host. */
 var MdNullPortalError = (function (_super) {
     __extends(MdNullPortalError, _super);
@@ -4372,8 +3794,8 @@ var MdRippleModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Dir; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return RtlModule; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return Dir; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return RtlModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4403,7 +3825,7 @@ var Dir = (function () {
             var old = this._dir;
             this._dir = v;
             if (old != this._dir) {
-                this.dirChange.emit();
+                this.dirChange.emit(null);
             }
         },
         enumerable: true,
@@ -4484,44 +3906,6 @@ function applyCssTransform(element, transformValue) {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/core/util/object-extend.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = extendObject;
-/**
- * Extends an object with the *enumerable* and *own* properties of one or more source objects,
- * similar to Object.assign.
- *
- * @param dest The object which will have properties copied to it.
- * @param sources The source objects from which properties will be copied.
- */
-function extendObject(dest) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
-    }
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
-        var source = sources_1[_a];
-        if (source != null) {
-            for (var key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
-}
-
-//# sourceMappingURL=object-extend.js.map
-
-
-/***/ },
-
 /***/ "./node_modules/@angular/material/dialog/dialog-config.js":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4534,8 +3918,6 @@ var MdDialogConfig = (function () {
     function MdDialogConfig() {
         /** The ARIA role of the dialog element. */
         this.role = 'dialog';
-        /** Whether the user can use escape or clicking outside to close a modal. */
-        this.disableClose = false;
     }
     return MdDialogConfig;
 }());
@@ -4552,9 +3934,6 @@ var MdDialogConfig = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dialog_errors__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-errors.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_a11y_focus_trap__ = __webpack_require__("./node_modules/@angular/material/core/a11y/focus-trap.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_first__ = __webpack_require__("./node_modules/rxjs/add/operator/first.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_first___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_first__);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdDialogContainer; });
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -4573,73 +3952,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 /**
  * Internal component that wraps user-provided dialog content.
  */
 var MdDialogContainer = (function (_super) {
     __extends(MdDialogContainer, _super);
-    function MdDialogContainer(_ngZone) {
-        _super.call(this);
-        this._ngZone = _ngZone;
-        /** Element that was focused before the dialog was opened. Save this to restore upon close. */
-        this._elementFocusedBeforeDialogWasOpened = null;
+    function MdDialogContainer() {
+        _super.apply(this, arguments);
     }
     /** Attach a portal as content to this dialog container. */
     MdDialogContainer.prototype.attachComponentPortal = function (portal) {
-        var _this = this;
         if (this._portalHost.hasAttached()) {
             throw new __WEBPACK_IMPORTED_MODULE_2__dialog_errors__["a" /* MdDialogContentAlreadyAttachedError */]();
         }
-        var attachResult = this._portalHost.attachComponentPortal(portal);
-        // If were to attempt to focus immediately, then the content of the dialog would not yet be
-        // ready in instances where change detection has to run first. To deal with this, we simply
-        // wait for the microtask queue to be empty.
-        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
-            _this._elementFocusedBeforeDialogWasOpened = document.activeElement;
-            _this._focusTrap.focusFirstTabbableElement();
-        });
-        return attachResult;
+        return this._portalHost.attachComponentPortal(portal);
     };
     MdDialogContainer.prototype.attachTemplatePortal = function (portal) {
         throw Error('Not yet implemented');
-    };
-    /** Handles the user pressing the Escape key. */
-    MdDialogContainer.prototype.handleEscapeKey = function () {
-        if (!this.dialogConfig.disableClose) {
-            this.dialogRef.close();
-        }
-    };
-    MdDialogContainer.prototype.ngOnDestroy = function () {
-        var _this = this;
-        // When the dialog is destroyed, return focus to the element that originally had it before
-        // the dialog was opened. Wait for the DOM to finish settling before changing the focus so
-        // that it doesn't end up back on the <body>.
-        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
-            _this._elementFocusedBeforeDialogWasOpened.focus();
-        });
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1__core__["g" /* PortalHostDirective */]), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_1__core__["g" /* PortalHostDirective */])
     ], MdDialogContainer.prototype, "_portalHost", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_3__core_a11y_focus_trap__["a" /* FocusTrap */]), 
-        __metadata('design:type', __WEBPACK_IMPORTED_MODULE_3__core_a11y_focus_trap__["a" /* FocusTrap */])
-    ], MdDialogContainer.prototype, "_focusTrap", void 0);
     MdDialogContainer = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-dialog-container',
-            template: "<focus-trap> <template portalHost></template> </focus-trap> ",
+            template: "<template portalHost></template> ",
             styles: ["md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; overflow: hidden; padding: 24px; } /*# sourceMappingURL=dialog-container.css.map */ "],
             host: {
                 'class': 'md-dialog-container',
-                '[attr.role]': 'dialogConfig?.role',
-                '(keydown.escape)': 'handleEscapeKey()',
+                '[attr.role]': 'dialogConfig?.role'
             },
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]])
+        __metadata('design:paramtypes', [])
     ], MdDialogContainer);
     return MdDialogContainer;
 }(__WEBPACK_IMPORTED_MODULE_1__core__["c" /* BasePortalHost */]));
@@ -4668,7 +4013,7 @@ var MdDialogContentAlreadyAttachedError = (function (_super) {
         _super.call(this, 'Attempting to attach dialog content after content is already attached');
     }
     return MdDialogContentAlreadyAttachedError;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 
 //# sourceMappingURL=dialog-errors.js.map
 
@@ -4748,15 +4093,14 @@ var MdDialogRef = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dialog_config__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-config.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dialog_ref__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-ref.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dialog_injector__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-injector.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialog_container__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-container.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_util_object_extend__ = __webpack_require__("./node_modules/@angular/material/core/util/object-extend.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dialog_ref__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-ref.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dialog_injector__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-injector.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dialog_container__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-container.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dialog_config__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-config.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdDialog; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdDialogModule; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__dialog_config__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__dialog_ref__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__dialog_config__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__dialog_ref__["a"]; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4773,15 +4117,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-
+// TODO(jelbourn): add shortcuts for `alert` and `confirm`.
 // TODO(jelbourn): add support for opening with a TemplateRef
 // TODO(jelbourn): add `closeAll` method
+// TODO(jelbourn): add backdrop
 // TODO(jelbourn): default dialog config
-// TODO(jelbourn): escape key closes dialog
-// TODO(jelbourn): dialog content directives (e.g., md-dialog-header)
-// TODO(jelbourn): animations
+// TODO(jelbourn): focus trapping
+// TODO(jelbourn): potentially change API from accepting component constructor to component factory.
 /**
  * Service to open Material Design modal dialogs.
  */
@@ -4796,7 +4138,6 @@ var MdDialog = (function () {
      * @param config
      */
     MdDialog.prototype.open = function (component, config) {
-        config = _applyConfigDefaults(config);
         var overlayRef = this._createOverlay(config);
         var dialogContainer = this._attachDialogContainer(overlayRef, config);
         return this._attachDialogContent(component, dialogContainer, overlayRef);
@@ -4817,8 +4158,7 @@ var MdDialog = (function () {
      * @returns A promise resolving to a ComponentRef for the attached container.
      */
     MdDialog.prototype._attachDialogContainer = function (overlay, config) {
-        var viewContainer = config ? config.viewContainerRef : null;
-        var containerPortal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](__WEBPACK_IMPORTED_MODULE_5__dialog_container__["a" /* MdDialogContainer */], viewContainer);
+        var containerPortal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](__WEBPACK_IMPORTED_MODULE_4__dialog_container__["a" /* MdDialogContainer */], config.viewContainerRef);
         var containerRef = overlay.attach(containerPortal);
         containerRef.instance.dialogConfig = config;
         return containerRef.instance;
@@ -4833,17 +4173,13 @@ var MdDialog = (function () {
     MdDialog.prototype._attachDialogContent = function (component, dialogContainer, overlayRef) {
         // Create a reference to the dialog we're creating in order to give the user a handle
         // to modify and close it.
-        var dialogRef = new __WEBPACK_IMPORTED_MODULE_3__dialog_ref__["a" /* MdDialogRef */](overlayRef);
-        if (!dialogContainer.dialogConfig.disableClose) {
-            // When the dialog backdrop is clicked, we want to close it.
-            overlayRef.backdropClick().first().subscribe(function () { return dialogRef.close(); });
-        }
-        // Set the dialogRef to the container so that it can use the ref to close the dialog.
-        dialogContainer.dialogRef = dialogRef;
+        var dialogRef = new __WEBPACK_IMPORTED_MODULE_2__dialog_ref__["a" /* MdDialogRef */](overlayRef);
+        // When the dialog backdrop is clicked, we want to close it.
+        overlayRef.backdropClick().subscribe(function () { return dialogRef.close(); });
         // We create an injector specifically for the component we're instantiating so that it can
         // inject the MdDialogRef. This allows a component loaded inside of a dialog to close itself
         // and, optionally, to return a value.
-        var dialogInjector = new __WEBPACK_IMPORTED_MODULE_4__dialog_injector__["a" /* DialogInjector */](dialogRef, this._injector);
+        var dialogInjector = new __WEBPACK_IMPORTED_MODULE_3__dialog_injector__["a" /* DialogInjector */](dialogRef, this._injector);
         var contentPortal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](component, null, dialogInjector);
         var contentRef = dialogContainer.attachComponentPortal(contentPortal);
         dialogRef.componentInstance = contentRef.instance;
@@ -4869,29 +4205,21 @@ var MdDialog = (function () {
     ], MdDialog);
     return MdDialog;
 }());
-/**
- * Applies default options to the dialog config.
- * @param dialogConfig Config to be modified.
- * @returns The new configuration object.
- */
-function _applyConfigDefaults(dialogConfig) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__core_util_object_extend__["a" /* extendObject */])(new __WEBPACK_IMPORTED_MODULE_2__dialog_config__["a" /* MdDialogConfig */](), dialogConfig);
-}
 var MdDialogModule = (function () {
     function MdDialogModule() {
     }
     MdDialogModule.forRoot = function () {
         return {
             ngModule: MdDialogModule,
-            providers: [MdDialog, __WEBPACK_IMPORTED_MODULE_1__core__["l" /* OVERLAY_PROVIDERS */], __WEBPACK_IMPORTED_MODULE_1__core__["y" /* InteractivityChecker */]],
+            providers: [MdDialog, __WEBPACK_IMPORTED_MODULE_1__core__["l" /* OVERLAY_PROVIDERS */]],
         };
     };
     MdDialogModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["r" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__core__["i" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_1__core__["A" /* A11yModule */]],
-            exports: [__WEBPACK_IMPORTED_MODULE_5__dialog_container__["a" /* MdDialogContainer */]],
-            declarations: [__WEBPACK_IMPORTED_MODULE_5__dialog_container__["a" /* MdDialogContainer */]],
-            entryComponents: [__WEBPACK_IMPORTED_MODULE_5__dialog_container__["a" /* MdDialogContainer */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["q" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__core__["i" /* PortalModule */]],
+            exports: [__WEBPACK_IMPORTED_MODULE_4__dialog_container__["a" /* MdDialogContainer */]],
+            declarations: [__WEBPACK_IMPORTED_MODULE_4__dialog_container__["a" /* MdDialogContainer */]],
+            entryComponents: [__WEBPACK_IMPORTED_MODULE_4__dialog_container__["a" /* MdDialogContainer */]],
         }), 
         __metadata('design:paramtypes', [])
     ], MdDialogModule);
@@ -4908,19 +4236,10 @@ var MdDialogModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dialog__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dialog_container__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-container.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dialog_config__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-config.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dialog_ref__ = __webpack_require__("./node_modules/@angular/material/dialog/dialog-ref.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__dialog__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__dialog__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__dialog__["c"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__dialog__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__dialog_container__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__dialog_config__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__dialog_ref__["a"]; });
-
-
-
 
 
 //# sourceMappingURL=index.js.map
@@ -4951,7 +4270,7 @@ var MdGridListColsError = (function (_super) {
         _super.call(this, "md-grid-list: must pass in number of columns. Example: <md-grid-list cols=\"3\">");
     }
     return MdGridListColsError;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 /**
  * Exception thrown when a tile's colspan is longer than the number of cols in list
  */
@@ -4961,7 +4280,7 @@ var MdGridTileTooWideError = (function (_super) {
         _super.call(this, "md-grid-list: tile with colspan " + cols + " is wider than grid with cols=\"" + listLength + "\".");
     }
     return MdGridTileTooWideError;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 /**
  * Exception thrown when an invalid ratio is passed in as a rowHeight
  */
@@ -4971,7 +4290,7 @@ var MdGridListBadRatioError = (function (_super) {
         _super.call(this, "md-grid-list: invalid ratio given for row-height: \"" + value + "\"");
     }
     return MdGridListBadRatioError;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 
 //# sourceMappingURL=grid-list-errors.js.map
 
@@ -5157,7 +4476,7 @@ var MdGridList = (function () {
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }),
         __param(2, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_5__core__["a" /* Dir */]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_5__core__["b" /* Dir */]])
     ], MdGridList);
     return MdGridList;
 }());
@@ -5172,8 +4491,8 @@ var MdGridListModule = (function () {
     };
     MdGridListModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_5__core__["C" /* MdLineModule */]],
-            exports: [MdGridList, __WEBPACK_IMPORTED_MODULE_1__grid_tile__["a" /* MdGridTile */], __WEBPACK_IMPORTED_MODULE_1__grid_tile__["b" /* MdGridTileText */], __WEBPACK_IMPORTED_MODULE_5__core__["C" /* MdLineModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_5__core__["A" /* MdLineModule */]],
+            exports: [MdGridList, __WEBPACK_IMPORTED_MODULE_1__grid_tile__["a" /* MdGridTile */], __WEBPACK_IMPORTED_MODULE_1__grid_tile__["b" /* MdGridTileText */], __WEBPACK_IMPORTED_MODULE_5__core__["A" /* MdLineModule */]],
             declarations: [MdGridList, __WEBPACK_IMPORTED_MODULE_1__grid_tile__["a" /* MdGridTile */], __WEBPACK_IMPORTED_MODULE_1__grid_tile__["b" /* MdGridTileText */]],
         }), 
         __metadata('design:paramtypes', [])
@@ -5266,10 +4585,10 @@ var MdGridTileText = (function () {
         this._element = _element;
     }
     MdGridTileText.prototype.ngAfterContentInit = function () {
-        this._lineSetter = new __WEBPACK_IMPORTED_MODULE_1__core__["E" /* MdLineSetter */](this._lines, this._renderer, this._element);
+        this._lineSetter = new __WEBPACK_IMPORTED_MODULE_1__core__["C" /* MdLineSetter */](this._lines, this._renderer, this._element);
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__core__["D" /* MdLine */]), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__core__["B" /* MdLine */]), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"])
     ], MdGridTileText.prototype, "_lines", void 0);
     MdGridTileText = __decorate([
@@ -5699,7 +5018,7 @@ var MdIconNameNotFoundError = (function (_super) {
         _super.call(this, "Unable to find icon with the name \"" + iconName + "\"");
     }
     return MdIconNameNotFoundError;
-}(__WEBPACK_IMPORTED_MODULE_2__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_2__core__["E" /* MdError */]));
 /**
  * Exception thrown when attempting to load SVG content that does not contain the expected
  * <svg> tag.
@@ -5710,7 +5029,7 @@ var MdIconSvgTagNotFoundError = (function (_super) {
         _super.call(this, '<svg> tag not found');
     }
     return MdIconSvgTagNotFoundError;
-}(__WEBPACK_IMPORTED_MODULE_2__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_2__core__["E" /* MdError */]));
 /** Configuration for an icon, including the URL and possibly the cached SVG element. */
 var SvgIconConfig = (function () {
     function SvgIconConfig(url) {
@@ -6083,7 +5402,7 @@ var MdIconInvalidNameError = (function (_super) {
         _super.call(this, "Invalid icon name: \"" + iconName + "\"");
     }
     return MdIconInvalidNameError;
-}(__WEBPACK_IMPORTED_MODULE_2__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_2__core__["E" /* MdError */]));
 /**
  * Component to display an icon. It can be used in the following ways:
  * - Specify the svgSrc input to load an SVG icon from a URL. The SVG content is directly inlined
@@ -6160,10 +5479,10 @@ var MdIcon = (function () {
         if (changedInputs.indexOf('svgIcon') != -1 || changedInputs.indexOf('svgSrc') != -1) {
             if (this.svgIcon) {
                 var _a = this._splitIconName(this.svgIcon), namespace = _a[0], iconName = _a[1];
-                this._mdIconRegistry.getNamedSvgIcon(iconName, namespace).first().subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
+                this._mdIconRegistry.getNamedSvgIcon(iconName, namespace).subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
             }
             else if (this.svgSrc) {
-                this._mdIconRegistry.getSvgIconFromUrl(this.svgSrc).first().subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
+                this._mdIconRegistry.getSvgIconFromUrl(this.svgSrc).subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
             }
         }
         if (this._usingFontIcon()) {
@@ -6348,16 +5667,16 @@ var MdIconModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__progress_bar_index__ = __webpack_require__("./node_modules/@angular/material/progress-bar/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__progress_circle_index__ = __webpack_require__("./node_modules/@angular/material/progress-circle/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__radio_index__ = __webpack_require__("./node_modules/@angular/material/radio/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__sidenav_index__ = __webpack_require__("./node_modules/@angular/material/sidenav/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__slider_index__ = __webpack_require__("./node_modules/@angular/material/slider/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__slide_toggle_index__ = __webpack_require__("./node_modules/@angular/material/slide-toggle/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__ = __webpack_require__("./node_modules/@angular/material/snack-bar/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__tabs_index__ = __webpack_require__("./node_modules/@angular/material/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__tabs_tab_nav_bar_index__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-nav-bar/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__select_index__ = __webpack_require__("./node_modules/@angular/material/select/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__sidenav_index__ = __webpack_require__("./node_modules/@angular/material/sidenav/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__slider_index__ = __webpack_require__("./node_modules/@angular/material/slider/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__slide_toggle_index__ = __webpack_require__("./node_modules/@angular/material/slide-toggle/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__snack_bar_index__ = __webpack_require__("./node_modules/@angular/material/snack-bar/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__tabs_index__ = __webpack_require__("./node_modules/@angular/material/tabs/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__toolbar_index__ = __webpack_require__("./node_modules/@angular/material/toolbar/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__tooltip_index__ = __webpack_require__("./node_modules/@angular/material/tooltip/index.js");
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Dir", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "RtlModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "RtlModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Dir", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "BasePortalHost", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["c"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ComponentPortal", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["d"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Portal", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["e"]; });
@@ -6372,8 +5691,8 @@ var MdIconModule = (function () {
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayRef", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["n"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayState", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["o"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConnectedOverlayDirective", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["p"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayOrigin", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["q"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["r"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["q"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "OverlayOrigin", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["r"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdGestureConfig", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["s"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdRipple", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["t"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdRippleModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["u"]; });
@@ -6381,31 +5700,22 @@ var MdIconModule = (function () {
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "LIVE_ANNOUNCER_ELEMENT_TOKEN", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["w"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "FocusTrap", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["x"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "InteractivityChecker", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["y"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "isFakeMousedownFromScreenReader", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["z"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "A11yModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["A"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdUniqueSelectionDispatcher", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["B"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLineModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["C"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLine", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["D"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLineSetter", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["E"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "applyCssTransform", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["F"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdError", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["G"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "coerceBooleanProperty", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["H"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "coerceNumberProperty", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["I"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdCoreModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["J"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConnectedPositionStrategy", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["K"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConnectionPositionPair", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["L"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "UP_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["M"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "DOWN_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["N"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "RIGHT_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["O"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "LEFT_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["P"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ENTER", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["Q"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SPACE", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["R"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TAB", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["S"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ELEMENTS_SELECTOR", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["T"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "StyleCompatibility", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["U"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "StyleCompatibilityModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["V"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "AnimationCurves", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["W"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "AnimationDurations", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["X"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdUniqueSelectionDispatcher", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["z"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLineModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["A"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLine", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["B"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdLineSetter", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["C"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "applyCssTransform", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["D"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdError", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["E"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "BooleanFieldValue", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["F"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdCoreModule", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["G"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConnectedPositionStrategy", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["H"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConnectionPositionPair", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["I"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "UP_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["J"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "DOWN_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["K"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "RIGHT_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["L"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "LEFT_ARROW", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["M"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ENTER", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["N"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TAB", function() { return __WEBPACK_IMPORTED_MODULE_0__core__["O"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MaterialRootModule", function() { return __WEBPACK_IMPORTED_MODULE_1__module__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MaterialModule", function() { return __WEBPACK_IMPORTED_MODULE_1__module__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdButton", function() { return __WEBPACK_IMPORTED_MODULE_2__button_index__["b"]; });
@@ -6435,7 +5745,6 @@ var MdIconModule = (function () {
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDialogRef", function() { return __WEBPACK_IMPORTED_MODULE_6__dialog_index__["c"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDialog", function() { return __WEBPACK_IMPORTED_MODULE_6__dialog_index__["d"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDialogModule", function() { return __WEBPACK_IMPORTED_MODULE_6__dialog_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDialogContainer", function() { return __WEBPACK_IMPORTED_MODULE_6__dialog_index__["e"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdGridList", function() { return __WEBPACK_IMPORTED_MODULE_7__grid_list_index__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdGridListModule", function() { return __WEBPACK_IMPORTED_MODULE_7__grid_list_index__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdIconRegistry", function() { return __WEBPACK_IMPORTED_MODULE_8__icon_index__["b"]; });
@@ -6469,38 +5778,33 @@ var MdIconModule = (function () {
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdRadioGroup", function() { return __WEBPACK_IMPORTED_MODULE_14__radio_index__["d"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdRadioButton", function() { return __WEBPACK_IMPORTED_MODULE_14__radio_index__["e"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdRadioModule", function() { return __WEBPACK_IMPORTED_MODULE_14__radio_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDuplicatedSidenavError", function() { return __WEBPACK_IMPORTED_MODULE_15__sidenav_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenav", function() { return __WEBPACK_IMPORTED_MODULE_15__sidenav_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenavLayout", function() { return __WEBPACK_IMPORTED_MODULE_15__sidenav_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenavModule", function() { return __WEBPACK_IMPORTED_MODULE_15__sidenav_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MD_SLIDER_VALUE_ACCESSOR", function() { return __WEBPACK_IMPORTED_MODULE_16__slider_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSliderChange", function() { return __WEBPACK_IMPORTED_MODULE_16__slider_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlider", function() { return __WEBPACK_IMPORTED_MODULE_16__slider_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SliderRenderer", function() { return __WEBPACK_IMPORTED_MODULE_16__slider_index__["e"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSliderModule", function() { return __WEBPACK_IMPORTED_MODULE_16__slider_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MD_SLIDE_TOGGLE_VALUE_ACCESSOR", function() { return __WEBPACK_IMPORTED_MODULE_17__slide_toggle_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggleChange", function() { return __WEBPACK_IMPORTED_MODULE_17__slide_toggle_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggle", function() { return __WEBPACK_IMPORTED_MODULE_17__slide_toggle_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggleModule", function() { return __WEBPACK_IMPORTED_MODULE_17__slide_toggle_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBar", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarModule", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SHOW_ANIMATION", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "HIDE_ANIMATION", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarContainer", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["e"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarConfig", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["f"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarRef", function() { return __WEBPACK_IMPORTED_MODULE_18__snack_bar_index__["g"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabChangeEvent", function() { return __WEBPACK_IMPORTED_MODULE_19__tabs_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTab", function() { return __WEBPACK_IMPORTED_MODULE_19__tabs_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabGroup", function() { return __WEBPACK_IMPORTED_MODULE_19__tabs_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabsModule", function() { return __WEBPACK_IMPORTED_MODULE_19__tabs_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabNavBar", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_tab_nav_bar_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabLink", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_tab_nav_bar_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSelectModule", function() { return __WEBPACK_IMPORTED_MODULE_15__select_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSelect", function() { return __WEBPACK_IMPORTED_MODULE_15__select_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdDuplicatedSidenavError", function() { return __WEBPACK_IMPORTED_MODULE_16__sidenav_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenav", function() { return __WEBPACK_IMPORTED_MODULE_16__sidenav_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenavLayout", function() { return __WEBPACK_IMPORTED_MODULE_16__sidenav_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSidenavModule", function() { return __WEBPACK_IMPORTED_MODULE_16__sidenav_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MD_SLIDER_VALUE_ACCESSOR", function() { return __WEBPACK_IMPORTED_MODULE_17__slider_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlider", function() { return __WEBPACK_IMPORTED_MODULE_17__slider_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SliderRenderer", function() { return __WEBPACK_IMPORTED_MODULE_17__slider_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSliderModule", function() { return __WEBPACK_IMPORTED_MODULE_17__slider_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MD_SLIDE_TOGGLE_VALUE_ACCESSOR", function() { return __WEBPACK_IMPORTED_MODULE_18__slide_toggle_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggleChange", function() { return __WEBPACK_IMPORTED_MODULE_18__slide_toggle_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggle", function() { return __WEBPACK_IMPORTED_MODULE_18__slide_toggle_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSlideToggleModule", function() { return __WEBPACK_IMPORTED_MODULE_18__slide_toggle_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarRef", function() { return __WEBPACK_IMPORTED_MODULE_19__snack_bar_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarConfig", function() { return __WEBPACK_IMPORTED_MODULE_19__snack_bar_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBar", function() { return __WEBPACK_IMPORTED_MODULE_19__snack_bar_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdSnackBarModule", function() { return __WEBPACK_IMPORTED_MODULE_19__snack_bar_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabChangeEvent", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTab", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabGroup", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTabsModule", function() { return __WEBPACK_IMPORTED_MODULE_20__tabs_index__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdToolbarRow", function() { return __WEBPACK_IMPORTED_MODULE_21__toolbar_index__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdToolbar", function() { return __WEBPACK_IMPORTED_MODULE_21__toolbar_index__["c"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdToolbarModule", function() { return __WEBPACK_IMPORTED_MODULE_21__toolbar_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TOOLTIP_HIDE_DELAY", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTooltip", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TooltipComponent", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTooltip", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TooltipComponent", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["c"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "MdTooltipModule", function() { return __WEBPACK_IMPORTED_MODULE_22__tooltip_index__["a"]; });
 
 
@@ -6607,21 +5911,21 @@ var MdInputPlaceholderConflictError = (function (_super) {
         _super.call(this, 'Placeholder attribute and child element were both specified.');
     }
     return MdInputPlaceholderConflictError;
-}(__WEBPACK_IMPORTED_MODULE_3__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_3__core__["E" /* MdError */]));
 var MdInputUnsupportedTypeError = (function (_super) {
     __extends(MdInputUnsupportedTypeError, _super);
     function MdInputUnsupportedTypeError(type) {
         _super.call(this, "Input type \"" + type + "\" isn't supported by md-input.");
     }
     return MdInputUnsupportedTypeError;
-}(__WEBPACK_IMPORTED_MODULE_3__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_3__core__["E" /* MdError */]));
 var MdInputDuplicatedHintError = (function (_super) {
     __extends(MdInputDuplicatedHintError, _super);
     function MdInputDuplicatedHintError(align) {
         _super.call(this, "A hint was already declared for 'align=\"" + align + "\"'.");
     }
     return MdInputDuplicatedHintError;
-}(__WEBPACK_IMPORTED_MODULE_3__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_3__core__["E" /* MdError */]));
 /**
  * The placeholder directive. The content can declare this to implement more
  * complex placeholders.
@@ -6664,7 +5968,7 @@ var MdHint = (function () {
  * improve on its behaviour, along with styling it according to the Material Design.
  */
 var MdInput = (function () {
-    function MdInput(elementRef) {
+    function MdInput() {
         this._focused = false;
         this._value = '';
         /** Callback registered via registerOnTouched (ControlValueAccessor) */
@@ -6676,7 +5980,10 @@ var MdInput = (function () {
          */
         this.align = 'start';
         this.dividerColor = 'primary';
+        this.floatingPlaceholder = true;
         this.hintLabel = '';
+        this.autofocus = false;
+        this.disabled = false;
         this.id = "md-input-" + nextUniqueId++;
         this.list = null;
         this.max = null;
@@ -6684,45 +5991,16 @@ var MdInput = (function () {
         this.min = null;
         this.minlength = null;
         this.placeholder = null;
+        this.readonly = false;
+        this.required = false;
+        this.spellcheck = false;
         this.step = null;
         this.tabindex = null;
         this.type = 'text';
         this.name = null;
-        // textarea-specific
-        this.rows = null;
-        this.cols = null;
-        this.wrap = null;
-        this._floatingPlaceholder = true;
-        this._autofocus = false;
-        this._disabled = false;
-        this._readonly = false;
-        this._required = false;
-        this._spellcheck = false;
         this._blurEmitter = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this._focusEmitter = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        // Set the element type depending on normalized selector used(md-input / md-textarea)
-        this._elementType = elementRef.nativeElement.nodeName.toLowerCase() === 'md-input' ?
-            'input' :
-            'textarea';
     }
-    Object.defineProperty(MdInput.prototype, "ariaDisabled", {
-        get: function () { return this._ariaDisabled; },
-        set: function (value) { this._ariaDisabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "ariaRequired", {
-        get: function () { return this._ariaRequired; },
-        set: function (value) { this._ariaRequired = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "ariaInvalid", {
-        get: function () { return this._ariaInvalid; },
-        set: function (value) { this._ariaInvalid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MdInput.prototype, "focused", {
         /** Readonly properties. */
         get: function () { return this._focused; },
@@ -6743,42 +6021,6 @@ var MdInput = (function () {
     });
     Object.defineProperty(MdInput.prototype, "inputId", {
         get: function () { return this.id + "-input"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "floatingPlaceholder", {
-        get: function () { return this._floatingPlaceholder; },
-        set: function (value) { this._floatingPlaceholder = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "autofocus", {
-        get: function () { return this._autofocus; },
-        set: function (value) { this._autofocus = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "disabled", {
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "readonly", {
-        get: function () { return this._readonly; },
-        set: function (value) { this._readonly = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "required", {
-        get: function () { return this._required; },
-        set: function (value) { this._required = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdInput.prototype, "spellcheck", {
-        get: function () { return this._spellcheck; },
-        set: function (value) { this._spellcheck = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
         enumerable: true,
         configurable: true
     });
@@ -6929,17 +6171,20 @@ var MdInput = (function () {
         __metadata('design:type', String)
     ], MdInput.prototype, "ariaLabelledBy", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-disabled'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-disabled'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
         __metadata('design:type', Boolean)
-    ], MdInput.prototype, "ariaDisabled", null);
+    ], MdInput.prototype, "ariaDisabled", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-required'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-required'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
         __metadata('design:type', Boolean)
-    ], MdInput.prototype, "ariaRequired", null);
+    ], MdInput.prototype, "ariaRequired", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-invalid'), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-invalid'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
         __metadata('design:type', Boolean)
-    ], MdInput.prototype, "ariaInvalid", null);
+    ], MdInput.prototype, "ariaInvalid", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])(MdPlaceholder), 
         __metadata('design:type', MdPlaceholder)
@@ -6957,6 +6202,11 @@ var MdInput = (function () {
         __metadata('design:type', Object)
     ], MdInput.prototype, "dividerColor", void 0);
     __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "floatingPlaceholder", void 0);
+    __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
     ], MdInput.prototype, "hintLabel", void 0);
@@ -6972,6 +6222,16 @@ var MdInput = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
     ], MdInput.prototype, "autocapitalize", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "autofocus", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "disabled", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
@@ -7001,6 +6261,21 @@ var MdInput = (function () {
         __metadata('design:type', String)
     ], MdInput.prototype, "placeholder", void 0);
     __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "readonly", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "required", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdInput.prototype, "spellcheck", void 0);
+    __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Number)
     ], MdInput.prototype, "step", void 0);
@@ -7016,42 +6291,6 @@ var MdInput = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
     ], MdInput.prototype, "name", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Number)
-    ], MdInput.prototype, "rows", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Number)
-    ], MdInput.prototype, "cols", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], MdInput.prototype, "wrap", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "floatingPlaceholder", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "autofocus", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "disabled", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "readonly", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "required", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdInput.prototype, "spellcheck", null);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])('blur'), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["Observable"])
@@ -7073,14 +6312,14 @@ var MdInput = (function () {
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"])
     ], MdInput.prototype, "_inputElement", void 0);
     MdInput = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-input, md-textarea',
-            template: "<div class=\"md-input-wrapper\"> <div class=\"md-input-table\"> <div class=\"md-input-prefix\"><ng-content select=\"[md-prefix]\"></ng-content></div> <div class=\"md-input-infix\"> <input #input *ngIf=\"_elementType === 'input'\" class=\"md-input-element\" [class.md-end]=\"align == 'end'\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-disabled]=\"ariaDisabled\" [attr.aria-required]=\"ariaRequired\" [attr.aria-invalid]=\"ariaInvalid\" [attr.autocomplete]=\"autocomplete\" [attr.autocorrect]=\"autocorrect\" [attr.autocapitalize]=\"autocapitalize\" [autofocus]=\"autofocus\" [disabled]=\"disabled\" [id]=\"inputId\" [attr.list]=\"list\" [attr.max]=\"max\" [attr.maxlength]=\"maxlength\" [attr.min]=\"min\" [attr.minlength]=\"minlength\" [readonly]=\"readonly\" [required]=\"required\" [spellcheck]=\"spellcheck\" [attr.step]=\"step\" [attr.tabindex]=\"tabindex\" [type]=\"type\" [attr.name]=\"name\" (focus)=\"_handleFocus($event)\" (blur)=\"_handleBlur($event)\" [(ngModel)]=\"value\" (change)=\"_handleChange($event)\"> <textarea #input *ngIf=\"_elementType === 'textarea'\" class=\"md-input-element  md-input-element-textarea\" [class.md-end]=\"align == 'end'\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-disabled]=\"ariaDisabled\" [attr.aria-required]=\"ariaRequired\" [attr.aria-invalid]=\"ariaInvalid\" [attr.autocomplete]=\"autocomplete\" [attr.autocapitalize]=\"autocapitalize\" [attr.cols]=\"cols\" [attr.rows]=\"rows\" [attr.wrap]=\"wrap\" [autofocus]=\"autofocus\" [disabled]=\"disabled\" [id]=\"inputId\" [attr.maxlength]=\"maxlength\" [attr.minlength]=\"minlength\" [readonly]=\"readonly\" [required]=\"required\" [spellcheck]=\"spellcheck\" [attr.tabindex]=\"tabindex\" [attr.name]=\"name\" (focus)=\"_handleFocus($event)\" (blur)=\"_handleBlur($event)\" [(ngModel)]=\"value\" (change)=\"_handleChange($event)\"></textarea> <label class=\"md-input-placeholder\" [attr.for]=\"inputId\" [class.md-empty]=\"empty\" [class.md-focused]=\"focused\" [class.md-float]=\"floatingPlaceholder\" [class.md-accent]=\"dividerColor == 'accent'\" [class.md-warn]=\"dividerColor == 'warn'\" *ngIf=\"_hasPlaceholder()\"> <ng-content select=\"md-placeholder\"></ng-content> {{placeholder}} <span class=\"md-placeholder-required\" *ngIf=\"required\">*</span> </label> </div> <div class=\"md-input-suffix\"><ng-content select=\"[md-suffix]\"></ng-content></div> </div> <div class=\"md-input-underline\" [class.md-disabled]=\"disabled\"> <span class=\"md-input-ripple\" [class.md-focused]=\"focused\" [class.md-accent]=\"dividerColor == 'accent'\" [class.md-warn]=\"dividerColor == 'warn'\"></span> </div> <div *ngIf=\"hintLabel != ''\" class=\"md-hint\">{{hintLabel}}</div> <ng-content select=\"md-hint\"></ng-content> </div> ",
-            styles: ["md-input, md-textarea { display: inline-block; position: relative; font-family: Roboto, \"Helvetica Neue\", sans-serif; line-height: normal; text-align: left; } [dir='rtl'] md-input, [dir='rtl'] md-textarea { text-align: right; } .md-input-wrapper { margin: 16px 0; } .md-input-table { display: inline-table; flex-flow: column; vertical-align: bottom; width: 100%; } .md-input-table > * { display: table-cell; } .md-input-infix { position: relative; } .md-input-element { font: inherit; background: transparent; color: currentColor; border: none; outline: none; padding: 0; width: 100%; } .md-input-element.md-end { text-align: right; } [dir='rtl'] .md-input-element.md-end { text-align: left; } .md-input-element:-moz-ui-invalid { box-shadow: none; } .md-input-element:-webkit-autofill + .md-input-placeholder.md-float { display: block; padding-bottom: 5px; transform: translateY(-100%) scale(0.75); width: 133.33333%; } .md-input-placeholder { position: absolute; left: 0; top: 0; font-size: 100%; pointer-events: none; z-index: 1; width: 100%; display: none; white-space: nowrap; text-overflow: ellipsis; overflow-x: hidden; transform: translateY(0); transform-origin: bottom left; transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1), scale 400ms cubic-bezier(0.25, 0.8, 0.25, 1), color 400ms cubic-bezier(0.25, 0.8, 0.25, 1), width 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-input-placeholder.md-empty { display: block; cursor: text; } .md-input-placeholder.md-float:not(.md-empty), .md-input-placeholder.md-float.md-focused { display: block; padding-bottom: 5px; transform: translateY(-100%) scale(0.75); width: 133.33333%; } [dir='rtl'] .md-input-placeholder { transform-origin: bottom right; } .md-input-underline { position: absolute; height: 1px; width: 100%; margin-top: 4px; border-top-width: 1px; border-top-style: solid; } .md-input-underline.md-disabled { border-top: 0; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-position: 0; background-size: 4px 1px; background-repeat: repeat-x; } .md-input-underline .md-input-ripple { position: absolute; height: 2px; z-index: 1; top: -1px; width: 100%; transform-origin: top; opacity: 0; transform: scaleY(0); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-input-underline .md-input-ripple.md-focused { opacity: 1; transform: scaleY(1); } .md-hint { display: block; position: absolute; font-size: 75%; bottom: -0.5em; } .md-hint.md-right { right: 0; } [dir='rtl'] .md-hint { right: 0; left: auto; } [dir='rtl'] .md-hint.md-right { right: auto; left: 0; } /*# sourceMappingURL=input.css.map */ "],
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-input',
+            template: "<div class=\"md-input-wrapper\"> <div class=\"md-input-table\"> <div class=\"md-input-prefix\"><ng-content select=\"[md-prefix]\"></ng-content></div> <div class=\"md-input-infix\"> <input #input aria-target class=\"md-input-element\" [class.md-end]=\"align == 'end'\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-disabled]=\"ariaDisabled\" [attr.aria-required]=\"ariaRequired\" [attr.aria-invalid]=\"ariaInvalid\" [attr.autocomplete]=\"autocomplete\" [attr.autocorrect]=\"autocorrect\" [attr.autocapitalize]=\"autocapitalize\" [autofocus]=\"autofocus\" [disabled]=\"disabled\" [id]=\"inputId\" [attr.list]=\"list\" [attr.max]=\"max\" [attr.maxlength]=\"maxlength\" [attr.min]=\"min\" [attr.minlength]=\"minlength\" [readonly]=\"readonly\" [required]=\"required\" [spellcheck]=\"spellcheck\" [attr.step]=\"step\" [attr.tabindex]=\"tabindex\" [type]=\"type\" [attr.name]=\"name\" (focus)=\"_handleFocus($event)\" (blur)=\"_handleBlur($event)\" [(ngModel)]=\"value\" (change)=\"_handleChange($event)\"> <label class=\"md-input-placeholder\" [attr.for]=\"inputId\" [class.md-empty]=\"empty\" [class.md-focused]=\"focused\" [class.md-float]=\"floatingPlaceholder\" [class.md-accent]=\"dividerColor == 'accent'\" [class.md-warn]=\"dividerColor == 'warn'\" *ngIf=\"_hasPlaceholder()\"> <ng-content select=\"md-placeholder\"></ng-content> {{placeholder}} <span class=\"md-placeholder-required\" *ngIf=\"required\">*</span> </label> </div> <div class=\"md-input-suffix\"><ng-content select=\"[md-suffix]\"></ng-content></div> </div> <div class=\"md-input-underline\" [class.md-disabled]=\"disabled\"> <span class=\"md-input-ripple\" [class.md-focused]=\"focused\" [class.md-accent]=\"dividerColor == 'accent'\" [class.md-warn]=\"dividerColor == 'warn'\"></span> </div> <div *ngIf=\"hintLabel != ''\" class=\"md-hint\">{{hintLabel}}</div> <ng-content select=\"md-hint\"></ng-content> </div> ",
+            styles: ["md-input { display: inline-block; position: relative; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: left; } [dir='rtl'] md-input { text-align: right; } .md-input-wrapper { margin: 16px 0; } .md-input-table { display: inline-table; flex-flow: column; vertical-align: bottom; width: 100%; } .md-input-table > * { display: table-cell; } .md-input-infix { position: relative; } .md-input-element { font: inherit; background: transparent; color: currentColor; border: none; outline: none; padding: 0; width: 100%; } .md-input-element.md-end { text-align: right; } [dir='rtl'] .md-input-element.md-end { text-align: left; } .md-input-element:-moz-ui-invalid { box-shadow: none; } .md-input-element:-webkit-autofill + .md-input-placeholder { display: block; padding-bottom: 5px; transform: translateY(-100%) scale(0.75); width: 133.33333%; } .md-input-placeholder { position: absolute; left: 0; top: 0; font-size: 100%; pointer-events: none; z-index: 1; width: 100%; display: none; white-space: nowrap; text-overflow: ellipsis; overflow-x: hidden; transform: translateY(0); transform-origin: bottom left; transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1), scale 400ms cubic-bezier(0.25, 0.8, 0.25, 1), color 400ms cubic-bezier(0.25, 0.8, 0.25, 1), width 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-input-placeholder.md-empty { display: block; cursor: text; } .md-input-placeholder.md-float:not(.md-empty), .md-input-placeholder.md-float.md-focused { display: block; padding-bottom: 5px; transform: translateY(-100%) scale(0.75); width: 133.33333%; } [dir='rtl'] .md-input-placeholder { transform-origin: bottom right; } .md-input-underline { position: absolute; height: 1px; width: 100%; margin-top: 4px; border-top-width: 1px; border-top-style: solid; } .md-input-underline.md-disabled { border-top: 0; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-position: 0; background-size: 4px 1px; background-repeat: repeat-x; } .md-input-underline .md-input-ripple { position: absolute; height: 2px; z-index: 1; top: -1px; width: 100%; transform-origin: top; opacity: 0; transform: scaleY(0); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1), opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-input-underline .md-input-ripple.md-focused { opacity: 1; transform: scaleY(1); } .md-hint { position: absolute; font-size: 75%; bottom: -0.5em; } .md-hint.md-right { right: 0; } [dir='rtl'] .md-hint { right: 0; left: auto; } [dir='rtl'] .md-hint.md-right { right: auto; left: 0; } /*# sourceMappingURL=input.css.map */ "],
             providers: [MD_INPUT_CONTROL_VALUE_ACCESSOR],
             host: { '(click)': 'focus()' },
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
+        __metadata('design:paramtypes', [])
     ], MdInput);
     return MdInput;
 }());
@@ -7166,7 +6405,7 @@ var MdList = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-list, md-nav-list',
             host: { 'role': 'list' },
             template: '<ng-content></ng-content>',
-            styles: ["md-list, md-nav-list { padding-top: 8px; display: block; } md-list [md-subheader], md-nav-list [md-subheader] { display: block; box-sizing: border-box; height: 48px; padding: 16px; margin: 0; font-size: 14px; font-weight: 500; } md-list [md-subheader]:first-child, md-nav-list [md-subheader]:first-child { margin-top: -8px; } md-list md-list-item .md-list-item, md-list a[md-list-item] .md-list-item, md-nav-list md-list-item .md-list-item, md-nav-list a[md-list-item] .md-list-item { display: flex; flex-direction: row; align-items: center; font-family: Roboto, \"Helvetica Neue\", sans-serif; box-sizing: border-box; font-size: 16px; height: 48px; padding: 0 16px; } md-list md-list-item.md-list-avatar .md-list-item, md-list a[md-list-item].md-list-avatar .md-list-item, md-nav-list md-list-item.md-list-avatar .md-list-item, md-nav-list a[md-list-item].md-list-avatar .md-list-item { height: 56px; } md-list md-list-item.md-2-line .md-list-item, md-list a[md-list-item].md-2-line .md-list-item, md-nav-list md-list-item.md-2-line .md-list-item, md-nav-list a[md-list-item].md-2-line .md-list-item { height: 72px; } md-list md-list-item.md-3-line .md-list-item, md-list a[md-list-item].md-3-line .md-list-item, md-nav-list md-list-item.md-3-line .md-list-item, md-nav-list a[md-list-item].md-3-line .md-list-item { height: 88px; } md-list md-list-item.md-multi-line .md-list-item, md-list a[md-list-item].md-multi-line .md-list-item, md-nav-list md-list-item.md-multi-line .md-list-item, md-nav-list a[md-list-item].md-multi-line .md-list-item { height: 100%; padding: 8px 16px; } md-list md-list-item .md-list-text, md-list a[md-list-item] .md-list-text, md-nav-list md-list-item .md-list-text, md-nav-list a[md-list-item] .md-list-text { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; overflow: hidden; padding: 0 16px; } md-list md-list-item .md-list-text > *, md-list a[md-list-item] .md-list-text > *, md-nav-list md-list-item .md-list-text > *, md-nav-list a[md-list-item] .md-list-text > * { margin: 0; padding: 0; font-weight: normal; font-size: inherit; } md-list md-list-item .md-list-text:empty, md-list a[md-list-item] .md-list-text:empty, md-nav-list md-list-item .md-list-text:empty, md-nav-list a[md-list-item] .md-list-text:empty { display: none; } md-list md-list-item .md-list-text:first-child, md-list a[md-list-item] .md-list-text:first-child, md-nav-list md-list-item .md-list-text:first-child, md-nav-list a[md-list-item] .md-list-text:first-child { padding: 0; } md-list md-list-item [md-list-avatar], md-list a[md-list-item] [md-list-avatar], md-nav-list md-list-item [md-list-avatar], md-nav-list a[md-list-item] [md-list-avatar] { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; } md-list md-list-item [md-list-icon], md-list a[md-list-item] [md-list-icon], md-nav-list md-list-item [md-list-icon], md-nav-list a[md-list-item] [md-list-icon] { width: 24px; height: 24px; border-radius: 50%; padding: 4px; } md-list md-list-item [md-line], md-list a[md-list-item] [md-line], md-nav-list md-list-item [md-line], md-nav-list a[md-list-item] [md-line] { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: block; box-sizing: border-box; } md-list md-list-item [md-line]:nth-child(n+2), md-list a[md-list-item] [md-line]:nth-child(n+2), md-nav-list md-list-item [md-line]:nth-child(n+2), md-nav-list a[md-list-item] [md-line]:nth-child(n+2) { font-size: 14px; } md-list[dense], md-nav-list[dense] { padding-top: 4px; display: block; } md-list[dense] [md-subheader], md-nav-list[dense] [md-subheader] { display: block; box-sizing: border-box; height: 40px; padding: 16px; margin: 0; font-size: 13px; font-weight: 500; } md-list[dense] [md-subheader]:first-child, md-nav-list[dense] [md-subheader]:first-child { margin-top: -4px; } md-list[dense] md-list-item .md-list-item, md-list[dense] a[md-list-item] .md-list-item, md-nav-list[dense] md-list-item .md-list-item, md-nav-list[dense] a[md-list-item] .md-list-item { display: flex; flex-direction: row; align-items: center; font-family: Roboto, \"Helvetica Neue\", sans-serif; box-sizing: border-box; font-size: 13px; height: 40px; padding: 0 16px; } md-list[dense] md-list-item.md-list-avatar .md-list-item, md-list[dense] a[md-list-item].md-list-avatar .md-list-item, md-nav-list[dense] md-list-item.md-list-avatar .md-list-item, md-nav-list[dense] a[md-list-item].md-list-avatar .md-list-item { height: 48px; } md-list[dense] md-list-item.md-2-line .md-list-item, md-list[dense] a[md-list-item].md-2-line .md-list-item, md-nav-list[dense] md-list-item.md-2-line .md-list-item, md-nav-list[dense] a[md-list-item].md-2-line .md-list-item { height: 60px; } md-list[dense] md-list-item.md-3-line .md-list-item, md-list[dense] a[md-list-item].md-3-line .md-list-item, md-nav-list[dense] md-list-item.md-3-line .md-list-item, md-nav-list[dense] a[md-list-item].md-3-line .md-list-item { height: 76px; } md-list[dense] md-list-item.md-multi-line .md-list-item, md-list[dense] a[md-list-item].md-multi-line .md-list-item, md-nav-list[dense] md-list-item.md-multi-line .md-list-item, md-nav-list[dense] a[md-list-item].md-multi-line .md-list-item { height: 100%; padding: 8px 16px; } md-list[dense] md-list-item .md-list-text, md-list[dense] a[md-list-item] .md-list-text, md-nav-list[dense] md-list-item .md-list-text, md-nav-list[dense] a[md-list-item] .md-list-text { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; overflow: hidden; padding: 0 16px; } md-list[dense] md-list-item .md-list-text > *, md-list[dense] a[md-list-item] .md-list-text > *, md-nav-list[dense] md-list-item .md-list-text > *, md-nav-list[dense] a[md-list-item] .md-list-text > * { margin: 0; padding: 0; font-weight: normal; font-size: inherit; } md-list[dense] md-list-item .md-list-text:empty, md-list[dense] a[md-list-item] .md-list-text:empty, md-nav-list[dense] md-list-item .md-list-text:empty, md-nav-list[dense] a[md-list-item] .md-list-text:empty { display: none; } md-list[dense] md-list-item .md-list-text:first-child, md-list[dense] a[md-list-item] .md-list-text:first-child, md-nav-list[dense] md-list-item .md-list-text:first-child, md-nav-list[dense] a[md-list-item] .md-list-text:first-child { padding: 0; } md-list[dense] md-list-item [md-list-avatar], md-list[dense] a[md-list-item] [md-list-avatar], md-nav-list[dense] md-list-item [md-list-avatar], md-nav-list[dense] a[md-list-item] [md-list-avatar] { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; } md-list[dense] md-list-item [md-list-icon], md-list[dense] a[md-list-item] [md-list-icon], md-nav-list[dense] md-list-item [md-list-icon], md-nav-list[dense] a[md-list-item] [md-list-icon] { width: 24px; height: 24px; border-radius: 50%; padding: 4px; } md-list[dense] md-list-item [md-line], md-list[dense] a[md-list-item] [md-line], md-nav-list[dense] md-list-item [md-line], md-nav-list[dense] a[md-list-item] [md-line] { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: block; box-sizing: border-box; } md-list[dense] md-list-item [md-line]:nth-child(n+2), md-list[dense] a[md-list-item] [md-line]:nth-child(n+2), md-nav-list[dense] md-list-item [md-line]:nth-child(n+2), md-nav-list[dense] a[md-list-item] [md-line]:nth-child(n+2) { font-size: 13px; } md-divider { display: block; border-top-style: solid; border-top-width: 1px; margin: 0; } md-nav-list a { text-decoration: none; color: inherit; } md-nav-list .md-list-item { cursor: pointer; } md-nav-list .md-list-item:hover, md-nav-list .md-list-item.md-list-item-focus { outline: none; } /*# sourceMappingURL=list.css.map */ "],
+            styles: ["md-list, md-nav-list { padding-top: 8px; display: block; } md-list [md-subheader], md-nav-list [md-subheader] { display: block; box-sizing: border-box; height: 48px; padding: 16px; margin: 0; font-size: 14px; font-weight: 500; } md-list [md-subheader]:first-child, md-nav-list [md-subheader]:first-child { margin-top: -8px; } md-list md-list-item .md-list-item, md-list a[md-list-item] .md-list-item, md-nav-list md-list-item .md-list-item, md-nav-list a[md-list-item] .md-list-item { display: flex; flex-direction: row; align-items: center; font-family: Roboto, \"Helvetica Neue\", sans-serif; box-sizing: border-box; font-size: 16px; height: 48px; padding: 0 16px; } md-list md-list-item.md-list-avatar .md-list-item, md-list a[md-list-item].md-list-avatar .md-list-item, md-nav-list md-list-item.md-list-avatar .md-list-item, md-nav-list a[md-list-item].md-list-avatar .md-list-item { height: 56px; } md-list md-list-item.md-2-line .md-list-item, md-list a[md-list-item].md-2-line .md-list-item, md-nav-list md-list-item.md-2-line .md-list-item, md-nav-list a[md-list-item].md-2-line .md-list-item { height: 72px; } md-list md-list-item.md-3-line .md-list-item, md-list a[md-list-item].md-3-line .md-list-item, md-nav-list md-list-item.md-3-line .md-list-item, md-nav-list a[md-list-item].md-3-line .md-list-item { height: 88px; } md-list md-list-item .md-list-text, md-list a[md-list-item] .md-list-text, md-nav-list md-list-item .md-list-text, md-nav-list a[md-list-item] .md-list-text { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; overflow: hidden; padding: 0 16px; } md-list md-list-item .md-list-text > *, md-list a[md-list-item] .md-list-text > *, md-nav-list md-list-item .md-list-text > *, md-nav-list a[md-list-item] .md-list-text > * { margin: 0; padding: 0; font-weight: normal; font-size: inherit; } md-list md-list-item .md-list-text:empty, md-list a[md-list-item] .md-list-text:empty, md-nav-list md-list-item .md-list-text:empty, md-nav-list a[md-list-item] .md-list-text:empty { display: none; } md-list md-list-item .md-list-text:first-child, md-list a[md-list-item] .md-list-text:first-child, md-nav-list md-list-item .md-list-text:first-child, md-nav-list a[md-list-item] .md-list-text:first-child { padding: 0; } md-list md-list-item [md-list-avatar], md-list a[md-list-item] [md-list-avatar], md-nav-list md-list-item [md-list-avatar], md-nav-list a[md-list-item] [md-list-avatar] { width: 40px; height: 40px; border-radius: 50%; } md-list md-list-item [md-list-icon], md-list a[md-list-item] [md-list-icon], md-nav-list md-list-item [md-list-icon], md-nav-list a[md-list-item] [md-list-icon] { width: 24px; height: 24px; border-radius: 50%; padding: 4px; } md-list md-list-item [md-line], md-list a[md-list-item] [md-line], md-nav-list md-list-item [md-line], md-nav-list a[md-list-item] [md-line] { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: block; box-sizing: border-box; } md-list md-list-item [md-line]:nth-child(n+2), md-list a[md-list-item] [md-line]:nth-child(n+2), md-nav-list md-list-item [md-line]:nth-child(n+2), md-nav-list a[md-list-item] [md-line]:nth-child(n+2) { font-size: 14px; } md-list[dense], md-nav-list[dense] { padding-top: 4px; display: block; } md-list[dense] [md-subheader], md-nav-list[dense] [md-subheader] { display: block; box-sizing: border-box; height: 40px; padding: 16px; margin: 0; font-size: 13px; font-weight: 500; } md-list[dense] [md-subheader]:first-child, md-nav-list[dense] [md-subheader]:first-child { margin-top: -4px; } md-list[dense] md-list-item .md-list-item, md-list[dense] a[md-list-item] .md-list-item, md-nav-list[dense] md-list-item .md-list-item, md-nav-list[dense] a[md-list-item] .md-list-item { display: flex; flex-direction: row; align-items: center; font-family: Roboto, \"Helvetica Neue\", sans-serif; box-sizing: border-box; font-size: 13px; height: 40px; padding: 0 16px; } md-list[dense] md-list-item.md-list-avatar .md-list-item, md-list[dense] a[md-list-item].md-list-avatar .md-list-item, md-nav-list[dense] md-list-item.md-list-avatar .md-list-item, md-nav-list[dense] a[md-list-item].md-list-avatar .md-list-item { height: 48px; } md-list[dense] md-list-item.md-2-line .md-list-item, md-list[dense] a[md-list-item].md-2-line .md-list-item, md-nav-list[dense] md-list-item.md-2-line .md-list-item, md-nav-list[dense] a[md-list-item].md-2-line .md-list-item { height: 60px; } md-list[dense] md-list-item.md-3-line .md-list-item, md-list[dense] a[md-list-item].md-3-line .md-list-item, md-nav-list[dense] md-list-item.md-3-line .md-list-item, md-nav-list[dense] a[md-list-item].md-3-line .md-list-item { height: 76px; } md-list[dense] md-list-item .md-list-text, md-list[dense] a[md-list-item] .md-list-text, md-nav-list[dense] md-list-item .md-list-text, md-nav-list[dense] a[md-list-item] .md-list-text { display: flex; flex-direction: column; width: 100%; box-sizing: border-box; overflow: hidden; padding: 0 16px; } md-list[dense] md-list-item .md-list-text > *, md-list[dense] a[md-list-item] .md-list-text > *, md-nav-list[dense] md-list-item .md-list-text > *, md-nav-list[dense] a[md-list-item] .md-list-text > * { margin: 0; padding: 0; font-weight: normal; font-size: inherit; } md-list[dense] md-list-item .md-list-text:empty, md-list[dense] a[md-list-item] .md-list-text:empty, md-nav-list[dense] md-list-item .md-list-text:empty, md-nav-list[dense] a[md-list-item] .md-list-text:empty { display: none; } md-list[dense] md-list-item .md-list-text:first-child, md-list[dense] a[md-list-item] .md-list-text:first-child, md-nav-list[dense] md-list-item .md-list-text:first-child, md-nav-list[dense] a[md-list-item] .md-list-text:first-child { padding: 0; } md-list[dense] md-list-item [md-list-avatar], md-list[dense] a[md-list-item] [md-list-avatar], md-nav-list[dense] md-list-item [md-list-avatar], md-nav-list[dense] a[md-list-item] [md-list-avatar] { width: 40px; height: 40px; border-radius: 50%; } md-list[dense] md-list-item [md-list-icon], md-list[dense] a[md-list-item] [md-list-icon], md-nav-list[dense] md-list-item [md-list-icon], md-nav-list[dense] a[md-list-item] [md-list-icon] { width: 24px; height: 24px; border-radius: 50%; padding: 4px; } md-list[dense] md-list-item [md-line], md-list[dense] a[md-list-item] [md-line], md-nav-list[dense] md-list-item [md-line], md-nav-list[dense] a[md-list-item] [md-line] { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: block; box-sizing: border-box; } md-list[dense] md-list-item [md-line]:nth-child(n+2), md-list[dense] a[md-list-item] [md-line]:nth-child(n+2), md-nav-list[dense] md-list-item [md-line]:nth-child(n+2), md-nav-list[dense] a[md-list-item] [md-line]:nth-child(n+2) { font-size: 13px; } md-divider { display: block; border-top: 1px solid; margin: 0; } md-nav-list a { text-decoration: none; color: inherit; } md-nav-list .md-list-item { cursor: pointer; } md-nav-list .md-list-item:hover, md-nav-list .md-list-item.md-list-item-focus { outline: none; } /*# sourceMappingURL=list.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None
         }), 
         __metadata('design:paramtypes', [])
@@ -7198,7 +6437,7 @@ var MdListItem = (function () {
     });
     /** TODO: internal */
     MdListItem.prototype.ngAfterContentInit = function () {
-        this._lineSetter = new __WEBPACK_IMPORTED_MODULE_1__core__["E" /* MdLineSetter */](this._lines, this._renderer, this._element);
+        this._lineSetter = new __WEBPACK_IMPORTED_MODULE_1__core__["C" /* MdLineSetter */](this._lines, this._renderer, this._element);
     };
     MdListItem.prototype._handleFocus = function () {
         this._hasFocus = true;
@@ -7207,7 +6446,7 @@ var MdListItem = (function () {
         this._hasFocus = false;
     };
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__core__["D" /* MdLine */]), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_1__core__["B" /* MdLine */]), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"])
     ], MdListItem.prototype, "_lines", void 0);
     __decorate([
@@ -7240,8 +6479,8 @@ var MdListModule = (function () {
     };
     MdListModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["C" /* MdLineModule */]],
-            exports: [MdList, MdListItem, MdListDivider, MdListAvatar, __WEBPACK_IMPORTED_MODULE_1__core__["C" /* MdLineModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["A" /* MdLineModule */]],
+            exports: [MdList, MdListItem, MdListDivider, MdListAvatar, __WEBPACK_IMPORTED_MODULE_1__core__["A" /* MdLineModule */]],
             declarations: [MdList, MdListItem, MdListDivider, MdListAvatar],
         }), 
         __metadata('design:paramtypes', [])
@@ -7270,61 +6509,6 @@ var MdListModule = (function () {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/menu/menu-animations.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return transformMenu; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return fadeInItems; });
-
-/**
- * Below are all the animations for the md-menu component.
- * Animation duration and timing values are based on Material 1.
- */
-/**
- * This animation controls the menu panel's entry and exit from the page.
- *
- * When the menu panel is added to the DOM, it scales in and fades in its border.
- *
- * When the menu panel is removed from the DOM, it simply fades out after a brief
- * delay to display the ripple.
- *
- * TODO(kara): switch to :enter and :leave once Mobile Safari is sorted out.
- */
-var transformMenu = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["trigger"])('transformMenu', [
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('showing', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({
-        opacity: 1,
-        transform: "scale(1)"
-    })),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('void => *', [
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({
-            opacity: 0,
-            transform: "scale(0)"
-        }),
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])("200ms cubic-bezier(0.25, 0.8, 0.25, 1)")
-    ]),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('* => void', [
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])('50ms 100ms linear', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ opacity: 0 }))
-    ])
-]);
-/**
- * This animation fades in the background color and content of the menu panel
- * after its containing element is scaled in.
- */
-var fadeInItems = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["trigger"])('fadeInItems', [
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('showing', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ opacity: 1 })),
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('void => *', [
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ opacity: 0 }),
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])("200ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)")
-    ])
-]);
-
-//# sourceMappingURL=menu-animations.js.map
-
-
-/***/ },
-
 /***/ "./node_modules/@angular/material/menu/menu-directive.js":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -7332,8 +6516,7 @@ var fadeInItems = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_cor
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_errors__ = __webpack_require__("./node_modules/@angular/material/menu/menu-errors.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_item__ = __webpack_require__("./node_modules/@angular/material/menu/menu-item.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_a11y_list_key_manager__ = __webpack_require__("./node_modules/@angular/material/core/a11y/list-key-manager.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_animations__ = __webpack_require__("./node_modules/@angular/material/menu/menu-animations.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdMenu; });
 // TODO(kara): prevent-close functionality
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -7352,34 +6535,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
-
 var MdMenu = (function () {
     function MdMenu(posX, posY) {
-        /** Config object to be passed into the menu's ngClass */
-        this._classList = {};
+        this._showClickCatcher = false;
+        this._focusedItemIndex = 0;
         this.positionX = 'after';
         this.positionY = 'below';
-        this.close = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.close = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"];
         if (posX) {
             this._setPositionX(posX);
         }
         if (posY) {
             this._setPositionY(posY);
         }
-        this._setPositionClasses();
     }
-    // TODO: internal
-    MdMenu.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this._keyManager = new __WEBPACK_IMPORTED_MODULE_3__core_a11y_list_key_manager__["a" /* ListKeyManager */](this.items);
-        this._tabSubscription = this._keyManager.tabOut.subscribe(function () {
-            _this._emitCloseEvent();
-        });
-    };
-    // TODO: internal
-    MdMenu.prototype.ngOnDestroy = function () {
-        this._tabSubscription.unsubscribe();
-    };
     Object.defineProperty(MdMenu.prototype, "classList", {
         /**
          * This method takes classes set on the host md-menu element and applies them on the
@@ -7392,27 +6561,75 @@ var MdMenu = (function () {
                 obj[className] = true;
                 return obj;
             }, {});
-            this._setPositionClasses();
         },
         enumerable: true,
         configurable: true
     });
     /**
+     * This function toggles the display of the menu's click catcher element.
+     * This element covers the viewport when the menu is open to detect clicks outside the menu.
+     * TODO: internal
+     */
+    MdMenu.prototype._setClickCatcher = function (bool) {
+        this._showClickCatcher = bool;
+    };
+    /**
      * Focus the first item in the menu. This method is used by the menu trigger
      * to focus the first item when the menu is opened by the ENTER key.
      * TODO: internal
      */
-    MdMenu.prototype.focusFirstItem = function () {
-        // The menu always opens with the first item focused.
+    MdMenu.prototype._focusFirstItem = function () {
         this.items.first.focus();
-        this._keyManager.focusedItemIndex = 0;
+    };
+    // TODO(kara): update this when (keydown.downArrow) testability is fixed
+    // TODO: internal
+    MdMenu.prototype._handleKeydown = function (event) {
+        if (event.keyCode === __WEBPACK_IMPORTED_MODULE_3__core__["K" /* DOWN_ARROW */]) {
+            this._focusNextItem();
+        }
+        else if (event.keyCode === __WEBPACK_IMPORTED_MODULE_3__core__["J" /* UP_ARROW */]) {
+            this._focusPreviousItem();
+        }
+        else if (event.keyCode === __WEBPACK_IMPORTED_MODULE_3__core__["O" /* TAB */]) {
+            this._emitCloseEvent();
+        }
     };
     /**
      * This emits a close event to which the trigger is subscribed. When emitted, the
      * trigger will close the menu.
      */
     MdMenu.prototype._emitCloseEvent = function () {
-        this.close.emit();
+        this._focusedItemIndex = 0;
+        this.close.emit(null);
+    };
+    MdMenu.prototype._focusNextItem = function () {
+        this._updateFocusedItemIndex(1);
+        this.items.toArray()[this._focusedItemIndex].focus();
+    };
+    MdMenu.prototype._focusPreviousItem = function () {
+        this._updateFocusedItemIndex(-1);
+        this.items.toArray()[this._focusedItemIndex].focus();
+    };
+    /**
+     * This method sets focus to the correct menu item, given a list of menu items and the delta
+     * between the currently focused menu item and the new menu item to be focused. It will
+     * continue to move down the list until it finds an item that is not disabled, and it will wrap
+     * if it encounters either end of the menu.
+     *
+     * @param delta the desired change in focus index
+     * @param menuItems the menu items that should be focused
+     * @private
+       */
+    MdMenu.prototype._updateFocusedItemIndex = function (delta, menuItems) {
+        if (menuItems === void 0) { menuItems = this.items.toArray(); }
+        // when focus would leave menu, wrap to beginning or end
+        this._focusedItemIndex = (this._focusedItemIndex + delta + this.items.length)
+            % this.items.length;
+        // skip all disabled menu items recursively until an active one
+        // is reached or the menu closes for overreaching bounds
+        while (menuItems[this._focusedItemIndex].disabled) {
+            this._updateFocusedItemIndex(delta, menuItems);
+        }
     };
     MdMenu.prototype._setPositionX = function (pos) {
         if (pos !== 'before' && pos !== 'after') {
@@ -7425,16 +6642,6 @@ var MdMenu = (function () {
             throw new __WEBPACK_IMPORTED_MODULE_1__menu_errors__["b" /* MdMenuInvalidPositionY */]();
         }
         this.positionY = pos;
-    };
-    /**
-     * It's necessary to set position-based classes to ensure the menu panel animation
-     * folds out from the correct direction.
-     */
-    MdMenu.prototype._setPositionClasses = function () {
-        this._classList['md-menu-before'] = this.positionX == 'before';
-        this._classList['md-menu-after'] = this.positionX == 'after';
-        this._classList['md-menu-above'] = this.positionY == 'above';
-        this._classList['md-menu-below'] = this.positionY == 'below';
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"]), 
@@ -7456,13 +6663,9 @@ var MdMenu = (function () {
     MdMenu = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-menu',
             host: { 'role': 'menu' },
-            template: "<template> <div class=\"md-menu-panel\" [ngClass]=\"_classList\" (keydown)=\"_keyManager.onKeydown($event)\" (click)=\"_emitCloseEvent()\" [@transformMenu]=\"'showing'\"> <div class=\"md-menu-content\" [@fadeInItems]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ .md-menu-panel { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh + 48px); } .md-menu-panel.md-menu-after.md-menu-below { transform-origin: left top; } .md-menu-panel.md-menu-after.md-menu-above { transform-origin: left bottom; } .md-menu-panel.md-menu-before.md-menu-below { transform-origin: right top; } .md-menu-panel.md-menu-before.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-below { transform-origin: right top; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-below { transform-origin: left top; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-above { transform-origin: left bottom; } .md-menu-content { padding-top: 8px; padding-bottom: 8px; } [md-menu-item] { cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; } [md-menu-item][disabled] { cursor: default; } [md-menu-item] md-icon { margin-right: 16px; } [dir='rtl'] [md-menu-item] md-icon { margin-left: 16px; } button[md-menu-item] { width: 100%; } .md-menu-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=menu.css.map */ "],
+            template: "<template> <div class=\"md-menu\" [ngClass]=\"_classList\" (click)=\"_emitCloseEvent()\" (keydown)=\"_handleKeydown($event)\"> <ng-content></ng-content> </div> </template> <div class=\"md-menu-click-catcher\" *ngIf=\"_showClickCatcher\" (click)=\"_emitCloseEvent()\"></div>",
+            styles: [".md-menu { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; max-height: calc(100vh + 48px); overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 8px; padding-bottom: 8px; } [md-menu-item] { cursor: pointer; user-select: none; outline: none; border: none; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; } [md-menu-item][disabled] { cursor: default; } button[md-menu-item] { width: 100%; } .md-menu-click-catcher { position: fixed; top: 0; left: 0; right: 0; bottom: 0; } /*# sourceMappingURL=menu.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-            animations: [
-                __WEBPACK_IMPORTED_MODULE_4__menu_animations__["a" /* transformMenu */],
-                __WEBPACK_IMPORTED_MODULE_4__menu_animations__["b" /* fadeInItems */]
-            ],
             exportAs: 'mdMenu'
         }),
         __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Attribute"])('x-position')),
@@ -7500,7 +6703,7 @@ var MdMenuMissingError = (function (_super) {
         _super.call(this, "md-menu-trigger: must pass in an md-menu instance.\n\n    Example:\n      <md-menu #menu=\"mdMenu\"></md-menu>\n      <button [md-menu-trigger-for]=\"menu\"></button>\n    ");
     }
     return MdMenuMissingError;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 /**
  * Exception thrown when menu's x-position value isn't valid.
  * In other words, it doesn't match 'before' or 'after'.
@@ -7511,7 +6714,7 @@ var MdMenuInvalidPositionX = (function (_super) {
         _super.call(this, "x-position value must be either 'before' or after'.\n      Example: <md-menu x-position=\"before\" #menu=\"mdMenu\"></md-menu>\n    ");
     }
     return MdMenuInvalidPositionX;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 /**
  * Exception thrown when menu's y-position value isn't valid.
  * In other words, it doesn't match 'above' or 'below'.
@@ -7522,7 +6725,7 @@ var MdMenuInvalidPositionY = (function (_super) {
         _super.call(this, "y-position value must be either 'above' or below'.\n      Example: <md-menu y-position=\"above\" #menu=\"mdMenu\"></md-menu>\n    ");
     }
     return MdMenuInvalidPositionY;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 
 //# sourceMappingURL=menu-errors.js.map
 
@@ -7570,21 +6773,14 @@ var MdMenuItem = (function () {
     });
     Object.defineProperty(MdMenuItem.prototype, "isAriaDisabled", {
         get: function () {
-            return String(!!this.disabled);
+            return String(this.disabled);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MdMenuItem.prototype, "_tabindex", {
-        get: function () {
-            return this.disabled ? '-1' : '0';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MdMenuItem.prototype._getHostElement = function () {
-        return this._elementRef.nativeElement;
-    };
+    /**
+     * TODO: internal
+     */
     MdMenuItem.prototype._checkDisabled = function (event) {
         if (this.disabled) {
             event.preventDefault();
@@ -7601,13 +6797,13 @@ var MdMenuItem = (function () {
         __metadata('design:type', String)
     ], MdMenuItem.prototype, "isAriaDisabled", null);
     MdMenuItem = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: '[md-menu-item]',
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+            selector: '[md-menu-item]',
             host: {
                 'role': 'menuitem',
                 '(click)': '_checkDisabled($event)',
-                '[attr.tabindex]': '_tabindex'
+                'tabindex': '-1'
             },
-            template: "<ng-content></ng-content> <div class=\"md-menu-ripple\" *ngIf=\"!disabled\" md-ripple md-ripple-background-color=\"rgba(0,0,0,0)\" [md-ripple-trigger]=\"_getHostElement()\"> </div> ",
             exportAs: 'mdMenuItem'
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
@@ -7625,8 +6821,9 @@ var MdMenuItem = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_errors__ = __webpack_require__("./node_modules/@angular/material/menu/menu-errors.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_directive__ = __webpack_require__("./node_modules/@angular/material/menu/menu-directive.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_errors__ = __webpack_require__("./node_modules/@angular/material/menu/menu-errors.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdMenuTrigger; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7637,9 +6834,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
+
 
 
 
@@ -7648,16 +6843,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * responsible for toggling the display of the provided menu instance.
  */
 var MdMenuTrigger = (function () {
-    function MdMenuTrigger(_overlay, _element, _viewContainerRef, _renderer, _dir) {
+    function MdMenuTrigger(_overlay, _element, _viewContainerRef, _renderer) {
         this._overlay = _overlay;
         this._element = _element;
         this._viewContainerRef = _viewContainerRef;
         this._renderer = _renderer;
-        this._dir = _dir;
         this._menuOpen = false;
         // tracking input type is necessary so it's possible to only auto-focus
         // the first item of the list when the menu is opened via the keyboard
-        this._openedByMouse = false;
+        this._openedFromKeyboard = false;
         this.onMenuOpen = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onMenuClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
@@ -7676,17 +6870,13 @@ var MdMenuTrigger = (function () {
         return this._menuOpen ? this.closeMenu() : this.openMenu();
     };
     MdMenuTrigger.prototype.openMenu = function () {
-        if (!this._menuOpen) {
-            this._createOverlay();
-            this._overlayRef.attach(this._portal);
-            this._subscribeToBackdrop();
-            this._initMenu();
-        }
+        this._createOverlay();
+        this._overlayRef.attach(this._portal);
+        this._initMenu();
     };
     MdMenuTrigger.prototype.closeMenu = function () {
         if (this._overlayRef) {
             this._overlayRef.detach();
-            this._backdropSubscription.unsubscribe();
             this._resetMenu();
         }
     };
@@ -7694,33 +6884,10 @@ var MdMenuTrigger = (function () {
         if (this._overlayRef) {
             this._overlayRef.dispose();
             this._overlayRef = null;
-            if (this._backdropSubscription) {
-                this._backdropSubscription.unsubscribe();
-            }
         }
     };
     MdMenuTrigger.prototype.focus = function () {
         this._renderer.invokeElementMethod(this._element.nativeElement, 'focus');
-    };
-    Object.defineProperty(MdMenuTrigger.prototype, "dir", {
-        /** The text direction of the containing app. */
-        get: function () {
-            return this._dir && this._dir.value === 'rtl' ? 'rtl' : 'ltr';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * This method ensures that the menu closes when the overlay backdrop is clicked.
-     * We do not use first() here because doing so would not catch clicks from within
-     * the menu, and it would fail to unsubscribe properly. Instead, we unsubscribe
-     * explicitly when the menu is closed or destroyed.
-     */
-    MdMenuTrigger.prototype._subscribeToBackdrop = function () {
-        var _this = this;
-        this._backdropSubscription = this._overlayRef.backdropClick().subscribe(function () {
-            _this.closeMenu();
-        });
     };
     /**
      * This method sets the menu state to open and focuses the first item if
@@ -7728,11 +6895,8 @@ var MdMenuTrigger = (function () {
      */
     MdMenuTrigger.prototype._initMenu = function () {
         this._setIsMenuOpen(true);
-        // Should only set focus if opened via the keyboard, so keyboard users can
-        // can easily navigate menu items. According to spec, mouse users should not
-        // see the focus style.
-        if (!this._openedByMouse) {
-            this.menu.focusFirstItem();
+        if (this._openedFromKeyboard) {
+            this.menu._focusFirstItem();
         }
     };
     ;
@@ -7742,25 +6906,24 @@ var MdMenuTrigger = (function () {
      */
     MdMenuTrigger.prototype._resetMenu = function () {
         this._setIsMenuOpen(false);
-        // Focus only needs to be reset to the host element if the menu was opened
-        // by the keyboard and manually shifted to the first menu item.
-        if (!this._openedByMouse) {
+        if (this._openedFromKeyboard) {
             this.focus();
+            this._openedFromKeyboard = false;
         }
-        this._openedByMouse = false;
     };
     // set state rather than toggle to support triggers sharing a menu
     MdMenuTrigger.prototype._setIsMenuOpen = function (isOpen) {
         this._menuOpen = isOpen;
-        this._menuOpen ? this.onMenuOpen.emit() : this.onMenuClose.emit();
+        this.menu._setClickCatcher(isOpen);
+        this._menuOpen ? this.onMenuOpen.emit(null) : this.onMenuClose.emit(null);
     };
     /**
      *  This method checks that a valid instance of MdMenu has been passed into
      *  md-menu-trigger-for.  If not, an exception is thrown.
      */
     MdMenuTrigger.prototype._checkMenu = function () {
-        if (!this.menu) {
-            throw new __WEBPACK_IMPORTED_MODULE_1__menu_errors__["c" /* MdMenuMissingError */]();
+        if (!this.menu || !(this.menu instanceof __WEBPACK_IMPORTED_MODULE_1__menu_directive__["a" /* MdMenu */])) {
+            throw new __WEBPACK_IMPORTED_MODULE_2__menu_errors__["c" /* MdMenuMissingError */]();
         }
     };
     /**
@@ -7769,7 +6932,7 @@ var MdMenuTrigger = (function () {
      */
     MdMenuTrigger.prototype._createOverlay = function () {
         if (!this._overlayRef) {
-            this._portal = new __WEBPACK_IMPORTED_MODULE_2__core__["f" /* TemplatePortal */](this.menu.templateRef, this._viewContainerRef);
+            this._portal = new __WEBPACK_IMPORTED_MODULE_3__core__["f" /* TemplatePortal */](this.menu.templateRef, this._viewContainerRef);
             this._overlayRef = this._overlay.create(this._getOverlayConfig());
         }
     };
@@ -7778,12 +6941,8 @@ var MdMenuTrigger = (function () {
      * @returns OverlayState
      */
     MdMenuTrigger.prototype._getOverlayConfig = function () {
-        var overlayState = new __WEBPACK_IMPORTED_MODULE_2__core__["o" /* OverlayState */]();
-        overlayState.positionStrategy = this._getPosition()
-            .withDirection(this.dir);
-        overlayState.hasBackdrop = true;
-        overlayState.backdropClass = 'md-overlay-transparent-backdrop';
-        overlayState.direction = this.dir;
+        var overlayState = new __WEBPACK_IMPORTED_MODULE_3__core__["o" /* OverlayState */]();
+        overlayState.positionStrategy = this._getPosition();
         return overlayState;
     };
     /**
@@ -7796,14 +6955,15 @@ var MdMenuTrigger = (function () {
         var positionY = this.menu.positionY === 'above' ? 'bottom' : 'top';
         return this._overlay.position().connectedTo(this._element, { originX: positionX, originY: positionY }, { overlayX: positionX, overlayY: positionY });
     };
-    MdMenuTrigger.prototype._handleMousedown = function (event) {
-        if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["z" /* isFakeMousedownFromScreenReader */])(event)) {
-            this._openedByMouse = true;
+    // TODO: internal
+    MdMenuTrigger.prototype._handleKeydown = function (event) {
+        if (event.keyCode === __WEBPACK_IMPORTED_MODULE_3__core__["N" /* ENTER */]) {
+            this._openedFromKeyboard = true;
         }
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('md-menu-trigger-for'), 
-        __metadata('design:type', Object)
+        __metadata('design:type', __WEBPACK_IMPORTED_MODULE_1__menu_directive__["a" /* MdMenu */])
     ], MdMenuTrigger.prototype, "menu", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
@@ -7813,18 +6973,22 @@ var MdMenuTrigger = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
         __metadata('design:type', Object)
     ], MdMenuTrigger.prototype, "onMenuClose", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('click'), 
+        __metadata('design:type', Function), 
+        __metadata('design:paramtypes', []), 
+        __metadata('design:returntype', void 0)
+    ], MdMenuTrigger.prototype, "toggleMenu", null);
     MdMenuTrigger = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
             selector: '[md-menu-trigger-for]',
             host: {
                 'aria-haspopup': 'true',
-                '(mousedown)': '_handleMousedown($event)',
-                '(click)': 'toggleMenu()',
+                '(keydown)': '_handleKeydown($event)'
             },
             exportAs: 'mdMenuTrigger'
-        }),
-        __param(4, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_2__core__["k" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], __WEBPACK_IMPORTED_MODULE_2__core__["a" /* Dir */]])
+        }), 
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_3__core__["k" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]])
     ], MdMenuTrigger);
     return MdMenuTrigger;
 }());
@@ -7844,7 +7008,6 @@ var MdMenuTrigger = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menu_directive__ = __webpack_require__("./node_modules/@angular/material/menu/menu-directive.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_item__ = __webpack_require__("./node_modules/@angular/material/menu/menu-item.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_trigger__ = __webpack_require__("./node_modules/@angular/material/menu/menu-trigger.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_ripple_ripple__ = __webpack_require__("./node_modules/@angular/material/core/ripple/ripple.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdMenuModule; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__menu_directive__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_4__menu_item__["a"]; });
@@ -7867,7 +7030,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var MdMenuModule = (function () {
     function MdMenuModule() {
     }
@@ -7879,7 +7041,7 @@ var MdMenuModule = (function () {
     };
     MdMenuModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_2__core__["r" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_6__core_ripple_ripple__["a" /* MdRippleModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_2__core__["q" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
             exports: [__WEBPACK_IMPORTED_MODULE_3__menu_directive__["a" /* MdMenu */], __WEBPACK_IMPORTED_MODULE_4__menu_item__["a" /* MdMenuItem */], __WEBPACK_IMPORTED_MODULE_5__menu_trigger__["a" /* MdMenuTrigger */]],
             declarations: [__WEBPACK_IMPORTED_MODULE_3__menu_directive__["a" /* MdMenu */], __WEBPACK_IMPORTED_MODULE_4__menu_item__["a" /* MdMenuItem */], __WEBPACK_IMPORTED_MODULE_5__menu_trigger__["a" /* MdMenuTrigger */]],
         }), 
@@ -7903,22 +7065,23 @@ var MdMenuModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__button_index__ = __webpack_require__("./node_modules/@angular/material/button/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__checkbox_index__ = __webpack_require__("./node_modules/@angular/material/checkbox/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__radio_index__ = __webpack_require__("./node_modules/@angular/material/radio/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__slide_toggle_index__ = __webpack_require__("./node_modules/@angular/material/slide-toggle/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__slider_index__ = __webpack_require__("./node_modules/@angular/material/slider/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sidenav_index__ = __webpack_require__("./node_modules/@angular/material/sidenav/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__list_index__ = __webpack_require__("./node_modules/@angular/material/list/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__grid_list_index__ = __webpack_require__("./node_modules/@angular/material/grid-list/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__card_index__ = __webpack_require__("./node_modules/@angular/material/card/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__icon_index__ = __webpack_require__("./node_modules/@angular/material/icon/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__progress_circle_index__ = __webpack_require__("./node_modules/@angular/material/progress-circle/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__progress_bar_index__ = __webpack_require__("./node_modules/@angular/material/progress-bar/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__input_index__ = __webpack_require__("./node_modules/@angular/material/input/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__snack_bar_snack_bar__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__tabs_index__ = __webpack_require__("./node_modules/@angular/material/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__toolbar_index__ = __webpack_require__("./node_modules/@angular/material/toolbar/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__tooltip_index__ = __webpack_require__("./node_modules/@angular/material/tooltip/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__menu_index__ = __webpack_require__("./node_modules/@angular/material/menu/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__dialog_index__ = __webpack_require__("./node_modules/@angular/material/dialog/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__select_index__ = __webpack_require__("./node_modules/@angular/material/select/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__slide_toggle_index__ = __webpack_require__("./node_modules/@angular/material/slide-toggle/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__slider_index__ = __webpack_require__("./node_modules/@angular/material/slider/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__sidenav_index__ = __webpack_require__("./node_modules/@angular/material/sidenav/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__list_index__ = __webpack_require__("./node_modules/@angular/material/list/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__grid_list_index__ = __webpack_require__("./node_modules/@angular/material/grid-list/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__card_index__ = __webpack_require__("./node_modules/@angular/material/card/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__icon_index__ = __webpack_require__("./node_modules/@angular/material/icon/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__progress_circle_index__ = __webpack_require__("./node_modules/@angular/material/progress-circle/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__progress_bar_index__ = __webpack_require__("./node_modules/@angular/material/progress-bar/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__input_index__ = __webpack_require__("./node_modules/@angular/material/input/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__snack_bar_snack_bar__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__tabs_index__ = __webpack_require__("./node_modules/@angular/material/tabs/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__toolbar_index__ = __webpack_require__("./node_modules/@angular/material/toolbar/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__tooltip_index__ = __webpack_require__("./node_modules/@angular/material/tooltip/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__menu_index__ = __webpack_require__("./node_modules/@angular/material/menu/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__dialog_index__ = __webpack_require__("./node_modules/@angular/material/dialog/index.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MaterialRootModule; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MaterialModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -7952,33 +7115,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MATERIAL_MODULES = [
     __WEBPACK_IMPORTED_MODULE_3__button_index__["a" /* MdButtonModule */],
     __WEBPACK_IMPORTED_MODULE_2__button_toggle_index__["a" /* MdButtonToggleModule */],
-    __WEBPACK_IMPORTED_MODULE_11__card_index__["a" /* MdCardModule */],
+    __WEBPACK_IMPORTED_MODULE_12__card_index__["a" /* MdCardModule */],
     __WEBPACK_IMPORTED_MODULE_4__checkbox_index__["a" /* MdCheckboxModule */],
-    __WEBPACK_IMPORTED_MODULE_21__dialog_index__["a" /* MdDialogModule */],
-    __WEBPACK_IMPORTED_MODULE_10__grid_list_index__["a" /* MdGridListModule */],
-    __WEBPACK_IMPORTED_MODULE_12__icon_index__["a" /* MdIconModule */],
-    __WEBPACK_IMPORTED_MODULE_15__input_index__["a" /* MdInputModule */],
-    __WEBPACK_IMPORTED_MODULE_9__list_index__["a" /* MdListModule */],
-    __WEBPACK_IMPORTED_MODULE_20__menu_index__["a" /* MdMenuModule */],
-    __WEBPACK_IMPORTED_MODULE_14__progress_bar_index__["a" /* MdProgressBarModule */],
-    __WEBPACK_IMPORTED_MODULE_13__progress_circle_index__["a" /* MdProgressCircleModule */],
+    __WEBPACK_IMPORTED_MODULE_22__dialog_index__["a" /* MdDialogModule */],
+    __WEBPACK_IMPORTED_MODULE_11__grid_list_index__["a" /* MdGridListModule */],
+    __WEBPACK_IMPORTED_MODULE_13__icon_index__["a" /* MdIconModule */],
+    __WEBPACK_IMPORTED_MODULE_16__input_index__["a" /* MdInputModule */],
+    __WEBPACK_IMPORTED_MODULE_10__list_index__["a" /* MdListModule */],
+    __WEBPACK_IMPORTED_MODULE_21__menu_index__["a" /* MdMenuModule */],
+    __WEBPACK_IMPORTED_MODULE_15__progress_bar_index__["a" /* MdProgressBarModule */],
+    __WEBPACK_IMPORTED_MODULE_14__progress_circle_index__["a" /* MdProgressCircleModule */],
     __WEBPACK_IMPORTED_MODULE_5__radio_index__["a" /* MdRadioModule */],
     __WEBPACK_IMPORTED_MODULE_1__core_index__["u" /* MdRippleModule */],
-    __WEBPACK_IMPORTED_MODULE_8__sidenav_index__["a" /* MdSidenavModule */],
-    __WEBPACK_IMPORTED_MODULE_7__slider_index__["a" /* MdSliderModule */],
-    __WEBPACK_IMPORTED_MODULE_6__slide_toggle_index__["a" /* MdSlideToggleModule */],
-    __WEBPACK_IMPORTED_MODULE_16__snack_bar_snack_bar__["a" /* MdSnackBarModule */],
-    __WEBPACK_IMPORTED_MODULE_17__tabs_index__["a" /* MdTabsModule */],
-    __WEBPACK_IMPORTED_MODULE_18__toolbar_index__["a" /* MdToolbarModule */],
-    __WEBPACK_IMPORTED_MODULE_19__tooltip_index__["a" /* MdTooltipModule */],
-    __WEBPACK_IMPORTED_MODULE_1__core_index__["r" /* OverlayModule */],
+    __WEBPACK_IMPORTED_MODULE_6__select_index__["a" /* MdSelectModule */],
+    __WEBPACK_IMPORTED_MODULE_9__sidenav_index__["a" /* MdSidenavModule */],
+    __WEBPACK_IMPORTED_MODULE_8__slider_index__["a" /* MdSliderModule */],
+    __WEBPACK_IMPORTED_MODULE_7__slide_toggle_index__["a" /* MdSlideToggleModule */],
+    __WEBPACK_IMPORTED_MODULE_17__snack_bar_snack_bar__["a" /* MdSnackBarModule */],
+    __WEBPACK_IMPORTED_MODULE_18__tabs_index__["a" /* MdTabsModule */],
+    __WEBPACK_IMPORTED_MODULE_19__toolbar_index__["a" /* MdToolbarModule */],
+    __WEBPACK_IMPORTED_MODULE_20__tooltip_index__["a" /* MdTooltipModule */],
+    __WEBPACK_IMPORTED_MODULE_1__core_index__["q" /* OverlayModule */],
     __WEBPACK_IMPORTED_MODULE_1__core_index__["i" /* PortalModule */],
-    __WEBPACK_IMPORTED_MODULE_1__core_index__["b" /* RtlModule */],
-    __WEBPACK_IMPORTED_MODULE_1__core_index__["A" /* A11yModule */],
-    __WEBPACK_IMPORTED_MODULE_1__core_index__["V" /* StyleCompatibilityModule */],
+    __WEBPACK_IMPORTED_MODULE_1__core_index__["a" /* RtlModule */],
 ];
 var MaterialRootModule = (function () {
     function MaterialRootModule() {
@@ -7987,34 +7150,34 @@ var MaterialRootModule = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_3__button_index__["a" /* MdButtonModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_11__card_index__["a" /* MdCardModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_12__card_index__["a" /* MdCardModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_4__checkbox_index__["a" /* MdCheckboxModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_10__grid_list_index__["a" /* MdGridListModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_15__input_index__["a" /* MdInputModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_9__list_index__["a" /* MdListModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_14__progress_bar_index__["a" /* MdProgressBarModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_13__progress_circle_index__["a" /* MdProgressCircleModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_11__grid_list_index__["a" /* MdGridListModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_16__input_index__["a" /* MdInputModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_10__list_index__["a" /* MdListModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_15__progress_bar_index__["a" /* MdProgressBarModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_14__progress_circle_index__["a" /* MdProgressCircleModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_1__core_index__["u" /* MdRippleModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_8__sidenav_index__["a" /* MdSidenavModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_17__tabs_index__["a" /* MdTabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_18__toolbar_index__["a" /* MdToolbarModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_6__select_index__["a" /* MdSelectModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_9__sidenav_index__["a" /* MdSidenavModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_18__tabs_index__["a" /* MdTabsModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_19__toolbar_index__["a" /* MdToolbarModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_1__core_index__["i" /* PortalModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_1__core_index__["b" /* RtlModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_1__core_index__["a" /* RtlModule */].forRoot(),
                 // These modules include providers.
-                __WEBPACK_IMPORTED_MODULE_1__core_index__["A" /* A11yModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_2__button_toggle_index__["a" /* MdButtonToggleModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_21__dialog_index__["a" /* MdDialogModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_12__icon_index__["a" /* MdIconModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_20__menu_index__["a" /* MdMenuModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_22__dialog_index__["a" /* MdDialogModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_13__icon_index__["a" /* MdIconModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_21__menu_index__["a" /* MdMenuModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_5__radio_index__["a" /* MdRadioModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_7__slider_index__["a" /* MdSliderModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_6__slide_toggle_index__["a" /* MdSlideToggleModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_16__snack_bar_snack_bar__["a" /* MdSnackBarModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_19__tooltip_index__["a" /* MdTooltipModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_1__core_index__["r" /* OverlayModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_1__core_index__["V" /* StyleCompatibilityModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_8__slider_index__["a" /* MdSliderModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_7__slide_toggle_index__["a" /* MdSlideToggleModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_17__snack_bar_snack_bar__["a" /* MdSnackBarModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_20__tooltip_index__["a" /* MdTooltipModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_1__core_index__["q" /* OverlayModule */].forRoot(),
             ],
             exports: MATERIAL_MODULES,
+            providers: [__WEBPACK_IMPORTED_MODULE_1__core_index__["v" /* MdLiveAnnouncer */]]
         }), 
         __metadata('design:paramtypes', [])
     ], MaterialRootModule);
@@ -8151,7 +7314,7 @@ var MdProgressBar = (function () {
                 'aria-valuemax': '100',
             },
             template: "<!-- The background div is named as such because it appears below the other divs and is not sized based on values. --> <div class=\"md-progress-bar-background\"></div> <div class=\"md-progress-bar-buffer\" [ngStyle]=\"_bufferTransform()\"></div> <div class=\"md-progress-bar-primary md-progress-bar-fill\" [ngStyle]=\"_primaryTransform()\"></div> <div class=\"md-progress-bar-secondary md-progress-bar-fill\"></div> ",
-            styles: [":host { display: block; height: 5px; overflow: hidden; position: relative; transform: translateZ(0); transition: opacity 250ms linear; width: 100%; } :host .md-progress-bar-background { background-repeat: repeat-x; background-size: 10px 4px; height: 100%; position: absolute; visibility: hidden; width: 100%; } :host .md-progress-bar-buffer { height: 100%; position: absolute; transform-origin: top left; transition: transform 250ms ease; width: 100%; } :host .md-progress-bar-secondary { visibility: hidden; } :host .md-progress-bar-fill { animation: none; height: 100%; position: absolute; transform-origin: top left; transition: transform 250ms ease; width: 100%; } :host .md-progress-bar-fill::after { animation: none; content: ''; display: inline-block; height: 100%; position: absolute; width: 100%; left: 0; } :host[mode='query'] { transform: rotateZ(180deg); } :host[mode='indeterminate'] .md-progress-bar-fill, :host[mode='query'] .md-progress-bar-fill { transition: none; } :host[mode='indeterminate'] .md-progress-bar-primary, :host[mode='query'] .md-progress-bar-primary { animation: md-progress-bar-primary-indeterminate-translate 2000ms infinite linear; left: -145.166611%; } :host[mode='indeterminate'] .md-progress-bar-primary.md-progress-bar-fill::after, :host[mode='query'] .md-progress-bar-primary.md-progress-bar-fill::after { animation: md-progress-bar-primary-indeterminate-scale 2000ms infinite linear; } :host[mode='indeterminate'] .md-progress-bar-secondary, :host[mode='query'] .md-progress-bar-secondary { animation: md-progress-bar-secondary-indeterminate-translate 2000ms infinite linear; left: -54.888891%; visibility: visible; } :host[mode='indeterminate'] .md-progress-bar-secondary.md-progress-bar-fill::after, :host[mode='query'] .md-progress-bar-secondary.md-progress-bar-fill::after { animation: md-progress-bar-secondary-indeterminate-scale 2000ms infinite linear; } :host[mode='buffer'] .md-progress-bar-background { animation: md-progress-bar-background-scroll 250ms infinite linear; visibility: visible; } :host-context([dir='rtl']) { transform: rotateY(180deg); } @keyframes md-progress-bar-primary-indeterminate-translate { 0% { transform: translateX(0); } 20% { animation-timing-function: cubic-bezier(0.5, 0, 0.70173, 0.49582); transform: translateX(0); } 59.15% { animation-timing-function: cubic-bezier(0.30244, 0.38135, 0.55, 0.95635); transform: translateX(83.67142%); } 100% { transform: translateX(200.61106%); } } @keyframes md-progress-bar-primary-indeterminate-scale { 0% { transform: scaleX(0.08); } 36.65% { animation-timing-function: cubic-bezier(0.33473, 0.12482, 0.78584, 1); transform: scaleX(0.08); } 69.15% { animation-timing-function: cubic-bezier(0.06, 0.11, 0.6, 1); transform: scaleX(0.66148); } 100% { transform: scaleX(0.08); } } @keyframes md-progress-bar-secondary-indeterminate-translate { 0% { animation-timing-function: cubic-bezier(0.15, 0, 0.51506, 0.40969); transform: translateX(0); } 25% { animation-timing-function: cubic-bezier(0.31033, 0.28406, 0.8, 0.73371); transform: translateX(37.65191%); } 48.35% { animation-timing-function: cubic-bezier(0.4, 0.62704, 0.6, 0.90203); transform: translateX(84.38617%); } 100% { transform: translateX(160.27778%); } } @keyframes md-progress-bar-secondary-indeterminate-scale { 0% { animation-timing-function: cubic-bezier(0.15, 0, 0.51506, 0.40969); transform: scaleX(0.08); } 19.15% { animation-timing-function: cubic-bezier(0.31033, 0.28406, 0.8, 0.73371); transform: scaleX(0.4571); } 44.15% { animation-timing-function: cubic-bezier(0.4, 0.62704, 0.6, 0.90203); transform: scaleX(0.72796); } 100% { transform: scaleX(0.08); } } @keyframes md-progress-bar-background-scroll { to { transform: translateX(-10px); } } /*# sourceMappingURL=progress-bar.css.map */ "],
+            styles: [":host { display: block; height: 5px; overflow: hidden; position: relative; transform: translateZ(0); transition: opacity 250ms linear; width: 100%; } :host .md-progress-bar-background { background-repeat: repeat-x; background-size: 10px 4px; height: 100%; position: absolute; visibility: hidden; width: 100%; } :host .md-progress-bar-buffer { height: 100%; position: absolute; transform-origin: top left; transition: transform 250ms ease; width: 100%; } :host .md-progress-bar-secondary { visibility: hidden; } :host .md-progress-bar-fill { animation: none; height: 100%; position: absolute; transform-origin: top left; transition: transform 250ms ease; width: 100%; } :host .md-progress-bar-fill::after { animation: none; content: ''; display: inline-block; height: 100%; position: absolute; width: 100%; } :host[mode='query'] { transform: rotateZ(180deg); } :host[mode='indeterminate'] .md-progress-bar-fill, :host[mode='query'] .md-progress-bar-fill { transition: none; } :host[mode='indeterminate'] .md-progress-bar-primary, :host[mode='query'] .md-progress-bar-primary { animation: md-progress-bar-primary-indeterminate-translate 2000ms infinite linear; left: -145.166611%; } :host[mode='indeterminate'] .md-progress-bar-primary.md-progress-bar-fill::after, :host[mode='query'] .md-progress-bar-primary.md-progress-bar-fill::after { animation: md-progress-bar-primary-indeterminate-scale 2000ms infinite linear; } :host[mode='indeterminate'] .md-progress-bar-secondary, :host[mode='query'] .md-progress-bar-secondary { animation: md-progress-bar-secondary-indeterminate-translate 2000ms infinite linear; left: -54.888891%; visibility: visible; } :host[mode='indeterminate'] .md-progress-bar-secondary.md-progress-bar-fill::after, :host[mode='query'] .md-progress-bar-secondary.md-progress-bar-fill::after { animation: md-progress-bar-secondary-indeterminate-scale 2000ms infinite linear; } :host[mode='buffer'] .md-progress-bar-background { animation: md-progress-bar-background-scroll 250ms infinite linear; visibility: visible; } :host-context([dir='rtl']) { transform: rotateY(180deg); } @keyframes md-progress-bar-primary-indeterminate-translate { 0% { transform: translateX(0); } 20% { animation-timing-function: cubic-bezier(0.5, 0, 0.70173, 0.49582); transform: translateX(0); } 59.15% { animation-timing-function: cubic-bezier(0.30244, 0.38135, 0.55, 0.95635); transform: translateX(83.67142%); } 100% { transform: translateX(200.61106%); } } @keyframes md-progress-bar-primary-indeterminate-scale { 0% { transform: scaleX(0.08); } 36.65% { animation-timing-function: cubic-bezier(0.33473, 0.12482, 0.78584, 1); transform: scaleX(0.08); } 69.15% { animation-timing-function: cubic-bezier(0.06, 0.11, 0.6, 1); transform: scaleX(0.66148); } 100% { transform: scaleX(0.08); } } @keyframes md-progress-bar-secondary-indeterminate-translate { 0% { animation-timing-function: cubic-bezier(0.15, 0, 0.51506, 0.40969); transform: translateX(0); } 25% { animation-timing-function: cubic-bezier(0.31033, 0.28406, 0.8, 0.73371); transform: translateX(37.65191%); } 48.35% { animation-timing-function: cubic-bezier(0.4, 0.62704, 0.6, 0.90203); transform: translateX(84.38617%); } 100% { transform: translateX(160.27778%); } } @keyframes md-progress-bar-secondary-indeterminate-scale { 0% { animation-timing-function: cubic-bezier(0.15, 0, 0.51506, 0.40969); transform: scaleX(0.08); } 19.15% { animation-timing-function: cubic-bezier(0.31033, 0.28406, 0.8, 0.73371); transform: scaleX(0.4571); } 44.15% { animation-timing-function: cubic-bezier(0.4, 0.62704, 0.6, 0.90203); transform: scaleX(0.72796); } 100% { transform: scaleX(0.08); } } @keyframes md-progress-bar-background-scroll { to { transform: translateX(-10px); } } /*# sourceMappingURL=progress-bar.css.map */ "],
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
         }), 
         __metadata('design:paramtypes', [])
@@ -8238,16 +7401,12 @@ var DURATION_DETERMINATE = 225;
 var startIndeterminate = 3;
 /** End animation value of the indeterminate animation */
 var endIndeterminate = 80;
-/* Maximum angle for the arc. The angle can't be exactly 360, because the arc becomes hidden. */
-var MAX_ANGLE = 359.99 / 100;
 /**
  * <md-progress-circle> component.
  */
 var MdProgressCircle = (function () {
-    function MdProgressCircle(_changeDetectorRef, _ngZone, _elementRef) {
+    function MdProgressCircle(_changeDetectorRef) {
         this._changeDetectorRef = _changeDetectorRef;
-        this._ngZone = _ngZone;
-        this._elementRef = _elementRef;
         /** The id of the last requested animation. */
         this._lastAnimationId = 0;
         this._mode = 'determinate';
@@ -8284,6 +7443,20 @@ var MdProgressCircle = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(MdProgressCircle.prototype, "currentPath", {
+        /** TODO: internal */
+        get: function () {
+            return this._currentPath;
+        },
+        set: function (path) {
+            this._currentPath = path;
+            // Mark for check as our ChangeDetectionStrategy is OnPush, when changes come from within the
+            // component, change detection must be called for.
+            this._changeDetectorRef.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
     /** Clean up any animations that were running. */
     MdProgressCircle.prototype.ngOnDestroy = function () {
         this._cleanupIndeterminateAnimation();
@@ -8295,7 +7468,7 @@ var MdProgressCircle = (function () {
             }
         },
         set: function (v) {
-            if (v != null && this.mode == 'determinate') {
+            if (v && this.mode == 'determinate') {
                 var newValue = clamp(v);
                 this._animateCircle((this.value || 0), newValue, linearEase, DURATION_DETERMINATE, 0);
                 this._value = newValue;
@@ -8343,21 +7516,19 @@ var MdProgressCircle = (function () {
         var changeInValue = animateTo - animateFrom;
         // No need to animate it if the values are the same
         if (animateTo === animateFrom) {
-            this._renderArc(animateTo, rotation);
+            this.currentPath = getSvgArc(animateTo, rotation);
         }
         else {
             var animation_1 = function () {
                 var elapsedTime = Math.max(0, Math.min(Date.now() - startTime, duration));
-                _this._renderArc(ease(elapsedTime, animateFrom, changeInValue, duration), rotation);
+                _this.currentPath = getSvgArc(ease(elapsedTime, animateFrom, changeInValue, duration), rotation);
                 // Prevent overlapping animations by checking if a new animation has been called for and
-                // if the animation has lasted longer than the animation duration.
+                // if the animation has lasted long than the animation duration.
                 if (id === _this._lastAnimationId && elapsedTime < duration) {
                     requestAnimationFrame(animation_1);
                 }
             };
-            // Run the animation outside of Angular's zone, in order to avoid
-            // hitting ZoneJS and change detection on each frame.
-            this._ngZone.runOutsideAngular(animation_1);
+            requestAnimationFrame(animation_1);
         }
     };
     /**
@@ -8378,10 +7549,8 @@ var MdProgressCircle = (function () {
             end = -temp;
         };
         if (!this.interdeterminateInterval) {
-            this._ngZone.runOutsideAngular(function () {
-                _this.interdeterminateInterval = setInterval(animate, duration + 50, 0, false);
-                animate();
-            });
+            this.interdeterminateInterval = setInterval(animate, duration + 50, 0, false);
+            animate();
         }
     };
     /**
@@ -8389,19 +7558,6 @@ var MdProgressCircle = (function () {
      */
     MdProgressCircle.prototype._cleanupIndeterminateAnimation = function () {
         this.interdeterminateInterval = null;
-    };
-    /**
-     * Renders the arc onto the SVG element. Proxies `getArc` while setting the proper
-     * DOM attribute on the `<path>`.
-     */
-    MdProgressCircle.prototype._renderArc = function (currentValue, rotation) {
-        // Caches the path reference so it doesn't have to be looked up every time.
-        var path = this._path = this._path || this._elementRef.nativeElement.querySelector('path');
-        // Ensure that the path was found. This may not be the case if the
-        // animation function fires too early.
-        if (path) {
-            path.setAttribute('d', getSvgArc(currentValue, rotation));
-        }
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -8420,11 +7576,11 @@ var MdProgressCircle = (function () {
                 '[attr.aria-valuemin]': '_ariaValueMin',
                 '[attr.aria-valuemax]': '_ariaValueMax',
             },
-            template: "<!-- preserveAspectRatio of xMidYMid meet as the center of the viewport is the circle's center.  The center of the circle with remain at the center of the md-progress-circle element containing the SVG. --> <svg viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\"> <path></path> </svg> ",
-            styles: [":host { display: block; height: 100px; width: 100px; overflow: hidden; } :host svg { height: 100%; width: 100%; transform-origin: center; } :host path { fill: transparent; stroke-width: 10px; } :host[mode='indeterminate'] svg { animation-duration: 5250ms, 2887.5ms; animation-name: md-progress-circle-sporadic-rotate, md-progress-circle-linear-rotate; animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1), linear; animation-iteration-count: infinite; transition: none; } @keyframes md-progress-circle-linear-rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @keyframes md-progress-circle-sporadic-rotate { 12.5% { transform: rotate(135deg); } 25% { transform: rotate(270deg); } 37.5% { transform: rotate(405deg); } 50% { transform: rotate(540deg); } 62.5% { transform: rotate(675deg); } 75% { transform: rotate(810deg); } 87.5% { transform: rotate(945deg); } 100% { transform: rotate(1080deg); } } /*# sourceMappingURL=progress-circle.css.map */ "],
+            template: "<!-- preserveAspectRatio of xMidYMid meet as the center of the viewport is the circle's center.  The center of the circle with remain at the center of the md-progress-circle element containing the SVG. --> <svg viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\"> <path [attr.d]=\"currentPath\"></path> </svg> ",
+            styles: [":host { display: block; height: 100px; width: 100px; } :host svg { height: 100%; width: 100%; transform-origin: center; } :host path { fill: transparent; stroke-width: 10px; } :host[mode='indeterminate'] { animation-duration: 5250ms, 2887.5ms; animation-name: md-progress-circle-sporadic-rotate, md-progress-circle-linear-rotate; animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1), linear; animation-iteration-count: infinite; transition: none; } @keyframes md-progress-circle-linear-rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @keyframes md-progress-circle-sporadic-rotate { 12.5% { transform: rotate(135deg); } 25% { transform: rotate(270deg); } 37.5% { transform: rotate(405deg); } 50% { transform: rotate(540deg); } 62.5% { transform: rotate(675deg); } 75% { transform: rotate(810deg); } 87.5% { transform: rotate(945deg); } 100% { transform: rotate(1080deg); } } /*# sourceMappingURL=progress-circle.css.map */ "],
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]])
     ], MdProgressCircle);
     return MdProgressCircle;
 }());
@@ -8436,8 +7592,8 @@ var MdProgressCircle = (function () {
  */
 var MdSpinner = (function (_super) {
     __extends(MdSpinner, _super);
-    function MdSpinner(changeDetectorRef, elementRef, ngZone) {
-        _super.call(this, changeDetectorRef, ngZone, elementRef);
+    function MdSpinner(changeDetectorRef) {
+        _super.call(this, changeDetectorRef);
         this.mode = 'indeterminate';
     }
     MdSpinner = __decorate([
@@ -8446,10 +7602,10 @@ var MdSpinner = (function (_super) {
                 'role': 'progressbar',
                 'mode': 'indeterminate',
             },
-            template: "<!-- preserveAspectRatio of xMidYMid meet as the center of the viewport is the circle's center.  The center of the circle with remain at the center of the md-progress-circle element containing the SVG. --> <svg viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\"> <path></path> </svg> ",
-            styles: [":host { display: block; height: 100px; width: 100px; overflow: hidden; } :host svg { height: 100%; width: 100%; transform-origin: center; } :host path { fill: transparent; stroke-width: 10px; } :host[mode='indeterminate'] svg { animation-duration: 5250ms, 2887.5ms; animation-name: md-progress-circle-sporadic-rotate, md-progress-circle-linear-rotate; animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1), linear; animation-iteration-count: infinite; transition: none; } @keyframes md-progress-circle-linear-rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @keyframes md-progress-circle-sporadic-rotate { 12.5% { transform: rotate(135deg); } 25% { transform: rotate(270deg); } 37.5% { transform: rotate(405deg); } 50% { transform: rotate(540deg); } 62.5% { transform: rotate(675deg); } 75% { transform: rotate(810deg); } 87.5% { transform: rotate(945deg); } 100% { transform: rotate(1080deg); } } /*# sourceMappingURL=progress-circle.css.map */ "],
+            template: "<!-- preserveAspectRatio of xMidYMid meet as the center of the viewport is the circle's center.  The center of the circle with remain at the center of the md-progress-circle element containing the SVG. --> <svg viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid meet\"> <path [attr.d]=\"currentPath\"></path> </svg> ",
+            styles: [":host { display: block; height: 100px; width: 100px; } :host svg { height: 100%; width: 100%; transform-origin: center; } :host path { fill: transparent; stroke-width: 10px; } :host[mode='indeterminate'] { animation-duration: 5250ms, 2887.5ms; animation-name: md-progress-circle-sporadic-rotate, md-progress-circle-linear-rotate; animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1), linear; animation-iteration-count: infinite; transition: none; } @keyframes md-progress-circle-linear-rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @keyframes md-progress-circle-sporadic-rotate { 12.5% { transform: rotate(135deg); } 25% { transform: rotate(270deg); } 37.5% { transform: rotate(405deg); } 50% { transform: rotate(540deg); } 62.5% { transform: rotate(675deg); } 75% { transform: rotate(810deg); } 87.5% { transform: rotate(945deg); } 100% { transform: rotate(1080deg); } } /*# sourceMappingURL=progress-circle.css.map */ "],
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]])
     ], MdSpinner);
     return MdSpinner;
 }(MdProgressCircle));
@@ -8495,11 +7651,13 @@ function materialEase(currentTime, startValue, changeInValue, duration) {
  *    percentage value provided.
  */
 function getSvgArc(currentValue, rotation) {
+    // The angle can't be exactly 360, because the arc becomes hidden.
+    var maximumAngle = 359.99 / 100;
     var startPoint = rotation || 0;
     var radius = 50;
     var pathRadius = 40;
-    var startAngle = startPoint * MAX_ANGLE;
-    var endAngle = currentValue * MAX_ANGLE;
+    var startAngle = startPoint * maximumAngle;
+    var endAngle = currentValue * maximumAngle;
     var start = polarToCartesian(radius, pathRadius, startAngle);
     var end = polarToCartesian(radius, pathRadius, endAngle + startAngle);
     var arcSweep = endAngle < 0 ? 0 : 1;
@@ -8558,10 +7716,8 @@ var MdProgressCircleModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_coersion_boolean_property__ = __webpack_require__("./node_modules/@angular/material/core/coersion/boolean-property.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MD_RADIO_GROUP_CONTROL_VALUE_ACCESSOR; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return MdRadioChange; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdRadioGroup; });
@@ -8582,14 +7738,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
-
-
 /**
  * Provider Expression that allows md-radio-group to register as a ControlValueAccessor. This
  * allows it to support [(ngModel)] and ngControl.
  */
 var MD_RADIO_GROUP_CONTROL_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["NG_VALUE_ACCESSOR"],
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NG_VALUE_ACCESSOR"],
     useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return MdRadioGroup; }),
     multi: true
 };
@@ -8664,6 +7818,10 @@ var MdRadioGroup = (function () {
                 // Set this before proceeding to ensure no circular loop occurs with selection.
                 this._value = newValue;
                 this._updateSelectedRadioFromValue();
+                // Only fire a change event if this isn't the first time the value is ever set.
+                if (this._isInitialized) {
+                    this._emitChangeEvent();
+                }
             }
         },
         enumerable: true,
@@ -8729,12 +7887,11 @@ var MdRadioGroup = (function () {
     };
     /** Dispatch change event with current selection and group value. */
     MdRadioGroup.prototype._emitChangeEvent = function () {
-        if (this._isInitialized) {
-            var event_1 = new MdRadioChange();
-            event_1.source = this._selected;
-            event_1.value = this._value;
-            this.change.emit(event_1);
-        }
+        var event = new MdRadioChange();
+        event.source = this._selected;
+        event.value = this._value;
+        this._controlValueAccessorChangeFn(event.value);
+        this.change.emit(event);
     };
     /**
       * Implemented as part of ControlValueAccessor.
@@ -8798,11 +7955,10 @@ var MdRadioGroup = (function () {
     return MdRadioGroup;
 }());
 var MdRadioButton = (function () {
-    function MdRadioButton(radioGroup, _elementRef, radioDispatcher) {
+    function MdRadioButton(radioGroup, radioDispatcher) {
         // Assertions. Ideally these should be stripped out by the compiler.
         // TODO(jelbourn): Assert that there's no name binding AND a parent radio group.
         var _this = this;
-        this._elementRef = _elementRef;
         this.radioDispatcher = radioDispatcher;
         /** Whether this radio is checked. */
         this._checked = false;
@@ -8819,12 +7975,6 @@ var MdRadioButton = (function () {
             }
         });
     }
-    Object.defineProperty(MdRadioButton.prototype, "disableRipple", {
-        get: function () { return this._disableRipple; },
-        set: function (value) { this._disableRipple = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__core_coersion_boolean_property__["a" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MdRadioButton.prototype, "inputId", {
         get: function () {
             return this.id + "-input";
@@ -8837,18 +7987,13 @@ var MdRadioButton = (function () {
             return this._checked;
         },
         set: function (newCheckedState) {
-            this._checked = newCheckedState;
-            if (newCheckedState && this.radioGroup && this.radioGroup.value != this.value) {
-                this.radioGroup.selected = this;
-            }
-            else if (!newCheckedState && this.radioGroup && this.radioGroup.value == this.value) {
-                // When unchecking the selected radio button, update the selected radio
-                // property on the group.
-                this.radioGroup.selected = null;
-            }
             if (newCheckedState) {
                 // Notify all radio buttons with the same name to un-check.
                 this.radioDispatcher.notify(this.id, this.name);
+            }
+            this._checked = newCheckedState;
+            if (newCheckedState && this.radioGroup && this.radioGroup.value != this.value) {
+                this.radioGroup.selected = this;
             }
         },
         enumerable: true,
@@ -8907,9 +8052,6 @@ var MdRadioButton = (function () {
         event.value = this._value;
         this.change.emit(event);
     };
-    MdRadioButton.prototype._isRippleDisabled = function () {
-        return this.disableRipple || this.disabled;
-    };
     /**
      * We use a hidden native input field to handle changes to focus state via keyboard navigation,
      * with visual rendering done separately. The native element is kept in sync with the overall
@@ -8946,19 +8088,11 @@ var MdRadioButton = (function () {
         // Otherwise the change event, from the input element, will bubble up and
         // emit its event object to the `change` output.
         event.stopPropagation();
-        var groupValueChanged = this.radioGroup && this.value != this.radioGroup.value;
         this.checked = true;
         this._emitChangeEvent();
         if (this.radioGroup) {
-            this.radioGroup._controlValueAccessorChangeFn(this.value);
             this.radioGroup._touch();
-            if (groupValueChanged) {
-                this.radioGroup._emitChangeEvent();
-            }
         }
-    };
-    MdRadioButton.prototype.getHostElement = function () {
-        return this._elementRef.nativeElement;
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-radio-focused'), 
@@ -8981,10 +8115,6 @@ var MdRadioButton = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('aria-labelledby'), 
         __metadata('design:type', String)
     ], MdRadioButton.prototype, "ariaLabelledby", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdRadioButton.prototype, "disableRipple", null);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"])
@@ -9009,12 +8139,12 @@ var MdRadioButton = (function () {
     ], MdRadioButton.prototype, "disabled", null);
     MdRadioButton = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-radio-button',
-            template: "<!-- TODO(jelbourn): render the radio on either side of the content --> <!-- TODO(mtlin): Evaluate trade-offs of using native radio vs. cost of additional bindings. --> <label [attr.for]=\"inputId\" class=\"md-radio-label\"> <!-- The actual 'radio' part of the control. --> <div class=\"md-radio-container\"> <div class=\"md-radio-outer-circle\"></div> <div class=\"md-radio-inner-circle\"></div> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-radio-ripple\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-centered]=\"true\" [md-ripple-speed-factor]=\"0.3\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> </div> <input #input class=\"md-radio-input md-visually-hidden\" type=\"radio\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (change)=\"_onInputChange($event)\" (focus)=\"_onInputFocus()\" (blur)=\"_onInputBlur()\" (click)=\"_onInputClick($event)\"> <!-- The label content for radio control. --> <div class=\"md-radio-label-content\" [class.md-radio-align-end]=\"align == 'end'\"> <ng-content></ng-content> </div> </label> ",
-            styles: ["md-radio-button { display: inline-block; } .md-radio-label { cursor: pointer; display: inline-flex; align-items: baseline; white-space: nowrap; } .md-radio-container { box-sizing: border-box; display: inline-block; height: 20px; position: relative; width: 20px; top: 2px; } .md-radio-outer-circle { border: solid 2px; border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: border-color ease 280ms; width: 20px; } .md-radio-inner-circle { border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: transform ease 280ms, background-color ease 280ms; transform: scale(0); width: 20px; } .md-radio-checked .md-radio-inner-circle { transform: scale(0.5); } .md-radio-label-content { display: inline-block; order: 0; line-height: inherit; padding-left: 8px; padding-right: 0; } [dir='rtl'] .md-radio-label-content { padding-right: 8px; padding-left: 0; } .md-radio-label-content.md-radio-align-end { order: -1; padding-left: 0; padding-right: 8px; } [dir='rtl'] .md-radio-label-content.md-radio-align-end { padding-right: 0; padding-left: 8px; } .md-radio-disabled, .md-radio-disabled .md-radio-label { cursor: default; } .md-radio-ripple { position: absolute; left: -15px; top: -15px; right: -15px; bottom: -15px; border-radius: 50%; z-index: 1; pointer-events: none; } /*# sourceMappingURL=radio.css.map */ "],
+            template: "<!-- TODO(jelbourn): render the radio on either side of the content --> <!-- TODO(mtlin): Evaluate trade-offs of using native radio vs. cost of additional bindings. --> <label [attr.for]=\"inputId\" class=\"md-radio-label\"> <!-- The actual 'radio' part of the control. --> <div class=\"md-radio-container\"> <div class=\"md-radio-outer-circle\"></div> <div class=\"md-radio-inner-circle\"></div> <div class=\"md-ink-ripple\"></div> </div> <input #input class=\"md-radio-input md-visually-hidden\" type=\"radio\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (change)=\"_onInputChange($event)\" (focus)=\"_onInputFocus()\" (blur)=\"_onInputBlur()\" (click)=\"_onInputClick($event)\"> <!-- The label content for radio control. --> <div class=\"md-radio-label-content\" [class.md-radio-align-end]=\"align == 'end'\"> <ng-content></ng-content> </div> </label> ",
+            styles: ["md-radio-button { display: inline-block; } .md-radio-label { cursor: pointer; display: inline-flex; align-items: baseline; white-space: nowrap; } .md-radio-container { box-sizing: border-box; display: inline-block; height: 20px; position: relative; width: 20px; top: 2px; } .md-radio-outer-circle { border: solid 2px; border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: border-color ease 280ms; width: 20px; } .md-radio-inner-circle { border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: transform ease 280ms, background-color ease 280ms; transform: scale(0); width: 20px; } .md-radio-checked .md-radio-inner-circle { transform: scale(0.5); } .md-radio-label-content { display: inline-block; order: 0; line-height: inherit; padding-left: 8px; padding-right: 0; } [dir='rtl'] .md-radio-label-content { padding-right: 8px; padding-left: 0; } .md-radio-label-content.md-radio-align-end { order: -1; padding-left: 0; padding-right: 8px; } [dir='rtl'] .md-radio-label-content.md-radio-align-end { padding-right: 0; padding-left: 8px; } .md-radio-disabled, .md-radio-disabled .md-radio-label { cursor: default; } .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } .md-radio-focused .md-ink-ripple { opacity: 1; } .md-radio-disabled .md-ink-ripple { background-color: #000; } /*# sourceMappingURL=radio.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None
         }),
         __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [MdRadioGroup, __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_3__core__["B" /* MdUniqueSelectionDispatcher */]])
+        __metadata('design:paramtypes', [MdRadioGroup, __WEBPACK_IMPORTED_MODULE_2__core__["z" /* MdUniqueSelectionDispatcher */]])
     ], MdRadioButton);
     return MdRadioButton;
 }());
@@ -9024,12 +8154,11 @@ var MdRadioModule = (function () {
     MdRadioModule.forRoot = function () {
         return {
             ngModule: MdRadioModule,
-            providers: [__WEBPACK_IMPORTED_MODULE_3__core__["B" /* MdUniqueSelectionDispatcher */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_2__core__["z" /* MdUniqueSelectionDispatcher */]],
         };
     };
     MdRadioModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_3__core__["u" /* MdRippleModule */]],
             exports: [MdRadioGroup, MdRadioButton],
             declarations: [MdRadioGroup, MdRadioButton],
         }), 
@@ -9039,6 +8168,86 @@ var MdRadioModule = (function () {
 }());
 
 //# sourceMappingURL=radio.js.map
+
+
+/***/ },
+
+/***/ "./node_modules/@angular/material/select/index.js":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__select__ = __webpack_require__("./node_modules/@angular/material/select/select.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSelectModule; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__select__["a"]; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var MdSelectModule = (function () {
+    function MdSelectModule() {
+    }
+    MdSelectModule.forRoot = function () {
+        return {
+            ngModule: MdSelectModule,
+            providers: []
+        };
+    };
+    MdSelectModule = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__select__["a" /* MdSelect */]],
+            declarations: [__WEBPACK_IMPORTED_MODULE_1__select__["a" /* MdSelect */]],
+        }), 
+        __metadata('design:paramtypes', [])
+    ], MdSelectModule);
+    return MdSelectModule;
+}());
+
+//# sourceMappingURL=index.js.map
+
+
+/***/ },
+
+/***/ "./node_modules/@angular/material/select/select.js":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSelect; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var MdSelect = (function () {
+    function MdSelect() {
+    }
+    MdSelect = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-select',
+            template: "I'm a select!",
+            styles: [" /*# sourceMappingURL=select.css.map */ "],
+            encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None
+        }), 
+        __metadata('design:paramtypes', [])
+    ], MdSelect);
+    return MdSelect;
+}());
+
+//# sourceMappingURL=select.js.map
 
 
 /***/ },
@@ -9097,7 +8306,7 @@ var MdDuplicatedSidenavError = (function (_super) {
         _super.call(this, "A sidenav was already declared for 'align=\"" + align + "\"'");
     }
     return MdDuplicatedSidenavError;
-}(__WEBPACK_IMPORTED_MODULE_2__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_2__core__["E" /* MdError */]));
 /**
  * <md-sidenav> component.
  *
@@ -9113,8 +8322,7 @@ var MdSidenav = (function () {
     function MdSidenav(_elementRef) {
         this._elementRef = _elementRef;
         /** Alignment of the sidenav (direction neutral); whether 'start' or 'end'. */
-        this._align = 'start';
-        this._valid = true;
+        this.align = 'start';
         /** Mode of the sidenav; whether 'over' or 'side'. */
         this.mode = 'over';
         /** Whether the sidenav is opened. */
@@ -9127,50 +8335,8 @@ var MdSidenav = (function () {
         this.onCloseStart = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         /** Event emitted when the sidenav is fully closed. */
         this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        /** Event emitted when the sidenav alignment changes. */
-        this.onAlignChanged = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this._transition = false;
     }
-    Object.defineProperty(MdSidenav.prototype, "valid", {
-        /** Whether this md-sidenav is part of a valid md-sidenav-layout configuration. */
-        get: function () {
-            return this._valid;
-        },
-        set: function (value) {
-            value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["H" /* coerceBooleanProperty */])(value);
-            // When the drawers are not in a valid configuration we close them all until they are in a valid
-            // configuration again.
-            if (!value) {
-                this.close();
-            }
-            this._valid = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSidenav.prototype, "align", {
-        get: function () {
-            return this._align;
-        },
-        set: function (value) {
-            // Make sure we have a valid value.
-            value = (value == 'end') ? 'end' : 'start';
-            if (value != this._align) {
-                this._align = value;
-                this.onAlignChanged.emit();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MdSidenav.prototype.ngAfterContentInit = function () {
-        // This can happen when the sidenav is set to opened in the template and the transition
-        // isn't ended.
-        if (this._openPromise) {
-            this._openPromiseResolve();
-            this._openPromise = null;
-        }
-    };
     Object.defineProperty(MdSidenav.prototype, "opened", {
         /**
          * Whether the sidenav is opened. We overload this because we trigger an event when it
@@ -9178,7 +8344,9 @@ var MdSidenav = (function () {
          */
         get: function () { return this._opened; },
         set: function (v) {
-            this.toggle(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["H" /* coerceBooleanProperty */])(v));
+            // TODO(jelbourn): this coercion goes away when BooleanFieldValue is removed.
+            var booleanValue = v != null && "" + v !== 'false';
+            this.toggle(booleanValue);
         },
         enumerable: true,
         configurable: true
@@ -9203,9 +8371,6 @@ var MdSidenav = (function () {
     MdSidenav.prototype.toggle = function (isOpen) {
         var _this = this;
         if (isOpen === void 0) { isOpen = !this.opened; }
-        if (!this.valid) {
-            return Promise.resolve(null);
-        }
         // Shortcut it if we're already opened.
         if (isOpen === this.opened) {
             if (!this._transition) {
@@ -9218,10 +8383,10 @@ var MdSidenav = (function () {
         this._opened = isOpen;
         this._transition = true;
         if (isOpen) {
-            this.onOpenStart.emit();
+            this.onOpenStart.emit(null);
         }
         else {
-            this.onCloseStart.emit();
+            this.onCloseStart.emit(null);
         }
         if (isOpen) {
             if (this._openPromise == null) {
@@ -9258,7 +8423,7 @@ var MdSidenav = (function () {
                 if (this._closePromise != null) {
                     this._closePromiseReject();
                 }
-                this.onOpen.emit();
+                this.onOpen.emit(null);
             }
             else {
                 if (this._closePromise != null) {
@@ -9267,7 +8432,7 @@ var MdSidenav = (function () {
                 if (this._openPromise != null) {
                     this._openPromiseReject();
                 }
-                this.onClose.emit();
+                this.onClose.emit(null);
             }
             this._openPromise = null;
             this._closePromise = null;
@@ -9330,6 +8495,7 @@ var MdSidenav = (function () {
         configurable: true
     });
     Object.defineProperty(MdSidenav.prototype, "_width", {
+        /** TODO: internal (needed by MdSidenavLayout). */
         get: function () {
             if (this._elementRef.nativeElement) {
                 return this._elementRef.nativeElement.offsetWidth;
@@ -9342,7 +8508,7 @@ var MdSidenav = (function () {
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Object)
-    ], MdSidenav.prototype, "align", null);
+    ], MdSidenav.prototype, "align", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Object)
@@ -9364,29 +8530,48 @@ var MdSidenav = (function () {
         __metadata('design:type', Object)
     ], MdSidenav.prototype, "onClose", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])('align-changed'), 
-        __metadata('design:type', Object)
-    ], MdSidenav.prototype, "onAlignChanged", void 0);
-    __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', Boolean)
     ], MdSidenav.prototype, "opened", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-closing'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_isClosing", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-opening'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_isOpening", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-closed'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_isClosed", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-opened'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_isOpened", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-end'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_isEnd", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-side'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_modeSide", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-over'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_modeOver", null);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-sidenav-push'), 
+        __metadata('design:type', Object)
+    ], MdSidenav.prototype, "_modePush", null);
     MdSidenav = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-sidenav',
             template: '<ng-content></ng-content>',
             host: {
                 '(transitionend)': '_onTransitionEnd($event)',
                 // must prevent the browser from aligning text based on value
-                '[attr.align]': 'null',
-                '[class.md-sidenav-closed]': '_isClosed',
-                '[class.md-sidenav-closing]': '_isClosing',
-                '[class.md-sidenav-end]': '_isEnd',
-                '[class.md-sidenav-opened]': '_isOpened',
-                '[class.md-sidenav-opening]': '_isOpening',
-                '[class.md-sidenav-over]': '_modeOver',
-                '[class.md-sidenav-push]': '_modePush',
-                '[class.md-sidenav-side]': '_modeSide',
-                '[class.md-sidenav-invalid]': '!valid',
+                '[attr.align]': 'null'
             },
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
@@ -9399,7 +8584,7 @@ var MdSidenav = (function () {
  * <md-sidenav-layout> component.
  *
  * This is the parent component to one or two <md-sidenav>s that validates the state internally
- * and coordinates the backdrop and content styling.
+ * and coordinate the backdrop and content styling.
  */
 var MdSidenavLayout = (function () {
     function MdSidenavLayout(_dir, _element, _renderer) {
@@ -9423,21 +8608,19 @@ var MdSidenavLayout = (function () {
         enumerable: true,
         configurable: true
     });
+    /** TODO: internal */
     MdSidenavLayout.prototype.ngAfterContentInit = function () {
         var _this = this;
         // On changes, assert on consistency.
         this._sidenavs.changes.subscribe(function () { return _this._validateDrawers(); });
-        this._sidenavs.forEach(function (sidenav) {
-            _this._watchSidenavToggle(sidenav);
-            _this._watchSidenavAlign(sidenav);
-        });
+        this._sidenavs.forEach(function (sidenav) { return _this._watchSidenavToggle(sidenav); });
         this._validateDrawers();
     };
-    /**
-     * Subscribes to sidenav events in order to set a class on the main layout element when the
-     * sidenav is open and the backdrop is visible. This ensures any overflow on the layout element is
-     * properly hidden.
-     */
+    /*
+    * Subscribes to sidenav events in order to set a class on the main layout element when the sidenav
+    * is open and the backdrop is visible. This ensures any overflow on the layout element is properly
+    * hidden.
+    */
     MdSidenavLayout.prototype._watchSidenavToggle = function (sidenav) {
         var _this = this;
         if (!sidenav || sidenav.mode === 'side') {
@@ -9446,53 +8629,29 @@ var MdSidenavLayout = (function () {
         sidenav.onOpen.subscribe(function () { return _this._setLayoutClass(sidenav, true); });
         sidenav.onClose.subscribe(function () { return _this._setLayoutClass(sidenav, false); });
     };
-    /**
-     * Subscribes to sidenav onAlignChanged event in order to re-validate drawers when the align
-     * changes.
-     */
-    MdSidenavLayout.prototype._watchSidenavAlign = function (sidenav) {
-        var _this = this;
-        if (!sidenav) {
-            return;
-        }
-        sidenav.onAlignChanged.subscribe(function () { return _this._validateDrawers(); });
-    };
-    /** Toggles the 'md-sidenav-opened' class on the main 'md-sidenav-layout' element. */
+    /* Toggles the 'md-sidenav-opened' class on the main 'md-sidenav-layout' element. */
     MdSidenavLayout.prototype._setLayoutClass = function (sidenav, bool) {
         this._renderer.setElementClass(this._element.nativeElement, 'md-sidenav-opened', bool);
     };
-    /** Sets the valid state of the drawers. */
-    MdSidenavLayout.prototype._setDrawersValid = function (valid) {
-        this._sidenavs.forEach(function (sidenav) {
-            sidenav.valid = valid;
-        });
-        if (!valid) {
-            this._start = this._end = this._left = this._right = null;
-        }
-    };
     /** Validate the state of the sidenav children components. */
     MdSidenavLayout.prototype._validateDrawers = function () {
+        var _this = this;
         this._start = this._end = null;
         // Ensure that we have at most one start and one end sidenav.
-        // NOTE: We must call toArray on _sidenavs even though it's iterable
-        // (see https://github.com/Microsoft/TypeScript/issues/3164).
-        for (var _i = 0, _a = this._sidenavs.toArray(); _i < _a.length; _i++) {
-            var sidenav = _a[_i];
+        this._sidenavs.forEach(function (sidenav) {
             if (sidenav.align == 'end') {
-                if (this._end != null) {
-                    this._setDrawersValid(false);
-                    return;
+                if (_this._end != null) {
+                    throw new MdDuplicatedSidenavError('end');
                 }
-                this._end = sidenav;
+                _this._end = sidenav;
             }
             else {
-                if (this._start != null) {
-                    this._setDrawersValid(false);
-                    return;
+                if (_this._start != null) {
+                    throw new MdDuplicatedSidenavError('start');
                 }
-                this._start = sidenav;
+                _this._start = sidenav;
             }
-        }
+        });
         this._right = this._left = null;
         // Detect if we're LTR or RTL.
         if (this._dir == null || this._dir.value == 'ltr') {
@@ -9503,7 +8662,6 @@ var MdSidenavLayout = (function () {
             this._left = this._end;
             this._right = this._start;
         }
-        this._setDrawersValid(true);
     };
     MdSidenavLayout.prototype._closeModalSidenav = function () {
         if (this._start != null && this._start.mode != 'side') {
@@ -9570,12 +8728,12 @@ var MdSidenavLayout = (function () {
             // technically it is a sibling of MdSidenav (on the content tree) and isn't updated when MdSidenav
             // changes its state.
             template: "<div class=\"md-sidenav-backdrop\" (click)=\"_closeModalSidenav()\" [class.md-sidenav-shown]=\"_isShowingBackdrop()\"></div> <ng-content select=\"md-sidenav\"></ng-content> <div class=\"md-sidenav-content\" [ngStyle]=\"_getStyles()\"> <ng-content></ng-content> </div> ",
-            styles: ["md-sidenav-layout { position: relative; transform: translate3d(0, 0, 0); box-sizing: border-box; -webkit-overflow-scrolling: touch; display: block; overflow: hidden; } md-sidenav-layout[fullscreen] { position: fixed; top: 0; left: 0; right: 0; bottom: 0; } md-sidenav-layout[fullscreen].md-sidenav-opened { overflow: hidden; } .md-sidenav-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: block; z-index: 2; visibility: hidden; } .md-sidenav-backdrop.md-sidenav-shown { visibility: visible; } .md-sidenav-content { position: relative; transform: translate3d(0, 0, 0); display: block; height: 100%; overflow: auto; } md-sidenav { position: relative; transform: translate3d(0, 0, 0); display: block; position: absolute; top: 0; bottom: 0; z-index: 3; min-width: 5%; overflow-y: auto; transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-side { z-index: 1; } md-sidenav.md-sidenav-end { right: 0; transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-closing { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end { left: 0; right: auto; transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } .md-sidenav-invalid { display: none; } /*# sourceMappingURL=sidenav.css.map */ ",
+            styles: ["md-sidenav-layout { position: relative; transform: translate3d(0, 0, 0); box-sizing: border-box; -webkit-overflow-scrolling: touch; display: block; overflow: hidden; } md-sidenav-layout[fullscreen] { position: fixed; top: 0; left: 0; right: 0; bottom: 0; } md-sidenav-layout[fullscreen].md-sidenav-opened { overflow: hidden; } .md-sidenav-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: block; z-index: 2; visibility: hidden; } .md-sidenav-backdrop.md-sidenav-shown { visibility: visible; } .md-sidenav-content { position: relative; transform: translate3d(0, 0, 0); display: block; height: 100%; overflow: auto; } md-sidenav { position: relative; transform: translate3d(0, 0, 0); display: block; position: absolute; top: 0; bottom: 0; z-index: 3; min-width: 5%; overflow-y: auto; transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-closing { transform: translate3d(-100%, 0, 0); will-change: transform; } md-sidenav.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); will-change: transform; } md-sidenav.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-side { z-index: 1; } md-sidenav.md-sidenav-end { right: 0; transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(100%, 0, 0); will-change: transform; } md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); will-change: transform; } md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-closing { transform: translate3d(100%, 0, 0); will-change: transform; } [dir='rtl'] md-sidenav.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); will-change: transform; } [dir='rtl'] md-sidenav.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end { left: 0; right: auto; transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(-100%, 0, 0); will-change: transform; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); will-change: transform; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } /*# sourceMappingURL=sidenav.css.map */ ",
 "md-sidenav { transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-sidenav-content { transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-sidenav-backdrop.md-sidenav-shown { transition: background-color 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } /*# sourceMappingURL=sidenav-transitions.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }),
         __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_2__core__["a" /* Dir */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_2__core__["b" /* Dir */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]])
     ], MdSidenavLayout);
     return MdSidenavLayout;
 }());
@@ -9648,6 +8806,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MD_SLIDE_TOGGLE_VALUE_ACCESSOR = {
     provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["NG_VALUE_ACCESSOR"],
     useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return MdSlideToggle; }),
@@ -9671,12 +8830,11 @@ var MdSlideToggle = (function () {
         // A unique id for the slide-toggle. By default the id is auto-generated.
         this._uniqueId = "md-slide-toggle-" + ++nextId;
         this._checked = false;
+        this._hasFocus = false;
         this._isMousedown = false;
         this._slideRenderer = null;
-        this._disabled = false;
-        this._required = false;
-        // Needs to be public to support AOT compilation (as host binding).
-        this._hasFocus = false;
+        this.disabled = false;
+        this.required = false;
         this.name = null;
         this.id = this._uniqueId;
         this.tabIndex = 0;
@@ -9687,18 +8845,6 @@ var MdSlideToggle = (function () {
         // Returns the unique id for the visual hidden input.
         this.getInputId = function () { return ((_this.id || _this._uniqueId) + "-input"); };
     }
-    Object.defineProperty(MdSlideToggle.prototype, "disabled", {
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlideToggle.prototype, "required", {
-        get: function () { return this._required; },
-        set: function (value) { this._required = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
     /** TODO: internal */
     MdSlideToggle.prototype.ngAfterContentInit = function () {
         this._slideRenderer = new SlideToggleRenderer(this._elementRef);
@@ -9819,29 +8965,31 @@ var MdSlideToggle = (function () {
     };
     /** TODO: internal */
     MdSlideToggle.prototype._onDragStart = function () {
-        if (!this.disabled) {
-            this._slideRenderer.startThumbDrag(this.checked);
-        }
+        this._slideRenderer.startThumbDrag(this.checked);
     };
     /** TODO: internal */
     MdSlideToggle.prototype._onDrag = function (event) {
-        if (this._slideRenderer.isDragging()) {
-            this._slideRenderer.updateThumbPosition(event.deltaX);
-        }
+        this._slideRenderer.updateThumbPosition(event.deltaX);
     };
     /** TODO: internal */
     MdSlideToggle.prototype._onDragEnd = function () {
         var _this = this;
-        if (!this._slideRenderer.isDragging()) {
-            return;
-        }
         // Notice that we have to stop outside of the current event handler,
         // because otherwise the click event will be fired and will reset the new checked variable.
         setTimeout(function () {
             _this.checked = _this._slideRenderer.stopThumbDrag();
-            _this._emitChangeEvent();
         }, 0);
     };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdSlideToggle.prototype, "disabled", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdSlideToggle.prototype, "required", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
@@ -9862,14 +9010,6 @@ var MdSlideToggle = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
         __metadata('design:type', String)
     ], MdSlideToggle.prototype, "ariaLabelledby", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdSlideToggle.prototype, "disabled", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdSlideToggle.prototype, "required", null);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["Observable"])
@@ -9892,9 +9032,8 @@ var MdSlideToggle = (function () {
                 '(mousedown)': '_setMousedown()'
             },
             template: "<label class=\"md-slide-toggle-label\"> <div class=\"md-slide-toggle-container\"> <div class=\"md-slide-toggle-bar\"></div> <div class=\"md-slide-toggle-thumb-container\" (slidestart)=\"_onDragStart()\" (slide)=\"_onDrag($event)\" (slideend)=\"_onDragEnd()\"> <div class=\"md-slide-toggle-thumb\"> <div class=\"md-ink-ripple\"></div> </div> </div> <input #input class=\"md-slide-toggle-input md-visually-hidden\" type=\"checkbox\" [id]=\"getInputId()\" [required]=\"required\" [tabIndex]=\"tabIndex\" [checked]=\"checked\" [disabled]=\"disabled\" [attr.name]=\"name\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (blur)=\"_onInputBlur()\" (focus)=\"_onInputFocus()\" (change)=\"_onChangeEvent($event)\" (click)=\"_onInputClick($event)\"> </div> <span class=\"md-slide-toggle-content\"> <ng-content></ng-content> </span> </label> ",
-            styles: ["md-slide-toggle { display: flex; height: 24px; margin: 16px 0; line-height: 24px; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; } md-slide-toggle.md-checked .md-slide-toggle-thumb-container { transform: translate3d(100%, 0, 0); } md-slide-toggle .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } md-slide-toggle.md-slide-toggle-focused .md-ink-ripple { opacity: 1; } md-slide-toggle.md-slide-toggle-disabled .md-ink-ripple { background-color: #000; } md-slide-toggle.md-disabled .md-slide-toggle-label, md-slide-toggle.md-disabled .md-slide-toggle-container { cursor: default; } .md-slide-toggle-content { font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; } .md-slide-toggle-label { display: flex; flex: 1; cursor: pointer; } .md-slide-toggle-container { cursor: -webkit-grab; cursor: grab; width: 36px; height: 24px; position: relative; margin-right: 8px; } [dir='rtl'] .md-slide-toggle-container { margin-left: 8px; margin-right: 0; } .md-slide-toggle-thumb-container { position: absolute; top: 2px; left: 0; z-index: 1; width: 16px; transform: translate3d(0, 0, 0); transition: all 80ms linear; transition-property: transform; } .md-slide-toggle-thumb-container.md-dragging { transition-duration: 0ms; } .md-slide-toggle-thumb { position: absolute; margin: 0; left: 0; top: 0; height: 20px; width: 20px; border-radius: 50%; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); } .md-slide-toggle-bar { position: absolute; left: 1px; top: 5px; width: 34px; height: 14px; border-radius: 8px; } .md-slide-toggle-input { bottom: 0; left: 10px; } .md-slide-toggle-bar, .md-slide-toggle-thumb { transition: all 80ms linear; transition-property: background-color; transition-delay: 50ms; } /*# sourceMappingURL=slide-toggle.css.map */ "],
+            styles: [":host { display: flex; height: 24px; margin: 16px 0; line-height: 24px; white-space: nowrap; user-select: none; outline: none; } :host.md-checked .md-slide-toggle-thumb-container { transform: translate3d(100%, 0, 0); } :host .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } :host.md-slide-toggle-focused .md-ink-ripple { opacity: 1; } :host.md-slide-toggle-disabled .md-ink-ripple { background-color: #000; } :host.md-disabled .md-slide-toggle-label, :host.md-disabled .md-slide-toggle-container { cursor: default; } .md-slide-toggle-content { font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; } .md-slide-toggle-label { display: flex; flex: 1; cursor: pointer; } .md-slide-toggle-container { cursor: grab; width: 36px; height: 24px; position: relative; user-select: none; margin-right: 8px; } .md-slide-toggle-thumb-container { position: absolute; top: 2px; left: 0; z-index: 1; width: 16px; transform: translate3d(0, 0, 0); transition: all 80ms linear; transition-property: transform; } .md-slide-toggle-thumb-container.md-dragging { transition-duration: 0ms; } .md-slide-toggle-thumb { position: absolute; margin: 0; left: 0; top: 0; height: 20px; width: 20px; border-radius: 50%; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); } .md-slide-toggle-bar { position: absolute; left: 1px; top: 5px; width: 34px; height: 14px; border-radius: 8px; } .md-slide-toggle-input { bottom: 0; left: 10px; } .md-slide-toggle-bar, .md-slide-toggle-thumb { transition: all 80ms linear; transition-property: background-color; transition-delay: 50ms; } /*# sourceMappingURL=slide-toggle.css.map */ "],
             providers: [MD_SLIDE_TOGGLE_VALUE_ACCESSOR],
-            encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"]])
@@ -9916,7 +9055,7 @@ var SlideToggleRenderer = (function () {
     };
     /** Initializes the drag of the slide-toggle. */
     SlideToggleRenderer.prototype.startThumbDrag = function (checked) {
-        if (!this.isDragging()) {
+        if (!this._thumbBarWidth) {
             this._thumbBarWidth = this._thumbBarEl.clientWidth - this._thumbEl.clientWidth;
             this._checked = checked;
             this._thumbEl.classList.add('md-dragging');
@@ -9924,17 +9063,19 @@ var SlideToggleRenderer = (function () {
     };
     /** Stops the current drag and returns the new checked value. */
     SlideToggleRenderer.prototype.stopThumbDrag = function () {
-        if (this.isDragging()) {
+        if (this._thumbBarWidth) {
             this._thumbBarWidth = null;
             this._thumbEl.classList.remove('md-dragging');
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* applyCssTransform */])(this._thumbEl, '');
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["D" /* applyCssTransform */])(this._thumbEl, '');
             return this._percentage > 50;
         }
     };
     /** Updates the thumb containers position from the specified distance. */
     SlideToggleRenderer.prototype.updateThumbPosition = function (distance) {
-        this._percentage = this._getThumbPercentage(distance);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* applyCssTransform */])(this._thumbEl, "translate3d(" + this._percentage + "%, 0, 0)");
+        if (this._thumbBarWidth) {
+            this._percentage = this._getThumbPercentage(distance);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["D" /* applyCssTransform */])(this._thumbEl, "translate3d(" + this._percentage + "%, 0, 0)");
+        }
     };
     /** Retrieves the percentage of thumb from the moved distance. */
     SlideToggleRenderer.prototype._getThumbPercentage = function (distance) {
@@ -9981,7 +9122,6 @@ var MdSlideToggleModule = (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__slider__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__slider__["c"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__slider__["d"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_0__slider__["e"]; });
 
 
 //# sourceMappingURL=index.js.map
@@ -9998,9 +9138,8 @@ var MdSlideToggleModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("./node_modules/@angular/platform-browser/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MD_SLIDER_VALUE_ACCESSOR; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return MdSliderChange; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdSlider; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return SliderRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return MdSlider; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return SliderRenderer; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSliderModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10029,119 +9168,55 @@ var MD_SLIDER_VALUE_ACCESSOR = {
     useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return MdSlider; }),
     multi: true
 };
-/** A simple change event emitted by the MdSlider component. */
-var MdSliderChange = (function () {
-    function MdSliderChange() {
-    }
-    return MdSliderChange;
-}());
 var MdSlider = (function () {
     function MdSlider(elementRef) {
         /** A renderer to handle updating the slider's thumb and fill track. */
         this._renderer = null;
         /** The dimensions of the slider. */
         this._sliderDimensions = null;
-        /** Whether or not the slider is disabled. */
-        this._disabled = false;
+        this.disabled = false;
         /** Whether or not to show the thumb label. */
-        this._thumbLabel = false;
-        this._controlValueAccessorChangeFn = function () { };
-        /** The last value for which a change event was emitted. */
-        this._lastEmittedValue = null;
-        /** onTouch function registered via registerOnTouch (ControlValueAccessor). */
-        this.onTouched = function () { };
-        /**
-         * Whether or not the thumb is sliding.
-         * Used to determine if there should be a transition for the thumb and fill track.
-         */
-        this._isSliding = false;
-        /**
-         * Whether or not the slider is active (clicked or sliding).
-         * Used to shrink and grow the thumb as according to the Material Design spec.
-         */
-        this._isActive = false;
-        /** The values at which the thumb will snap. */
-        this._step = 1;
-        /**
-         * How often to show ticks. Relative to the step so that a tick always appears on a step.
-         * Ex: Tick interval of 4 with a step of 3 will draw a tick every 4 steps (every 12 values).
-         */
-        this._tickInterval = 0;
-        /** The size of a tick interval as a percentage of the size of the track. */
-        this._tickIntervalPercent = 0;
-        /** The percentage of the slider that coincides with the value. */
-        this._percent = 0;
-        /** Value of the slider. */
-        this._value = null;
+        this.thumbLabel = false;
         /** The miniumum value that the slider can have. */
         this._min = 0;
         /** The maximum value that the slider can have. */
         this._max = 100;
-        this.change = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        /** The percentage of the slider that coincides with the value. */
+        this._percent = 0;
+        this._controlValueAccessorChangeFn = function (value) { };
+        /** onTouch function registered via registerOnTouch (ControlValueAccessor). */
+        this.onTouched = function () { };
+        /** The values at which the thumb will snap. */
+        this.step = 1;
+        /**
+         * Whether or not the thumb is sliding.
+         * Used to determine if there should be a transition for the thumb and fill track.
+         * TODO: internal
+         */
+        this.isSliding = false;
+        /**
+         * Whether or not the slider is active (clicked or sliding).
+         * Used to shrink and grow the thumb as according to the Material Design spec.
+         * TODO: internal
+         */
+        this.isActive = false;
+        /** Indicator for if the value has been set or not. */
+        this._isInitialized = false;
+        /** Value of the slider. */
+        this._value = 0;
         this._renderer = new SliderRenderer(elementRef);
     }
-    Object.defineProperty(MdSlider.prototype, "disabled", {
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "thumbLabel", {
-        get: function () { return this._thumbLabel; },
-        set: function (value) { this._thumbLabel = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "step", {
-        get: function () { return this._step; },
-        set: function (v) { this._step = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["I" /* coerceNumberProperty */])(v, this._step); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "tickInterval", {
-        get: function () { return this._tickInterval; },
-        set: function (v) {
-            this._tickInterval = (v == 'auto') ? v : __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["I" /* coerceNumberProperty */])(v, this._tickInterval);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "tickIntervalPercent", {
-        get: function () { return this._tickIntervalPercent; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "percent", {
-        get: function () { return this._clamp(this._percent); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "value", {
-        get: function () {
-            // If the value needs to be read and it is still uninitialized, initialize it to the min.
-            if (this._value === null) {
-                this.value = this._min;
-            }
-            return this._value;
-        },
-        set: function (v) {
-            this._value = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["I" /* coerceNumberProperty */])(v, this._value);
-            this._percent = this._calculatePercentage(this._value);
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MdSlider.prototype, "min", {
         get: function () {
             return this._min;
         },
         set: function (v) {
-            this._min = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["I" /* coerceNumberProperty */])(v, this._min);
+            // This has to be forced as a number to handle the math later.
+            this._min = Number(v);
             // If the value wasn't explicitly set by the user, set it to the min.
-            if (this._value === null) {
+            if (!this._isInitialized) {
                 this.value = this._min;
             }
-            this._percent = this._calculatePercentage(this.value);
         },
         enumerable: true,
         configurable: true
@@ -10151,230 +9226,265 @@ var MdSlider = (function () {
             return this._max;
         },
         set: function (v) {
-            this._max = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["I" /* coerceNumberProperty */])(v, this._max);
-            this._percent = this._calculatePercentage(this.value);
+            this._max = Number(v);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MdSlider.prototype, "trackFillFlexBasis", {
+    Object.defineProperty(MdSlider.prototype, "value", {
         get: function () {
-            return this.percent * 100 + '%';
+            return this._value;
+        },
+        set: function (v) {
+            // Only set the value to a valid number. v is casted to an any as we know it will come in as a
+            // string but it is labeled as a number which causes parseFloat to not accept it.
+            if (isNaN(parseFloat(v))) {
+                return;
+            }
+            this._value = Number(v);
+            this._isInitialized = true;
+            this._controlValueAccessorChangeFn(this._value);
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MdSlider.prototype, "ticksMarginLeft", {
-        get: function () {
-            return this.tickIntervalPercent / 2 * 100 + '%';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "ticksContainerMarginLeft", {
-        get: function () {
-            return '-' + this.ticksMarginLeft;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdSlider.prototype, "ticksBackgroundSize", {
-        get: function () {
-            return this.tickIntervalPercent * 100 + '% 2px';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MdSlider.prototype._onMouseenter = function () {
-        if (this.disabled) {
-            return;
-        }
-        // We save the dimensions of the slider here so we can use them to update the spacing of the
-        // ticks and determine where on the slider click and slide events happen.
+    /**
+     * Once the slider has rendered, grab the dimensions and update the position of the thumb and
+     * fill track.
+     * TODO: internal
+     */
+    MdSlider.prototype.ngAfterContentInit = function () {
         this._sliderDimensions = this._renderer.getSliderDimensions();
-        this._updateTickIntervalPercent();
+        // This needs to be called after content init because the value can be set to the min if the
+        // value itself isn't set. If this happens, the control value accessor needs to be updated.
+        this._controlValueAccessorChangeFn(this.value);
+        this.snapThumbToValue();
+        this._updateTickSeparation();
     };
-    MdSlider.prototype._onClick = function (event) {
+    /** TODO: internal */
+    MdSlider.prototype.onClick = function (event) {
         if (this.disabled) {
             return;
         }
-        this._isActive = true;
-        this._isSliding = false;
+        this.isActive = true;
+        this.isSliding = false;
         this._renderer.addFocus();
-        this._updateValueFromPosition(event.clientX);
-        this._emitValueIfChanged();
+        this.updateValueFromPosition(event.clientX);
+        this.snapThumbToValue();
     };
-    MdSlider.prototype._onSlide = function (event) {
+    /** TODO: internal */
+    MdSlider.prototype.onSlide = function (event) {
         if (this.disabled) {
             return;
         }
         // Prevent the slide from selecting anything else.
         event.preventDefault();
-        this._updateValueFromPosition(event.center.x);
+        this.updateValueFromPosition(event.center.x);
     };
-    MdSlider.prototype._onSlideStart = function (event) {
+    /** TODO: internal */
+    MdSlider.prototype.onSlideStart = function (event) {
         if (this.disabled) {
             return;
         }
         event.preventDefault();
-        this._isSliding = true;
-        this._isActive = true;
+        this.isSliding = true;
+        this.isActive = true;
         this._renderer.addFocus();
-        this._updateValueFromPosition(event.center.x);
+        this.updateValueFromPosition(event.center.x);
     };
-    MdSlider.prototype._onSlideEnd = function () {
-        this._isSliding = false;
-        this._emitValueIfChanged();
+    /** TODO: internal */
+    MdSlider.prototype.onSlideEnd = function () {
+        this.isSliding = false;
+        this.snapThumbToValue();
     };
-    MdSlider.prototype._onBlur = function () {
-        this._isActive = false;
+    /** TODO: internal */
+    MdSlider.prototype.onResize = function () {
+        this.isSliding = true;
+        this._sliderDimensions = this._renderer.getSliderDimensions();
+        // Skip updating the value and position as there is no new placement.
+        this._renderer.updateThumbAndFillPosition(this._percent, this._sliderDimensions.width);
+    };
+    /** TODO: internal */
+    MdSlider.prototype.onBlur = function () {
+        this.isActive = false;
         this.onTouched();
+    };
+    /**
+     * When the value changes without a physical position, the percentage needs to be recalculated
+     * independent of the physical location.
+     * This is also used to move the thumb to a snapped value once sliding is done.
+     */
+    MdSlider.prototype.updatePercentFromValue = function () {
+        this._percent = this.calculatePercentage(this.value);
     };
     /**
      * Calculate the new value from the new physical location. The value will always be snapped.
      */
-    MdSlider.prototype._updateValueFromPosition = function (pos) {
-        if (!this._sliderDimensions) {
-            return;
-        }
+    MdSlider.prototype.updateValueFromPosition = function (pos) {
         var offset = this._sliderDimensions.left;
         var size = this._sliderDimensions.width;
         // The exact value is calculated from the event and used to find the closest snap value.
-        var percent = this._clamp((pos - offset) / size);
-        var exactValue = this._calculateValue(percent);
+        this._percent = this.clamp((pos - offset) / size);
+        var exactValue = this.calculateValue(this._percent);
         // This calculation finds the closest step by finding the closest whole number divisible by the
         // step relative to the min.
         var closestValue = Math.round((exactValue - this.min) / this.step) * this.step + this.min;
         // The value needs to snap to the min and max.
-        this.value = this._clamp(closestValue, this.min, this.max);
+        this.value = this.clamp(closestValue, this.min, this.max);
+        this._renderer.updateThumbAndFillPosition(this._percent, this._sliderDimensions.width);
     };
-    /** Emits a change event if the current value is different from the last emitted value. */
-    MdSlider.prototype._emitValueIfChanged = function () {
-        if (this.value != this._lastEmittedValue) {
-            var event_1 = new MdSliderChange();
-            event_1.source = this;
-            event_1.value = this.value;
-            this.change.emit(event_1);
-            this._controlValueAccessorChangeFn(this.value);
-            this._lastEmittedValue = this.value;
+    /**
+     * Snaps the thumb to the current value.
+     * Called after a click or drag event is over.
+     */
+    MdSlider.prototype.snapThumbToValue = function () {
+        this.updatePercentFromValue();
+        this._renderer.updateThumbAndFillPosition(this._percent, this._sliderDimensions.width);
+    };
+    /**
+     * Calculates the separation in pixels of tick marks. If there is no tick interval or the interval
+     * is set to something other than a number or 'auto', nothing happens.
+     */
+    MdSlider.prototype._updateTickSeparation = function () {
+        if (this._tickInterval == 'auto') {
+            this._updateAutoTickSeparation();
+        }
+        else if (Number(this._tickInterval)) {
+            this._updateTickSeparationFromInterval();
         }
     };
     /**
-     * Updates the amount of space between ticks as a percentage of the width of the slider.
+     * Calculates the optimal separation in pixels of tick marks based on the minimum auto tick
+     * separation constant.
      */
-    MdSlider.prototype._updateTickIntervalPercent = function () {
-        if (!this.tickInterval) {
-            return;
-        }
-        if (this.tickInterval == 'auto') {
-            var pixelsPerStep = this._sliderDimensions.width * this.step / (this.max - this.min);
-            var stepsPerTick = Math.ceil(MIN_AUTO_TICK_SEPARATION / pixelsPerStep);
-            var pixelsPerTick = stepsPerTick * this.step;
-            this._tickIntervalPercent = pixelsPerTick / (this._sliderDimensions.width);
-        }
-        else {
-            this._tickIntervalPercent = this.tickInterval * this.step / (this.max - this.min);
-        }
+    MdSlider.prototype._updateAutoTickSeparation = function () {
+        // We're looking for the multiple of step for which the separation between is greater than the
+        // minimum tick separation.
+        var sliderWidth = this._sliderDimensions.width;
+        // This is the total "width" of the slider in terms of values.
+        var valueWidth = this.max - this.min;
+        // Calculate how many values exist within 1px on the slider.
+        var valuePerPixel = valueWidth / sliderWidth;
+        // Calculate how many values exist in the minimum tick separation (px).
+        var valuePerSeparation = valuePerPixel * MIN_AUTO_TICK_SEPARATION;
+        // Calculate how many steps exist in this separation. This will be the lowest value you can
+        // multiply step by to get a separation that is greater than or equal to the minimum tick
+        // separation.
+        var stepsPerSeparation = Math.ceil(valuePerSeparation / this.step);
+        // Get the percentage of the slider for which this tick would be located so we can then draw
+        // it on the slider.
+        var tickPercentage = this.calculatePercentage((this.step * stepsPerSeparation) + this.min);
+        // The pixel value of the tick is the percentage * the width of the slider. Use this to draw
+        // the ticks on the slider.
+        this._renderer.drawTicks(sliderWidth * tickPercentage);
+    };
+    /**
+     * Calculates the separation of tick marks by finding the pixel value of the tickInterval.
+     */
+    MdSlider.prototype._updateTickSeparationFromInterval = function () {
+        // Force tickInterval to be a number so it can be used in calculations.
+        var interval = this._tickInterval;
+        // Calculate the first value a tick will be located at by getting the step at which the interval
+        // lands and adding that to the min.
+        var tickValue = (this.step * interval) + this.min;
+        // The percentage of the step on the slider is needed in order to calculate the pixel offset
+        // from the beginning of the slider. This offset is the tick separation.
+        var tickPercentage = this.calculatePercentage(tickValue);
+        this._renderer.drawTicks(this._sliderDimensions.width * tickPercentage);
     };
     /**
      * Calculates the percentage of the slider that a value is.
      */
-    MdSlider.prototype._calculatePercentage = function (value) {
+    MdSlider.prototype.calculatePercentage = function (value) {
         return (value - this.min) / (this.max - this.min);
     };
     /**
      * Calculates the value a percentage of the slider corresponds to.
      */
-    MdSlider.prototype._calculateValue = function (percentage) {
-        return this.min + percentage * (this.max - this.min);
+    MdSlider.prototype.calculateValue = function (percentage) {
+        return this.min + (percentage * (this.max - this.min));
     };
     /**
      * Return a number between two numbers.
      */
-    MdSlider.prototype._clamp = function (value, min, max) {
+    MdSlider.prototype.clamp = function (value, min, max) {
         if (min === void 0) { min = 0; }
         if (max === void 0) { max = 1; }
         return Math.max(min, Math.min(value, max));
     };
     /**
      * Implemented as part of ControlValueAccessor.
+     * TODO: internal
      */
     MdSlider.prototype.writeValue = function (value) {
         this.value = value;
+        if (this._sliderDimensions) {
+            this.snapThumbToValue();
+        }
     };
     /**
      * Implemented as part of ControlValueAccessor.
+     * TODO: internal
      */
     MdSlider.prototype.registerOnChange = function (fn) {
         this._controlValueAccessorChangeFn = fn;
     };
     /**
      * Implemented as part of ControlValueAccessor.
+     * TODO: internal
      */
     MdSlider.prototype.registerOnTouched = function (fn) {
         this.onTouched = fn;
     };
-    /**
-     * Implemented as part of ControlValueAccessor.
-     */
-    MdSlider.prototype.setDisabledState = function (isDisabled) {
-        this.disabled = isDisabled;
-    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('class.md-slider-disabled'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.aria-disabled'), 
+        __metadata('design:type', Boolean)
+    ], MdSlider.prototype, "disabled", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('thumb-label'),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["F" /* BooleanFieldValue */])(), 
+        __metadata('design:type', Boolean)
+    ], MdSlider.prototype, "thumbLabel", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdSlider.prototype, "disabled", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('thumb-label'), 
-        __metadata('design:type', Boolean)
-    ], MdSlider.prototype, "thumbLabel", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], MdSlider.prototype, "step", null);
+        __metadata('design:type', Number)
+    ], MdSlider.prototype, "step", void 0);
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('tick-interval'), 
         __metadata('design:type', Object)
-    ], MdSlider.prototype, "tickInterval", null);
+    ], MdSlider.prototype, "_tickInterval", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Object)
-    ], MdSlider.prototype, "value", null);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.aria-valuemin'), 
         __metadata('design:type', Object)
     ], MdSlider.prototype, "min", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.aria-valuemax'), 
         __metadata('design:type', Object)
     ], MdSlider.prototype, "max", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"])('attr.aria-valuenow'), 
         __metadata('design:type', Object)
-    ], MdSlider.prototype, "change", void 0);
+    ], MdSlider.prototype, "value", null);
     MdSlider = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-slider',
             providers: [MD_SLIDER_VALUE_ACCESSOR],
             host: {
-                '(blur)': '_onBlur()',
-                '(click)': '_onClick($event)',
-                '(mouseenter)': '_onMouseenter()',
-                '(slide)': '_onSlide($event)',
-                '(slideend)': '_onSlideEnd()',
-                '(slidestart)': '_onSlideStart($event)',
                 'tabindex': '0',
-                '[attr.aria-disabled]': 'disabled',
-                '[attr.aria-valuemax]': 'max',
-                '[attr.aria-valuemin]': 'min',
-                '[attr.aria-valuenow]': 'value',
-                '[class.md-slider-active]': '_isActive',
-                '[class.md-slider-disabled]': 'disabled',
-                '[class.md-slider-has-ticks]': 'tickInterval',
-                '[class.md-slider-sliding]': '_isSliding',
-                '[class.md-slider-thumb-label-showing]': 'thumbLabel',
+                '(click)': 'onClick($event)',
+                '(slide)': 'onSlide($event)',
+                '(slidestart)': 'onSlideStart($event)',
+                '(slideend)': 'onSlideEnd()',
+                '(window:resize)': 'onResize()',
+                '(blur)': 'onBlur()',
             },
-            template: "<div class=\"md-slider-track\"> <div class=\"md-slider-track-fill\" [style.flexBasis]=\"trackFillFlexBasis\"></div> <div class=\"md-slider-ticks-container\" [style.marginLeft]=\"ticksContainerMarginLeft\"> <div class=\"md-slider-ticks\" [style.marginLeft]=\"ticksMarginLeft\" [style.backgroundSize]=\"ticksBackgroundSize\"></div> </div> <div class=\"md-slider-thumb-container\"> <div class=\"md-slider-thumb\"></div> <div class=\"md-slider-thumb-label\"> <span class=\"md-slider-thumb-label-text\">{{value}}</span> </div> </div> </div>",
-            styles: ["md-slider { display: inline-block; box-sizing: border-box; position: relative; height: 48px; min-width: 128px; padding: 8px; outline: none; vertical-align: middle; } .md-slider-track { display: flex; flex-grow: 1; align-items: center; position: relative; top: 15px; height: 2px; transition: box-shadow 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-has-ticks.md-slider-active .md-slider-track, .md-slider-has-ticks:hover .md-slider-track { box-shadow: inset -4px 0 0 -2px rgba(0, 0, 0, 0.6); } .md-slider-track-fill { flex: 0 0 50%; height: 2px; transition: flex-basis 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-sliding .md-slider-track-fill { transition: none; } .md-slider-ticks-container { position: absolute; left: 0; top: 0; height: 2px; width: 100%; overflow: hidden; } .md-slider-ticks { background: repeating-linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; background: -moz-repeating-linear-gradient(0.0001deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; height: 2px; width: 100%; opacity: 0; transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-has-ticks.md-slider-active .md-slider-ticks, .md-slider-has-ticks:hover .md-slider-ticks { opacity: 1; } .md-slider-thumb-container { flex: 0 0 auto; position: relative; width: 0; height: 0; } .md-slider-thumb { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%; transform-origin: 50% 50%; transform: scale(0.7); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-active .md-slider-thumb { transform: scale(1); } .md-slider-active.md-slider-thumb-label-showing .md-slider-thumb { transform: scale(0); } .md-slider-thumb-label { display: flex; align-items: center; justify-content: center; position: absolute; left: -14px; top: -40px; width: 28px; height: 28px; border-radius: 50%; transform: translateY(26px) scale(0.4) rotate(45deg); transition: 300ms cubic-bezier(0.35, 0, 0.25, 1); transition-property: transform, border-radius; } .md-slider-active .md-slider-thumb-label { border-radius: 50% 50% 0; transform: rotate(45deg); } md-slider:not(.md-slider-thumb-label-showing) .md-slider-thumb-label { display: none; } .md-slider-thumb-label-text { z-index: 1; font-size: 12px; font-weight: bold; opacity: 0; transform: rotate(-45deg); transition: opacity 300ms cubic-bezier(0.35, 0, 0.25, 1); } .md-slider-active .md-slider-thumb-label-text { opacity: 1; } /*# sourceMappingURL=slider.css.map */ "],
+            template: "<div class=\"md-slider-wrapper\"> <div class=\"md-slider-container\" [class.md-slider-sliding]=\"isSliding\" [class.md-slider-active]=\"isActive\" [class.md-slider-thumb-label-showing]=\"thumbLabel\"> <div class=\"md-slider-track-container\"> <div class=\"md-slider-track\"></div> <div class=\"md-slider-track md-slider-track-fill\"></div> <div class=\"md-slider-tick-container\"></div> <div class=\"md-slider-last-tick-container\"></div> </div> <div class=\"md-slider-thumb-container\"> <div class=\"md-slider-thumb-position\"> <div class=\"md-slider-thumb\"></div> <div class=\"md-slider-thumb-label\"> <span class=\"md-slider-thumb-label-text\">{{value}}</span> </div> </div> </div> </div> </div> ",
+            styles: ["md-slider { height: 48px; min-width: 128px; position: relative; padding: 0; display: inline-block; outline: none; vertical-align: middle; } md-slider *, md-slider *::after { box-sizing: border-box; } .md-slider-wrapper { width: 100%; height: 100%; padding-left: 8px; padding-right: 8px; } .md-slider-container { position: relative; } .md-slider-track-container { width: 100%; position: absolute; top: 23px; height: 2px; } .md-slider-track { position: absolute; left: 0; right: 0; height: 100%; } .md-slider-track-fill { transition-duration: 400ms; transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1); transition-property: width, height; } .md-slider-tick-container, .md-slider-last-tick-container { position: absolute; left: 0; right: 0; height: 100%; } .md-slider-thumb-container { position: absolute; left: 0; top: 50%; transform: translate3d(-50%, -50%, 0); transition-duration: 400ms; transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1); transition-property: left, bottom; } .md-slider-thumb-position { transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-thumb { z-index: 1; position: absolute; top: 14px; left: -10px; width: 20px; height: 20px; border-radius: 20px; transform: scale(0.7); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-thumb::after { content: ''; position: absolute; width: 20px; height: 20px; border-radius: 20px; border-width: 3px; border-style: solid; transition: inherit; } .md-slider-thumb-label { display: flex; align-items: center; justify-content: center; position: absolute; left: -14px; top: -17px; width: 28px; height: 28px; border-radius: 50%; transform: scale(0.4) translate3d(0, 67.5px, 0) rotate(45deg); transition: 300ms cubic-bezier(0.35, 0, 0.25, 1); transition-property: transform, border-radius; } .md-slider-thumb-label-text { z-index: 1; font-size: 12px; font-weight: bold; opacity: 0; transform: rotate(-45deg); transition: opacity 300ms cubic-bezier(0.35, 0, 0.25, 1); } .md-slider-container:not(.md-slider-thumb-label-showing) .md-slider-thumb-label { display: none; } .md-slider-active.md-slider-thumb-label-showing .md-slider-thumb { transform: scale(0); } .md-slider-sliding .md-slider-thumb-position, .md-slider-sliding .md-slider-track-fill { transition: none; cursor: default; } .md-slider-active .md-slider-thumb { transform: scale(1); } .md-slider-active .md-slider-thumb-label { border-radius: 50% 50% 0; transform: rotate(45deg); } .md-slider-active .md-slider-thumb-label-text { opacity: 1; } /*# sourceMappingURL=slider.css.map */ "],
             encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
@@ -10398,11 +9508,45 @@ var SliderRenderer = (function () {
         return trackElement.getBoundingClientRect();
     };
     /**
+     * Update the physical position of the thumb and fill track on the slider.
+     */
+    SliderRenderer.prototype.updateThumbAndFillPosition = function (percent, width) {
+        // A container element that is used to avoid overwriting the transform on the thumb itself.
+        var thumbPositionElement = this._sliderElement.querySelector('.md-slider-thumb-position');
+        var fillTrackElement = this._sliderElement.querySelector('.md-slider-track-fill');
+        var position = Math.round(percent * width);
+        fillTrackElement.style.width = position + "px";
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__core__["D" /* applyCssTransform */])(thumbPositionElement, "translateX(" + position + "px)");
+    };
+    /**
      * Focuses the native element.
      * Currently only used to allow a blur event to fire but will be used with keyboard input later.
      */
     SliderRenderer.prototype.addFocus = function () {
         this._sliderElement.focus();
+    };
+    /**
+     * Draws ticks onto the tick container.
+     */
+    SliderRenderer.prototype.drawTicks = function (tickSeparation) {
+        var tickContainer = this._sliderElement.querySelector('.md-slider-tick-container');
+        var tickContainerWidth = tickContainer.getBoundingClientRect().width;
+        // An extra element for the last tick is needed because the linear gradient cannot be told to
+        // always draw a tick at the end of the gradient. To get around this, there is a second
+        // container for ticks that has a single tick mark on the very right edge.
+        var lastTickContainer = this._sliderElement.querySelector('.md-slider-last-tick-container');
+        // Subtract 1 from the tick separation to center the tick.
+        // TODO: Evaluate the rendering performance of using repeating background gradients.
+        tickContainer.style.background = "repeating-linear-gradient(to right, black, black 2px, " +
+            ("transparent 2px, transparent " + (tickSeparation - 1) + "px)");
+        // Add a tick to the very end by starting on the right side and adding a 2px black line.
+        lastTickContainer.style.background = "linear-gradient(to left, black, black 2px, transparent " +
+            "2px, transparent)";
+        // If the second to last tick is too close (a separation of less than half the normal
+        // separation), don't show it by decreasing the width of the tick container element.
+        if (tickContainerWidth % tickSeparation < (tickSeparation / 2)) {
+            tickContainer.style.width = tickContainerWidth - tickSeparation + 'px';
+        }
     };
     return SliderRenderer;
 }());
@@ -10439,19 +9583,10 @@ var MdSliderModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__snack_bar__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__snack_bar_container__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-container.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__snack_bar_config__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-config.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__snack_bar_ref__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-ref.js");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__snack_bar__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__snack_bar__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__snack_bar_container__["b"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__snack_bar_container__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__snack_bar_container__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "f", function() { return __WEBPACK_IMPORTED_MODULE_2__snack_bar_config__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "g", function() { return __WEBPACK_IMPORTED_MODULE_3__snack_bar_ref__["a"]; });
-
-
-
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__snack_bar__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__snack_bar__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__snack_bar__["a"]; });
 
 
 //# sourceMappingURL=index.js.map
@@ -10512,17 +9647,11 @@ var SimpleSnackBar = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSnackBarConfig; });
-/**
- * Configuration used when opening a snack-bar.
- */
 var MdSnackBarConfig = (function () {
-    function MdSnackBarConfig() {
+    function MdSnackBarConfig(viewContainerRef) {
         /** The politeness level for the MdAriaLiveAnnouncer announcement. */
         this.politeness = 'assertive';
-        /** Message to be announced by the MdAriaLiveAnnouncer */
-        this.announcementMessage = '';
-        /** The view container to place the overlay for the snack bar into. */
-        this.viewContainerRef = null;
+        this.viewContainerRef = viewContainerRef;
     }
     return MdSnackBarConfig;
 }());
@@ -10539,10 +9668,6 @@ var MdSnackBarConfig = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__snack_bar_errors__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-errors.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return SHOW_ANIMATION; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return HIDE_ANIMATION; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSnackBarContainer; });
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -10561,53 +9686,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-// TODO(jelbourn): we can't use constants from animation.ts here because you can't use
-// a text interpolation in anything that is analyzed statically with ngc (for AoT compile).
-var SHOW_ANIMATION = '225ms cubic-bezier(0.4,0.0,1,1)';
-var HIDE_ANIMATION = '195ms cubic-bezier(0.0,0.0,0.2,1)';
 /**
  * Internal component that wraps user-provided snack bar content.
  */
 var MdSnackBarContainer = (function (_super) {
     __extends(MdSnackBarContainer, _super);
-    function MdSnackBarContainer(_ngZone) {
-        _super.call(this);
-        this._ngZone = _ngZone;
-        /** Subject for notifying that the snack bar has exited from view. */
-        this._onExit = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        /** The state of the snack bar animations. */
-        this.animationState = 'initial';
+    function MdSnackBarContainer() {
+        _super.apply(this, arguments);
     }
-    /** Attach a component portal as content to this snack bar container. */
+    /** Attach a portal as content to this snack bar container. */
     MdSnackBarContainer.prototype.attachComponentPortal = function (portal) {
         if (this._portalHost.hasAttached()) {
             throw new __WEBPACK_IMPORTED_MODULE_2__snack_bar_errors__["a" /* MdSnackBarContentAlreadyAttached */]();
         }
         return this._portalHost.attachComponentPortal(portal);
     };
-    /** Attach a template portal as content to this snack bar container. */
     MdSnackBarContainer.prototype.attachTemplatePortal = function (portal) {
         throw Error('Not yet implemented');
-    };
-    /** Begin animation of the snack bar exiting from view. */
-    MdSnackBarContainer.prototype.exit = function () {
-        this.animationState = 'complete';
-        return this._onExit.asObservable();
-    };
-    /** Mark snack bar as exited from the view. */
-    MdSnackBarContainer.prototype.markAsExited = function (event) {
-        var _this = this;
-        if (event.toState === 'void' || event.toState === 'complete') {
-            this._ngZone.run(function () {
-                _this._onExit.next();
-                _this._onExit.complete();
-            });
-        }
-    };
-    /** Begin animation of snack bar entrance into view. */
-    MdSnackBarContainer.prototype.enter = function () {
-        this.animationState = 'visible';
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1__core__["g" /* PortalHostDirective */]), 
@@ -10616,23 +9711,12 @@ var MdSnackBarContainer = (function (_super) {
     MdSnackBarContainer = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'snack-bar-container',
             template: "<template portalHost></template>",
-            styles: [":host { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); background: #323232; border-radius: 2px; box-sizing: content-box; display: block; height: 20px; max-width: 568px; min-width: 288px; overflow: hidden; padding: 14px 24px; transform: translateY(100%); } /*# sourceMappingURL=snack-bar-container.css.map */ "],
+            styles: [":host { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); background: #323232; border-radius: 2px; display: block; height: 20px; max-width: 568px; min-width: 288px; overflow: hidden; padding: 14px 24px; } /*# sourceMappingURL=snack-bar-container.css.map */ "],
             host: {
-                'role': 'alert',
-                '[@state]': 'animationState',
-                '(@state.done)': 'markAsExited($event)'
-            },
-            animations: [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["trigger"])('state', [
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('initial', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'translateY(100%)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'translateY(0%)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('complete', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'translateY(100%)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('visible => complete', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])(HIDE_ANIMATION)),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('initial => visible, void => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])(SHOW_ANIMATION)),
-                ])
-            ],
+                'role': 'alert'
+            }
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]])
+        __metadata('design:paramtypes', [])
     ], MdSnackBarContainer);
     return MdSnackBarContainer;
 }(__WEBPACK_IMPORTED_MODULE_1__core__["c" /* BasePortalHost */]));
@@ -10660,7 +9744,7 @@ var MdSnackBarContentAlreadyAttached = (function (_super) {
         _super.call(this, 'Attempting to attach snack bar content after content is already attached');
     }
     return MdSnackBarContentAlreadyAttached;
-}(__WEBPACK_IMPORTED_MODULE_0__core__["G" /* MdError */]));
+}(__WEBPACK_IMPORTED_MODULE_0__core__["E" /* MdError */]));
 
 //# sourceMappingURL=snack-bar-errors.js.map
 
@@ -10680,23 +9764,18 @@ var MdSnackBarContentAlreadyAttached = (function (_super) {
  * Reference to a snack bar dispatched from the snack bar service.
  */
 var MdSnackBarRef = (function () {
-    function MdSnackBarRef(instance, containerInstance, _overlayRef) {
+    function MdSnackBarRef(instance, _overlayRef) {
         this._overlayRef = _overlayRef;
         /** Subject for notifying the user that the snack bar has closed. */
         this._afterClosed = new __WEBPACK_IMPORTED_MODULE_0_rxjs_Subject__["Subject"]();
         // Sets the readonly instance of the snack bar content component.
         this.instance = instance;
-        this.containerInstance = containerInstance;
     }
     /** Dismisses the snack bar. */
     MdSnackBarRef.prototype.dismiss = function () {
-        var _this = this;
         if (!this._afterClosed.closed) {
-            this.containerInstance.exit().subscribe(function () {
-                _this._overlayRef.dispose();
-                _this._afterClosed.next();
-                _this._afterClosed.complete();
-            });
+            this._overlayRef.dispose();
+            this._afterClosed.complete();
         }
     };
     /** Gets an observable that is notified when the snack bar is finished closing. */
@@ -10718,13 +9797,14 @@ var MdSnackBarRef = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__snack_bar_config__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-config.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__snack_bar_ref__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-ref.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__snack_bar_container__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-container.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__simple_snack_bar__ = __webpack_require__("./node_modules/@angular/material/snack-bar/simple-snack-bar.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_util_object_extend__ = __webpack_require__("./node_modules/@angular/material/core/util/object-extend.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MdSnackBar; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__snack_bar_ref__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-ref.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__snack_bar_container__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-container.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__simple_snack_bar__ = __webpack_require__("./node_modules/@angular/material/snack-bar/simple-snack-bar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__snack_bar_config__ = __webpack_require__("./node_modules/@angular/material/snack-bar/snack-bar-config.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MdSnackBar; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdSnackBarModule; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__snack_bar_ref__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_6__snack_bar_config__["a"]; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10742,6 +9822,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+// TODO(josephperrott): Animate entrance and exit of snack bars.
 // TODO(josephperrott): Automate dismiss after timeout.
 /**
  * Service to dispatch Material Design snack bar messages.
@@ -10756,55 +9837,31 @@ var MdSnackBar = (function () {
      * currently opened snack bars.
      */
     MdSnackBar.prototype.openFromComponent = function (component, config) {
-        var _this = this;
-        config = _applyConfigDefaults(config);
-        var overlayRef = this._createOverlay();
-        var snackBarContainer = this._attachSnackBarContainer(overlayRef, config);
-        var snackBarRef = this._attachSnackbarContent(component, snackBarContainer, overlayRef);
-        // When the snackbar is dismissed, clear the reference to it.
-        snackBarRef.afterDismissed().subscribe(function () {
-            // Clear the snackbar ref if it hasn't already been replaced by a newer snackbar.
-            if (_this._snackBarRef == snackBarRef) {
-                _this._snackBarRef = null;
-            }
-        });
-        // If a snack bar is already in view, dismiss it and enter the new snack bar after exit
-        // animation is complete.
         if (this._snackBarRef) {
-            this._snackBarRef.afterDismissed().subscribe(function () {
-                snackBarRef.containerInstance.enter();
-            });
             this._snackBarRef.dismiss();
         }
-        else {
-            snackBarRef.containerInstance.enter();
-        }
+        var overlayRef = this._createOverlay();
+        var snackBarContainer = this._attachSnackBarContainer(overlayRef, config);
+        var mdSnackBarRef = this._attachSnackbarContent(component, snackBarContainer, overlayRef);
         this._live.announce(config.announcementMessage, config.politeness);
-        this._snackBarRef = snackBarRef;
-        return this._snackBarRef;
+        return mdSnackBarRef;
     };
     /**
-     * Opens a snackbar with a message and an optional action.
-     * @param message The message to show in the snackbar.
-     * @param action The label for the snackbar action.
-     * @param config Additional configuration options for the snackbar.
-     * @returns {MdSnackBarRef<SimpleSnackBar>}
+     * Creates and dispatches a snack bar.
      */
-    MdSnackBar.prototype.open = function (message, action, config) {
-        if (action === void 0) { action = ''; }
-        if (config === void 0) { config = {}; }
+    MdSnackBar.prototype.open = function (message, actionLabel, config) {
         config.announcementMessage = message;
-        var simpleSnackBarRef = this.openFromComponent(__WEBPACK_IMPORTED_MODULE_6__simple_snack_bar__["a" /* SimpleSnackBar */], config);
+        var simpleSnackBarRef = this.openFromComponent(__WEBPACK_IMPORTED_MODULE_5__simple_snack_bar__["a" /* SimpleSnackBar */], config);
         simpleSnackBarRef.instance.snackBarRef = simpleSnackBarRef;
         simpleSnackBarRef.instance.message = message;
-        simpleSnackBarRef.instance.action = action;
+        simpleSnackBarRef.instance.action = actionLabel;
         return simpleSnackBarRef;
     };
     /**
      * Attaches the snack bar container component to the overlay.
      */
     MdSnackBar.prototype._attachSnackBarContainer = function (overlayRef, config) {
-        var containerPortal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](__WEBPACK_IMPORTED_MODULE_5__snack_bar_container__["a" /* MdSnackBarContainer */], config.viewContainerRef);
+        var containerPortal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](__WEBPACK_IMPORTED_MODULE_4__snack_bar_container__["a" /* MdSnackBarContainer */], config.viewContainerRef);
         var containerRef = overlayRef.attach(containerPortal);
         containerRef.instance.snackBarConfig = config;
         return containerRef.instance;
@@ -10815,7 +9872,9 @@ var MdSnackBar = (function () {
     MdSnackBar.prototype._attachSnackbarContent = function (component, container, overlayRef) {
         var portal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](component);
         var contentRef = container.attachComponentPortal(portal);
-        return new __WEBPACK_IMPORTED_MODULE_4__snack_bar_ref__["a" /* MdSnackBarRef */](contentRef.instance, container, overlayRef);
+        var snackBarRef = new __WEBPACK_IMPORTED_MODULE_3__snack_bar_ref__["a" /* MdSnackBarRef */](contentRef.instance, overlayRef);
+        this._snackBarRef = snackBarRef;
+        return snackBarRef;
     };
     /**
      * Creates a new overlay and places it in the correct location.
@@ -10834,14 +9893,6 @@ var MdSnackBar = (function () {
     ], MdSnackBar);
     return MdSnackBar;
 }());
-/**
- * Applies default options to the snackbar config.
- * @param config The configuration to which the defaults will be applied.
- * @returns The new configuration object with defaults applied.
- */
-function _applyConfigDefaults(config) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__core_util_object_extend__["a" /* extendObject */])(new __WEBPACK_IMPORTED_MODULE_3__snack_bar_config__["a" /* MdSnackBarConfig */](), config);
-}
 var MdSnackBarModule = (function () {
     function MdSnackBarModule() {
     }
@@ -10853,10 +9904,10 @@ var MdSnackBarModule = (function () {
     };
     MdSnackBarModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["r" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__core__["i" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_2__angular_common__["CommonModule"]],
-            exports: [__WEBPACK_IMPORTED_MODULE_5__snack_bar_container__["a" /* MdSnackBarContainer */]],
-            declarations: [__WEBPACK_IMPORTED_MODULE_5__snack_bar_container__["a" /* MdSnackBarContainer */], __WEBPACK_IMPORTED_MODULE_6__simple_snack_bar__["a" /* SimpleSnackBar */]],
-            entryComponents: [__WEBPACK_IMPORTED_MODULE_5__snack_bar_container__["a" /* MdSnackBarContainer */], __WEBPACK_IMPORTED_MODULE_6__simple_snack_bar__["a" /* SimpleSnackBar */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["q" /* OverlayModule */], __WEBPACK_IMPORTED_MODULE_1__core__["i" /* PortalModule */], __WEBPACK_IMPORTED_MODULE_2__angular_common__["CommonModule"]],
+            exports: [__WEBPACK_IMPORTED_MODULE_4__snack_bar_container__["a" /* MdSnackBarContainer */]],
+            declarations: [__WEBPACK_IMPORTED_MODULE_4__snack_bar_container__["a" /* MdSnackBarContainer */], __WEBPACK_IMPORTED_MODULE_5__simple_snack_bar__["a" /* SimpleSnackBar */]],
+            entryComponents: [__WEBPACK_IMPORTED_MODULE_4__snack_bar_container__["a" /* MdSnackBarContainer */], __WEBPACK_IMPORTED_MODULE_5__simple_snack_bar__["a" /* SimpleSnackBar */]],
         }), 
         __metadata('design:paramtypes', [])
     ], MdSnackBarModule);
@@ -10940,6 +9991,49 @@ var MdInkBar = (function () {
 }());
 
 //# sourceMappingURL=ink-bar.js.map
+
+
+/***/ },
+
+/***/ "./node_modules/@angular/material/tabs/tab-content.js":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdTabContent; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/** Used to flag tab contents for use with the portal directive */
+var MdTabContent = (function (_super) {
+    __extends(MdTabContent, _super);
+    function MdTabContent(templateRef, viewContainerRef) {
+        _super.call(this, templateRef, viewContainerRef);
+    }
+    MdTabContent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+            selector: '[md-tab-content]'
+        }), 
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]])
+    ], MdTabContent);
+    return MdTabContent;
+}(__WEBPACK_IMPORTED_MODULE_1__core__["h" /* TemplatePortalDirective */]));
+
+//# sourceMappingURL=tab-content.js.map
 
 
 /***/ },
@@ -11028,101 +10122,6 @@ var MdTabLabel = (function (_super) {
 
 /***/ },
 
-/***/ "./node_modules/@angular/material/tabs/tab-nav-bar/index.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tab_nav_bar__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-nav-bar/tab-nav-bar.js");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__tab_nav_bar__["a"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__tab_nav_bar__["b"]; });
-
-
-//# sourceMappingURL=index.js.map
-
-
-/***/ },
-
-/***/ "./node_modules/@angular/material/tabs/tab-nav-bar/tab-nav-bar.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ink_bar__ = __webpack_require__("./node_modules/@angular/material/tabs/ink-bar.js");
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdTabNavBar; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MdTabLink; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-/**
- * Navigation component matching the styles of the tab group header.
- * Provides anchored navigation with animated ink bar.
- */
-var MdTabNavBar = (function () {
-    function MdTabNavBar() {
-    }
-    /** Animates the ink bar to the position of the active link element. */
-    MdTabNavBar.prototype.updateActiveLink = function (element) {
-        this._inkBar.alignToElement(element);
-    };
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1__ink_bar__["a" /* MdInkBar */]), 
-        __metadata('design:type', __WEBPACK_IMPORTED_MODULE_1__ink_bar__["a" /* MdInkBar */])
-    ], MdTabNavBar.prototype, "_inkBar", void 0);
-    MdTabNavBar = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: '[md-tab-nav-bar]',
-            template: "<ng-content></ng-content> <md-ink-bar></md-ink-bar> ",
-            styles: ["[md-tab-nav-bar] { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } [md-tab-link] { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; text-decoration: none; } [md-tab-link]:focus { outline: none; opacity: 1; } @media (max-width: 600px) { [md-tab-link] { min-width: 72px; } } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 350ms ease-out; } /*# sourceMappingURL=tab-nav-bar.css.map */ "],
-            encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-        }), 
-        __metadata('design:paramtypes', [])
-    ], MdTabNavBar);
-    return MdTabNavBar;
-}());
-var MdTabLink = (function () {
-    function MdTabLink(_mdTabNavBar, _element) {
-        this._mdTabNavBar = _mdTabNavBar;
-        this._element = _element;
-        this._isActive = false;
-    }
-    Object.defineProperty(MdTabLink.prototype, "active", {
-        get: function () {
-            return this._isActive;
-        },
-        set: function (value) {
-            this._isActive = value;
-            if (value) {
-                this._mdTabNavBar.updateActiveLink(this._element.nativeElement);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
-        __metadata('design:type', Boolean)
-    ], MdTabLink.prototype, "active", null);
-    MdTabLink = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
-            selector: '[md-tab-link]',
-        }), 
-        __metadata('design:paramtypes', [MdTabNavBar, __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]])
-    ], MdTabLink);
-    return MdTabLink;
-}());
-
-//# sourceMappingURL=tab-nav-bar.js.map
-
-
-/***/ },
-
 /***/ "./node_modules/@angular/material/tabs/tabs.js":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11131,8 +10130,8 @@ var MdTabLink = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tab_label__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-label.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tab_label_wrapper__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-label-wrapper.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tab_nav_bar_tab_nav_bar__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-nav-bar/tab-nav-bar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tab_content__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-content.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tab_label_wrapper__ = __webpack_require__("./node_modules/@angular/material/tabs/tab-label-wrapper.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ink_bar__ = __webpack_require__("./node_modules/@angular/material/tabs/ink-bar.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__ = __webpack_require__("./node_modules/rxjs/Observable.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__);
@@ -11160,6 +10159,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 /** Used to generate unique ID's for each tab component */
 var nextId = 0;
 /** A simple change event emitted on focus or selection changes. */
@@ -11169,25 +10169,16 @@ var MdTabChangeEvent = (function () {
     return MdTabChangeEvent;
 }());
 var MdTab = (function () {
-    function MdTab(_viewContainerRef) {
-        this._viewContainerRef = _viewContainerRef;
-        /** The plain text label for the tab, used when there is no template label. */
-        this.textLabel = '';
-        this._contentPortal = null;
+    function MdTab() {
+        // TODO: Replace this when BooleanFieldValue is removed.
         this._disabled = false;
     }
-    MdTab.prototype.ngOnInit = function () {
-        this._contentPortal = new __WEBPACK_IMPORTED_MODULE_2__core__["f" /* TemplatePortal */](this._content, this._viewContainerRef);
-    };
     Object.defineProperty(MdTab.prototype, "disabled", {
-        get: function () { return this._disabled; },
-        set: function (value) { this._disabled = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__core__["H" /* coerceBooleanProperty */])(value); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MdTab.prototype, "content", {
         get: function () {
-            return this._contentPortal;
+            return this._disabled;
+        },
+        set: function (value) {
+            this._disabled = (value != null && "" + value !== 'false');
         },
         enumerable: true,
         configurable: true
@@ -11195,25 +10186,21 @@ var MdTab = (function () {
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])(__WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */]), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */])
-    ], MdTab.prototype, "templateLabel", void 0);
+    ], MdTab.prototype, "label", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"]), 
-        __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"])
-    ], MdTab.prototype, "_content", void 0);
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])(__WEBPACK_IMPORTED_MODULE_4__tab_content__["a" /* MdTabContent */]), 
+        __metadata('design:type', __WEBPACK_IMPORTED_MODULE_4__tab_content__["a" /* MdTabContent */])
+    ], MdTab.prototype, "content", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('label'), 
-        __metadata('design:type', String)
-    ], MdTab.prototype, "textLabel", void 0);
-    __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('disabled'), 
         __metadata('design:type', Boolean), 
         __metadata('design:paramtypes', [Boolean])
     ], MdTab.prototype, "disabled", null);
     MdTab = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-tab',
-            template: "<!-- Create a template for the content of the <md-tab> so that we can grab a reference to this TemplateRef and use it in a Portal to render the tab content in the appropriate place in the tab-group. --> <template><ng-content></ng-content></template> ",
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+            selector: 'md-tab'
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]])
+        __metadata('design:paramtypes', [])
     ], MdTab);
     return MdTab;
 }());
@@ -11260,7 +10247,7 @@ var MdTabGroup = (function () {
             return true;
         }
     };
-    Object.defineProperty(MdTabGroup.prototype, "selectedIndexChange", {
+    Object.defineProperty(MdTabGroup.prototype, "_selectedIndexChange", {
         /** Output to enable support for two-way binding on `selectedIndex`. */
         get: function () {
             return this.selectChange.map(function (event) { return event.index; });
@@ -11283,7 +10270,7 @@ var MdTabGroup = (function () {
         configurable: true
     });
     /**
-     * Waits one frame for the view to update, then updates the ink bar
+     * Waits one frame for the view to update, then upates the ink bar
      * Note: This must be run outside of the zone or it will create an infinite change detection loop
      * TODO: internal
      */
@@ -11351,13 +10338,13 @@ var MdTabGroup = (function () {
     };
     MdTabGroup.prototype.handleKeydown = function (event) {
         switch (event.keyCode) {
-            case __WEBPACK_IMPORTED_MODULE_2__core__["O" /* RIGHT_ARROW */]:
+            case __WEBPACK_IMPORTED_MODULE_2__core__["L" /* RIGHT_ARROW */]:
                 this.focusNextTab();
                 break;
-            case __WEBPACK_IMPORTED_MODULE_2__core__["P" /* LEFT_ARROW */]:
+            case __WEBPACK_IMPORTED_MODULE_2__core__["M" /* LEFT_ARROW */]:
                 this.focusPreviousTab();
                 break;
-            case __WEBPACK_IMPORTED_MODULE_2__core__["Q" /* ENTER */]:
+            case __WEBPACK_IMPORTED_MODULE_2__core__["N" /* ENTER */]:
                 this.selectedIndex = this.focusIndex;
                 break;
         }
@@ -11389,7 +10376,7 @@ var MdTabGroup = (function () {
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"])
     ], MdTabGroup.prototype, "_tabs", void 0);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChildren"])(__WEBPACK_IMPORTED_MODULE_4__tab_label_wrapper__["a" /* MdTabLabelWrapper */]), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChildren"])(__WEBPACK_IMPORTED_MODULE_5__tab_label_wrapper__["a" /* MdTabLabelWrapper */]), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"])
     ], MdTabGroup.prototype, "_labelWrappers", void 0);
     __decorate([
@@ -11402,21 +10389,21 @@ var MdTabGroup = (function () {
         __metadata('design:paramtypes', [Number])
     ], MdTabGroup.prototype, "selectedIndex", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])('selectedIndexChange'), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__["Observable"])
-    ], MdTabGroup.prototype, "selectedIndexChange", null);
+    ], MdTabGroup.prototype, "_selectedIndexChange", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])('focusChange'), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__["Observable"])
     ], MdTabGroup.prototype, "focusChange", null);
     __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])('selectChange'), 
         __metadata('design:type', __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__["Observable"])
     ], MdTabGroup.prototype, "selectChange", null);
     MdTabGroup = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-tab-group',
-            template: "<div class=\"md-tab-header\" role=\"tablist\" (keydown)=\"handleKeydown($event)\"> <div class=\"md-tab-label\" role=\"tab\" md-tab-label-wrapper *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabLabelId(i)\" [tabIndex]=\"selectedIndex == i ? 0 : -1\" [attr.aria-controls]=\"_getTabContentId(i)\" [attr.aria-selected]=\"selectedIndex == i\" [class.md-tab-active]=\"selectedIndex == i\" [class.md-tab-disabled]=\"tab.disabled\" (click)=\"focusIndex = selectedIndex = i\"> <!-- If there is a label template, use it. --> <template [ngIf]=\"tab.templateLabel\"> <template [portalHost]=\"tab.templateLabel\"></template> </template> <!-- If there is not a label template, fall back to the text label. --> <template [ngIf]=\"!tab.templateLabel\">{{tab.textLabel}}</template> </div> <md-ink-bar></md-ink-bar> </div> <div class=\"md-tab-body-wrapper\"> <div class=\"md-tab-body\" role=\"tabpanel\" *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabContentId(i)\" [class.md-tab-active]=\"selectedIndex == i\" [attr.aria-labelledby]=\"_getTabLabelId(i)\"> <template [ngIf]=\"selectedIndex == i\"> <template [portalHost]=\"tab.content\"></template> </template> </div> </div> ",
-            styles: [":host { display: flex; flex-direction: column; font-family: Roboto, \"Helvetica Neue\", sans-serif; } .md-tab-header { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } .md-tab-label { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; } .md-tab-label:focus { outline: none; opacity: 1; } @media (max-width: 600px) { .md-tab-label { min-width: 72px; } } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 350ms ease-out; } .md-tab-body-wrapper { position: relative; overflow: hidden; flex-grow: 1; display: flex; } .md-tab-body { display: none; overflow: auto; box-sizing: border-box; flex-grow: 1; flex-shrink: 1; } .md-tab-body.md-tab-active { display: block; } .md-tab-disabled { cursor: default; pointer-events: none; } /*# sourceMappingURL=tab-group.css.map */ "],
+            template: "<div class=\"md-tab-header\" role=\"tablist\" (keydown)=\"handleKeydown($event)\"> <div class=\"md-tab-label\" role=\"tab\" md-tab-label-wrapper *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabLabelId(i)\" [tabIndex]=\"selectedIndex == i ? 0 : -1\" [attr.aria-controls]=\"_getTabContentId(i)\" [attr.aria-selected]=\"selectedIndex == i\" [class.md-tab-active]=\"selectedIndex == i\" [class.md-tab-disabled]=\"tab.disabled\" (click)=\"focusIndex = selectedIndex = i\"> <template [portalHost]=\"tab.label\"></template> </div> <md-ink-bar></md-ink-bar> </div> <div class=\"md-tab-body-wrapper\"> <div class=\"md-tab-body\" role=\"tabpanel\" *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabContentId(i)\" [class.md-tab-active]=\"selectedIndex == i\" [attr.aria-labelledby]=\"_getTabLabelId(i)\"> <template [ngIf]=\"selectedIndex == i\"> <template [portalHost]=\"tab.content\"></template> </template> </div> </div> ",
+            styles: [":host { display: flex; flex-direction: column; font-family: Roboto, \"Helvetica Neue\", sans-serif; } .md-tab-header { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } .md-tab-label { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; } .md-tab-label:focus { outline: none; opacity: 1; } .md-tab-disabled { cursor: default; pointer-events: none; } .md-tab-body-wrapper { position: relative; overflow: hidden; flex-grow: 1; display: flex; } .md-tab-body { display: none; overflow: auto; box-sizing: border-box; flex-grow: 1; flex-shrink: 1; } .md-tab-body.md-tab-active { display: block; } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 350ms ease-out; } /*# sourceMappingURL=tab-group.css.map */ "],
         }), 
         __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]])
     ], MdTabGroup);
@@ -11434,10 +10421,9 @@ var MdTabsModule = (function () {
     MdTabsModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__core__["i" /* PortalModule */]],
-            // Don't export MdInkBar or MdTabLabelWrapper, as they are internal implementation details.
-            exports: [MdTabGroup, __WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */], MdTab, __WEBPACK_IMPORTED_MODULE_5__tab_nav_bar_tab_nav_bar__["a" /* MdTabNavBar */], __WEBPACK_IMPORTED_MODULE_5__tab_nav_bar_tab_nav_bar__["b" /* MdTabLink */]],
-            declarations: [MdTabGroup, __WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */], MdTab, __WEBPACK_IMPORTED_MODULE_6__ink_bar__["a" /* MdInkBar */], __WEBPACK_IMPORTED_MODULE_4__tab_label_wrapper__["a" /* MdTabLabelWrapper */],
-                __WEBPACK_IMPORTED_MODULE_5__tab_nav_bar_tab_nav_bar__["a" /* MdTabNavBar */], __WEBPACK_IMPORTED_MODULE_5__tab_nav_bar_tab_nav_bar__["b" /* MdTabLink */]],
+            // Don't export MdInkBar or MdTabLabelWrapper, as they are internal implementatino details.
+            exports: [MdTabGroup, __WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */], __WEBPACK_IMPORTED_MODULE_4__tab_content__["a" /* MdTabContent */], MdTab],
+            declarations: [MdTabGroup, __WEBPACK_IMPORTED_MODULE_3__tab_label__["a" /* MdTabLabel */], __WEBPACK_IMPORTED_MODULE_4__tab_content__["a" /* MdTabContent */], MdTab, __WEBPACK_IMPORTED_MODULE_6__ink_bar__["a" /* MdInkBar */], __WEBPACK_IMPORTED_MODULE_5__tab_label_wrapper__["a" /* MdTabLabelWrapper */]],
         }), 
         __metadata('design:paramtypes', [])
     ], MdTabsModule);
@@ -11481,6 +10467,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
 
 var MdToolbarRow = (function () {
     function MdToolbarRow() {
@@ -11565,7 +10553,6 @@ var MdToolbarModule = (function () {
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__tooltip__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__tooltip__["b"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__tooltip__["c"]; });
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__tooltip__["d"]; });
 
 
 //# sourceMappingURL=index.js.map
@@ -11579,11 +10566,8 @@ var MdToolbarModule = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__("./node_modules/@angular/material/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return TOOLTIP_HIDE_DELAY; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return MdTooltip; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return TooltipComponent; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return MdTooltip; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return TooltipComponent; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MdTooltipModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -11596,21 +10580,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-/** Time in ms to delay before changing the tooltip visibility to hidden */
-var TOOLTIP_HIDE_DELAY = 1500;
-/**
- * Directive that attaches a material design tooltip to the host element. Animates the showing and
- * hiding of a tooltip provided position (defaults to below the element).
- *
- * https://material.google.com/components/tooltips.html
- */
 var MdTooltip = (function () {
-    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _ngZone) {
+    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _changeDetectionRef) {
         this._overlay = _overlay;
         this._elementRef = _elementRef;
         this._viewContainerRef = _viewContainerRef;
-        this._ngZone = _ngZone;
+        this._changeDetectionRef = _changeDetectionRef;
+        this.visible = false;
         /** Allows the user to define the position of the tooltip relative to the parent element */
         this._position = 'below';
     }
@@ -11621,11 +10597,8 @@ var MdTooltip = (function () {
         set: function (value) {
             if (value !== this._position) {
                 this._position = value;
-                // TODO(andrewjs): When the overlay's position can be dynamically changed, do not destroy
-                // the tooltip.
-                if (this._tooltipInstance) {
-                    this._disposeTooltip();
-                }
+                this._createOverlay();
+                this._updatePosition();
             }
         },
         enumerable: true,
@@ -11637,73 +10610,47 @@ var MdTooltip = (function () {
         },
         set: function (value) {
             this._message = value;
-            if (this._tooltipInstance) {
-                this._setTooltipMessage(this._message);
-            }
+            this._updatePosition();
         },
         enumerable: true,
         configurable: true
     });
-    /** Dispose the tooltip when destroyed */
-    MdTooltip.prototype.ngOnDestroy = function () {
-        if (this._tooltipInstance) {
-            this._disposeTooltip();
-        }
-    };
-    /** Shows the tooltip */
-    MdTooltip.prototype.show = function () {
-        if (!this._tooltipInstance) {
-            this._createTooltip();
-        }
-        this._setTooltipMessage(this._message);
-        this._tooltipInstance.show(this._position);
+    /**
+     * Create overlay on init
+     * TODO: internal
+     */
+    MdTooltip.prototype.ngOnInit = function () {
+        this._createOverlay();
     };
     /**
      * Create the overlay config and position strategy
-     * Hides the tooltip after the provided delay in ms. Defaults the delay to the material design
-     * prescribed delay time
      */
-    MdTooltip.prototype.hide = function (delay) {
-        if (delay === void 0) { delay = TOOLTIP_HIDE_DELAY; }
-        if (this._tooltipInstance) {
-            this._tooltipInstance.hide(delay);
+    MdTooltip.prototype._createOverlay = function () {
+        if (this._overlayRef) {
+            if (this.visible) {
+                // if visible, hide before destroying
+                this.hide();
+                this._createOverlay();
+            }
+            else {
+                // if not visible, dispose and recreate
+                this._overlayRef.dispose();
+                this._overlayRef = null;
+                this._createOverlay();
+            }
+        }
+        else {
+            var origin = this._getOrigin();
+            var position = this._getOverlayPosition();
+            var strategy = this._overlay.position().connectedTo(this._elementRef, origin, position);
+            var config = new __WEBPACK_IMPORTED_MODULE_1__core__["o" /* OverlayState */]();
+            config.positionStrategy = strategy;
+            this._overlayRef = this._overlay.create(config);
         }
     };
-    /** Shows/hides the tooltip */
-    MdTooltip.prototype.toggle = function () {
-        this._isTooltipVisible() ? this.hide() : this.show();
-    };
-    /** Returns true if the tooltip is currently visible to the user */
-    MdTooltip.prototype._isTooltipVisible = function () {
-        return this._tooltipInstance && this._tooltipInstance.isVisible();
-    };
-    /** Create the tooltip to display */
-    MdTooltip.prototype._createTooltip = function () {
-        var _this = this;
-        this._createOverlay();
-        var portal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](TooltipComponent, this._viewContainerRef);
-        this._tooltipInstance = this._overlayRef.attach(portal).instance;
-        // Dispose the overlay when finished the shown tooltip.
-        this._tooltipInstance.afterHidden().subscribe(function () {
-            _this._disposeTooltip();
-        });
-    };
-    /** Create the overlay config and position strategy */
-    MdTooltip.prototype._createOverlay = function () {
-        var origin = this._getOrigin();
-        var position = this._getOverlayPosition();
-        var strategy = this._overlay.position().connectedTo(this._elementRef, origin, position);
-        var config = new __WEBPACK_IMPORTED_MODULE_1__core__["o" /* OverlayState */]();
-        config.positionStrategy = strategy;
-        this._overlayRef = this._overlay.create(config);
-    };
-    /** Disposes the current tooltip and the overlay it is attached to */
-    MdTooltip.prototype._disposeTooltip = function () {
-        this._overlayRef.dispose();
-        this._overlayRef = null;
-        this._tooltipInstance = null;
-    };
-    /** Returns the origin position based on the user's position preference */
+    /**
+     * Returns the origin position based on the user's position preference
+     */
     MdTooltip.prototype._getOrigin = function () {
         switch (this.position) {
             case 'before': return { originX: 'start', originY: 'center' };
@@ -11712,7 +10659,9 @@ var MdTooltip = (function () {
             case 'below': return { originX: 'center', originY: 'bottom' };
         }
     };
-    /** Returns the overlay position based on the user's preference */
+    /**
+     * Returns the overlay position based on the user's preference
+     */
     MdTooltip.prototype._getOverlayPosition = function () {
         switch (this.position) {
             case 'before': return { overlayX: 'end', overlayY: 'center' };
@@ -11721,17 +10670,60 @@ var MdTooltip = (function () {
             case 'below': return { overlayX: 'center', overlayY: 'top' };
         }
     };
-    /** Updates the tooltip message and repositions the overlay according to the new message length */
-    MdTooltip.prototype._setTooltipMessage = function (message) {
-        var _this = this;
-        // Must wait for the message to be painted to the tooltip so that the overlay can properly
-        // calculate the correct positioning based on the size of the text.
-        this._tooltipInstance.message = message;
-        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
-            if (_this._tooltipInstance) {
-                _this._overlayRef.updatePosition();
-            }
-        });
+    /**
+     * Shows the tooltip on mouse enter
+     * @param event
+     */
+    MdTooltip.prototype._handleMouseEnter = function (event) {
+        this.show();
+    };
+    /**
+     * Hides the tooltip on mouse leave
+     * @param event
+     */
+    MdTooltip.prototype._handleMouseLeave = function (event) {
+        this.hide();
+    };
+    /**
+     * Shows the tooltip and returns a promise that will resolve when the tooltip is visible
+     */
+    MdTooltip.prototype.show = function () {
+        if (!this.visible && this._overlayRef && !this._overlayRef.hasAttached()) {
+            this.visible = true;
+            var portal = new __WEBPACK_IMPORTED_MODULE_1__core__["d" /* ComponentPortal */](TooltipComponent, this._viewContainerRef);
+            var tooltipRef = this._overlayRef.attach(portal);
+            tooltipRef.instance.message = this.message;
+            this._updatePosition();
+        }
+    };
+    /**
+     * Hides the tooltip and returns a promise that will resolve when the tooltip is hidden
+     */
+    MdTooltip.prototype.hide = function () {
+        if (this.visible && this._overlayRef && this._overlayRef.hasAttached()) {
+            this.visible = false;
+            this._overlayRef.detach();
+        }
+    };
+    /**
+     * Shows/hides the tooltip and returns a promise that will resolve when it is done
+     */
+    MdTooltip.prototype.toggle = function () {
+        if (this.visible) {
+            this.hide();
+        }
+        else {
+            this.show();
+        }
+    };
+    /**
+     * Updates the tooltip's position
+     */
+    MdTooltip.prototype._updatePosition = function () {
+        if (this._overlayRef) {
+            this._changeDetectionRef.detectChanges();
+            this._overlayRef.updatePosition();
+        }
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('tooltip-position'), 
@@ -11745,102 +10737,21 @@ var MdTooltip = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
             selector: '[md-tooltip]',
             host: {
-                '(mouseenter)': 'show()',
-                '(mouseleave)': 'hide()',
-            },
-            exportAs: 'mdTooltip',
+                '(mouseenter)': '_handleMouseEnter($event)',
+                '(mouseleave)': '_handleMouseLeave($event)',
+            }
         }), 
-        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_1__core__["k" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]])
+        __metadata('design:paramtypes', [__WEBPACK_IMPORTED_MODULE_1__core__["k" /* Overlay */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]])
     ], MdTooltip);
     return MdTooltip;
 }());
 var TooltipComponent = (function () {
     function TooltipComponent() {
-        /** Whether interactions on the page should close the tooltip */
-        this._closeOnInteraction = false;
-        /** The transform origin used in the animation for showing and hiding the tooltip */
-        this._transformOrigin = 'bottom';
-        /** Subject for notifying that the tooltip has been hidden from the view */
-        this._onHide = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
     }
-    /** Shows the tooltip with an animation originating from the provided origin */
-    TooltipComponent.prototype.show = function (position) {
-        var _this = this;
-        this._closeOnInteraction = false;
-        this._visibility = 'visible';
-        this._setTransformOrigin(position);
-        // Cancel the delayed hide if it is scheduled
-        if (this._hideTimeoutId) {
-            clearTimeout(this._hideTimeoutId);
-        }
-        // If this was set to true immediately, then the body click would trigger interaction and
-        // close the tooltip right after it was displayed.
-        setTimeout(function () { _this._closeOnInteraction = true; }, 0);
-    };
-    /** Begins the animation to hide the tooltip after the provided delay in ms */
-    TooltipComponent.prototype.hide = function (delay) {
-        var _this = this;
-        this._hideTimeoutId = setTimeout(function () {
-            _this._visibility = 'hidden';
-            _this._closeOnInteraction = false;
-        }, delay);
-    };
-    /** Returns an observable that notifies when the tooltip has been hidden from view */
-    TooltipComponent.prototype.afterHidden = function () {
-        return this._onHide.asObservable();
-    };
-    /** Whether the tooltip is being displayed */
-    TooltipComponent.prototype.isVisible = function () {
-        return this._visibility === 'visible';
-    };
-    /** Sets the tooltip transform origin according to the tooltip position */
-    TooltipComponent.prototype._setTransformOrigin = function (value) {
-        switch (value) {
-            case 'before':
-                this._transformOrigin = 'right';
-                break;
-            case 'after':
-                this._transformOrigin = 'left';
-                break;
-            case 'above':
-                this._transformOrigin = 'bottom';
-                break;
-            case 'below':
-                this._transformOrigin = 'top';
-                break;
-        }
-    };
-    TooltipComponent.prototype._afterVisibilityAnimation = function (e) {
-        if (e.toState === 'hidden' && !this.isVisible()) {
-            this._onHide.next();
-        }
-    };
-    /**
-     * Interactions on the HTML body should close the tooltip immediately as defined in the
-     * material design spec.
-     * https://material.google.com/components/tooltips.html#tooltips-interaction
-     */
-    TooltipComponent.prototype._handleBodyInteraction = function () {
-        if (this._closeOnInteraction) {
-            this.hide(0);
-        }
-    };
     TooltipComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({selector: 'md-tooltip-component',
-            template: "<div class=\"md-tooltip\" [style.transform-origin]=\"_transformOrigin\" [@state]=\"_visibility\" (@state.done)=\"this._afterVisibilityAnimation($event)\"> {{message}} </div>",
+            template: "<div class=\"md-tooltip\">{{message}}</div>",
             styles: [":host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } /*# sourceMappingURL=tooltip.css.map */ "],
-            animations: [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["trigger"])('state', [
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('void', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'scale(0)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'scale(1)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["state"])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["style"])({ transform: 'scale(0)' })),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('* => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])('150ms cubic-bezier(0.0, 0.0, 0.2, 1)')),
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["transition"])('* => hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["animate"])('150ms cubic-bezier(0.4, 0.0, 1, 1)')),
-                ])
-            ],
-            host: {
-                '(body:click)': 'this._handleBodyInteraction()'
-            }
         }), 
         __metadata('design:paramtypes', [])
     ], TooltipComponent);
@@ -11857,7 +10768,7 @@ var MdTooltipModule = (function () {
     };
     MdTooltipModule = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["r" /* OverlayModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__core__["q" /* OverlayModule */]],
             exports: [MdTooltip, TooltipComponent],
             declarations: [MdTooltip, TooltipComponent],
             entryComponents: [TooltipComponent],
@@ -11875,27 +10786,24 @@ var MdTooltipModule = (function () {
 /***/ "./node_modules/angular2-notifications/components.js":
 /***/ function(module, exports, __webpack_require__) {
 
-"use strict";
-"use strict";
-var simple_notifications_module_1 = __webpack_require__("./node_modules/angular2-notifications/src/simple-notifications.module.ts");
-exports.SimpleNotificationsModule = simple_notifications_module_1.SimpleNotificationsModule;
-var simple_notifications_component_1 = __webpack_require__("./node_modules/angular2-notifications/src/simple-notifications.component.ts");
-exports.SimpleNotificationsComponent = simple_notifications_component_1.SimpleNotificationsComponent;
-var notification_component_1 = __webpack_require__("./node_modules/angular2-notifications/src/notification.component.ts");
-exports.NotificationComponent = notification_component_1.NotificationComponent;
-var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/notifications.service.ts");
-exports.NotificationsService = notifications_service_1.NotificationsService;
-var max_pipe_1 = __webpack_require__("./node_modules/angular2-notifications/src/max.pipe.ts");
-exports.MaxPipe = max_pipe_1.MaxPipe;
-var push_notifications_module_1 = __webpack_require__("./node_modules/angular2-notifications/src/push-notifications.module.ts");
-exports.PushNotificationsModule = push_notifications_module_1.PushNotificationsModule;
-var push_notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/push-notifications.service.ts");
-exports.PushNotificationsService = push_notifications_service_1.PushNotificationsService;
-//# sourceMappingURL=components.js.map
+exports.SimpleNotificationsModule = __webpack_require__("./node_modules/angular2-notifications/lib/simple-notifications.module.js").SimpleNotificationsModule;
+exports.SimpleNotificationsComponent = __webpack_require__("./node_modules/angular2-notifications/lib/simple-notifications.component.js").SimpleNotificationsComponent;
+exports.NotificationComponent = __webpack_require__("./node_modules/angular2-notifications/lib/notification.component.js").NotificationComponent;
+exports.NotificationsService = __webpack_require__("./node_modules/angular2-notifications/lib/notifications.service.js").NotificationsService;
+exports.Icons = __webpack_require__("./node_modules/angular2-notifications/lib/icons.js").Icons;
+exports.Options = __webpack_require__("./node_modules/angular2-notifications/lib/options.type.js").Options;
+exports.Notification = __webpack_require__("./node_modules/angular2-notifications/lib/notification.type.js").Notification;
+exports.NotificationEvent = __webpack_require__("./node_modules/angular2-notifications/lib/notification-event.type.js").NotificationEvent;
+exports.NotificationType = __webpack_require__("./node_modules/angular2-notifications/lib/notification-type.type.js").NotificationType;
+exports.MaxPipe = __webpack_require__("./node_modules/angular2-notifications/lib/max.pipe.js").MaxPipe;
+
+exports.PushNotificationsModule = __webpack_require__("./node_modules/angular2-notifications/lib/push-notifications.module.js").PushNotificationsModule;
+exports.PushNotificationsService = __webpack_require__("./node_modules/angular2-notifications/lib/push-notifications.service.js").PushNotificationsService;
+exports.PushNotificationType = __webpack_require__("./node_modules/angular2-notifications/lib/push-notification.type.js").PushNotificationType;
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/icons.ts":
+/***/ "./node_modules/angular2-notifications/lib/icons.js":
 /***/ function(module, exports) {
 
 "use strict";
@@ -11906,15 +10814,24 @@ exports.defaultIcons = {
     info: "\n        <svg class=\"simple-notification-svg\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"#000000\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\">\n            <path d=\"M0 0h24v24H0z\" fill=\"none\"/>\n            <path d=\"M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z\"/>\n        </svg>\n    ",
     success: "\n        <svg class=\"simple-notification-svg\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"#000000\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\">\n            <path d=\"M0 0h24v24H0z\" fill=\"none\"/>\n            <path d=\"M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z\"/>\n        </svg>\n    "
 };
-
+//# sourceMappingURL=icons.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/max.pipe.ts":
+/***/ "./node_modules/angular2-notifications/lib/max.pipe.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var MaxPipe = (function () {
     function MaxPipe() {
@@ -11939,40 +10856,63 @@ var MaxPipe = (function () {
     return MaxPipe;
 }());
 exports.MaxPipe = MaxPipe;
-
+//# sourceMappingURL=max.pipe.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/notification.component.ts":
+/***/ "./node_modules/angular2-notifications/lib/notification-event.type.js":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+//# sourceMappingURL=notification-event.type.js.map
+
+/***/ },
+
+/***/ "./node_modules/angular2-notifications/lib/notification-type.type.js":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+//# sourceMappingURL=notification-type.type.js.map
+
+/***/ },
+
+/***/ "./node_modules/angular2-notifications/lib/notification.component.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-browser/index.js");
-var notification_type_1 = __webpack_require__("./node_modules/angular2-notifications/src/notification.type.ts");
-var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/notifications.service.ts");
+var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/lib/notifications.service.js");
 var NotificationComponent = (function () {
-    function NotificationComponent(notificationService, domSanitizer, zone) {
+    function NotificationComponent(notificationService, domSanitizer) {
         var _this = this;
         this.notificationService = notificationService;
         this.domSanitizer = domSanitizer;
-        this.zone = zone;
-        // Progress bar variables
         this.progressWidth = 0;
         this.stopTime = false;
         this.count = 0;
         this.instance = function () {
-            _this.zone.runOutsideAngular(function () {
-                _this.zone.run(function () { return _this.diff = (new Date().getTime() - _this.start) - (_this.count * _this.speed); });
-                if (_this.count++ === _this.steps)
-                    _this.zone.run(function () { return _this.remove(); });
-                else if (!_this.stopTime) {
-                    if (_this.showProgressBar)
-                        _this.zone.run(function () { return _this.progressWidth += 100 / _this.steps; });
-                    _this.timer = setTimeout(_this.instance, (_this.speed - _this.diff));
-                }
-            });
+            _this.diff = (new Date().getTime() - _this.start) - (_this.count * _this.speed);
+            if (_this.count++ === _this.steps) {
+                _this.remove();
+            }
+            else if (!_this.stopTime) {
+                if (_this.showProgressBar)
+                    _this.progressWidth += 100 / _this.steps;
+                _this.timer = setTimeout(_this.instance, (_this.speed - _this.diff));
+            }
         };
     }
     NotificationComponent.prototype.ngOnInit = function () {
@@ -11988,11 +10928,10 @@ var NotificationComponent = (function () {
         this.safeSvg = this.domSanitizer.bypassSecurityTrustHtml(this.item.icon);
     };
     NotificationComponent.prototype.startTimeOut = function () {
-        var _this = this;
         this.steps = this.timeOut / 10;
         this.speed = this.timeOut / this.steps;
         this.start = new Date().getTime();
-        this.zone.runOutsideAngular(function () { return _this.timer = setTimeout(_this.instance, _this.speed); });
+        this.timer = setTimeout(this.instance, this.speed);
     };
     NotificationComponent.prototype.onEnter = function () {
         if (this.pauseOnHover) {
@@ -12008,13 +10947,11 @@ var NotificationComponent = (function () {
     NotificationComponent.prototype.setPosition = function () {
         return this.position !== 0 ? this.position * 90 : 0;
     };
-    NotificationComponent.prototype.onClick = function ($e) {
-        this.item.click.emit($e);
+    NotificationComponent.prototype.removeOnClick = function () {
         if (this.clickToClose) {
             this.remove();
         }
     };
-    // Attach all the overrides
     NotificationComponent.prototype.attachOverrides = function () {
         var _this = this;
         Object.keys(this.item.override).forEach(function (a) {
@@ -12030,11 +10967,7 @@ var NotificationComponent = (function () {
         var _this = this;
         if (this.animate) {
             this.item.state = this.animate + 'Out';
-            this.zone.runOutsideAngular(function () {
-                setTimeout(function () {
-                    _this.zone.run(function () { return _this.notificationService.set(_this.item, false); });
-                }, 310);
-            });
+            setTimeout(function () { return _this.notificationService.set(_this.item, false); }, 310);
         }
         else {
             this.notificationService.set(this.item, false);
@@ -12078,7 +11011,7 @@ var NotificationComponent = (function () {
     ], NotificationComponent.prototype, "position", void 0);
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', (typeof (_a = typeof notification_type_1.Notification !== 'undefined' && notification_type_1.Notification) === 'function' && _a) || Object)
+        __metadata('design:type', Object)
     ], NotificationComponent.prototype, "item", void 0);
     NotificationComponent = __decorate([
         core_1.Component({
@@ -12086,7 +11019,6 @@ var NotificationComponent = (function () {
             encapsulation: core_1.ViewEncapsulation.None,
             animations: [
                 core_1.trigger('enterLeave', [
-                    // Enter from right
                     core_1.state('fromRight', core_1.style({ opacity: 1, transform: 'translateX(0)' })),
                     core_1.transition('* => fromRight', [
                         core_1.style({ opacity: 0, transform: 'translateX(5%)' }),
@@ -12097,7 +11029,6 @@ var NotificationComponent = (function () {
                         core_1.style({ opacity: 1, transform: 'translateX(0)' }),
                         core_1.animate('300ms ease-in-out')
                     ]),
-                    // Enter from left
                     core_1.state('fromLeft', core_1.style({ opacity: 1, transform: 'translateX(0)' })),
                     core_1.transition('* => fromLeft', [
                         core_1.style({ opacity: 0, transform: 'translateX(-5%)' }),
@@ -12108,7 +11039,6 @@ var NotificationComponent = (function () {
                         core_1.style({ opacity: 1, transform: 'translateX(0)' }),
                         core_1.animate('300ms ease-in-out')
                     ]),
-                    // Rotate
                     core_1.state('scale', core_1.style({ opacity: 1, transform: 'scale(1)' })),
                     core_1.transition('* => scale', [
                         core_1.style({ opacity: 0, transform: 'scale(0)' }),
@@ -12119,7 +11049,6 @@ var NotificationComponent = (function () {
                         core_1.style({ opacity: 1, transform: 'scale(1)' }),
                         core_1.animate('400ms ease-in-out')
                     ]),
-                    // Scale
                     core_1.state('rotate', core_1.style({ opacity: 1, transform: 'rotate(0deg)' })),
                     core_1.transition('* => rotate', [
                         core_1.style({ opacity: 0, transform: 'rotate(5deg)' }),
@@ -12132,36 +11061,44 @@ var NotificationComponent = (function () {
                     ])
                 ])
             ],
-            template: "\n        <div class=\"simple-notification\"\n            [@enterLeave]=\"item.state\"\n            (click)=\"onClick($event)\"\n            [class]=\"theClass\"\n\n            [ngClass]=\"{\n                'alert': item.type === 'alert',\n                'error': item.type === 'error',\n                'success': item.type === 'success',\n                'info': item.type === 'info',\n                'bare': item.type === 'bare',\n                'rtl-mode': rtl\n            }\"\n\n            (mouseenter)=\"onEnter()\"\n            (mouseleave)=\"onLeave()\">\n\n            <div *ngIf=\"!item.html\">\n                <div class=\"sn-title\">{{item.title}}</div>\n                <div class=\"sn-content\">{{item.content | max:maxLength}}</div>\n\n                <div *ngIf=\"item.type !== 'bare'\" [innerHTML]=\"safeSvg\"></div>\n            </div>\n            <div *ngIf=\"item.html\" [innerHTML]=\"item.html\"></div>\n\n            <div class=\"sn-progress-loader\" *ngIf=\"showProgressBar\">\n                <span [ngStyle]=\"{'width': progressWidth + '%'}\"></span>\n            </div>\n\n        </div>\n    ",
-            styles: ["\n        .simple-notification {\n            width: 100%;\n            padding: 10px 20px;\n            box-sizing: border-box;\n            position: relative;\n            float: left;\n            margin-bottom: 10px;\n            color: #fff;\n            cursor: pointer;\n            transition: all 0.5s;\n        }\n\n        .simple-notification .sn-title {\n            margin: 0;\n            padding: 0 50px 0 0;\n            line-height: 30px;\n            font-size: 20px;\n        }\n\n        .simple-notification .sn-content {\n            margin: 0;\n            font-size: 16px;\n            padding: 0 50px 0 0;\n            line-height: 20px;\n        }\n\n        .simple-notification svg {\n            position: absolute;\n            box-sizing: border-box;\n            top: 0;\n            right: 0;\n            width: 70px;\n            height: 70px;\n            padding: 10px;\n            fill: #fff;\n        }\n\n        .simple-notification.rtl-mode {\n            direction: rtl;\n        }\n\n        .simple-notification.rtl-mode .sn-content {\n            padding: 0 0 0 50px;\n        }\n\n        .simple-notification.rtl-mode svg {\n            left: 0;\n            right: auto;\n        }\n\n        .simple-notification.error { background: #F44336; }\n        .simple-notification.success { background: #8BC34A; }\n        .simple-notification.alert { background: #ffdb5b; }\n        .simple-notification.info { background: #03A9F4; }\n\n        .simple-notification .sn-progress-loader {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 5px;\n        }\n\n        .simple-notification .sn-progress-loader span {\n            float: left;\n            height: 100%;\n        }\n\n        .simple-notification.success .sn-progress-loader span { background: #689F38; }\n        .simple-notification.error .sn-progress-loader span { background: #D32F2F; }\n        .simple-notification.alert .sn-progress-loader span { background: #edc242; }\n        .simple-notification.info .sn-progress-loader span { background: #0288D1; }\n        .simple-notification.bare .sn-progress-loader span { background: #ccc; }\n    "]
+            template: "\n        <div class=\"simple-notification\"\n            [@enterLeave]=\"item.state\"\n            (click)=\"removeOnClick()\"\n            [class]=\"theClass\"\n\n            [ngClass]=\"{\n                'alert': item.type === 'alert',\n                'error': item.type === 'error',\n                'success': item.type === 'success',\n                'info': item.type === 'info',\n                'bare': item.type === 'bare',\n                'rtl-mode': rtl\n            }\"\n\n            (mouseenter)=\"onEnter()\"\n            (mouseleave)=\"onLeave()\">\n\n            <div *ngIf=\"!item.html\">\n                <div class=\"sn-title\">{{item.title}}</div>\n                <div class=\"sn-content\">{{item.content | max:maxLength}}</div>\n\n                <div *ngIf=\"item.type !== 'bare'\" [innerHTML]=\"safeSvg\"></div>\n            </div>\n            <div *ngIf=\"item.html\" [innerHTML]=\"item.html\"></div>\n\n            <div class=\"sn-progress-loader\" *ngIf=\"showProgressBar\">\n                <span [ngStyle]=\"{'width': progressWidth + '%'}\"></span>\n            </div>\n\n        </div>\n    ",
+            styles: ["\n        .simple-notification {\n            width: 100%;\n            padding: 10px 20px;\n            box-sizing: border-box;\n            position: relative;\n            float: left;\n            margin-bottom: 10px;\n            color: #fff;\n            cursor: pointer;\n            transition: all 0.5s;\n        }\n\n        .simple-notification .sn-title {\n            margin: 0;\n            padding: 0;\n            line-height: 30px;\n            font-size: 20px;\n        }\n\n        .simple-notification .sn-content {\n            margin: 0;\n            font-size: 16px;\n            padding: 0 50px 0 0;\n            line-height: 20px;\n        }\n\n        .simple-notification svg {\n            position: absolute;\n            box-sizing: border-box;\n            top: 0;\n            right: 0;\n            width: 70px;\n            height: 70px;\n            padding: 10px;\n            fill: #fff;\n        }\n\n        .simple-notification.rtl-mode {\n            direction: rtl;\n        }\n\n        .simple-notification.rtl-mode .sn-content {\n            padding: 0 0 0 50px;\n        }\n\n        .simple-notification.rtl-mode svg {\n            left: 0;\n            right: auto;\n        }\n\n        .simple-notification.error { background: #F44336; }\n        .simple-notification.success { background: #8BC34A; }\n        .simple-notification.alert { background: #ffdb5b; }\n        .simple-notification.info { background: #03A9F4; }\n\n        .simple-notification .sn-progress-loader {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 5px;\n        }\n\n        .simple-notification .sn-progress-loader span {\n            float: left;\n            height: 100%;\n        }\n\n        .simple-notification.success .sn-progress-loader span { background: #689F38; }\n        .simple-notification.error .sn-progress-loader span { background: #D32F2F; }\n        .simple-notification.alert .sn-progress-loader span { background: #edc242; }\n        .simple-notification.info .sn-progress-loader span { background: #0288D1; }\n        .simple-notification.bare .sn-progress-loader span { background: #ccc; }\n    "]
         }), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof notifications_service_1.NotificationsService !== 'undefined' && notifications_service_1.NotificationsService) === 'function' && _b) || Object, (typeof (_c = typeof platform_browser_1.DomSanitizer !== 'undefined' && platform_browser_1.DomSanitizer) === 'function' && _c) || Object, (typeof (_d = typeof core_1.NgZone !== 'undefined' && core_1.NgZone) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [notifications_service_1.NotificationsService, platform_browser_1.DomSanitizer])
     ], NotificationComponent);
     return NotificationComponent;
-    var _a, _b, _c, _d;
 }());
 exports.NotificationComponent = NotificationComponent;
-
+//# sourceMappingURL=notification.component.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/notification.type.ts":
+/***/ "./node_modules/angular2-notifications/lib/notification.type.js":
 /***/ function(module, exports) {
 
 "use strict";
 "use strict";
-
+//# sourceMappingURL=notification.type.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/notifications.service.ts":
+/***/ "./node_modules/angular2-notifications/lib/notifications.service.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var Subject_1 = __webpack_require__("./node_modules/rxjs/Subject.js");
-var icons_1 = __webpack_require__("./node_modules/angular2-notifications/src/icons.ts");
+var icons_1 = __webpack_require__("./node_modules/angular2-notifications/lib/icons.js");
 var NotificationsService = (function () {
     function NotificationsService() {
         this.emitter = new Subject_1.Subject();
@@ -12169,7 +11106,6 @@ var NotificationsService = (function () {
     }
     NotificationsService.prototype.set = function (notification, to) {
         notification.id = notification.override && notification.override.id ? notification.override.id : Math.random().toString(36).substring(3);
-        notification.click = new core_1.EventEmitter();
         this.emitter.next({ command: 'set', notification: notification, add: to });
         return notification;
     };
@@ -12177,7 +11113,6 @@ var NotificationsService = (function () {
     NotificationsService.prototype.getChangeEmitter = function () {
         return this.emitter;
     };
-    //// Access methods
     NotificationsService.prototype.success = function (title, content, override) {
         return this.set({
             title: title,
@@ -12199,20 +11134,19 @@ var NotificationsService = (function () {
     NotificationsService.prototype.bare = function (title, content, override) {
         return this.set({ title: title, content: content, type: 'bare', icon: 'bare', override: override }, true);
     };
-    // With type method
     NotificationsService.prototype.create = function (title, content, type, override) {
         return this.set({ title: title, content: content, type: type, icon: 'bare', override: override }, true);
     };
-    // HTML Notification method
     NotificationsService.prototype.html = function (html, type, override) {
         return this.set({ html: html, type: type, icon: 'bare', override: override, title: null, content: null }, true);
     };
-    // Remove all notifications method
     NotificationsService.prototype.remove = function (id) {
-        if (id)
+        if (id) {
             this.emitter.next({ command: 'clean', id: id });
-        else
+        }
+        else {
             this.emitter.next({ command: 'cleanAll' });
+        }
     };
     NotificationsService = __decorate([
         core_1.Injectable(), 
@@ -12221,26 +11155,44 @@ var NotificationsService = (function () {
     return NotificationsService;
 }());
 exports.NotificationsService = NotificationsService;
-
+//# sourceMappingURL=notifications.service.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/options.type.ts":
+/***/ "./node_modules/angular2-notifications/lib/options.type.js":
 /***/ function(module, exports) {
 
 "use strict";
 "use strict";
-
+//# sourceMappingURL=options.type.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/push-notifications.module.ts":
+/***/ "./node_modules/angular2-notifications/lib/push-notification.type.js":
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+//# sourceMappingURL=push-notification.type.js.map
+
+/***/ },
+
+/***/ "./node_modules/angular2-notifications/lib/push-notifications.module.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var push_notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/push-notifications.service.ts");
+var push_notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/lib/push-notifications.service.js");
 var PushNotificationsModule = (function () {
     function PushNotificationsModule() {
     }
@@ -12253,38 +11205,45 @@ var PushNotificationsModule = (function () {
     return PushNotificationsModule;
 }());
 exports.PushNotificationsModule = PushNotificationsModule;
-
+//# sourceMappingURL=push-notifications.module.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/push-notifications.service.ts":
+/***/ "./node_modules/angular2-notifications/lib/push-notifications.service.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var Observable_1 = __webpack_require__("./node_modules/rxjs/Observable.js");
 var PushNotificationsService = (function () {
     function PushNotificationsService() {
-        this.permission = this.isSupported() ? Notification.permission : 'denied';
+        this.permission = 'granted';
     }
     PushNotificationsService.prototype.requestPermission = function () {
         var _this = this;
         if ('Notification' in window)
             Notification.requestPermission(function (status) { return _this.permission = status; });
     };
-    PushNotificationsService.prototype.isSupported = function () {
-        return 'Notification' in window;
-    };
     PushNotificationsService.prototype.create = function (title, options) {
         var _this = this;
         return new Observable_1.Observable(function (obs) {
             if (!('Notification' in window)) {
-                obs.error('Notifications are not available in this environment');
+                obs.error('Notifications are not available in this envirement');
                 obs.complete();
             }
+            _this.permission = Notification.permission;
             if (_this.permission !== 'granted') {
-                obs.error("The user hasn't granted you permission to send push notifications");
+                obs.error("The user didn't granted you permission to send push notifications");
                 obs.complete();
             }
             var n = new Notification(title, options);
@@ -12292,6 +11251,10 @@ var PushNotificationsService = (function () {
             n.onclick = function (e) { return obs.next({ notification: n, event: e }); };
             n.onerror = function (e) { return obs.error({ notification: n, event: e }); };
             n.onclose = function () { return obs.complete(); };
+            n.close = function () {
+                n.close.bind(n);
+                obs.complete();
+            };
         });
     };
     PushNotificationsService = __decorate([
@@ -12301,18 +11264,27 @@ var PushNotificationsService = (function () {
     return PushNotificationsService;
 }());
 exports.PushNotificationsService = PushNotificationsService;
-
+//# sourceMappingURL=push-notifications.service.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/simple-notifications.component.ts":
+/***/ "./node_modules/angular2-notifications/lib/simple-notifications.component.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/notifications.service.ts");
-var options_type_1 = __webpack_require__("./node_modules/angular2-notifications/src/options.type.ts");
+var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/lib/notifications.service.js");
+var icons_1 = __webpack_require__("./node_modules/angular2-notifications/lib/icons.js");
 var SimpleNotificationsComponent = (function () {
     function SimpleNotificationsComponent(_service) {
         this._service = _service;
@@ -12320,12 +11292,10 @@ var SimpleNotificationsComponent = (function () {
         this.onDestroy = new core_1.EventEmitter();
         this.notifications = [];
         this.position = ['bottom', 'right'];
-        // Received values
         this.lastOnBottom = true;
         this.maxStack = 8;
         this.preventLastDuplicates = false;
         this.preventDuplicates = false;
-        // Sent values
         this.timeOut = 0;
         this.maxLength = 0;
         this.clickToClose = true;
@@ -12334,6 +11304,7 @@ var SimpleNotificationsComponent = (function () {
         this.theClass = '';
         this.rtl = false;
         this.animate = 'fromRight';
+        this.icons = icons_1.defaultIcons;
     }
     Object.defineProperty(SimpleNotificationsComponent.prototype, "options", {
         set: function (opt) {
@@ -12344,7 +11315,6 @@ var SimpleNotificationsComponent = (function () {
     });
     SimpleNotificationsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        // Listen for changes in the service
         this.listener = this._service.getChangeEmitter()
             .subscribe(function (item) {
             switch (item.command) {
@@ -12355,10 +11325,12 @@ var SimpleNotificationsComponent = (function () {
                     _this.cleanSingle(item.id);
                     break;
                 case 'set':
-                    if (item.add)
+                    if (item.add) {
                         _this.add(item.notification);
-                    else
+                    }
+                    else {
                         _this.defaultBehavior(item);
+                    }
                     break;
                 default:
                     _this.defaultBehavior(item);
@@ -12366,19 +11338,15 @@ var SimpleNotificationsComponent = (function () {
             }
         });
     };
-    // Default behavior on event
     SimpleNotificationsComponent.prototype.defaultBehavior = function (value) {
         this.notifications.splice(this.notifications.indexOf(value.notification), 1);
         this.onDestroy.emit(this.buildEmit(value.notification, false));
     };
-    // Add the new notification to the notification array
     SimpleNotificationsComponent.prototype.add = function (item) {
         item.createdOn = new Date();
         var toBlock = this.preventLastDuplicates || this.preventDuplicates ? this.block(item) : false;
-        // Save this as the last created notification
         this.lastNotificationCreated = item;
         if (!toBlock) {
-            // Check if the notification should be added at the start or the end of the array
             if (this.lastOnBottom) {
                 if (this.notifications.length >= this.maxStack)
                     this.notifications.splice(0, 1);
@@ -12392,7 +11360,6 @@ var SimpleNotificationsComponent = (function () {
             this.onCreate.emit(this.buildEmit(item, true));
         }
     };
-    // Check if notifications should be prevented
     SimpleNotificationsComponent.prototype.block = function (item) {
         var toCheck = item.html ? this.checkHtml : this.checkStandard;
         if (this.preventDuplicates && this.notifications.length > 0) {
@@ -12428,7 +11395,6 @@ var SimpleNotificationsComponent = (function () {
     SimpleNotificationsComponent.prototype.checkHtml = function (checker, item) {
         return checker.html ? checker.type === item.type && checker.title === item.title && checker.content === item.content && checker.html === item.html : false;
     };
-    // Attach all the changes received in the options object
     SimpleNotificationsComponent.prototype.attachChanges = function (options) {
         var _this = this;
         Object.keys(options).forEach(function (a) {
@@ -12476,8 +11442,8 @@ var SimpleNotificationsComponent = (function () {
     };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', (typeof (_a = typeof options_type_1.Options !== 'undefined' && options_type_1.Options) === 'function' && _a) || Object), 
-        __metadata('design:paramtypes', [(typeof (_b = typeof options_type_1.Options !== 'undefined' && options_type_1.Options) === 'function' && _b) || Object])
+        __metadata('design:type', Object), 
+        __metadata('design:paramtypes', [Object])
     ], SimpleNotificationsComponent.prototype, "options", null);
     __decorate([
         core_1.Output(), 
@@ -12494,27 +11460,35 @@ var SimpleNotificationsComponent = (function () {
             template: "\n        <div class=\"simple-notification-wrapper\" [ngClass]=\"position\">\n            <simple-notification\n                *ngFor=\"let a of notifications; let i = index\"\n                [item]=\"a\"\n                [timeOut]=\"timeOut\"\n                [clickToClose]=\"clickToClose\"\n                [maxLength]=\"maxLength\"\n                [showProgressBar]=\"showProgressBar\"\n                [pauseOnHover]=\"pauseOnHover\"\n                [theClass]=\"theClass\"\n                [rtl]=\"rtl\"\n                [animate]=\"animate\"\n                [position]=\"i\"\n                >\n            </simple-notification>\n        </div>\n    ",
             styles: ["\n        .simple-notification-wrapper {\n            position: fixed;\n            width: 300px;\n            z-index: 1000;\n        }\n        \n        .simple-notification-wrapper.left { left: 20px; }\n        .simple-notification-wrapper.top { top: 20px; }\n        .simple-notification-wrapper.right { right: 20px; }\n        .simple-notification-wrapper.bottom { bottom: 20px; }\n        \n        @media (max-width: 340px) {\n            .simple-notification-wrapper {\n                width: auto;\n                left: 20px;\n                right: 20px;\n            }\n        }\n    "]
         }), 
-        __metadata('design:paramtypes', [(typeof (_c = typeof notifications_service_1.NotificationsService !== 'undefined' && notifications_service_1.NotificationsService) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [notifications_service_1.NotificationsService])
     ], SimpleNotificationsComponent);
     return SimpleNotificationsComponent;
-    var _a, _b, _c;
 }());
 exports.SimpleNotificationsComponent = SimpleNotificationsComponent;
-
+//# sourceMappingURL=simple-notifications.component.js.map
 
 /***/ },
 
-/***/ "./node_modules/angular2-notifications/src/simple-notifications.module.ts":
+/***/ "./node_modules/angular2-notifications/lib/simple-notifications.module.js":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
-var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/src/notifications.service.ts");
-var simple_notifications_component_1 = __webpack_require__("./node_modules/angular2-notifications/src/simple-notifications.component.ts");
-var notification_component_1 = __webpack_require__("./node_modules/angular2-notifications/src/notification.component.ts");
-var max_pipe_1 = __webpack_require__("./node_modules/angular2-notifications/src/max.pipe.ts");
+var notifications_service_1 = __webpack_require__("./node_modules/angular2-notifications/lib/notifications.service.js");
+var simple_notifications_component_1 = __webpack_require__("./node_modules/angular2-notifications/lib/simple-notifications.component.js");
+var notification_component_1 = __webpack_require__("./node_modules/angular2-notifications/lib/notification.component.js");
+var max_pipe_1 = __webpack_require__("./node_modules/angular2-notifications/lib/max.pipe.js");
 var SimpleNotificationsModule = (function () {
     function SimpleNotificationsModule() {
     }
@@ -12530,7 +11504,7 @@ var SimpleNotificationsModule = (function () {
     return SimpleNotificationsModule;
 }());
 exports.SimpleNotificationsModule = SimpleNotificationsModule;
-
+//# sourceMappingURL=simple-notifications.module.js.map
 
 /***/ },
 
@@ -12606,18 +11580,6 @@ var finally_1 = __webpack_require__("./node_modules/rxjs/operator/finally.js");
 Observable_1.Observable.prototype.finally = finally_1._finally;
 Observable_1.Observable.prototype._finally = finally_1._finally;
 //# sourceMappingURL=finally.js.map
-
-/***/ },
-
-/***/ "./node_modules/rxjs/add/operator/first.js":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var Observable_1 = __webpack_require__("./node_modules/rxjs/Observable.js");
-var first_1 = __webpack_require__("./node_modules/rxjs/operator/first.js");
-Observable_1.Observable.prototype.first = first_1.first;
-//# sourceMappingURL=first.js.map
 
 /***/ },
 
