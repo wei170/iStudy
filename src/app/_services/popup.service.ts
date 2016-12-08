@@ -18,7 +18,7 @@ export class PopupService {
         // this.profile = {};
         let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         this.profileService.getProfile(hostName, userName).subscribe(
-            data => {
+            (data:any) => {
                 if (data.profile) {
                     let languages: string = "";
                     let hobbies: string = "";
