@@ -57,6 +57,11 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
 				   		//oneself
 						getPublicProfile(complete_profile, profile, res);
 				   }
+				   else if (profile.visibility == true){
+				   		// public profile visible to everybody
+					   console.log(body.hostName + " 's profile is public");
+					   res.status(200).json(profile);
+				   }
 				   else {
 				   	// check if two are friends of each other
 					db.user.findOne({where: {userName: body.requester}}).then(function (requester) {
