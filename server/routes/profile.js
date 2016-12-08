@@ -60,7 +60,7 @@ router.post('/', middleware.requireAuthentication, function(req, res) {
 				   else if (profile.visibility == true){
 				   		// public profile visible to everybody
 					   console.log(body.hostName + " 's profile is public");
-					   res.status(200).json(profile);
+					   getPublicProfile(complete_profile, profile, res);
 				   }
 				   else {
 				   	// check if two are friends of each other
