@@ -12,13 +12,13 @@ export class ClassroomService {
     /**
 	 * JSON Format:
 	 * {
-	 * 	"userName": "..."
+	 * 	"id": ...
 	 * 	}
 	 */
     getUserCourseList() {
         let url = '/course/get-class-list';
-        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        let body = { "userName": userName };
+        let userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        let body = { "id": userId };
        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
@@ -41,13 +41,13 @@ export class ClassroomService {
 	 * {
 	 * 	"course": "...",
 	 * 	"professor": "...",
-	 * 	"userName": "..."
+	 * 	"id": ...
 	 * }
 	 */
     leaveClass(course: string, professor: string) {
         let url = '/course/leave';
-        let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        let body = { "course": course, "professor": professor, "userName": userName};
+        let userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        let body = { "course": course, "professor": professor, "id": userId};
        return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 }

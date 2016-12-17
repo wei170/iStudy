@@ -13,9 +13,14 @@ export class FriendService {
 
     /*********************** Get, Add, Request or Filter Friend ***********************/
     // get friend list
-    getFriends (username: string) {
+    /**
+     * JSON Format: {
+     * 		"id": "..."
+     * }
+     */
+    getFriends (id: number) {
         let url = 'users/get-friends';
-        let body = { "userName": username }
+        let body = { "id": id }
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 

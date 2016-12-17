@@ -54,7 +54,7 @@ var Profile = (function () {
     };
     Profile.prototype.fetchFriendList = function () {
         var _this = this;
-        this.friendService.getFriends(this.currentUser.userName).subscribe(function (data) {
+        this.friendService.getFriends(this.currentUser.id).subscribe(function (data) {
             _this.friendList = data;
         });
     };

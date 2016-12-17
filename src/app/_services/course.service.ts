@@ -47,7 +47,7 @@ export class CourseService {
      * {
      * 	"course": "...",
      * 	"professor": "...",
-     * 	"userName": "..."
+     * 	"id": ...
      * }
      *  Get course-id (insert new class)
      /**
@@ -57,9 +57,9 @@ export class CourseService {
 	 * 	"professor": "..."
 	 * }
      */
-     joinClass(courseName: string, professor: string, userName: string) {
+     joinClass(courseName: string, professor: string, id: Number) {
          let url = '/course/join';
-         let body = { "course" : courseName, "professor": professor, "userName": userName};
+         let body = { "course" : courseName, "professor": professor, "id": id};
          let headers = new Headers();
          headers.append('Auth', localStorage.getItem('token'));
          return this.http.post('/course/get-course-id', {"course": courseName, "professor": professor}, { headers: headers}).map((Res: Response) => {

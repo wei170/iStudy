@@ -210,13 +210,13 @@ router.post('/login', function(req, res) {
 router.post('/get-friends', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-     * 		"userName": "..."
+     * 		"id": ...
      * }
      */
-    var body = _.pick(req.body, 'userName');
+    var body = _.pick(req.body, 'id');
     db.user.findOne({
         where: {
-            userName: body.userName
+            id: body.id
         }
     }).then(function(user) {
         if (user) {

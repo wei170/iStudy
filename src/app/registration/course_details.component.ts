@@ -44,8 +44,8 @@ export class CourseDetailsComponent {
     }
 
     joinClass(professor: string) {
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        this.courseService.joinClass(this.courseName, professor, userName).subscribe(
+        var userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        this.courseService.joinClass(this.courseName, professor, userId).subscribe(
             data => {
                 data.subscribe(
                     data => {

@@ -81,7 +81,7 @@ export class Profile implements OnInit {
     }
 
     fetchFriendList() {
-        this.friendService.getFriends(this.currentUser.userName).subscribe(
+        this.friendService.getFriends(this.currentUser.id).subscribe(
             data => {
                 this.friendList = data;
             }

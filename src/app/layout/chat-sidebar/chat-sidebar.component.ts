@@ -64,7 +64,7 @@ export class ChatSidebar implements OnInit {
   }
 
   ngOnInit(): void {
-    this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(
+    this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).id).subscribe(
       data => { 
         this.friendList = data;
         this.activeFriendName = this.friendList[0].userName;

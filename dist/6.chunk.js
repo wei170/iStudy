@@ -310,8 +310,8 @@ var Classroom = (function () {
                     _this.alertService.success("Sucessfully leave the class, peace!");
                     _this.getEnrolledClasses();
                 }, function (error) {
-                    console.log(error);
-                    _this.alertService.error(error);
+                    console.log(JSON.parse(error._body).err);
+                    _this.alertService.error(JSON.parse(error._body).err);
                 });
             }
         });

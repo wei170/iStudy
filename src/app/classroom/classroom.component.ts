@@ -141,8 +141,8 @@ export class Classroom implements OnInit {
                         this.getEnrolledClasses();
                     },
                     error => {
-                        console.log(error);
-                        this.alertService.error(error);
+                        console.log(JSON.parse(error._body).err);
+                        this.alertService.error(JSON.parse(error._body).err);
                     }
                 )
             }

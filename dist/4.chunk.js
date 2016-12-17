@@ -622,8 +622,8 @@ var CourseDetailsComponent = (function () {
     }
     CourseDetailsComponent.prototype.joinClass = function (professor) {
         var _this = this;
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        this.courseService.joinClass(this.courseName, professor, userName).subscribe(function (data) {
+        var userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        this.courseService.joinClass(this.courseName, professor, userId).subscribe(function (data) {
             data.subscribe(function (data) {
                 _this.alertService.success("Sucessfully join the class!");
             });

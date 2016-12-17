@@ -123,10 +123,10 @@ router.post('/join', middleware.requireAuthentication, function (req, res) {
 	 * {
 	 * 	"course": "...",
 	 * 	"professor": "...",
-	 * 	"userName": "..."
+	 * 	"id": ...
 	 * }
 	 */
-	var body = _.pick(req.body, 'course', 'professor', 'userName');
+	var body = _.pick(req.body, 'course', 'professor', 'id');
 	db.course.findOne({where: {name: body.course}}).then(function (course) {
 		if (course){
 			//TODO: two prof with same name might cause problem
@@ -137,11 +137,11 @@ router.post('/join', middleware.requireAuthentication, function (req, res) {
 						.then(function (c_u) {
 							if (c_u){
 								// first find the actual course the student wants to join
-								db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+								db.user.findOne({where: {id: body.id}}).then(function (user) {
 									if (user){
 										// add user as a student to the course
 										user.addCourse(c_u);
-										console.log('user ', body.userName, ' has joined the class ', body.course, ' by ', body.professor);
+										console.log('user ', body.id, ' has joined the class ', body.course, ' by ', body.professor);
 										res.status(200).send({res: "Join the class successfully"});
 									}
 									else {
@@ -173,10 +173,10 @@ router.post('/leave', middleware.requireAuthentication, function (req, res) {
 	 * {
 	 * 	"course": "...",
 	 * 	"professor": "...",
-	 * 	"userName": "..."
+	 * 	"id": ...
 	 * }
 	 */
-	var body = _.pick(req.body, 'course', 'professor', 'userName');
+	var body = _.pick(req.body, 'course', 'professor', 'id');
 	db.course.findOne({where: {name: body.course}}).then(function (course) {
 		if (course){
 			//TODO: two prof with same name might cause problem
@@ -187,7 +187,7 @@ router.post('/leave', middleware.requireAuthentication, function (req, res) {
 						.then(function (c_u) {
 							if (c_u){
 								// first find the actual course the student wants to join
-								db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+								db.user.findOne({where: {id: body.id}}).then(function (user) {
 									if (user){
 										// remove the user from the course
 										db.course_student.findOne({where: {user_id: user.id, course_professor_id: c_u.id}})
@@ -327,7 +327,7 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 	/**
 	 * JSON Format:
 	 * {
-	 * 	"userName": "..."
+	 * 	"id": ...
 	 * 	}
 	 */
 	var course_ids = [];
@@ -336,10 +336,9 @@ router.post('/get-class-list', middleware.requireAuthentication, function(req, r
 	var courses = [];
 	course_list.courses = courses;
 
-	var body = _.pick(req.body, 'userName');
-	db.user.findOne({where: {userName: body.userName}}).then(function (user) {
+	var body = _.pick(req.body, 'id');
+	db.user.findOne({where: {id: body.id}}).then(function (user) {
 		if (user){
-			console.log(user.userName);
 			user.getCourses().then(function (c_ids) {
 				if (c_ids){
 					c_ids.map(function (c_id) {

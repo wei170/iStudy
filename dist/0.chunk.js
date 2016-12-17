@@ -107963,13 +107963,13 @@ var ClassroomService = (function () {
     /**
      * JSON Format:
      * {
-     * 	"userName": "..."
+     * 	"id": ...
      * 	}
      */
     ClassroomService.prototype.getUserCourseList = function () {
         var url = '/course/get-class-list';
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        var body = { "userName": userName };
+        var userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        var body = { "id": userId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     /**
@@ -107990,13 +107990,13 @@ var ClassroomService = (function () {
      * {
      * 	"course": "...",
      * 	"professor": "...",
-     * 	"userName": "..."
+     * 	"id": ...
      * }
      */
     ClassroomService.prototype.leaveClass = function (course, professor) {
         var url = '/course/leave';
-        var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
-        var body = { "course": course, "professor": professor, "userName": userName };
+        var userId = JSON.parse(localStorage.getItem('currentUser')).id;
+        var body = { "course": course, "professor": professor, "id": userId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     ClassroomService = __decorate([
@@ -108060,7 +108060,7 @@ var CourseService = (function () {
     * {
     * 	"course": "...",
     * 	"professor": "...",
-    * 	"userName": "..."
+    * 	"id": ...
     * }
     *  Get course-id (insert new class)
     /**
@@ -108070,10 +108070,10 @@ var CourseService = (function () {
     * 	"professor": "..."
     * }
     */
-    CourseService.prototype.joinClass = function (courseName, professor, userName) {
+    CourseService.prototype.joinClass = function (courseName, professor, id) {
         var _this = this;
         var url = '/course/join';
-        var body = { "course": courseName, "professor": professor, "userName": userName };
+        var body = { "course": courseName, "professor": professor, "id": id };
         var headers = new http_1.Headers();
         headers.append('Auth', localStorage.getItem('token'));
         return this.http.post('/course/get-course-id', { "course": courseName, "professor": professor }, { headers: headers }).map(function (Res) {
@@ -108130,9 +108130,14 @@ var FriendService = (function () {
     }
     /*********************** Get, Add, Request or Filter Friend ***********************/
     // get friend list
-    FriendService.prototype.getFriends = function (username) {
+    /**
+     * JSON Format: {
+     * 		"id": "..."
+     * }
+     */
+    FriendService.prototype.getFriends = function (id) {
         var url = 'users/get-friends';
-        var body = { "userName": username };
+        var body = { "id": id };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // send friend request
@@ -108745,7 +108750,7 @@ var ChatSidebar = (function () {
     };
     ChatSidebar.prototype.ngOnInit = function () {
         var _this = this;
-        this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).userName).subscribe(function (data) {
+        this.friendService.getFriends(JSON.parse(localStorage.getItem('currentUser')).id).subscribe(function (data) {
             _this.friendList = data;
             _this.activeFriendName = _this.friendList[0].userName;
         });
