@@ -58,9 +58,9 @@
 						<div class="form-group">
 							<md-list>
 								<md-list-item *ngFor="let student of studentList">
-									<img md-list-avatar (click)="popInfo(student.userName)" src="assets/img/avatar.png" alt="...">
-									<span class="pull-xs-right"><button class="btn btn-default" (click)="sendRequest(student.userName)">Add</button></span>
-									<h3 md-line><a href="javascript:void(0)" (click)="popInfo(student.userName)"> {{student.userName}} </a></h3>
+									<img md-list-avatar (click)="popInfo(student.userName, student.id)" src="assets/img/avatar.png" alt="...">
+									<span class="pull-xs-right"><button class="btn btn-default" (click)="sendRequest(student.userName, student.id)">Add</button></span>
+									<h3 md-line><a href="javascript:void(0)" (click)="popInfo(student.userName, student.id)"> {{student.userName}} </a></h3>
 									<p md-line>
 										<span> {{student.email}} </span>
 									</p>

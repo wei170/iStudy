@@ -21,7 +21,7 @@
   <div id="notifications-list" class="list-group thin-scroll">
     <div class="list-group-item">
       <p class="no-margin overflow-hidden"  *ngFor="let req of friendRequests">
-        <a href="#" (click)="popInfo(req.userName)">{{req.userName}}</a> sent you a friend request
+        <a href="#" (click)="popInfo(req.userName, req.id)">{{req.userName}}</a> sent you a friend request
         &nbsp;&nbsp;<br/>
         <button class="btn btn-xs btn-success col-lg-4" (click)="accept(req)">Accept</button>
         <button class="btn btn-xs btn-danger col-lg-4" (click)="decline(req)">Deny</button>

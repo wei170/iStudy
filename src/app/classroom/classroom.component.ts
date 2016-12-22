@@ -115,8 +115,8 @@ export class Classroom implements OnInit {
         this.getNumOfStudents(room);
     }
 
-    sendRequest(reciever: string) {
-        this.friendService.sendFriendReq(this.currentUser.userName, reciever).subscribe(
+    sendRequest(reciever: string, recieverId: Number) {
+        this.friendService.sendFriendReq(recieverId).subscribe(
             data => {
                 this.alertService.success("Sent Request To " + reciever);
             },
@@ -126,8 +126,8 @@ export class Classroom implements OnInit {
         );
     }
 
-    popInfo (userName: string) {
-        this.popupService.popUser(userName);
+    popInfo (userName:string, userId: Number) {
+        this.popupService.popUser(userName, userId);
     }
 
     leaveClass(room: any) {

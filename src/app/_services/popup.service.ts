@@ -14,7 +14,7 @@ export class PopupService {
         private alertService: AlertService
     ){}
 
-    popUser(hostName: string) {
+    popUser(hostName: string, hostId: Number) {
         // this.profile = {};
         let userName = JSON.parse(localStorage.getItem('currentUser')).userName;
         this.profileService.getProfile(hostName, userName).subscribe(
@@ -49,7 +49,7 @@ export class PopupService {
                         .then(
                             res => {
                                 if (res) {
-                                    this.friendService.sendFriendReq(userName, hostName).subscribe(
+                                    this.friendService.sendFriendReq(hostId).subscribe(
                                         data => this.alertService.success(data.res),
                                         error => this.alertService.error(JSON.parse(error._body).err)
                                 )}

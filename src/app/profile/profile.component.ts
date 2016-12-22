@@ -138,20 +138,20 @@ export class Profile implements OnInit {
         this.toEdit = false;
     }
 
-    unFollow (victim: string) {
-        this.friendService.unFriend(this.currentUser.userName, victim).subscribe(
+    unFollow (victimName: string, victimId: Number) {
+        this.friendService.unFriend(this.currentUser.id, victimId).subscribe(
             data => {
-                this.alertService.successWT("Unfollow", "Successfully unfollow" + victim);
+                this.alertService.successWT("Unfollow", "Successfully unfollow" + victimName);
                 this.fetchFriendList();                
             },
             err => {
                 console.log(err);
-                this.alertService.error(err);                
+                this.alertService.error(JSON.parse(err._body).err);                
             }
         );
     }
 
-    pop(userName: string) {
-        this.popupService.popUser(userName);
+    pop(userName: string, userId: Number) {
+        this.popupService.popUser(userName, userId);
     }
 }

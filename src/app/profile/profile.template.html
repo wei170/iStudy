@@ -281,9 +281,9 @@
 					<div class="list-group list-group-lg">
 						<div class="list-group-item" href="#" *ngFor="let friend of friendList">
 							<span class="thumb-sm pull-xs-left mr">
-							<a href="#"><img alt="..." class="img-circle" src="assets/img/avatar.png" (click)="pop(friend.userName)"></a>
+							<a href="#"><img alt="..." class="img-circle" src="assets/img/avatar.png" (click)="pop(friend.userName, friend.id)"></a>
 						</span>
-							<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName)">Unfollow</button></span>
+							<span class="pull-xs-right"><button class="btn btn-danger" (click)="unFollow(friend.userName, friend.id)">Unfollow</button></span>
 							<h6 class="no-margin" (click)="pop(friend.userName)"><a href="javascript:void(0)">{{friend.userName}}</a></h6>
 							<small class="text-muted">{{friend.email}}</small>
 						</div>

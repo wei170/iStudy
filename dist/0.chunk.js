@@ -109370,6 +109370,7 @@ __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var FriendService = (function () {
     function FriendService(http) {
         this.http = http;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.headers = new http_1.Headers();
         this.headers.append('Auth', localStorage.getItem('token'));
     }
@@ -109386,9 +109387,15 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // send friend request
-    FriendService.prototype.sendFriendReq = function (senderName, receiverName) {
+    FriendService.prototype.sendFriendReq = function (receiverId) {
+        /**
+         * JSON Format: {
+         * 		"senderId": ...,
+         * 		"receiverId": ...
+         * }
+         */
         var url = 'users/send-friend-request';
-        var body = { "senderName": senderName, "receiverName": receiverName };
+        var body = { "senderId": this.currentUser.id, "receiverId": receiverId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend requests
@@ -109398,9 +109405,9 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend invitations
-    FriendService.prototype.getFriendInvitations = function (username) {
+    FriendService.prototype.getFriendInvitations = function (userId) {
         var url = 'users/get-friend-invitations';
-        var body = { "userName": username };
+        var body = { "userId": userId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // Accept Or Decline Request
@@ -109432,15 +109439,15 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     /************* Delete Friend *************/
-    FriendService.prototype.unFriend = function (murder, victim) {
+    FriendService.prototype.unFriend = function (murderId, victimId) {
         /**
          * JSON Format: {
-         * 		"userName": "...",
-         * 		"friendName": "..."
+         * 		"userId": ...,
+         * 		"friendId": ...
          * }
          */
         var url = 'users/delete-friend';
-        var body = { "userName": murder, "friendName": victim };
+        var body = { "userId": murderId, "friendId": victimId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     FriendService = __decorate([
@@ -109611,7 +109618,7 @@ var PopupService = (function () {
         this.alertService = alertService;
         this.profile = {};
     }
-    PopupService.prototype.popUser = function (hostName) {
+    PopupService.prototype.popUser = function (hostName, hostId) {
         var _this = this;
         // this.profile = {};
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
@@ -109645,7 +109652,7 @@ var PopupService = (function () {
                     .catch(function (res) { return console.log("Cancel"); })
                     .then(function (res) {
                     if (res) {
-                        _this.friendService.sendFriendReq(userName, hostName).subscribe(function (data) { return _this.alertService.success(data.res); }, function (error) { return _this.alertService.error(JSON.parse(error._body).err); });
+                        _this.friendService.sendFriendReq(hostId).subscribe(function (data) { return _this.alertService.success(data.res); }, function (error) { return _this.alertService.error(JSON.parse(error._body).err); });
                     }
                 });
             }
@@ -110568,12 +110575,8 @@ var Notifications = (function () {
     Notifications.prototype.updateMessages = function () {
         var _this = this;
         this.time = moment.utc().local().format('h:mm:ss a');
-        this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(function (data) {
-            _this.friendRequests = [];
-            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
-                var d = data_1[_i];
-                _this.friendRequests.push(d);
-            }
+        this.friendService.getFriendInvitations(this.currentUser.id).subscribe(function (data) {
+            _this.friendRequests = data;
             _this.numOfNotifications.emit(_this.friendRequests.length);
         });
     };
@@ -110595,8 +110598,8 @@ var Notifications = (function () {
             _this.alertService.error(error);
         });
     };
-    Notifications.prototype.popInfo = function (userName) {
-        this.popupService.popUser(userName);
+    Notifications.prototype.popInfo = function (userName, userId) {
+        this.popupService.popUser(userName, userId);
     };
     __decorate([
         core_1.Output(), 
@@ -110621,7 +110624,7 @@ exports.Notifications = Notifications;
 /***/ "./src/app/layout/notifications/notifications.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<section class=\"card notifications\">\r\n  <header class=\"card-header\">\r\n    <div class=\"text-xs-center mb-sm\">\r\n      <strong>You have {{friendRequests.length}} notifications</strong>\r\n    </div>\r\n    <div class=\"btn-group btn-group-sm btn-group-justified\" id=\"notifications-toggle\" data-toggle=\"buttons\">\r\n      <label class=\"btn btn-secondary active\" notification-load>\r\n        <!-- ajax-load plugin in action. setting data-ajax-load & data-ajax-target is the\r\n             only requirement for async reloading -->\r\n        Notifications\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Messages\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Progress\r\n      </label>\r\n    </div>\r\n  </header>\r\n  <!-- notification list with .thin-scroll which styles scrollbar for webkit -->\r\n  <div id=\"notifications-list\" class=\"list-group thin-scroll\">\r\n    <div class=\"list-group-item\">\r\n      <p class=\"no-margin overflow-hidden\"  *ngFor=\"let req of friendRequests\">\r\n        <a href=\"#\" (click)=\"popInfo(req.userName)\">{{req.userName}}</a> sent you a friend request\r\n        &nbsp;&nbsp;<br/>\r\n        <button class=\"btn btn-xs btn-success col-lg-4\" (click)=\"accept(req)\">Accept</button>\r\n        <button class=\"btn btn-xs btn-danger col-lg-4\" (click)=\"decline(req)\">Deny</button>\r\n        <time class=\"help-block no-margin\">\r\n          12:18 AM\r\n        </time>\r\n      </p>\r\n    </div>\r\n  </div>\r\n  <footer class=\"card-footer text-sm\">\r\n    <button class=\"btn btn-xs btn-link pull-xs-right btn-notifications-reload\" (click)=\"updateMessages()\">\r\n      <!-- Put reload here -->\r\n      <i class=\"fa fa-refresh\"></i>\r\n    </button>\r\n    <!-- Put local time here -->\r\n    <span class=\"fs-mini\">Synced at: {{time}}</span>\r\n  </footer>\r\n</section>\r\n"
+module.exports = "<section class=\"card notifications\">\r\n  <header class=\"card-header\">\r\n    <div class=\"text-xs-center mb-sm\">\r\n      <strong>You have {{friendRequests.length}} notifications</strong>\r\n    </div>\r\n    <div class=\"btn-group btn-group-sm btn-group-justified\" id=\"notifications-toggle\" data-toggle=\"buttons\">\r\n      <label class=\"btn btn-secondary active\" notification-load>\r\n        <!-- ajax-load plugin in action. setting data-ajax-load & data-ajax-target is the\r\n             only requirement for async reloading -->\r\n        Notifications\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Messages\r\n      </label>\r\n      <label class=\"btn btn-secondary\" notification-load>\r\n        Progress\r\n      </label>\r\n    </div>\r\n  </header>\r\n  <!-- notification list with .thin-scroll which styles scrollbar for webkit -->\r\n  <div id=\"notifications-list\" class=\"list-group thin-scroll\">\r\n    <div class=\"list-group-item\">\r\n      <p class=\"no-margin overflow-hidden\"  *ngFor=\"let req of friendRequests\">\r\n        <a href=\"#\" (click)=\"popInfo(req.userName, req.id)\">{{req.userName}}</a> sent you a friend request\r\n        &nbsp;&nbsp;<br/>\r\n        <button class=\"btn btn-xs btn-success col-lg-4\" (click)=\"accept(req)\">Accept</button>\r\n        <button class=\"btn btn-xs btn-danger col-lg-4\" (click)=\"decline(req)\">Deny</button>\r\n        <time class=\"help-block no-margin\">\r\n          12:18 AM\r\n        </time>\r\n      </p>\r\n    </div>\r\n  </div>\r\n  <footer class=\"card-footer text-sm\">\r\n    <button class=\"btn btn-xs btn-link pull-xs-right btn-notifications-reload\" (click)=\"updateMessages()\">\r\n      <!-- Put reload here -->\r\n      <i class=\"fa fa-refresh\"></i>\r\n    </button>\r\n    <!-- Put local time here -->\r\n    <span class=\"fs-mini\">Synced at: {{time}}</span>\r\n  </footer>\r\n</section>\r\n"
 
 /***/ },
 

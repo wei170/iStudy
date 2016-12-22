@@ -237,20 +237,20 @@ router.post('/get-friends', middleware.requireAuthentication, function(req, res)
 router.post('/send-friend-request', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-     * 		"senderName": "...",
-     * 		"receiverName": "..."
+     * 		"senderId": ...,
+     * 		"receiverId": ...
      * }
      */
-    var body = _.pick(req.body, 'senderName', 'receiverName');
+    var body = _.pick(req.body, 'senderId', 'receiverId');
     db.user.findOne({
         where: {
-            userName: body.senderName
+            id: body.senderId
         }
     }).then(function(sender) {
         if (sender) {
             db.user.findOne({
                 where: {
-                    userName: body.receiverName
+                    id: body.receiverId
                 }
             }).then(function(receiver) {
                 if (receiver) {
@@ -302,14 +302,14 @@ router.post('/send-friend-request', middleware.requireAuthentication, function(r
 router.post('/delete-friend', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-     * 		"userName": "...",
-     * 		"friendName": "..."
+     * 		"userId": ...,
+     * 		"friendId": ...
      * }
      */
-    var body = _.pick(req.body, 'userName', 'friendName');
+    var body = _.pick(req.body, 'userId', 'friendId');
     db.user.findOne({
             where: {
-                userName: body.userName
+                id: body.userId
             }
         })
         .then(function(user) {
@@ -317,13 +317,13 @@ router.post('/delete-friend', middleware.requireAuthentication, function(req, re
                 var result = [];
                 result.isFriend = false;
                 user.getFriends().then(function(friends) {
-                    checkIfIsFriend(friends, body.friendName, result)
+                    checkIfIsFriend(friends, body.friendId, result)
                         .then(function() {
-                            if (result.isFriend == true) {
+                            if (result.isFriend === true) {
                                 // two are friends of each other
                                 db.user.findOne({
                                         where: {
-                                            userName: body.friendName
+                                            id: body.friendId
                                         }
                                     })
                                     .then(function(friend) {
@@ -410,13 +410,13 @@ var deleteEachOther = function(A, B) {
  * @param friendName
  * @param result
  */
-var checkIfIsFriend = function(friends, friendName, result) {
+var checkIfIsFriend = function(friends, friendId, result) {
     return new Promise(function(resolve, reject) {
         // isFriend by default is false
         var count = 0;
         var len = friends.length;
         friends.map(function(friend) {
-            if (friend.userName === friendName) {
+            if (friend.id === friendId) {
                 result.isFriend = true;
                 resolve();
             }
@@ -437,14 +437,14 @@ var checkIfIsFriend = function(friends, friendName, result) {
 router.post('/get-friend-invitations', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-     * 		"userName": "...",
+     * 		"userId": ...,
      * }
      */
     var sender_ids = [];
-    var body = _.pick(req.body, 'userName');
+    var body = _.pick(req.body, 'userId');
     db.user.findOne({
         where: {
-            userName: body.userName
+            id: body.userId
         }
     }).then(function(user) {
         if (user) {
@@ -467,7 +467,7 @@ router.post('/get-friend-invitations', middleware.requireAuthentication, functio
                                 $in: sender_ids
                             }
                         },
-                        attributes: ['userName']
+                        attributes: ['id','userName']
                     }).then(function(senders) {
                         res.status(200).json(senders);
                     });
@@ -493,7 +493,7 @@ router.post('/get-friend-invitations', middleware.requireAuthentication, functio
 router.post('/get-friend-requests', middleware.requireAuthentication, function(req, res) {
     /**
      * JSON Format: {
-     * 		"userName": "...",
+     * 		"id": ...,
      * }
      */
     var request_list = {};
@@ -501,10 +501,10 @@ router.post('/get-friend-requests', middleware.requireAuthentication, function(r
     var receiver_ids = [];
     var request_statuses = [];
     request_list.requests = rs;
-    var body = _.pick(req.body, 'userName');
+    var body = _.pick(req.body, 'id');
     db.user.findOne({
         where: {
-            userName: body.userName
+            id: body.id
         }
     }).then(function(user) {
         if (user) {
@@ -525,7 +525,7 @@ router.post('/get-friend-requests', middleware.requireAuthentication, function(r
                                 $in: receiver_ids
                             }
                         },
-                        attributes: ['userName']
+                        attributes: ['id', 'userName']
                     }).then(function(receivers) {
                         for (var i = 0; i < receivers.length; i++) {
                             rs.push({
@@ -638,6 +638,7 @@ router.post('/invitation-accept-or-not', middleware.requireAuthentication, funct
 });
 
 
+// Need to update to search anything
 /******************************************************
  *           		Search A User
  ******************************************************/
@@ -795,9 +796,9 @@ router.post('/create-group', middleware.requireAuthentication, function(req, res
  	* JSON Format:
  		{ "groupName" : "....",
  		  "members":[
- 	      {"userName":"..."},
- 	      {"userName":"..."},
- 	      {"userName":"..."}...
+ 	      {"userId": ... },
+ 	      {"userId": ... },
+ 	      {"userId": ... }...
  	     ]
  	 	}
  	*/
@@ -819,7 +820,7 @@ router.post('/create-group', middleware.requireAuthentication, function(req, res
                 res.status(200).send();
             } else {
                 res.status(404).send({
-                    err: "Invalid userName"
+                    err: "Invalid userId"
                 });
             }
         });
@@ -828,7 +829,7 @@ router.post('/create-group', middleware.requireAuthentication, function(req, res
 
             db.user.findOne({
                 where: {
-                    userName: body.members[i].userName
+                    id: body.members[i].userId
                 }
             }).then(function(user) {
                 if (user) {
@@ -836,7 +837,7 @@ router.post('/create-group', middleware.requireAuthentication, function(req, res
                     res.status(200).send();
                 } else {
                     res.status(404).send({
-                        err: "Invalid userName"
+                        err: "Invalid userId"
                     });
                 }
             });

@@ -60,12 +60,9 @@ export class Notifications implements OnInit {
     // iStudy
     updateMessages() {
         this.time = moment.utc().local().format('h:mm:ss a');
-        this.friendService.getFriendInvitations(this.currentUser.userName).subscribe(
+        this.friendService.getFriendInvitations(this.currentUser.id).subscribe(
             (data: any) => {
-                this.friendRequests = [];
-                for (let d of data) {
-                    this.friendRequests.push(d);
-                }
+                this.friendRequests = data;
                 this.numOfNotifications.emit(this.friendRequests.length);
             }
         );
@@ -95,7 +92,7 @@ export class Notifications implements OnInit {
         )
     }
 
-    popInfo(userName: string) {
-        this.popupService.popUser(userName);
+    popInfo(userName: string, userId: Number) {
+        this.popupService.popUser(userName, userId);
     }
 }

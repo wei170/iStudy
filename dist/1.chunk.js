@@ -97143,6 +97143,7 @@ __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var FriendService = (function () {
     function FriendService(http) {
         this.http = http;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.headers = new http_1.Headers();
         this.headers.append('Auth', localStorage.getItem('token'));
     }
@@ -97159,9 +97160,15 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // send friend request
-    FriendService.prototype.sendFriendReq = function (senderName, receiverName) {
+    FriendService.prototype.sendFriendReq = function (receiverId) {
+        /**
+         * JSON Format: {
+         * 		"senderId": ...,
+         * 		"receiverId": ...
+         * }
+         */
         var url = 'users/send-friend-request';
-        var body = { "senderName": senderName, "receiverName": receiverName };
+        var body = { "senderId": this.currentUser.id, "receiverId": receiverId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend requests
@@ -97171,9 +97178,9 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // get friend invitations
-    FriendService.prototype.getFriendInvitations = function (username) {
+    FriendService.prototype.getFriendInvitations = function (userId) {
         var url = 'users/get-friend-invitations';
-        var body = { "userName": username };
+        var body = { "userId": userId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     // Accept Or Decline Request
@@ -97205,15 +97212,15 @@ var FriendService = (function () {
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     /************* Delete Friend *************/
-    FriendService.prototype.unFriend = function (murder, victim) {
+    FriendService.prototype.unFriend = function (murderId, victimId) {
         /**
          * JSON Format: {
-         * 		"userName": "...",
-         * 		"friendName": "..."
+         * 		"userId": ...,
+         * 		"friendId": ...
          * }
          */
         var url = 'users/delete-friend';
-        var body = { "userName": murder, "friendName": victim };
+        var body = { "userId": murderId, "friendId": victimId };
         return this.http.post(url, body, { headers: this.headers }).map(function (res) { return res.json(); });
     };
     FriendService = __decorate([
@@ -97384,7 +97391,7 @@ var PopupService = (function () {
         this.alertService = alertService;
         this.profile = {};
     }
-    PopupService.prototype.popUser = function (hostName) {
+    PopupService.prototype.popUser = function (hostName, hostId) {
         var _this = this;
         // this.profile = {};
         var userName = JSON.parse(localStorage.getItem('currentUser')).userName;
@@ -97418,7 +97425,7 @@ var PopupService = (function () {
                     .catch(function (res) { return console.log("Cancel"); })
                     .then(function (res) {
                     if (res) {
-                        _this.friendService.sendFriendReq(userName, hostName).subscribe(function (data) { return _this.alertService.success(data.res); }, function (error) { return _this.alertService.error(JSON.parse(error._body).err); });
+                        _this.friendService.sendFriendReq(hostId).subscribe(function (data) { return _this.alertService.success(data.res); }, function (error) { return _this.alertService.error(JSON.parse(error._body).err); });
                     }
                 });
             }

@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FriendService {
     private headers: any;
+    currentUser: any = JSON.parse(localStorage.getItem('currentUser'));
 
     constructor( private http: Http ) {
         this.headers = new Headers();
@@ -25,9 +26,15 @@ export class FriendService {
     }
 
     // send friend request
-    sendFriendReq (senderName: string, receiverName: string) {
+    sendFriendReq (receiverId: Number) {
+        /**
+         * JSON Format: {
+         * 		"senderId": ...,
+         * 		"receiverId": ...
+         * }
+         */
         let url = 'users/send-friend-request';
-        let body = { "senderName": senderName, "receiverName": receiverName }
+        let body = { "senderId": this.currentUser.id, "receiverId": receiverId }
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
@@ -39,9 +46,9 @@ export class FriendService {
     }
 
     // get friend invitations
-    getFriendInvitations (username: string) {
+    getFriendInvitations (userId: Number) {
         let url = 'users/get-friend-invitations';
-        let body = { "userName": username }
+        let body = { "userId": userId }
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());
     }
 
@@ -76,15 +83,15 @@ export class FriendService {
     }
 
     /************* Delete Friend *************/
-    unFriend(murder: string, victim: string) {
+    unFriend(murderId: Number, victimId: Number) {
         /**
          * JSON Format: {
-         * 		"userName": "...",
-         * 		"friendName": "..."
+         * 		"userId": ...,
+         * 		"friendId": ...
          * }
-	     */
+         */
         let url = 'users/delete-friend';
-        let body = { "userName": murder, "friendName": victim}
+        let body = { "userId": murderId, "friendId": victimId}
         return this.http.post(url, body, { headers: this.headers }).map((res: Response) => res.json());         
     }
 }
