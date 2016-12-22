@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
-import { PaginationModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { PaginationModule } from 'ng2-bootstrap';
 
 import { ClassRegistration } from './class_registration.component';
 import { CourseDetailsComponent } from './course_details.component'

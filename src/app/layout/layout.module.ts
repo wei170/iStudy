@@ -3,7 +3,7 @@ import 'jquery-slimscroll';
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule }  from '@angular/forms';
-import { TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { TooltipModule } from 'ng2-bootstrap';
 
 import { ROUTES }       from './layout.routes';
 
@@ -21,6 +21,10 @@ import { ProfileService, UserService, FriendService, AlertService, PopupService,
 import { AuthGuard } from '../_guards/index'
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { Ng2BootstrapModule } from 'ng2-bootstrap';
+import { TooltipConfig } from 'ng2-bootstrap/tooltip'
+import { ComponentLoaderFactory } from 'ng2-bootstrap/component-loader';
+import { PositioningService } from 'ng2-bootstrap/positioning';
 
 @NgModule({
   imports: [
@@ -29,7 +33,8 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     ROUTES,
     FormsModule,
     ModalModule.forRoot(),
-    BootstrapModalModule
+    BootstrapModalModule,
+    Ng2BootstrapModule
   ],
   declarations: [
     Layout,
@@ -50,9 +55,12 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
     AlertService,
     AuthGuard,
     PopupService,
-    ChatService
+    ChatService,
 
     // Other dev npm files
+    ComponentLoaderFactory,
+    PositioningService,
+    TooltipConfig
   ]
 })
 export default class LayoutModule {

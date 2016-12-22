@@ -45,13 +45,16 @@ function noop() {}
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_tokens__ = __webpack_require__("./node_modules/angular2-modal/esm/models/tokens.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_index__ = __webpack_require__("./node_modules/angular2-modal/esm/components/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__overlay_index__ = __webpack_require__("./node_modules/angular2-modal/esm/overlay/index.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ModalModule; });
 
 
 
 
 
 
-class ModalModule {
+var ModalModule = (function () {
+    function ModalModule() {
+    }
     /**
      * Returns a ModalModule pre-loaded with a list of dynamically inserted components.
      * Since dynamic components are not analysed by the angular compiler they must register manually
@@ -59,20 +62,20 @@ class ModalModule {
      * @param entryComponents A list of dynamically inserted components (dialog's).
      * @returns {{ngModule: ModalModule, providers: {provide: OpaqueToken, useValue: Array<Type|any[]>, multi: boolean}[]}}
      */
-    static withComponents(entryComponents) {
+    ModalModule.withComponents = function (entryComponents) {
         return {
             ngModule: ModalModule,
             providers: [
                 { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ANALYZE_FOR_ENTRY_COMPONENTS"], useValue: entryComponents, multi: true }
             ]
         };
-    }
+    };
     /**
      * Returns a NgModule for use in the root Module.
      * @param entryComponents A list of dynamically inserted components (dialog's).
      * @returns ModuleWithProviders
      */
-    static forRoot(entryComponents) {
+    ModalModule.forRoot = function (entryComponents) {
         return {
             ngModule: ModalModule,
             providers: [
@@ -82,38 +85,37 @@ class ModalModule {
                 { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ANALYZE_FOR_ENTRY_COMPONENTS"], useValue: entryComponents || [], multi: true }
             ]
         };
-    }
-}
-/* harmony export (immutable) */ exports["a"] = ModalModule;
-
-ModalModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
-                declarations: [
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["a" /* ModalOverlay */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["b" /* SwapComponentDirective */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["c" /* OverlayDialogBoundary */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["d" /* OverlayTarget */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["e" /* DefaultOverlayTarget */]
-                ],
-                exports: [
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["b" /* SwapComponentDirective */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["c" /* OverlayDialogBoundary */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["d" /* OverlayTarget */],
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["e" /* DefaultOverlayTarget */]
-                ],
-                entryComponents: [
-                    __WEBPACK_IMPORTED_MODULE_5__overlay_index__["a" /* ModalOverlay */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
-                    __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */]
-                ]
-            },] },
-];
-/** @nocollapse */
-ModalModule.ctorParameters = [];
+    };
+    ModalModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
+                    declarations: [
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["a" /* ModalOverlay */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["b" /* SwapComponentDirective */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["c" /* OverlayDialogBoundary */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["d" /* OverlayTarget */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["e" /* DefaultOverlayTarget */]
+                    ],
+                    exports: [
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["b" /* SwapComponentDirective */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["c" /* OverlayDialogBoundary */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["d" /* OverlayTarget */],
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["e" /* DefaultOverlayTarget */]
+                    ],
+                    entryComponents: [
+                        __WEBPACK_IMPORTED_MODULE_5__overlay_index__["a" /* ModalOverlay */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["c" /* CSSBackdrop */],
+                        __WEBPACK_IMPORTED_MODULE_4__components_index__["d" /* CSSDialogContainer */]
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    ModalModule.ctorParameters = [];
+    return ModalModule;
+}());
 //# sourceMappingURL=angular2-modal.module.js.map
 
 /***/ },
@@ -127,12 +129,13 @@ ModalModule.ctorParameters = [];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter__ = __webpack_require__("./node_modules/rxjs/add/operator/filter.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_createComponent__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/createComponent.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BaseDynamicComponent; });
 
 
 
-const BROWSER_PREFIX = ['webkit', 'moz', 'MS', 'o', ''];
+var BROWSER_PREFIX = ['webkit', 'moz', 'MS', 'o', ''];
 function register(eventName, element, cb) {
-    BROWSER_PREFIX.forEach(p => {
+    BROWSER_PREFIX.forEach(function (p) {
         element.addEventListener(p ? p + eventName : eventName.toLowerCase(), cb, false);
     });
 }
@@ -153,53 +156,59 @@ function register(eventName, element, cb) {
  * Capabilities: Add/Remove styls, Add/Remove classes, listen to animation/transition end event,
  * add components
  */
-class BaseDynamicComponent {
-    constructor(el, renderer) {
+var BaseDynamicComponent = (function () {
+    function BaseDynamicComponent(el, renderer) {
         this.el = el;
         this.renderer = renderer;
     }
-    activateAnimationListener() {
+    BaseDynamicComponent.prototype.activateAnimationListener = function () {
+        var _this = this;
         if (this.animationEnd)
             return;
         this.animationEnd = new __WEBPACK_IMPORTED_MODULE_0_rxjs_Subject__["Subject"]();
         this.animationEnd$ = this.animationEnd.asObservable();
-        register('TransitionEnd', this.el.nativeElement, (e) => this.onEnd(e));
-        register('AnimationEnd', this.el.nativeElement, (e) => this.onEnd(e));
-    }
+        register('TransitionEnd', this.el.nativeElement, function (e) { return _this.onEnd(e); });
+        register('AnimationEnd', this.el.nativeElement, function (e) { return _this.onEnd(e); });
+    };
     /**
      * Set a specific inline style on the overlay host element.
      * @param prop The style key
      * @param value The value, undefined to remove
      * @returns {ModalOverlay}
      */
-    setStyle(prop, value) {
+    BaseDynamicComponent.prototype.setStyle = function (prop, value) {
         this.renderer.setElementStyle(this.el.nativeElement, prop, value);
         return this;
-    }
-    forceReflow() {
+    };
+    BaseDynamicComponent.prototype.forceReflow = function () {
         this.el.nativeElement.offsetWidth;
-    }
-    addClass(css, forceReflow = false) {
+    };
+    BaseDynamicComponent.prototype.addClass = function (css, forceReflow) {
+        var _this = this;
+        if (forceReflow === void 0) { forceReflow = false; }
         css.split(' ')
-            .forEach(c => this.renderer.setElementClass(this.el.nativeElement, c, true));
+            .forEach(function (c) { return _this.renderer.setElementClass(_this.el.nativeElement, c, true); });
         if (forceReflow)
             this.forceReflow();
-    }
-    removeClass(css, forceReflow = false) {
+    };
+    BaseDynamicComponent.prototype.removeClass = function (css, forceReflow) {
+        var _this = this;
+        if (forceReflow === void 0) { forceReflow = false; }
         css.split(' ')
-            .forEach(c => this.renderer.setElementClass(this.el.nativeElement, c, false));
+            .forEach(function (c) { return _this.renderer.setElementClass(_this.el.nativeElement, c, false); });
         if (forceReflow)
             this.forceReflow();
-    }
-    ngOnDestroy() {
+    };
+    BaseDynamicComponent.prototype.ngOnDestroy = function () {
         if (this.animationEnd && !this.animationEnd.closed) {
             this.animationEnd.complete();
         }
-    }
-    myAnimationEnd$() {
+    };
+    BaseDynamicComponent.prototype.myAnimationEnd$ = function () {
+        var _this = this;
         return this.animationEnd$
-            .filter(e => e.target === this.el.nativeElement);
-    }
+            .filter(function (e) { return e.target === _this.el.nativeElement; });
+    };
     /**
      * Add a component, supply a view container ref.
      * Note: The components vcRef will result in a sibling.
@@ -208,19 +217,18 @@ class BaseDynamicComponent {
      * @param bindings Bindings to use (added on top of the ViewContainerRef)
      * @returns {Promise<ComponentRef<any>>}
      */
-    _addComponent(instructions) {
-        const cmpRef = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_createComponent__["a" /* createComponent */])(instructions);
+    BaseDynamicComponent.prototype._addComponent = function (instructions) {
+        var cmpRef = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_createComponent__["a" /* createComponent */])(instructions);
         cmpRef.changeDetectorRef.detectChanges();
         return cmpRef;
-    }
-    onEnd(event) {
+    };
+    BaseDynamicComponent.prototype.onEnd = function (event) {
         if (!this.animationEnd.closed) {
             this.animationEnd.next(event);
         }
-    }
-}
-/* harmony export (immutable) */ exports["a"] = BaseDynamicComponent;
-
+    };
+    return BaseDynamicComponent;
+}());
 //# sourceMappingURL=base-dynamic-component.js.map
 
 /***/ },
@@ -231,43 +239,50 @@ class BaseDynamicComponent {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__ = __webpack_require__("./node_modules/angular2-modal/esm/components/base-dynamic-component.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CSSBackdrop; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 /**
  * Represents the modal backdrop shaped by CSS.
  */
-class CSSBackdrop extends __WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__["a" /* BaseDynamicComponent */] {
-    constructor(el, renderer) {
-        super(el, renderer);
+var CSSBackdrop = (function (_super) {
+    __extends(CSSBackdrop, _super);
+    function CSSBackdrop(el, renderer) {
+        var _this = this;
+        _super.call(this, el, renderer);
         this.activateAnimationListener();
-        const style = {
+        var style = {
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%'
         };
-        Object.keys(style).forEach(k => this.setStyle(k, style[k]));
+        Object.keys(style).forEach(function (k) { return _this.setStyle(k, style[k]); });
     }
-}
-/* harmony export (immutable) */ exports["a"] = CSSBackdrop;
-
-CSSBackdrop.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'css-backdrop',
-                host: {
-                    '[attr.class]': 'cssClass',
-                    '[attr.style]': 'styleStr'
-                },
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: ``
-            },] },
-];
-/** @nocollapse */
-CSSBackdrop.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
-];
+    CSSBackdrop.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'css-backdrop',
+                    host: {
+                        '[attr.class]': 'cssClass',
+                        '[attr.style]': 'styleStr'
+                    },
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: ""
+                },] },
+    ];
+    /** @nocollapse */
+    CSSBackdrop.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+    ];
+    return CSSBackdrop;
+}(__WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__["a" /* BaseDynamicComponent */]));
 //# sourceMappingURL=css-backdrop.js.map
 
 /***/ },
@@ -279,38 +294,44 @@ CSSBackdrop.ctorParameters = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__ = __webpack_require__("./node_modules/angular2-modal/esm/components/base-dynamic-component.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CSSDialogContainer; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
 /**
  * A component that acts as a top level container for an open modal window.
  */
-class CSSDialogContainer extends __WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__["a" /* BaseDynamicComponent */] {
-    constructor(dialog, el, renderer) {
-        super(el, renderer);
+var CSSDialogContainer = (function (_super) {
+    __extends(CSSDialogContainer, _super);
+    function CSSDialogContainer(dialog, el, renderer) {
+        _super.call(this, el, renderer);
         this.dialog = dialog;
         this.activateAnimationListener();
     }
-}
-/* harmony export (immutable) */ exports["a"] = CSSDialogContainer;
-
-CSSDialogContainer.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'css-dialog-container',
-                host: {
-                    'tabindex': '-1',
-                    'role': 'dialog'
-                },
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<ng-content></ng-content>`
-            },] },
-];
-/** @nocollapse */
-CSSDialogContainer.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__["a" /* DialogRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
-];
+    CSSDialogContainer.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'css-dialog-container',
+                    host: {
+                        'tabindex': '-1',
+                        'role': 'dialog'
+                    },
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<ng-content></ng-content>"
+                },] },
+    ];
+    /** @nocollapse */
+    CSSDialogContainer.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__["a" /* DialogRef */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+    ];
+    return CSSDialogContainer;
+}(__WEBPACK_IMPORTED_MODULE_1__base_dynamic_component__["a" /* BaseDynamicComponent */]));
 //# sourceMappingURL=css-dialog-container.js.map
 
 /***/ },
@@ -340,50 +361,54 @@ CSSDialogContainer.ctorParameters = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SwapComponentDirective; });
 
 // <template [dynCmp]="myCmp" [dynCmpBindings]="myBindings"></template>
 // <template [dynCmp]="ctx.component" [dynCmpBindings]="ctx.bindings" [dynCmpProjectables]="ctx.projectableNodes"></template>
-class SwapComponentDirective {
-    constructor(cfr, vcRef, tRef) {
+var SwapComponentDirective = (function () {
+    function SwapComponentDirective(cfr, vcRef, tRef) {
         this.cfr = cfr;
         this.vcRef = vcRef;
         this.tRef = tRef;
         this.onCreate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](false);
     }
-    set swapCmp(component) {
-        this.component = component;
-        this.vcRef.clear();
-        if (this.component) {
-            let injector = this.swapCmpInjector || this.vcRef.parentInjector;
-            if (Array.isArray(this.swapCmpBindings) && this.swapCmpBindings.length > 0) {
-                injector = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].fromResolvedProviders(this.swapCmpBindings, injector);
+    Object.defineProperty(SwapComponentDirective.prototype, "swapCmp", {
+        set: function (component) {
+            this.component = component;
+            this.vcRef.clear();
+            if (this.component) {
+                var injector = this.swapCmpInjector || this.vcRef.parentInjector;
+                if (Array.isArray(this.swapCmpBindings) && this.swapCmpBindings.length > 0) {
+                    injector = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].fromResolvedProviders(this.swapCmpBindings, injector);
+                }
+                var cmpRef = this.vcRef.createComponent(this.cfr.resolveComponentFactory(component), this.vcRef.length, injector, this.swapCmpProjectables);
+                cmpRef.changeDetectorRef.detectChanges();
+                this.onCreate.emit(cmpRef);
             }
-            const cmpRef = this.vcRef.createComponent(this.cfr.resolveComponentFactory(component), this.vcRef.length, injector, this.swapCmpProjectables);
-            cmpRef.changeDetectorRef.detectChanges();
-            this.onCreate.emit(cmpRef);
-        }
-    }
-}
-/* harmony export (immutable) */ exports["a"] = SwapComponentDirective;
-
-SwapComponentDirective.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
-                selector: '[swapCmp]'
-            },] },
-];
-/** @nocollapse */
-SwapComponentDirective.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"], },
-];
-SwapComponentDirective.propDecorators = {
-    'swapCmpBindings': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-    'swapCmpInjector': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-    'swapCmpProjectables': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-    'onCreate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
-    'swapCmp': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-};
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SwapComponentDirective.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[swapCmp]'
+                },] },
+    ];
+    /** @nocollapse */
+    SwapComponentDirective.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"], },
+    ];
+    SwapComponentDirective.propDecorators = {
+        'swapCmpBindings': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'swapCmpInjector': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'swapCmpProjectables': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onCreate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'swapCmp': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return SwapComponentDirective;
+}());
 //# sourceMappingURL=swap-component.directive.js.map
 
 /***/ },
@@ -396,11 +421,11 @@ SwapComponentDirective.propDecorators = {
 /* harmony export (immutable) */ exports["a"] = createComponent;
 
 function createComponent(instructions) {
-    let injector = getInjector(instructions);
+    var injector = getInjector(instructions);
     return instructions.vcRef.createComponent(injector.get(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"]).resolveComponentFactory(instructions.component), instructions.vcRef.length, injector, instructions.projectableNodes);
 }
 function getInjector(instructions) {
-    const ctxInjector = instructions.injector || instructions.vcRef.parentInjector;
+    var ctxInjector = instructions.injector || instructions.vcRef.parentInjector;
     return Array.isArray(instructions.bindings) && instructions.bindings.length > 0 ?
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].fromResolvedProviders(instructions.bindings, ctxInjector) : ctxInjector;
 }
@@ -415,14 +440,16 @@ function getInjector(instructions) {
 /* harmony export (immutable) */ exports["c"] = privateKey;
 /* harmony export (immutable) */ exports["d"] = setAssignMethod;
 /* harmony export (immutable) */ exports["b"] = setAssignAlias;
-const PRIVATE_PREFIX = '$$';
-const RESERVED_REGEX = /^(\$\$).*/;
+/* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return FluentAssignFactory; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return FluentAssign; });
+var PRIVATE_PREFIX = '$$';
+var RESERVED_REGEX = /^(\$\$).*/;
 function validateMethodName(name) {
     if (!name) {
-        throw new Error(`Illegal method name. Empty method name is not allowed`);
+        throw new Error("Illegal method name. Empty method name is not allowed");
     }
     else if (name in this) {
-        throw new Error(`A member name '${name}' already defined.`);
+        throw new Error("A member name '" + name + "' already defined.");
     }
 }
 /**
@@ -432,8 +459,8 @@ function validateMethodName(name) {
  */
 function getAssignedPropertyNames(subject) {
     return Object.getOwnPropertyNames(subject)
-        .filter(name => RESERVED_REGEX.test(name))
-        .map(name => name.substr(2));
+        .filter(function (name) { return RESERVED_REGEX.test(name); })
+        .map(function (name) { return name.substr(2); });
 }
 function privateKey(name) {
     return PRIVATE_PREFIX + name;
@@ -443,7 +470,7 @@ function objectDefinePropertyValue(obj, propertyName, value) {
         configurable: false,
         enumerable: false,
         writable: false,
-        value
+        value: value
     });
 }
 /**
@@ -454,7 +481,7 @@ function objectDefinePropertyValue(obj, propertyName, value) {
  */
 function applyDefaultValues(instance, defaultValues) {
     Object.getOwnPropertyNames(defaultValues)
-        .forEach(name => instance[privateKey(name)] = defaultValues[name]);
+        .forEach(function (name) { return instance[privateKey(name)] = defaultValues[name]; });
 }
 /**
  * Create a function for setting a value for a property on a given object.
@@ -475,12 +502,14 @@ function applyDefaultValues(instance, defaultValues) {
  * obj.myProp('someValue');
  * obj.myProp('someValue'); // ERROR: Overriding config property 'myProp' is not allowed.
  */
-function setAssignMethod(obj, propertyName, writeOnce = false) {
+function setAssignMethod(obj, propertyName, writeOnce) {
+    var _this = this;
+    if (writeOnce === void 0) { writeOnce = false; }
     validateMethodName.call(obj, propertyName);
-    const key = privateKey(propertyName);
-    objectDefinePropertyValue(obj, propertyName, (value) => {
-        if (writeOnce && this.hasOwnProperty(key)) {
-            throw new Error(`Overriding config property '${propertyName}' is not allowed.`);
+    var key = privateKey(propertyName);
+    objectDefinePropertyValue(obj, propertyName, function (value) {
+        if (writeOnce && _this.hasOwnProperty(key)) {
+            throw new Error("Overriding config property '" + propertyName + "' is not allowed.");
         }
         obj[key] = value;
         return obj;
@@ -512,26 +541,27 @@ function setAssignMethod(obj, propertyName, writeOnce = false) {
  * console.log(result); //{ myProp: 'someValue' }
  * result.myPropAlias // someValue
  */
-function setAssignAlias(obj, propertyName, srcPropertyName, hard = false) {
+function setAssignAlias(obj, propertyName, srcPropertyName, hard) {
+    if (hard === void 0) { hard = false; }
     validateMethodName.call(obj, propertyName);
-    objectDefinePropertyValue(obj, propertyName, (value) => {
+    objectDefinePropertyValue(obj, propertyName, function (value) {
         obj[srcPropertyName](value);
         return obj;
     });
     if (hard === true) {
-        const key = privateKey(propertyName), srcKey = privateKey(srcPropertyName);
+        var key = privateKey(propertyName), srcKey_1 = privateKey(srcPropertyName);
         Object.defineProperty(obj, key, {
             configurable: false,
             enumerable: false,
-            get: () => obj[srcKey]
+            get: function () { return obj[srcKey_1]; }
         });
     }
 }
 /**
  * Represent a fluent API factory wrapper for defining FluentAssign instances.
  */
-class FluentAssignFactory {
-    constructor(fluentAssign) {
+var FluentAssignFactory = (function () {
+    function FluentAssignFactory(fluentAssign) {
         this._fluentAssign =
             fluentAssign instanceof FluentAssign ? fluentAssign : new FluentAssign();
     }
@@ -541,23 +571,27 @@ class FluentAssignFactory {
      * @param defaultValue If set (not undefined) set's the value on the instance immediately.
      * @returns {FluentAssignFactory}
      */
-    setMethod(name, defaultValue = undefined) {
+    FluentAssignFactory.prototype.setMethod = function (name, defaultValue) {
+        if (defaultValue === void 0) { defaultValue = undefined; }
         setAssignMethod(this._fluentAssign, name);
         if (defaultValue !== undefined) {
             this._fluentAssign[name](defaultValue);
         }
         return this;
-    }
-    /**
-     * The FluentAssign instance.
-     * @returns {FluentAssign<T>}
-     */
-    get fluentAssign() {
-        return this._fluentAssign;
-    }
-}
-/* harmony export (immutable) */ exports["e"] = FluentAssignFactory;
-
+    };
+    Object.defineProperty(FluentAssignFactory.prototype, "fluentAssign", {
+        /**
+         * The FluentAssign instance.
+         * @returns {FluentAssign<T>}
+         */
+        get: function () {
+            return this._fluentAssign;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FluentAssignFactory;
+}());
 /**
  * Represent an object where every property is a function representing an assignment function.
  * Calling each function with a value will assign the value to the object and return the object.
@@ -570,22 +604,26 @@ class FluentAssignFactory {
  fluent.some('thing').went('wrong').toJSON();
  // { some: 'thing', went: 'wrong' }
  */
-class FluentAssign {
+var FluentAssign = (function () {
     /**
      *
      * @param defaultValues An object representing default values for the underlying object.
      * @param initialSetters A list of initial setters for this FluentAssign.
      * @param baseType the class/type to create a new base. optional, {} is used if not supplied.
      */
-    constructor(defaultValues = undefined, initialSetters = undefined, baseType = undefined) {
+    function FluentAssign(defaultValues, initialSetters, baseType) {
+        var _this = this;
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
         if (Array.isArray(defaultValues)) {
-            defaultValues.forEach(d => applyDefaultValues(this, d));
+            defaultValues.forEach(function (d) { return applyDefaultValues(_this, d); });
         }
         else if (defaultValues) {
             applyDefaultValues(this, defaultValues);
         }
         if (Array.isArray(initialSetters)) {
-            initialSetters.forEach(name => setAssignMethod(this, name));
+            initialSetters.forEach(function (name) { return setAssignMethod(_this, name); });
         }
         if (baseType) {
             this.__fluent$base__ = baseType;
@@ -597,36 +635,38 @@ class FluentAssign {
      * @param initialSetters A list of initial setters for the instance.
      * @returns {FluentAssignFactory<T>}
      */
-    static compose(defaultValues = undefined, initialSetters = undefined) {
+    FluentAssign.compose = function (defaultValues, initialSetters) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
         return FluentAssign.composeWith(new FluentAssign(defaultValues, initialSetters));
-    }
+    };
     /**
      * Returns a FluentAssignFactory<Z> where Z is an instance of FluentAssign<?> or a derived
      * class of it.
      * @param fluentAssign An instance of FluentAssign<?> or a derived class of FluentAssign<?>.
      * @returns {any}
      */
-    static composeWith(fluentAssign) {
+    FluentAssign.composeWith = function (fluentAssign) {
         return new FluentAssignFactory(fluentAssign);
-    }
-    toJSON() {
+    };
+    FluentAssign.prototype.toJSON = function () {
+        var _this = this;
         return getAssignedPropertyNames(this)
-            .reduce((obj, name) => {
-            const key = privateKey(name);
+            .reduce(function (obj, name) {
+            var key = privateKey(name);
             // re-define property descriptors (we dont want their value)
-            let propDesc = Object.getOwnPropertyDescriptor(this, key);
+            var propDesc = Object.getOwnPropertyDescriptor(_this, key);
             if (propDesc) {
                 Object.defineProperty(obj, name, propDesc);
             }
             else {
-                obj[name] = this[key];
+                obj[name] = _this[key];
             }
             return obj;
         }, this.__fluent$base__ ? new this.__fluent$base__() : {});
-    }
-}
-/* harmony export (immutable) */ exports["a"] = FluentAssign;
-
+    };
+    return FluentAssign;
+}());
 //# sourceMappingURL=fluent-assign.js.map
 
 /***/ },
@@ -639,6 +679,7 @@ class FluentAssign {
 /* harmony export (immutable) */ exports["e"] = arrayUnion;
 /* harmony export (immutable) */ exports["b"] = supportsKey;
 /* unused harmony export toStyleString */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PromiseCompleter; });
 /* harmony export (immutable) */ exports["c"] = noop;
 /**
  * Simple object extend
@@ -668,7 +709,7 @@ function extend(m1, m2) {
  */
 function arrayUnion(arr1, arr2) {
     return arr1
-        .concat(arr2.filter(v => arr1.indexOf(v) === -1));
+        .concat(arr2.filter(function (v) { return arr1.indexOf(v) === -1; }));
 }
 /**
  * Returns true if the config supports a given key.
@@ -699,23 +740,23 @@ function supportsKey(keyCode, config) {
  */
 function toStyleString(obj) {
     return Object.getOwnPropertyNames(obj)
-        .map(k => `${k}:${obj[k]}`)
+        .map(function (k) { return (k + ":" + obj[k]); })
         .join(';');
     // let objStr = JSON.stringify(obj);
     // return objStr.substr(1, objStr.length - 2)
     //     .replace(/,/g, ';')
     //     .replace(/"/g, '');
 }
-class PromiseCompleter {
-    constructor() {
-        this.promise = new Promise((res, rej) => {
-            this.resolve = res;
-            this.reject = rej;
+var PromiseCompleter = (function () {
+    function PromiseCompleter() {
+        var _this = this;
+        this.promise = new Promise(function (res, rej) {
+            _this.resolve = res;
+            _this.reject = rej;
         });
     }
-}
-/* harmony export (immutable) */ exports["a"] = PromiseCompleter;
-
+    return PromiseCompleter;
+}());
 function noop() { }
 //# sourceMappingURL=utils.js.map
 
@@ -791,83 +832,88 @@ function noop() { }
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const BASKET_GROUP = {};
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DialogRefStack; });
+var BASKET_GROUP = {};
 /**
  * A dumb stack implementation over an array.
  */
-class DialogRefStack {
-    constructor() {
+var DialogRefStack = (function () {
+    function DialogRefStack() {
         this._stack = [];
         this._stackMap = new Map();
     }
-    get length() {
-        return this._stack.length;
-    }
-    push(dialogRef, group) {
+    Object.defineProperty(DialogRefStack.prototype, "length", {
+        get: function () {
+            return this._stack.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DialogRefStack.prototype.push = function (dialogRef, group) {
         if (this._stack.indexOf(dialogRef) === -1) {
             this._stack.push(dialogRef);
             this._stackMap.set(dialogRef, group || BASKET_GROUP);
         }
-    }
+    };
     /**
      * Push a DialogRef into the stack and manage it so when it's done
      * it will automatically kick itself out of the stack.
      * @param dialogRef
      */
-    pushManaged(dialogRef, group) {
+    DialogRefStack.prototype.pushManaged = function (dialogRef, group) {
+        var _this = this;
         this.push(dialogRef, group);
-        dialogRef.onDestroy.subscribe(() => this.remove(dialogRef));
-    }
-    pop() {
-        const dialogRef = this._stack.pop();
+        dialogRef.onDestroy.subscribe(function () { return _this.remove(dialogRef); });
+    };
+    DialogRefStack.prototype.pop = function () {
+        var dialogRef = this._stack.pop();
         this._stackMap.delete(dialogRef);
         return dialogRef;
-    }
+    };
     /**
      * Remove a DialogRef from the stack.
      * @param dialogRef
      */
-    remove(dialogRef) {
-        let idx = this.indexOf(dialogRef);
+    DialogRefStack.prototype.remove = function (dialogRef) {
+        var idx = this.indexOf(dialogRef);
         if (idx > -1) {
             this._stack.splice(idx, 1);
             this._stackMap.delete(dialogRef);
         }
-    }
-    index(index) {
+    };
+    DialogRefStack.prototype.index = function (index) {
         return this._stack[index];
-    }
-    indexOf(dialogRef) {
+    };
+    DialogRefStack.prototype.indexOf = function (dialogRef) {
         return this._stack.indexOf(dialogRef);
-    }
-    groupOf(dialogRef) {
+    };
+    DialogRefStack.prototype.groupOf = function (dialogRef) {
         return this._stackMap.get(dialogRef);
-    }
-    groupBy(group) {
-        let arr = [];
+    };
+    DialogRefStack.prototype.groupBy = function (group) {
+        var arr = [];
         if (group) {
-            this._stackMap.forEach((value, key) => {
+            this._stackMap.forEach(function (value, key) {
                 if (value === group) {
                     arr.push(key);
                 }
             });
         }
         return arr;
-    }
-    groupLength(group) {
-        let count = 0;
+    };
+    DialogRefStack.prototype.groupLength = function (group) {
+        var count = 0;
         if (group) {
-            this._stackMap.forEach((value, key) => {
+            this._stackMap.forEach(function (value, key) {
                 if (value === group) {
                     count++;
                 }
             });
         }
         return count;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = DialogRefStack;
-
+    };
+    return DialogRefStack;
+}());
 //# sourceMappingURL=dialog-ref-stack.js.map
 
 /***/ },
@@ -880,46 +926,53 @@ class DialogRefStack {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_Subject__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_errors__ = __webpack_require__("./node_modules/angular2-modal/esm/models/errors.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DialogRef; });
 
 
 
 /**
  * API to an open modal window.
  */
-class DialogRef {
-    constructor(overlay, context) {
+var DialogRef = (function () {
+    function DialogRef(overlay, context) {
         this.overlay = overlay;
         this.context = context;
         this._resultDeferred = new __WEBPACK_IMPORTED_MODULE_1__framework_utils__["a" /* PromiseCompleter */]();
         this._onDestroy = new __WEBPACK_IMPORTED_MODULE_0_rxjs_Subject__["Subject"]();
         this.onDestroy = this._onDestroy.asObservable();
     }
-    /**
-     * A Promise that is resolved on a close event and rejected on a dismiss event.
-     * @returns {Promise<T>|any|*|Promise<any>}
-     */
-    get result() {
-        return this._resultDeferred.promise;
-    }
+    Object.defineProperty(DialogRef.prototype, "result", {
+        /**
+         * A Promise that is resolved on a close event and rejected on a dismiss event.
+         * @returns {Promise<T>|any|*|Promise<any>}
+         */
+        get: function () {
+            return this._resultDeferred.promise;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Set a close/dismiss guard
      * @param g
      */
-    setCloseGuard(guard) {
+    DialogRef.prototype.setCloseGuard = function (guard) {
         this.closeGuard = guard;
-    }
+    };
     /**
      *  Close the modal with a return value, i.e: result.
      */
-    close(result = null) {
-        const _close = () => {
-            this.destroy();
-            this._resultDeferred.resolve(result);
+    DialogRef.prototype.close = function (result) {
+        var _this = this;
+        if (result === void 0) { result = null; }
+        var _close = function () {
+            _this.destroy();
+            _this._resultDeferred.resolve(result);
         };
         this._fireHook('beforeClose')
-            .then(value => value !== true && _close())
+            .then(function (value) { return value !== true && _close(); })
             .catch(_close);
-    }
+    };
     /**
      *  Close the modal without a return value, i.e: cancelled.
      *  This call is automatically invoked when a user either:
@@ -927,53 +980,54 @@ class DialogRef {
      *  - Clicks outside of the modal window (if configured).
      *  Usually, dismiss represent a Cancel button or a X button.
      */
-    dismiss() {
-        const _dismiss = () => {
-            this.destroy();
-            this._resultDeferred.promise.catch(() => { });
-            this._resultDeferred.reject();
+    DialogRef.prototype.dismiss = function () {
+        var _this = this;
+        var _dismiss = function () {
+            _this.destroy();
+            _this._resultDeferred.promise.catch(function () { });
+            _this._resultDeferred.reject();
         };
         this._fireHook('beforeDismiss')
-            .then(value => value !== true && _dismiss())
+            .then(function (value) { return value !== true && _dismiss(); })
             .catch(_dismiss);
-    }
+    };
     /**
      * Gracefully close the overlay/dialog with a rejected result.
      * Does not trigger canDestroy on the overlay.
      */
-    bailOut() {
+    DialogRef.prototype.bailOut = function () {
         if (this.destroyed !== true) {
             this.destroyed = true;
             this._onDestroy.next(null);
             this._onDestroy.complete();
             this._resultDeferred.reject(new __WEBPACK_IMPORTED_MODULE_2__models_errors__["a" /* DialogBailOutError */]());
         }
-    }
-    destroy() {
+    };
+    DialogRef.prototype.destroy = function () {
+        var _this = this;
         if (this.destroyed !== true) {
             this.destroyed = true;
             if (typeof this.overlayRef.instance.canDestroy === 'function') {
                 this.overlayRef.instance.canDestroy()
-                    .catch(() => { })
-                    .then(() => this._destroy());
+                    .catch(function () { })
+                    .then(function () { return _this._destroy(); });
             }
             else {
                 this._destroy();
             }
         }
-    }
-    _destroy() {
+    };
+    DialogRef.prototype._destroy = function () {
         this._onDestroy.next(null);
         this._onDestroy.complete();
         this.overlayRef.destroy();
-    }
-    _fireHook(name) {
-        const gurad = this.closeGuard, fn = gurad && typeof gurad[name] === 'function' && gurad[name];
+    };
+    DialogRef.prototype._fireHook = function (name) {
+        var gurad = this.closeGuard, fn = gurad && typeof gurad[name] === 'function' && gurad[name];
         return Promise.resolve(fn ? fn.call(gurad) : false);
-    }
-}
-/* harmony export (immutable) */ exports["a"] = DialogRef;
-
+    };
+    return DialogRef;
+}());
 //# sourceMappingURL=dialog-ref.js.map
 
 /***/ },
@@ -982,17 +1036,23 @@ class DialogRef {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-class DialogBailOutError extends Error {
-    constructor(value) {
-        super();
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DialogBailOutError; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var DialogBailOutError = (function (_super) {
+    __extends(DialogBailOutError, _super);
+    function DialogBailOutError(value) {
+        _super.call(this);
         if (!value) {
             value = 'Dialog was forced to close by an unknown source.';
         }
         this.message = value;
     }
-}
-/* harmony export (immutable) */ exports["a"] = DialogBailOutError;
-
+    return DialogBailOutError;
+}(Error));
 //# sourceMappingURL=errors.js.map
 
 /***/ },
@@ -1004,39 +1064,51 @@ class DialogBailOutError extends Error {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__overlay_context__ = __webpack_require__("./node_modules/angular2-modal/esm/models/overlay-context.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return DEFAULT_VALUES; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ModalContext; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return ModalContextBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
-const DEFAULT_VALUES = {};
-/* harmony export (immutable) */ exports["c"] = DEFAULT_VALUES;
-
-const DEFAULT_SETTERS = [
+var DEFAULT_VALUES = {};
+var DEFAULT_SETTERS = [
     'message'
 ];
-class ModalContext extends __WEBPACK_IMPORTED_MODULE_2__overlay_context__["a" /* OverlayContext */] {
-}
-/* harmony export (immutable) */ exports["a"] = ModalContext;
-
+var ModalContext = (function (_super) {
+    __extends(ModalContext, _super);
+    function ModalContext() {
+        _super.apply(this, arguments);
+    }
+    return ModalContext;
+}(__WEBPACK_IMPORTED_MODULE_2__overlay_context__["a" /* OverlayContext */]));
 /**
  * A core context builder for a modal window instance, used to define the context upon
  * a modal choose it's behaviour.
  */
-class ModalContextBuilder extends __WEBPACK_IMPORTED_MODULE_2__overlay_context__["b" /* OverlayContextBuilder */] {
-    constructor(defaultValues = undefined, initialSetters = undefined, baseType = undefined) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_utils__["d" /* extend */])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType);
+var ModalContextBuilder = (function (_super) {
+    __extends(ModalContextBuilder, _super);
+    function ModalContextBuilder(defaultValues, initialSetters, baseType) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_utils__["d" /* extend */])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType);
     }
-}
-/* harmony export (immutable) */ exports["b"] = ModalContextBuilder;
-
-ModalContextBuilder.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-ModalContextBuilder.ctorParameters = [
-    null,
-    { type: Array, },
-    null,
-];
+    ModalContextBuilder.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    ModalContextBuilder.ctorParameters = [
+        null,
+        { type: Array, },
+        null,
+    ];
+    return ModalContextBuilder;
+}(__WEBPACK_IMPORTED_MODULE_2__overlay_context__["b" /* OverlayContextBuilder */]));
 //# sourceMappingURL=modal-context.js.map
 
 /***/ },
@@ -1048,52 +1120,65 @@ ModalContextBuilder.ctorParameters = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_index__ = __webpack_require__("./node_modules/angular2-modal/esm/providers/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modal_context__ = __webpack_require__("./node_modules/angular2-modal/esm/models/modal-context.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ModalOpenContext; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return ModalOpenContextBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
-const DEFAULT_SETTERS = [
+var DEFAULT_SETTERS = [
     'component'
 ];
-class ModalOpenContext extends __WEBPACK_IMPORTED_MODULE_1__modal_context__["a" /* ModalContext */] {
-}
-/* harmony export (immutable) */ exports["a"] = ModalOpenContext;
-
+var ModalOpenContext = (function (_super) {
+    __extends(ModalOpenContext, _super);
+    function ModalOpenContext() {
+        _super.apply(this, arguments);
+    }
+    return ModalOpenContext;
+}(__WEBPACK_IMPORTED_MODULE_1__modal_context__["a" /* ModalContext */]));
 /**
  * A Modal Context that knows about the modal service, and so can open a modal window on demand.
  * Use the fluent API to configure the preset and then invoke the 'open' method to open a modal
  * based on the context.
  */
-class ModalOpenContextBuilder extends __WEBPACK_IMPORTED_MODULE_1__modal_context__["b" /* ModalContextBuilder */] {
-    constructor(defaultValues = undefined, initialSetters = undefined, baseType = undefined) {
-        super(defaultValues || {}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType);
+var ModalOpenContextBuilder = (function (_super) {
+    __extends(ModalOpenContextBuilder, _super);
+    function ModalOpenContextBuilder(defaultValues, initialSetters, baseType) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
+        _super.call(this, defaultValues || {}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType);
     }
     /**
      * Hook to alter config and return bindings.
      * @param config
      */
-    $$beforeOpen(config) {
+    ModalOpenContextBuilder.prototype.$$beforeOpen = function (config) {
         return [];
-    }
+    };
     /**
      * Open a modal window based on the configuration of this config instance.
      * @param viewContainer If set opens the modal inside the supplied viewContainer
      * @returns Promise<DialogRef>
      */
-    open(viewContainer) {
-        let context = this.toJSON();
+    ModalOpenContextBuilder.prototype.open = function (viewContainer) {
+        var context = this.toJSON();
         if (!(context.modal instanceof __WEBPACK_IMPORTED_MODULE_0__providers_index__["a" /* Modal */])) {
             return Promise.reject(new Error('Configuration Error: modal service not set.'));
         }
-        let overlayConfig = {
+        var overlayConfig = {
             context: context,
             viewContainer: viewContainer,
             bindings: typeof this.$$beforeOpen === 'function' && this.$$beforeOpen(context)
         };
         return context.modal.open(context.component, overlayConfig);
-    }
-}
-/* harmony export (immutable) */ exports["b"] = ModalOpenContextBuilder;
-
+    };
+    return ModalOpenContextBuilder;
+}(__WEBPACK_IMPORTED_MODULE_1__modal_context__["b" /* ModalContextBuilder */]));
 //# sourceMappingURL=modal-open-context.js.map
 
 /***/ },
@@ -1105,11 +1190,19 @@ class ModalOpenContextBuilder extends __WEBPACK_IMPORTED_MODULE_1__modal_context
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_fluent_assign__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/fluent-assign.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
+/* unused harmony export DEFAULT_VALUES */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return OverlayContext; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return OverlayContextBuilder; });
 /* harmony export (immutable) */ exports["c"] = overlayConfigFactory;
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
-const DEFAULT_VALUES = {
+var DEFAULT_VALUES = {
     inElement: false,
     isBlocking: true,
     keyboard: [27],
@@ -1117,15 +1210,15 @@ const DEFAULT_VALUES = {
         return this.keyboard.indexOf(keyCode) > -1;
     }
 };
-/* unused harmony export DEFAULT_VALUES */
-
-const DEFAULT_SETTERS = [
+var DEFAULT_SETTERS = [
     'inElement',
     'isBlocking',
     'keyboard'
 ];
-class OverlayContext {
-    normalize() {
+var OverlayContext = (function () {
+    function OverlayContext() {
+    }
+    OverlayContext.prototype.normalize = function () {
         if (this.isBlocking !== false)
             this.isBlocking = true;
         if (this.keyboard === null) {
@@ -1137,17 +1230,20 @@ class OverlayContext {
         else if (!Array.isArray(this.keyboard)) {
             this.keyboard = DEFAULT_VALUES.keyboard;
         }
-    }
-}
-/* harmony export (immutable) */ exports["a"] = OverlayContext;
-
+    };
+    return OverlayContext;
+}());
 /**
  * A core context builder for a modal window instance, used to define the context upon
  * a modal choose it's behaviour.
  */
-class OverlayContextBuilder extends __WEBPACK_IMPORTED_MODULE_1__framework_fluent_assign__["a" /* FluentAssign */] {
-    constructor(defaultValues = undefined, initialSetters = undefined, baseType = undefined) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["d" /* extend */])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType || OverlayContext // https://github.com/Microsoft/TypeScript/issues/7234
+var OverlayContextBuilder = (function (_super) {
+    __extends(OverlayContextBuilder, _super);
+    function OverlayContextBuilder(defaultValues, initialSetters, baseType) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["d" /* extend */])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["e" /* arrayUnion */])(DEFAULT_SETTERS, initialSetters || []), baseType || OverlayContext // https://github.com/Microsoft/TypeScript/issues/7234
         );
     }
     /**
@@ -1155,23 +1251,22 @@ class OverlayContextBuilder extends __WEBPACK_IMPORTED_MODULE_1__framework_fluen
      * @param base A base configuration that the result will extend
      * @returns OverlayConfig
      */
-    toOverlayConfig(base) {
+    OverlayContextBuilder.prototype.toOverlayConfig = function (base) {
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__framework_utils__["d" /* extend */])(base || {}, {
             context: this.toJSON()
         });
-    }
-}
-/* harmony export (immutable) */ exports["b"] = OverlayContextBuilder;
-
-OverlayContextBuilder.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-OverlayContextBuilder.ctorParameters = [
-    null,
-    { type: Array, },
-    null,
-];
+    };
+    OverlayContextBuilder.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    OverlayContextBuilder.ctorParameters = [
+        null,
+        { type: Array, },
+        null,
+    ];
+    return OverlayContextBuilder;
+}(__WEBPACK_IMPORTED_MODULE_1__framework_fluent_assign__["a" /* FluentAssign */]));
 /**
  * A helper to create an `OverlayConfig` on the fly.
  * Since `OverlayConfig` requires context it means a builder is needed, this process had some boilerplate.
@@ -1197,16 +1292,18 @@ function overlayConfigFactory(context, baseContextType, baseConfig) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return DROP_IN_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return OverlayRenderer; });
 var DROP_IN_TYPE;
 (function (DROP_IN_TYPE) {
     DROP_IN_TYPE[DROP_IN_TYPE["alert"] = 0] = "alert";
     DROP_IN_TYPE[DROP_IN_TYPE["prompt"] = 1] = "prompt";
     DROP_IN_TYPE[DROP_IN_TYPE["confirm"] = 2] = "confirm";
 })(DROP_IN_TYPE || (DROP_IN_TYPE = {}));
-class OverlayRenderer {
-}
-/* harmony export (immutable) */ exports["a"] = OverlayRenderer;
-
+var OverlayRenderer = (function () {
+    function OverlayRenderer() {
+    }
+    return OverlayRenderer;
+}());
 //# sourceMappingURL=tokens.js.map
 
 /***/ },
@@ -1215,7 +1312,8 @@ class OverlayRenderer {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const vcRefCollection = {};
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return vcRefStore; });
+var vcRefCollection = {};
 function getVCRef(key) {
     return vcRefCollection[key] ? vcRefCollection[key].slice() : [];
 }
@@ -1230,7 +1328,7 @@ function delVCRef(key, vcRef) {
         vcRefCollection[key] = [];
     }
     else {
-        const coll = vcRefCollection[key] || [], idx = coll.indexOf(vcRef);
+        var coll = vcRefCollection[key] || [], idx = coll.indexOf(vcRef);
         if (idx > -1) {
             coll.splice(idx, 1);
         }
@@ -1246,9 +1344,7 @@ function delVCRef(key, vcRef) {
  *  delVCRef: (function(string): void)
  *  }}
  */
-const vcRefStore = { getVCRef, setVCRef, delVCRef };
-/* harmony export (immutable) */ exports["a"] = vcRefStore;
-
+var vcRefStore = { getVCRef: getVCRef, setVCRef: setVCRef, delVCRef: delVCRef };
 //# sourceMappingURL=vc-ref-store.js.map
 
 /***/ },
@@ -1280,6 +1376,12 @@ const vcRefStore = { getVCRef, setVCRef, delVCRef };
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_index__ = __webpack_require__("./node_modules/angular2-modal/esm/components/index.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ModalOverlay; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
@@ -1287,9 +1389,10 @@ const vcRefStore = { getVCRef, setVCRef, delVCRef };
 /**
  * Represents the modal overlay.
  */
-class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /* BaseDynamicComponent */] {
-    constructor(dialogRef, vcr, el, renderer) {
-        super(el, renderer);
+var ModalOverlay = (function (_super) {
+    __extends(ModalOverlay, _super);
+    function ModalOverlay(dialogRef, vcr, el, renderer) {
+        _super.call(this, el, renderer);
         this.dialogRef = dialogRef;
         this.vcr = vcr;
         this.activateAnimationListener();
@@ -1297,10 +1400,10 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
     /**
      * @internal
      */
-    getProjectables(content, bindings) {
-        let nodes;
+    ModalOverlay.prototype.getProjectables = function (content, bindings) {
+        var nodes;
         if (typeof content === 'string') {
-            nodes = [[this.renderer.createText(null, `${content}`)]];
+            nodes = [[this.renderer.createText(null, "" + content)]];
         }
         else if (content instanceof __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"]) {
             nodes = [
@@ -1312,22 +1415,25 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
             nodes = [this.embedComponent({ component: content, bindings: bindings }).rootNodes];
         }
         return nodes;
-    }
-    embedComponent(config) {
+    };
+    ModalOverlay.prototype.embedComponent = function (config) {
         return this.vcr.createEmbeddedView(this.template, {
             $implicit: config
         });
-    }
-    addComponent(type, bindings = [], projectableNodes = []) {
-        return super._addComponent({
+    };
+    ModalOverlay.prototype.addComponent = function (type, bindings, projectableNodes) {
+        if (bindings === void 0) { bindings = []; }
+        if (projectableNodes === void 0) { projectableNodes = []; }
+        return _super.prototype._addComponent.call(this, {
             component: type,
             vcRef: this.innerVcr,
-            bindings,
-            projectableNodes
+            bindings: bindings,
+            projectableNodes: projectableNodes
         });
-    }
-    fullscreen() {
-        const style = {
+    };
+    ModalOverlay.prototype.fullscreen = function () {
+        var _this = this;
+        var style = {
             position: 'fixed',
             top: 0,
             left: 0,
@@ -1335,10 +1441,11 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
             right: 0,
             'z-index': 1500
         };
-        Object.keys(style).forEach(k => this.setStyle(k, style[k]));
-    }
-    insideElement() {
-        const style = {
+        Object.keys(style).forEach(function (k) { return _this.setStyle(k, style[k]); });
+    };
+    ModalOverlay.prototype.insideElement = function () {
+        var _this = this;
+        var style = {
             position: 'absolute',
             overflow: 'hidden',
             width: '100%',
@@ -1348,8 +1455,8 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
             bottom: 0,
             right: 0
         };
-        Object.keys(style).forEach(k => this.setStyle(k, style[k]));
-    }
+        Object.keys(style).forEach(function (k) { return _this.setStyle(k, style[k]); });
+    };
     /**
      * Define an element that click inside it will not trigger modal close.
      * Since events bubble, clicking on a dialog will bubble up to the overlay, a plugin
@@ -1357,14 +1464,15 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
      * it was clicked.
      * @param element
      */
-    setClickBoundary(element) {
-        let target;
-        const elListener = event => target = event.target;
-        const docListener = event => {
-            if (this.dialogRef.context.isBlocking || !this.dialogRef.overlay.isTopMost(this.dialogRef)) {
+    ModalOverlay.prototype.setClickBoundary = function (element) {
+        var _this = this;
+        var target;
+        var elListener = function (event) { return target = event.target; };
+        var docListener = function (event) {
+            if (_this.dialogRef.context.isBlocking || !_this.dialogRef.overlay.isTopMost(_this.dialogRef)) {
                 return;
             }
-            let current = event.target;
+            var current = event.target;
             // on click, this will hit.
             if (current === target)
                 return;
@@ -1376,50 +1484,50 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
                     return;
                 }
             } while (current.parentNode && (current = current.parentNode));
-            this.dialogRef.dismiss();
+            _this.dialogRef.dismiss();
         };
-        this.dialogRef.onDestroy.subscribe(() => {
+        this.dialogRef.onDestroy.subscribe(function () {
             element.removeEventListener('click', elListener, false);
             element.removeEventListener('touchstart', elListener, false);
             document.removeEventListener('click', docListener, false);
             document.removeEventListener('touchend', docListener, false);
         });
-        setTimeout(() => {
+        setTimeout(function () {
             element.addEventListener('mousedown', elListener, false);
             element.addEventListener('touchstart', docListener, false);
             document.addEventListener('click', docListener, false);
             document.addEventListener('touchend', docListener, false);
         });
-    }
+    };
     /**
      * Temp workaround for animation where destruction of the top level component does not
      * trigger child animations. Solution should be found either in animation module or in design
      * of the modal component tree.
      * @returns {Promise<void>}
      */
-    canDestroy() {
-        const completer = new __WEBPACK_IMPORTED_MODULE_1__framework_utils__["a" /* PromiseCompleter */]();
+    ModalOverlay.prototype.canDestroy = function () {
+        var completer = new __WEBPACK_IMPORTED_MODULE_1__framework_utils__["a" /* PromiseCompleter */]();
         if (!Array.isArray(this.beforeDestroyHandlers)) {
             completer.resolve();
         }
         else {
             // run destroy notification but protect against halt.
-            let id = setTimeout(() => {
-                id = null;
+            var id_1 = setTimeout(function () {
+                id_1 = null;
                 completer.reject();
             }, 1000);
-            const resolve = () => {
-                if (id === null)
+            var resolve = function () {
+                if (id_1 === null)
                     return;
-                clearTimeout(id);
+                clearTimeout(id_1);
                 completer.resolve();
             };
-            Promise.all(this.beforeDestroyHandlers.map(fn => fn()))
+            Promise.all(this.beforeDestroyHandlers.map(function (fn) { return fn(); }))
                 .then(resolve)
                 .catch(resolve);
         }
         return completer.promise;
-    }
+    };
     /**
      * A handler running before destruction of the overlay
      * use to delay destruction due to animation.
@@ -1428,22 +1536,22 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
      * NOTE: There is no guarantee that the listeners will fire, use dialog.onDestory for that.
      * @param fn
      */
-    beforeDestroy(fn) {
+    ModalOverlay.prototype.beforeDestroy = function (fn) {
         if (!this.beforeDestroyHandlers) {
             this.beforeDestroyHandlers = [];
         }
         this.beforeDestroyHandlers.push(fn);
-    }
-    documentKeypress(event) {
+    };
+    ModalOverlay.prototype.documentKeypress = function (event) {
         // check that this modal is the last in the stack.
         if (!this.dialogRef.overlay.isTopMost(this.dialogRef))
             return;
         if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_utils__["b" /* supportsKey */])(event.keyCode, this.dialogRef.context.keyboard)) {
             this.dialogRef.dismiss();
         }
-    }
-    ngOnDestroy() {
-        super.ngOnDestroy();
+    };
+    ModalOverlay.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
         if (this.dialogRef.destroyed !== true) {
             // if we're here the overlay is destroyed by an external event that is not user invoked.
             // i.e: The user did no call dismiss or close and dialogRef.destroy() did not invoke.
@@ -1451,35 +1559,30 @@ class ModalOverlay extends __WEBPACK_IMPORTED_MODULE_3__components_index__["a" /
             // we bail out, i.e gracefully shutting down.
             this.dialogRef.bailOut();
         }
-    }
-}
-/* harmony export (immutable) */ exports["a"] = ModalOverlay;
-
-ModalOverlay.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'modal-overlay',
-                host: {
-                    '(body:keydown)': 'documentKeypress($event)'
-                },
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<template #innerView></template>
-<template #template let-ctx>
-    <template [swapCmp]="ctx.component" [swapCmpBindings]="ctx.bindings" [swapCmpProjectables]="ctx.projectableNodes"></template>
-</template>
-`
-            },] },
-];
-/** @nocollapse */
-ModalOverlay.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__["a" /* DialogRef */], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
-];
-ModalOverlay.propDecorators = {
-    'innerVcr': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: ['innerView', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] },] },],
-    'template': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: ['template',] },],
-};
+    };
+    ModalOverlay.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'modal-overlay',
+                    host: {
+                        '(body:keydown)': 'documentKeypress($event)'
+                    },
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<template #innerView></template>\n<template #template let-ctx>\n    <template [swapCmp]=\"ctx.component\" [swapCmpBindings]=\"ctx.bindings\" [swapCmpProjectables]=\"ctx.projectableNodes\"></template>\n</template>\n"
+                },] },
+    ];
+    /** @nocollapse */
+    ModalOverlay.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__["a" /* DialogRef */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+    ];
+    ModalOverlay.propDecorators = {
+        'innerVcr': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: ['innerView', { read: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] },] },],
+        'template': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: ['template',] },],
+    };
+    return ModalOverlay;
+}(__WEBPACK_IMPORTED_MODULE_3__components_index__["a" /* BaseDynamicComponent */]));
 //# sourceMappingURL=overlay.component.js.map
 
 /***/ },
@@ -1492,6 +1595,9 @@ ModalOverlay.propDecorators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_vc_ref_store__ = __webpack_require__("./node_modules/angular2-modal/esm/models/vc-ref-store.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__overlay_service__ = __webpack_require__("./node_modules/angular2-modal/esm/overlay/overlay.service.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return OverlayDialogBoundary; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return OverlayTarget; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return DefaultOverlayTarget; });
 
 
 
@@ -1501,77 +1607,78 @@ ModalOverlay.propDecorators = {
  * is a dialog boundary, i.e: over click outside of the element should close the modal
  * (if non blocking)
  */
-class OverlayDialogBoundary {
-    constructor(el, dialogRef) {
+var OverlayDialogBoundary = (function () {
+    function OverlayDialogBoundary(el, dialogRef) {
         if (dialogRef && el.nativeElement) {
             dialogRef.overlayRef.instance.setClickBoundary(el.nativeElement);
         }
     }
-}
-/* harmony export (immutable) */ exports["a"] = OverlayDialogBoundary;
-
-OverlayDialogBoundary.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
-                selector: '[overlayDialogBoundary]'
-            },] },
-];
-/** @nocollapse */
-OverlayDialogBoundary.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], },
-];
-class OverlayTarget {
-    constructor(vcRef) {
+    OverlayDialogBoundary.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[overlayDialogBoundary]'
+                },] },
+    ];
+    /** @nocollapse */
+    OverlayDialogBoundary.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], },
+    ];
+    return OverlayDialogBoundary;
+}());
+var OverlayTarget = (function () {
+    function OverlayTarget(vcRef) {
         this.vcRef = vcRef;
     }
-    set targetKey(value) {
-        this._targetKey = value;
-        if (value) {
-            __WEBPACK_IMPORTED_MODULE_2__models_vc_ref_store__["a" /* vcRefStore */].setVCRef(value, this.vcRef);
-        }
-    }
-    ngOnDestroy() {
+    Object.defineProperty(OverlayTarget.prototype, "targetKey", {
+        set: function (value) {
+            this._targetKey = value;
+            if (value) {
+                __WEBPACK_IMPORTED_MODULE_2__models_vc_ref_store__["a" /* vcRefStore */].setVCRef(value, this.vcRef);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OverlayTarget.prototype.ngOnDestroy = function () {
         if (this._targetKey) {
             __WEBPACK_IMPORTED_MODULE_2__models_vc_ref_store__["a" /* vcRefStore */].delVCRef(this._targetKey, this.vcRef);
         }
-    }
-}
-/* harmony export (immutable) */ exports["b"] = OverlayTarget;
-
-OverlayTarget.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
-                selector: '[overlayTarget]'
-            },] },
-];
-/** @nocollapse */
-OverlayTarget.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
-];
-OverlayTarget.propDecorators = {
-    'targetKey': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"], args: ['overlayTarget',] },],
-};
-const noop = () => { };
-class DefaultOverlayTarget {
-    constructor(overlay, vcRef) {
+    };
+    OverlayTarget.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[overlayTarget]'
+                },] },
+    ];
+    /** @nocollapse */
+    OverlayTarget.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+    ];
+    OverlayTarget.propDecorators = {
+        'targetKey': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"], args: ['overlayTarget',] },],
+    };
+    return OverlayTarget;
+}());
+var noop = function () { };
+var DefaultOverlayTarget = (function () {
+    function DefaultOverlayTarget(overlay, vcRef) {
         this.overlay = overlay;
         overlay.defaultViewContainer = vcRef;
     }
-    ngOnDestroy() {
+    DefaultOverlayTarget.prototype.ngOnDestroy = function () {
         this.overlay.defaultViewContainer = undefined;
-    }
-}
-/* harmony export (immutable) */ exports["c"] = DefaultOverlayTarget;
-
-DefaultOverlayTarget.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
-                selector: '[defaultOverlayTarget]'
-            },] },
-];
-/** @nocollapse */
-DefaultOverlayTarget.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_3__overlay_service__["a" /* Overlay */], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
-];
+    };
+    DefaultOverlayTarget.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[defaultOverlayTarget]'
+                },] },
+    ];
+    /** @nocollapse */
+    DefaultOverlayTarget.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_3__overlay_service__["a" /* Overlay */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+    ];
+    return DefaultOverlayTarget;
+}());
 //# sourceMappingURL=overlay.directives.js.map
 
 /***/ },
@@ -1585,42 +1692,48 @@ DefaultOverlayTarget.ctorParameters = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref_stack__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref-stack.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_vc_ref_store__ = __webpack_require__("./node_modules/angular2-modal/esm/models/vc-ref-store.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Overlay; });
 
 
 
 
 
-const _stack = new __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref_stack__["a" /* DialogRefStack */]();
-class Overlay {
-    constructor(_modalRenderer) {
+var _stack = new __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref_stack__["a" /* DialogRefStack */]();
+var Overlay = (function () {
+    function Overlay(_modalRenderer) {
         this._modalRenderer = _modalRenderer;
     }
-    get stackLength() {
-        return _stack.length;
-    }
+    Object.defineProperty(Overlay.prototype, "stackLength", {
+        get: function () {
+            return _stack.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Check if a given DialogRef is the top most ref in the stack.
      * TODO: distinguish between body modal vs in element modal.
      * @param dialogRef
      * @returns {boolean}
      */
-    isTopMost(dialogRef) {
+    Overlay.prototype.isTopMost = function (dialogRef) {
         return _stack.indexOf(dialogRef) === _stack.length - 1;
-    }
-    stackPosition(dialogRef) {
+    };
+    Overlay.prototype.stackPosition = function (dialogRef) {
         return _stack.indexOf(dialogRef);
-    }
-    groupStackLength(dialogRef) {
+    };
+    Overlay.prototype.groupStackLength = function (dialogRef) {
         return _stack.groupLength(_stack.groupOf(dialogRef));
-    }
+    };
     /**
      * Creates an overlay and returns a dialog ref.
      * @param config instructions how to create the overlay
      * @param group A token to associate the new overlay with, used for reference (stacks usually)
      * @returns {DialogRef<T>[]}
      */
-    open(config, group) {
-        let viewContainer = config.viewContainer, containers = [];
+    Overlay.prototype.open = function (config, group) {
+        var _this = this;
+        var viewContainer = config.viewContainer, containers = [];
         if (typeof viewContainer === 'string') {
             containers = __WEBPACK_IMPORTED_MODULE_3__models_vc_ref_store__["a" /* vcRefStore */].getVCRef(viewContainer);
         }
@@ -1639,29 +1752,28 @@ class Overlay {
             containers = [this.defaultViewContainer];
         }
         return containers
-            .map(vc => this.createOverlay(config.renderer || this._modalRenderer, vc, config, group));
-    }
-    createOverlay(renderer, vcRef, config, group) {
+            .map(function (vc) { return _this.createOverlay(config.renderer || _this._modalRenderer, vc, config, group); });
+    };
+    Overlay.prototype.createOverlay = function (renderer, vcRef, config, group) {
         if (config.context) {
             config.context.normalize();
         }
-        let dialog = new __WEBPACK_IMPORTED_MODULE_4__models_dialog_ref__["a" /* DialogRef */](this, config.context || {});
+        var dialog = new __WEBPACK_IMPORTED_MODULE_4__models_dialog_ref__["a" /* DialogRef */](this, config.context || {});
         dialog.inElement = config.context && !!config.context.inElement;
-        let cmpRef = renderer.render(dialog, vcRef, config.injector);
+        var cmpRef = renderer.render(dialog, vcRef, config.injector);
         Object.defineProperty(dialog, 'overlayRef', { value: cmpRef });
         _stack.pushManaged(dialog, group);
         return dialog;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Overlay;
-
-Overlay.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-Overlay.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__models_tokens__["a" /* OverlayRenderer */], },
-];
+    };
+    Overlay.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    Overlay.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1__models_tokens__["a" /* OverlayRenderer */], },
+    ];
+    return Overlay;
+}());
 //# sourceMappingURL=overlay.service.js.map
 
 /***/ },
@@ -1674,20 +1786,23 @@ Overlay.ctorParameters = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_createComponent__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/createComponent.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__overlay_index__ = __webpack_require__("./node_modules/angular2-modal/esm/overlay/index.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DOMOverlayRenderer; });
 
 
 
 
-class DOMOverlayRenderer {
-    render(dialog, vcRef, injector) {
-        const bindings = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([
+var DOMOverlayRenderer = (function () {
+    function DOMOverlayRenderer() {
+    }
+    DOMOverlayRenderer.prototype.render = function (dialog, vcRef, injector) {
+        var bindings = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([
             { provide: __WEBPACK_IMPORTED_MODULE_2__models_dialog_ref__["a" /* DialogRef */], useValue: dialog }
         ]);
-        const cmpRef = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_createComponent__["a" /* createComponent */])({
+        var cmpRef = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__framework_createComponent__["a" /* createComponent */])({
             component: __WEBPACK_IMPORTED_MODULE_3__overlay_index__["a" /* ModalOverlay */],
-            vcRef,
-            injector,
-            bindings
+            vcRef: vcRef,
+            injector: injector,
+            bindings: bindings
         });
         if (dialog.inElement) {
             vcRef.element.nativeElement.appendChild(cmpRef.location.nativeElement);
@@ -1696,15 +1811,14 @@ class DOMOverlayRenderer {
             document.body.appendChild(cmpRef.location.nativeElement);
         }
         return cmpRef;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = DOMOverlayRenderer;
-
-DOMOverlayRenderer.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-DOMOverlayRenderer.ctorParameters = [];
+    };
+    DOMOverlayRenderer.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    DOMOverlayRenderer.ctorParameters = [];
+    return DOMOverlayRenderer;
+}());
 //# sourceMappingURL=dom-modal-renderer.js.map
 
 /***/ },
@@ -1732,43 +1846,48 @@ DOMOverlayRenderer.ctorParameters = [];
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__ = __webpack_require__("./node_modules/angular2-modal/esm/models/dialog-ref.js");
-
-
-class UnsupportedDropInError extends Error {
-    constructor(dropInName) {
-        super();
-        this.message = `Unsupported Drop-In ${dropInName}`;
-    }
-}
 /* unused harmony export UnsupportedDropInError */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Modal; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
-class Modal {
-    constructor(overlay) {
+
+var UnsupportedDropInError = (function (_super) {
+    __extends(UnsupportedDropInError, _super);
+    function UnsupportedDropInError(dropInName) {
+        _super.call(this);
+        this.message = "Unsupported Drop-In " + dropInName;
+    }
+    return UnsupportedDropInError;
+}(Error));
+var Modal = (function () {
+    function Modal(overlay) {
         this.overlay = overlay;
     }
-    alert() {
+    Modal.prototype.alert = function () {
         throw new UnsupportedDropInError('alert');
-    }
-    prompt() {
+    };
+    Modal.prototype.prompt = function () {
         throw new UnsupportedDropInError('prompt');
-    }
-    confirm() {
+    };
+    Modal.prototype.confirm = function () {
         throw new UnsupportedDropInError('confirm');
-    }
+    };
     /**
      * Opens a modal window inside an existing component.
      * @param content The content to display, either string, template ref or a component.
      * @param config Additional settings.
      * @returns {Promise<DialogRef>}
      */
-    open(content, config) {
+    Modal.prototype.open = function (content, config) {
         config = config || {};
         try {
-            let dialogs = this.overlay.open(config, this.constructor);
+            var dialogs = this.overlay.open(config, this.constructor);
             if (dialogs.length > 1) {
-                console.warn(`Attempt to open more then 1 overlay detected.
-        Multiple modal copies are not supported at the moment, 
-        only the first viewContainer will display.`);
+                console.warn("Attempt to open more then 1 overlay detected.\n        Multiple modal copies are not supported at the moment, \n        only the first viewContainer will display.");
             }
             // TODO:  Currently supporting 1 view container, hence working on dialogs[0].
             //        upgrade to multiple containers.
@@ -1777,17 +1896,17 @@ class Modal {
         catch (e) {
             return Promise.reject(e);
         }
-    }
-    createBackdrop(dialogRef, BackdropComponent) {
-        const b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }]);
+    };
+    Modal.prototype.createBackdrop = function (dialogRef, BackdropComponent) {
+        var b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }]);
         return dialogRef.overlayRef.instance.addComponent(BackdropComponent, b);
-    }
-    createContainer(dialogRef, ContainerComponent, content, bindings) {
-        const b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }])
+    };
+    Modal.prototype.createContainer = function (dialogRef, ContainerComponent, content, bindings) {
+        var b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }])
             .concat(bindings || []);
-        let nodes = dialogRef.overlayRef.instance.getProjectables(content, b);
+        var nodes = dialogRef.overlayRef.instance.getProjectables(content, b);
         return dialogRef.overlayRef.instance.addComponent(ContainerComponent, b, nodes);
-    }
+    };
     /**
      * A helper function for derived classes to create backdrop & container
      * @param dialogRef
@@ -1797,16 +1916,15 @@ class Modal {
      *
      * @deprecated use createBackdrop and createContainer instead
      */
-    createModal(dialogRef, backdrop, container) {
-        const b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }]);
+    Modal.prototype.createModal = function (dialogRef, backdrop, container) {
+        var b = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolve([{ provide: __WEBPACK_IMPORTED_MODULE_1__models_dialog_ref__["a" /* DialogRef */], useValue: dialogRef }]);
         return {
             backdropRef: dialogRef.overlayRef.instance.addComponent(backdrop, b),
             containerRef: dialogRef.overlayRef.instance.addComponent(container, b)
         };
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Modal;
-
+    };
+    return Modal;
+}());
 //# sourceMappingURL=modal.js.map
 
 /***/ },
@@ -1817,11 +1935,12 @@ class Modal {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__framework_utils__ = __webpack_require__("./node_modules/angular2-modal/esm/framework/utils.js");
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DOMOutsideEventPlugin; });
 // heavily inspired by:
 // http://www.bennadel.com/blog/3025-creating-custom-dom-and-host-event-bindings-in-angular-2-beta-6.htm
 
 
-const eventMap = {
+var eventMap = {
     clickOutside: 'click',
     mousedownOutside: 'mousedown',
     mouseupOutside: 'mouseup',
@@ -1835,8 +1954,8 @@ const eventMap = {
  * @returns {function(any): undefined}
  */
 function bubbleNonAncestorHandlerFactory(element, handler) {
-    return (event) => {
-        let current = event.target;
+    return function (event) {
+        var current = event.target;
         do {
             if (current === element) {
                 return;
@@ -1845,28 +1964,28 @@ function bubbleNonAncestorHandlerFactory(element, handler) {
         handler(event);
     };
 }
-class DOMOutsideEventPlugin {
-    constructor() {
+var DOMOutsideEventPlugin = (function () {
+    function DOMOutsideEventPlugin() {
         // TODO: use DI factory for this.
         if (!document || typeof document.addEventListener !== 'function') {
             this.addEventListener = __WEBPACK_IMPORTED_MODULE_1__framework_utils__["c" /* noop */];
         }
     }
-    supports(eventName) {
+    DOMOutsideEventPlugin.prototype.supports = function (eventName) {
         return eventMap.hasOwnProperty(eventName);
-    }
-    addEventListener(element, eventName, handler) {
-        const zone = this.manager.getZone();
+    };
+    DOMOutsideEventPlugin.prototype.addEventListener = function (element, eventName, handler) {
+        var zone = this.manager.getZone();
         // A Factory that registers the event on the document, instead of the element.
         // the handler is created at runtime, and it acts as a propagation/bubble predicate, it will
         // bubble up the event (i.e: execute our original event handler) only if the event targer
         // is an ancestor of our element.
         // The event is fired inside the angular zone so change detection can kick into action.
-        const onceOnOutside = () => {
-            const listener = bubbleNonAncestorHandlerFactory(element, evt => zone.runGuarded(() => handler(evt)));
+        var onceOnOutside = function () {
+            var listener = bubbleNonAncestorHandlerFactory(element, function (evt) { return zone.runGuarded(function () { return handler(evt); }); });
             // mimic BrowserDomAdapter.onAndCancel
             document.addEventListener(eventMap[eventName], listener, false);
-            return () => document.removeEventListener(eventMap[eventName], listener, false);
+            return function () { return document.removeEventListener(eventMap[eventName], listener, false); };
         };
         // we run the event registration for the document in a different zone, this will make sure
         // change detection is off.
@@ -1879,23 +1998,22 @@ class DOMOutsideEventPlugin {
         // synchronously we have to put a wrapper for it since we will get it asynchronously,
         // i.e: after we need to return it.
         //
-        return zone.runOutsideAngular(() => {
-            let fn;
-            setTimeout(() => fn = onceOnOutside(), 0);
-            return () => fn();
+        return zone.runOutsideAngular(function () {
+            var fn;
+            setTimeout(function () { return fn = onceOnOutside(); }, 0);
+            return function () { return fn(); };
         });
-    }
-    addGlobalEventListener(target, eventName, handler) {
+    };
+    DOMOutsideEventPlugin.prototype.addGlobalEventListener = function (target, eventName, handler) {
         throw 'not supported';
-    }
-}
-/* harmony export (immutable) */ exports["a"] = DOMOutsideEventPlugin;
-
-DOMOutsideEventPlugin.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-DOMOutsideEventPlugin.ctorParameters = [];
+    };
+    DOMOutsideEventPlugin.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    DOMOutsideEventPlugin.ctorParameters = [];
+    return DOMOutsideEventPlugin;
+}());
 //# sourceMappingURL=outside-event-plugin.js.map
 
 /***/ },
@@ -1910,50 +2028,45 @@ DOMOutsideEventPlugin.ctorParameters = [];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modal__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/modal.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modal_container_component__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/modal-container.component.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__message_modal_component__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/message-modal.component.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return providers; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BootstrapModalModule; });
 
 
 
 
 
 
-const providers = [
+var providers = [
     { provide: __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Modal"], useClass: __WEBPACK_IMPORTED_MODULE_3__modal__["a" /* Modal */] },
     { provide: __WEBPACK_IMPORTED_MODULE_3__modal__["a" /* Modal */], useClass: __WEBPACK_IMPORTED_MODULE_3__modal__["a" /* Modal */] }
 ];
-/* harmony export (immutable) */ exports["b"] = providers;
-
-class BootstrapModalModule {
-    static getProviders() {
-        return providers;
+var BootstrapModalModule = (function () {
+    function BootstrapModalModule() {
     }
-}
-/* harmony export (immutable) */ exports["a"] = BootstrapModalModule;
-
-BootstrapModalModule.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
-                imports: [__WEBPACK_IMPORTED_MODULE_2_angular2_modal__["ModalModule"], __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
-                declarations: [
-                    __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["c" /* BSModalFooter */],
-                    __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["d" /* BSMessageModalTitle */],
-                    __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["b" /* BSMessageModalBody */],
-                    __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["a" /* BSMessageModal */],
-                    __WEBPACK_IMPORTED_MODULE_4__modal_container_component__["a" /* BSModalContainer */]
-                ],
-                providers: providers,
-                entryComponents: [
-                    __WEBPACK_IMPORTED_MODULE_4__modal_container_component__["a" /* BSModalContainer */],
-                    __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["a" /* BSMessageModal */]
-                ]
-            },] },
-];
-/** @nocollapse */
-BootstrapModalModule.ctorParameters = [];
+    BootstrapModalModule.getProviders = function () {
+        return providers;
+    };
+    BootstrapModalModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
+                    imports: [__WEBPACK_IMPORTED_MODULE_2_angular2_modal__["ModalModule"], __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+                    declarations: [
+                        __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["c" /* BSModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["d" /* BSMessageModalTitle */],
+                        __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["b" /* BSMessageModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["a" /* BSMessageModal */],
+                        __WEBPACK_IMPORTED_MODULE_4__modal_container_component__["a" /* BSModalContainer */]
+                    ],
+                    providers: providers,
+                    entryComponents: [
+                        __WEBPACK_IMPORTED_MODULE_4__modal_container_component__["a" /* BSModalContainer */],
+                        __WEBPACK_IMPORTED_MODULE_5__message_modal_component__["a" /* BSMessageModal */]
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    BootstrapModalModule.ctorParameters = [];
+    return BootstrapModalModule;
+}());
 //# sourceMappingURL=bootstrap.module.js.map
 
 /***/ },
@@ -1987,12 +2100,6 @@ BootstrapModalModule.ctorParameters = [];
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "Modal", function() { return __WEBPACK_IMPORTED_MODULE_7__modal__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "BootstrapModalModule", function() { return __WEBPACK_IMPORTED_MODULE_8__bootstrap_module__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "providers", function() { return __WEBPACK_IMPORTED_MODULE_8__bootstrap_module__["b"]; });
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
 
 
 
@@ -2012,106 +2119,80 @@ BootstrapModalModule.ctorParameters = [];
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return BSMessageModalTitle; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return BSMessageModalBody; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return BSModalFooter; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BSMessageModal; });
 
 
-class BSMessageModalTitle {
-    constructor(dialog) {
+var BSMessageModalTitle = (function () {
+    function BSMessageModalTitle(dialog) {
         this.dialog = dialog;
         this.context = dialog.context;
     }
-    get titleHtml() {
-        return this.context.titleHtml ? 1 : 0;
-    }
-}
-/* harmony export (immutable) */ exports["d"] = BSMessageModalTitle;
-
-BSMessageModalTitle.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'modal-title',
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<div [ngClass]="context.headerClass" [ngSwitch]="titleHtml">
-      <button *ngIf="context.showClose" type="button" class="close" 
-              aria-label="Close" (click)="dialog.dismiss()">
-          <span aria-hidden="true">×</span>
-      </button>
-      <div *ngSwitchCase="1" [innerHtml]="context.titleHtml"></div>
-      <h3 *ngSwitchDefault class="modal-title">{{context.title}}</h3>
- </div>`
-            },] },
-];
-/** @nocollapse */
-BSMessageModalTitle.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
-];
-class BSMessageModalBody {
-    constructor(dialog) {
+    Object.defineProperty(BSMessageModalTitle.prototype, "titleHtml", {
+        get: function () {
+            return this.context.titleHtml ? 1 : 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BSMessageModalTitle.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'modal-title',
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<div [ngClass]=\"context.headerClass\" [ngSwitch]=\"titleHtml\">\n      <button *ngIf=\"context.showClose\" type=\"button\" class=\"close\" \n              aria-label=\"Close\" (click)=\"dialog.dismiss()\">\n          <span aria-hidden=\"true\">\u00D7</span>\n      </button>\n      <div *ngSwitchCase=\"1\" [innerHtml]=\"context.titleHtml\"></div>\n      <h3 *ngSwitchDefault class=\"modal-title\">{{context.title}}</h3>\n </div>"
+                },] },
+    ];
+    /** @nocollapse */
+    BSMessageModalTitle.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
+    ];
+    return BSMessageModalTitle;
+}());
+var BSMessageModalBody = (function () {
+    function BSMessageModalBody(dialog) {
         this.dialog = dialog;
         this.context = dialog.context;
     }
-}
-/* harmony export (immutable) */ exports["b"] = BSMessageModalBody;
-
-BSMessageModalBody.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'modal-body',
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                styles: [`.form-group {
-    margin-top: 10px;
-  }`],
-                template: `<div [ngClass]="context.bodyClass"> 
-    <div [innerHtml]="context.message"></div>
-      <div *ngIf="context.showInput" class="form-group">
-        <input autofocus #input
-            name="bootstrap" 
-            type="text" 
-            class="form-control"
-            [value]="context.defaultValue"
-            (change)="context.defaultValue = input.value"  
-            placeholder="{{context.placeholder}}">
-      </div>
-    </div>
-`
-            },] },
-];
-/** @nocollapse */
-BSMessageModalBody.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
-];
+    BSMessageModalBody.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'modal-body',
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    styles: [".form-group {\n    margin-top: 10px;\n  }"],
+                    template: "<div [ngClass]=\"context.bodyClass\"> \n    <div [innerHtml]=\"context.message\"></div>\n      <div *ngIf=\"context.showInput\" class=\"form-group\">\n        <input autofocus #input\n            name=\"bootstrap\" \n            type=\"text\" \n            class=\"form-control\"\n            [value]=\"context.defaultValue\"\n            (change)=\"context.defaultValue = input.value\"  \n            placeholder=\"{{context.placeholder}}\">\n      </div>\n    </div>\n"
+                },] },
+    ];
+    /** @nocollapse */
+    BSMessageModalBody.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
+    ];
+    return BSMessageModalBody;
+}());
 /**
  * Represents the modal footer for storing buttons.
  */
-class BSModalFooter {
-    constructor(dialog) {
+var BSModalFooter = (function () {
+    function BSModalFooter(dialog) {
         this.dialog = dialog;
     }
-    onClick(btn, $event) {
+    BSModalFooter.prototype.onClick = function (btn, $event) {
         $event.stopPropagation();
         btn.onClick(this, $event);
-    }
-}
-/* harmony export (immutable) */ exports["c"] = BSModalFooter;
-
-BSModalFooter.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'modal-footer',
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<div [ngClass]="dialog.context.footerClass">
-    <button *ngFor="let btn of dialog.context.buttons;"
-            [ngClass]="btn.cssClass"
-            (click)="onClick(btn, $event)">{{btn.caption}}</button>
-</div>`
-            },] },
-];
-/** @nocollapse */
-BSModalFooter.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
-];
+    };
+    BSModalFooter.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'modal-footer',
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<div [ngClass]=\"dialog.context.footerClass\">\n    <button *ngFor=\"let btn of dialog.context.buttons;\"\n            [ngClass]=\"btn.cssClass\"\n            (click)=\"onClick(btn, $event)\">{{btn.caption}}</button>\n</div>"
+                },] },
+    ];
+    /** @nocollapse */
+    BSModalFooter.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
+    ];
+    return BSModalFooter;
+}());
 /**
  * A Component representing a generic bootstrap modal content element.
  *
@@ -2130,24 +2211,23 @@ BSModalFooter.ctorParameters = [
  *      - Set footer class.  (default: modal-footer)
  *      - Set button configuration (from 0 to n)
  */
-class BSMessageModal {
-    constructor(dialog) {
+var BSMessageModal = (function () {
+    function BSMessageModal(dialog) {
         this.dialog = dialog;
     }
-}
-/* harmony export (immutable) */ exports["a"] = BSMessageModal;
-
-BSMessageModal.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'modal-content',
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<modal-title></modal-title><modal-body></modal-body><modal-footer></modal-footer>`
-            },] },
-];
-/** @nocollapse */
-BSMessageModal.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
-];
+    BSMessageModal.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'modal-content',
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<modal-title></modal-title><modal-body></modal-body><modal-footer></modal-footer>"
+                },] },
+    ];
+    /** @nocollapse */
+    BSMessageModal.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
+    ];
+    return BSMessageModal;
+}());
 //# sourceMappingURL=message-modal.component.js.map
 
 /***/ },
@@ -2158,48 +2238,42 @@ BSMessageModal.ctorParameters = [
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BSModalContainer; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
-class BSModalContainer extends __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["BaseDynamicComponent"] {
-    constructor(dialog, el, renderer) {
-        super(el, renderer);
+var BSModalContainer = (function (_super) {
+    __extends(BSModalContainer, _super);
+    function BSModalContainer(dialog, el, renderer) {
+        _super.call(this, el, renderer);
         this.dialog = dialog;
         this.activateAnimationListener();
     }
-}
-/* harmony export (immutable) */ exports["a"] = BSModalContainer;
-
-BSModalContainer.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                selector: 'bs-modal-container',
-                host: {
-                    'tabindex': '-1',
-                    'role': 'dialog',
-                    'class': 'modal fade',
-                    'style': 'position: absolute; display: block'
-                },
-                encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
-                template: `<div [ngClass]="dialog.context.dialogClass" 
-      [class.modal-lg]="dialog.context.size == \'lg\'"
-      [class.modal-sm]="dialog.context.size == \'sm\'">
-  <div class="modal-content" style="display:block" role="document" overlayDialogBoundary>
-    <ng-content></ng-content>
-  </div>    
-</div>`
-            },] },
-];
-/** @nocollapse */
-BSModalContainer.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
-];
+    BSModalContainer.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-modal-container',
+                    host: {
+                        'tabindex': '-1',
+                        'role': 'dialog',
+                        'class': 'modal fade',
+                        'style': 'position: absolute; display: block'
+                    },
+                    encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+                    template: "<div [ngClass]=\"dialog.context.dialogClass\" \n      [class.modal-lg]=\"dialog.context.size == 'lg'\"\n      [class.modal-sm]=\"dialog.context.size == 'sm'\">\n  <div class=\"modal-content\" style=\"display:block\" role=\"document\" overlayDialogBoundary>\n    <ng-content></ng-content>\n  </div>    \n</div>"
+                },] },
+    ];
+    /** @nocollapse */
+    BSModalContainer.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_1_angular2_modal__["DialogRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+    ];
+    return BSModalContainer;
+}(__WEBPACK_IMPORTED_MODULE_1_angular2_modal__["BaseDynamicComponent"]));
 //# sourceMappingURL=modal-container.component.js.map
 
 /***/ },
@@ -2209,40 +2283,47 @@ BSModalContainer.ctorParameters = [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BSModalContext; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return BSModalContextBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
-const DEFAULT_VALUES = {
+var DEFAULT_VALUES = {
     dialogClass: 'modal-dialog',
     showClose: false
 };
-const DEFAULT_SETTERS = [
+var DEFAULT_SETTERS = [
     'dialogClass',
     'size',
     'showClose'
 ];
-class BSModalContext extends __WEBPACK_IMPORTED_MODULE_0_angular2_modal__["ModalOpenContext"] {
-    normalize() {
+var BSModalContext = (function (_super) {
+    __extends(BSModalContext, _super);
+    function BSModalContext() {
+        _super.apply(this, arguments);
+    }
+    BSModalContext.prototype.normalize = function () {
         if (!this.dialogClass) {
             this.dialogClass = DEFAULT_VALUES.dialogClass;
         }
-        super.normalize();
-    }
-}
-/* harmony export (immutable) */ exports["a"] = BSModalContext;
-
-class BSModalContextBuilder extends __WEBPACK_IMPORTED_MODULE_0_angular2_modal__["ModalOpenContextBuilder"] {
-    constructor(defaultValues=undefined, initialSetters=undefined, baseType=undefined) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["arrayUnion"])(DEFAULT_SETTERS, initialSetters || []), baseType || BSModalContext // https://github.com/Microsoft/TypeScript/issues/7234
+        _super.prototype.normalize.call(this);
+    };
+    return BSModalContext;
+}(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["ModalOpenContext"]));
+var BSModalContextBuilder = (function (_super) {
+    __extends(BSModalContextBuilder, _super);
+    function BSModalContextBuilder(defaultValues, initialSetters, baseType) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])(DEFAULT_VALUES, defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["arrayUnion"])(DEFAULT_SETTERS, initialSetters || []), baseType || BSModalContext // https://github.com/Microsoft/TypeScript/issues/7234
         );
     }
-}
-/* harmony export (immutable) */ exports["b"] = BSModalContextBuilder;
-
+    return BSModalContextBuilder;
+}(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["ModalOpenContextBuilder"]));
 //# sourceMappingURL=modal-context.js.map
 
 /***/ },
@@ -2258,37 +2339,39 @@ class BSModalContextBuilder extends __WEBPACK_IMPORTED_MODULE_0_angular2_modal__
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modal_container_component__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/modal-container.component.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__bootstrap_presets_one_button_preset__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/presets/one-button-preset.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bootstrap_presets_two_button_preset__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/presets/two-button-preset.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Modal; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
 
 
 
-class Modal extends __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Modal"] {
-    constructor(overlay) {
-        super(overlay);
+var Modal = (function (_super) {
+    __extends(Modal, _super);
+    function Modal(overlay) {
+        _super.call(this, overlay);
     }
-    alert() {
+    Modal.prototype.alert = function () {
         return new __WEBPACK_IMPORTED_MODULE_4__bootstrap_presets_one_button_preset__["a" /* OneButtonPresetBuilder */](this, { isBlocking: false });
-    }
-    prompt() {
+    };
+    Modal.prototype.prompt = function () {
         return new __WEBPACK_IMPORTED_MODULE_5__bootstrap_presets_two_button_preset__["b" /* PromptPresetBuilder */](this, { isBlocking: true, keyboard: null });
-    }
-    confirm() {
+    };
+    Modal.prototype.confirm = function () {
         return new __WEBPACK_IMPORTED_MODULE_5__bootstrap_presets_two_button_preset__["a" /* TwoButtonPresetBuilder */](this, { isBlocking: true, keyboard: null });
-    }
-    create(dialogRef, content, bindings) {
-        const backdropRef = this.createBackdrop(dialogRef, __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["CSSBackdrop"]);
-        const containerRef = this.createContainer(dialogRef, __WEBPACK_IMPORTED_MODULE_3__modal_container_component__["a" /* BSModalContainer */], content, bindings);
-        let overlay = dialogRef.overlayRef.instance;
-        let backdrop = backdropRef.instance;
-        let container = containerRef.instance;
+    };
+    Modal.prototype.create = function (dialogRef, content, bindings) {
+        var _this = this;
+        var backdropRef = this.createBackdrop(dialogRef, __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["CSSBackdrop"]);
+        var containerRef = this.createContainer(dialogRef, __WEBPACK_IMPORTED_MODULE_3__modal_container_component__["a" /* BSModalContainer */], content, bindings);
+        var overlay = dialogRef.overlayRef.instance;
+        var backdrop = backdropRef.instance;
+        var container = containerRef.instance;
         dialogRef.inElement ? overlay.insideElement() : overlay.fullscreen();
         // add body class if this is the only dialog in the stack
         if (!document.body.classList.contains('modal-open')) {
@@ -2303,30 +2386,29 @@ class Modal extends __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Modal"] {
         if (containerRef.location.nativeElement) {
             containerRef.location.nativeElement.focus();
         }
-        overlay.beforeDestroy(() => {
-            const completer = new __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["PromiseCompleter"]();
+        overlay.beforeDestroy(function () {
+            var completer = new __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["PromiseCompleter"]();
             backdrop.removeClass('in');
             container.removeClass('in');
             backdrop.myAnimationEnd$()
-                .combineLatest(container.myAnimationEnd$(), (s1, s2) => [s1, s2])
-                .subscribe(sources => {
-                this.overlay.groupStackLength(dialogRef) === 1 && document.body.classList.remove('modal-open');
+                .combineLatest(container.myAnimationEnd$(), function (s1, s2) { return [s1, s2]; })
+                .subscribe(function (sources) {
+                _this.overlay.groupStackLength(dialogRef) === 1 && document.body.classList.remove('modal-open');
                 completer.resolve();
             });
             return completer.promise;
         });
         return dialogRef;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Modal;
-
-Modal.decorators = [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"] },
-];
-/** @nocollapse */
-Modal.ctorParameters = [
-    { type: __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Overlay"], },
-];
+    };
+    Modal.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    Modal.ctorParameters = [
+        { type: __WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Overlay"], },
+    ];
+    return Modal;
+}(__WEBPACK_IMPORTED_MODULE_2_angular2_modal__["Modal"]));
 //# sourceMappingURL=modal.js.map
 
 /***/ },
@@ -2338,22 +2420,22 @@ Modal.ctorParameters = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_modal_component__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/message-modal.component.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modal_context__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/modal-context.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MessageModalPresetBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 
-const DEFAULT_VALUES = {
+var DEFAULT_VALUES = {
     component: __WEBPACK_IMPORTED_MODULE_1__message_modal_component__["a" /* BSMessageModal */],
     headerClass: 'modal-header',
     bodyClass: 'modal-body',
     footerClass: 'modal-footer'
 };
-const DEFAULT_SETTERS = [
+var DEFAULT_SETTERS = [
     'headerClass',
     'title',
     'titleHtml',
@@ -2365,24 +2447,27 @@ const DEFAULT_SETTERS = [
  * This is an abstract implementation with no concrete behaviour.
  * Use derived implementation.
  */
-class MessageModalPresetBuilder extends __WEBPACK_IMPORTED_MODULE_2__modal_context__["b" /* BSModalContextBuilder */] {
-    constructor(defaultValues=undefined, initialSetters=undefined, baseType=undefined) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({ buttons: [] }, DEFAULT_VALUES), defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["arrayUnion"])(DEFAULT_SETTERS, initialSetters || []), baseType);
+var MessageModalPresetBuilder = (function (_super) {
+    __extends(MessageModalPresetBuilder, _super);
+    function MessageModalPresetBuilder(defaultValues, initialSetters, baseType) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = undefined; }
+        if (baseType === void 0) { baseType = undefined; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({ buttons: [] }, DEFAULT_VALUES), defaultValues || {}), __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["arrayUnion"])(DEFAULT_SETTERS, initialSetters || []), baseType);
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["setAssignAlias"])(this, 'body', 'message', true);
     }
-    addButton(css, caption, onClick) {
-        let btn = {
+    MessageModalPresetBuilder.prototype.addButton = function (css, caption, onClick) {
+        var btn = {
             cssClass: css,
             caption: caption,
             onClick: onClick
         };
-        let key = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["privateKey"])('buttons');
+        var key = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["privateKey"])('buttons');
         this[key].push(btn);
         return this;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = MessageModalPresetBuilder;
-
+    };
+    return MessageModalPresetBuilder;
+}(__WEBPACK_IMPORTED_MODULE_2__modal_context__["b" /* BSModalContextBuilder */]));
 //# sourceMappingURL=message-modal-preset.js.map
 
 /***/ },
@@ -2393,20 +2478,22 @@ class MessageModalPresetBuilder extends __WEBPACK_IMPORTED_MODULE_2__modal_conte
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_modal_preset__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/presets/message-modal-preset.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return OneButtonPresetBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 /**
  * A Preset for a classic 1 button modal window.
  */
-class OneButtonPresetBuilder extends __WEBPACK_IMPORTED_MODULE_1__message_modal_preset__["a" /* MessageModalPresetBuilder */] {
-    constructor(modal, defaultValues=undefined) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({
+var OneButtonPresetBuilder = (function (_super) {
+    __extends(OneButtonPresetBuilder, _super);
+    function OneButtonPresetBuilder(modal, defaultValues) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({
             modal: modal,
             okBtn: 'OK',
             okBtnClass: 'btn btn-primary'
@@ -2415,13 +2502,12 @@ class OneButtonPresetBuilder extends __WEBPACK_IMPORTED_MODULE_1__message_modal_
             'okBtnClass'
         ]);
     }
-    $$beforeOpen(config) {
-        this.addButton(config.okBtnClass, config.okBtn, (cmp, $event) => cmp.dialog.close(true));
-        return super.$$beforeOpen(config);
-    }
-}
-/* harmony export (immutable) */ exports["a"] = OneButtonPresetBuilder;
-
+    OneButtonPresetBuilder.prototype.$$beforeOpen = function (config) {
+        this.addButton(config.okBtnClass, config.okBtn, function (cmp, $event) { return cmp.dialog.close(true); });
+        return _super.prototype.$$beforeOpen.call(this, config);
+    };
+    return OneButtonPresetBuilder;
+}(__WEBPACK_IMPORTED_MODULE_1__message_modal_preset__["a" /* MessageModalPresetBuilder */]));
 //# sourceMappingURL=one-button-preset.js.map
 
 /***/ },
@@ -2432,18 +2518,23 @@ class OneButtonPresetBuilder extends __WEBPACK_IMPORTED_MODULE_1__message_modal_
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular2_modal__ = __webpack_require__("./node_modules/angular2-modal/esm/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_modal_preset__ = __webpack_require__("./node_modules/angular2-modal/plugins/bootstrap/presets/message-modal-preset.js");
-/**
- * angular2-modal - Angular2 Modal (dialog) window.
- * @version v2.0.0-beta.14
- * @link https://github.com/shlomiassaf/angular2-modal
- * @license MIT
- */
+/* unused harmony export AbstractTwoButtonPresetBuilder */
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return TwoButtonPresetBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return PromptPresetBuilder; });
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 
 
 /** Common two button preset */
-class AbstractTwoButtonPresetBuilder extends __WEBPACK_IMPORTED_MODULE_1__message_modal_preset__["a" /* MessageModalPresetBuilder */] {
-    constructor(modal, defaultValues=undefined, initialSetters=[]) {
-        super(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({
+var AbstractTwoButtonPresetBuilder = (function (_super) {
+    __extends(AbstractTwoButtonPresetBuilder, _super);
+    function AbstractTwoButtonPresetBuilder(modal, defaultValues, initialSetters) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        if (initialSetters === void 0) { initialSetters = []; }
+        _super.call(this, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({
             modal: modal,
             okBtn: 'OK',
             okBtnClass: 'btn btn-primary',
@@ -2456,38 +2547,41 @@ class AbstractTwoButtonPresetBuilder extends __WEBPACK_IMPORTED_MODULE_1__messag
             'cancelBtnClass',
         ], initialSetters));
     }
-    $$beforeOpen(config) {
-        this.addButton(config.cancelBtnClass, config.cancelBtn, (cmp, $event) => cmp.dialog.dismiss());
-        return super.$$beforeOpen(config);
-    }
-}
-/* unused harmony export AbstractTwoButtonPresetBuilder */
-
+    AbstractTwoButtonPresetBuilder.prototype.$$beforeOpen = function (config) {
+        this.addButton(config.cancelBtnClass, config.cancelBtn, function (cmp, $event) { return cmp.dialog.dismiss(); });
+        return _super.prototype.$$beforeOpen.call(this, config);
+    };
+    return AbstractTwoButtonPresetBuilder;
+}(__WEBPACK_IMPORTED_MODULE_1__message_modal_preset__["a" /* MessageModalPresetBuilder */]));
 /**
  * A Preset for a classic 2 button modal window.
  */
-class TwoButtonPresetBuilder extends AbstractTwoButtonPresetBuilder {
-    constructor(modal, defaultValues=undefined) {
-        super(modal, defaultValues);
+var TwoButtonPresetBuilder = (function (_super) {
+    __extends(TwoButtonPresetBuilder, _super);
+    function TwoButtonPresetBuilder(modal, defaultValues) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        _super.call(this, modal, defaultValues);
     }
-    $$beforeOpen(config) {
-        this.addButton(config.okBtnClass, config.okBtn, (cmp, $event) => cmp.dialog.close(true));
-        return super.$$beforeOpen(config);
+    TwoButtonPresetBuilder.prototype.$$beforeOpen = function (config) {
+        this.addButton(config.okBtnClass, config.okBtn, function (cmp, $event) { return cmp.dialog.close(true); });
+        return _super.prototype.$$beforeOpen.call(this, config);
+    };
+    return TwoButtonPresetBuilder;
+}(AbstractTwoButtonPresetBuilder));
+var PromptPresetBuilder = (function (_super) {
+    __extends(PromptPresetBuilder, _super);
+    function PromptPresetBuilder(modal, defaultValues) {
+        if (defaultValues === void 0) { defaultValues = undefined; }
+        _super.call(this, modal, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({ showInput: true, defaultValue: '' }, defaultValues || {}), ['placeholder', 'defaultValue']);
     }
-}
-/* harmony export (immutable) */ exports["a"] = TwoButtonPresetBuilder;
-
-class PromptPresetBuilder extends AbstractTwoButtonPresetBuilder {
-    constructor(modal, defaultValues=undefined) {
-        super(modal, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_angular2_modal__["extend"])({ showInput: true, defaultValue: '' }, defaultValues || {}), ['placeholder', 'defaultValue']);
-    }
-    $$beforeOpen(config) {
-        this.addButton(config.okBtnClass, config.okBtn, (cmp, $event) => cmp.dialog.close(cmp.dialog.context.defaultValue));
-        return super.$$beforeOpen(config);
-    }
-}
-/* harmony export (immutable) */ exports["b"] = PromptPresetBuilder;
-
+    PromptPresetBuilder.prototype.$$beforeOpen = function (config) {
+        this.addButton(config.okBtnClass, config.okBtn, function (cmp, $event) {
+            return cmp.dialog.close(cmp.dialog.context.defaultValue);
+        });
+        return _super.prototype.$$beforeOpen.call(this, config);
+    };
+    return PromptPresetBuilder;
+}(AbstractTwoButtonPresetBuilder));
 //# sourceMappingURL=two-button-preset.js.map
 
 /***/ },
@@ -10603,6 +10697,7 @@ module.exports = {
 			"/Users/walterwei/Desktop/iStudy/node_modules/rmp-api"
 		]
 	],
+	"_cnpm_publish_time": 1454324797919,
 	"_from": "cheerio@>=0.20.0 <0.21.0",
 	"_id": "cheerio@0.20.0",
 	"_inCache": true,
@@ -10661,7 +10756,9 @@ module.exports = {
 	"directories": {},
 	"dist": {
 		"shasum": "5c710f2bab95653272842ba01c6ea61b3545ec35",
-		"tarball": "https://registry.npmjs.org/cheerio/-/cheerio-0.20.0.tgz"
+		"size": 29008,
+		"noattachment": false,
+		"tarball": "http://r.cnpmjs.org/cheerio/download/cheerio-0.20.0.tgz"
 	},
 	"engines": {
 		"node": ">= 0.6"
@@ -10684,26 +10781,27 @@ module.exports = {
 	"main": "./index.js",
 	"maintainers": [
 		{
-			"name": "mattmueller",
-			"email": "mattmuelle@gmail.com"
-		},
-		{
 			"name": "davidchambers",
 			"email": "dc@davidchambers.me"
+		},
+		{
+			"name": "feedic",
+			"email": "me@feedic.com"
 		},
 		{
 			"name": "jugglinmike",
 			"email": "mike@mikepennisi.com"
 		},
 		{
-			"name": "feedic",
-			"email": "me@feedic.com"
+			"name": "mattmueller",
+			"email": "mattmuelle@gmail.com"
 		}
 	],
 	"name": "cheerio",
 	"optionalDependencies": {
 		"jsdom": "^7.0.2"
 	},
+	"publish_time": 1454324797919,
 	"readme": "ERROR: No README data found!",
 	"repository": {
 		"type": "git",
@@ -17867,7 +17965,7 @@ function plural(ms, n, name) {
  */
 
 var keys = __webpack_require__("./node_modules/engine.io-parser/lib/keys.js");
-var hasBinary = __webpack_require__("./node_modules/engine.io-parser/node_modules/has-binary/index.js");
+var hasBinary = __webpack_require__("./node_modules/has-binary/index.js");
 var sliceBuffer = __webpack_require__("./node_modules/arraybuffer.slice/index.js");
 var after = __webpack_require__("./node_modules/after/index.js");
 var utf8 = __webpack_require__("./node_modules/wtf-8/wtf-8.js");
@@ -18499,72 +18597,6 @@ module.exports = Object.keys || function keys (obj){
   return arr;
 };
 
-
-/***/ },
-
-/***/ "./node_modules/engine.io-parser/node_modules/has-binary/index.js":
-/***/ function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {
-/*
- * Module requirements.
- */
-
-var isArray = __webpack_require__("./node_modules/isarray/index.js");
-
-/**
- * Module exports.
- */
-
-module.exports = hasBinary;
-
-/**
- * Checks for binary data.
- *
- * Right now only Buffer and ArrayBuffer are supported..
- *
- * @param {Object} anything
- * @api public
- */
-
-function hasBinary(data) {
-
-  function _hasBinary(obj) {
-    if (!obj) return false;
-
-    if ( (global.Buffer && global.Buffer.isBuffer(obj)) ||
-         (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
-         (global.Blob && obj instanceof Blob) ||
-         (global.File && obj instanceof File)
-        ) {
-      return true;
-    }
-
-    if (isArray(obj)) {
-      for (var i = 0; i < obj.length; i++) {
-          if (_hasBinary(obj[i])) {
-              return true;
-          }
-      }
-    } else if (obj && 'object' == typeof obj) {
-      if (obj.toJSON) {
-        obj = obj.toJSON();
-      }
-
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key) && _hasBinary(obj[key])) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  return _hasBinary(data);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/webpack/buildin/global.js")))
 
 /***/ },
 
@@ -91698,6 +91730,7 @@ module.exports = {
 			"/Users/walterwei/Desktop/iStudy/node_modules/jsdom"
 		]
 	],
+	"_cnpm_publish_time": 1477415233167,
 	"_from": "tough-cookie@>=2.2.0 <3.0.0",
 	"_id": "tough-cookie@2.3.2",
 	"_inCache": true,
@@ -91772,7 +91805,9 @@ module.exports = {
 	"directories": {},
 	"dist": {
 		"shasum": "f081f76e4c85720e6c37a5faced737150d84072a",
-		"tarball": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz"
+		"size": 61628,
+		"noattachment": false,
+		"tarball": "http://r.cnpmjs.org/tough-cookie/download/tough-cookie-2.3.2.tgz"
 	},
 	"engines": {
 		"node": ">=0.8"
@@ -91801,7 +91836,7 @@ module.exports = {
 		},
 		{
 			"name": "jstash",
-			"email": "jstash@gmail.com"
+			"email": "jeremy@goinstant.com"
 		},
 		{
 			"name": "nexxy",
@@ -91810,6 +91845,7 @@ module.exports = {
 	],
 	"name": "tough-cookie",
 	"optionalDependencies": {},
+	"publish_time": 1477415233167,
 	"readme": "ERROR: No README data found!",
 	"repository": {
 		"type": "git",

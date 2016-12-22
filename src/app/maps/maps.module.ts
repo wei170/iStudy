@@ -4,8 +4,8 @@ import 'jvectormap-world/jquery-jvectormap-world-mill-en.js';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AlertModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
-import { ButtonsModule, DropdownModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { AlertModule, TooltipModule } from 'ng2-bootstrap';
+import { ButtonsModule, DropdownModule } from 'ng2-bootstrap';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
